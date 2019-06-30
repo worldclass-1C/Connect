@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9058f411-6a98-405f-98c4-a6d8e32280d0">
+  <producedTypes>
+    <objectType typeId="dc775f14-ce69-4683-8662-00e8130470ae" valueTypeId="f27e10d7-5cc5-44fa-a34b-0cfbe73d939e"/>
+    <managerType typeId="653da0c6-5abd-49f1-a2ca-31725a4c2578" valueTypeId="5a21546b-68d3-454c-b867-2bf79b7cbe58"/>
+  </producedTypes>
+  <name>ПерейтиСообщения</name>
+  <synonym>
+    <key>ru</key>
+    <value>Сообщения</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>Report.ПерейтиСообщения.Form.ФормаОтчета</defaultForm>
+  <mainDataCompositionSchema>Report.ПерейтиСообщения.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+  <forms uuid="6a0046af-3b8e-403f-aa4f-07ba95a1c5f8">
+    <name>ФормаОтчета</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма отчета</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <templates uuid="e180305b-0dbf-4c35-a7bd-fe0c76222f6f">
+    <name>ОсновнаяСхемаКомпоновкиДанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Основная схема компоновки данных</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+  <commands uuid="fd196941-ad1f-43e2-98a8-427d2bee78f5">
+    <name>Сообщения</name>
+    <synonym>
+      <key>ru</key>
+      <value>Сообщения</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.Пользователи</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+    <shortcut></shortcut>
+  </commands>
+</mdclass:Report>

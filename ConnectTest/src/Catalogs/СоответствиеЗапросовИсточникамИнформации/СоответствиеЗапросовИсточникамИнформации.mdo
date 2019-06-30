@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="11ba41fa-a729-40c7-a0ca-54ff23016540">
+  <producedTypes>
+    <objectType typeId="91a88501-61a5-4e8f-90be-3a7f54e5eb90" valueTypeId="d5541187-f7d3-4f86-9544-b4329175cfd0"/>
+    <refType typeId="82c2e7c7-42d8-4cfa-855a-c4c2619af703" valueTypeId="00912584-6d0d-43fc-a583-0bf354ae67e5"/>
+    <selectionType typeId="a5a2865a-41f7-419c-8b49-85300db7e1dc" valueTypeId="386f1e3c-7856-4d85-8655-b716bdd6f9c8"/>
+    <listType typeId="4a748bbd-1c6c-4cd8-acea-0dca218c28ab" valueTypeId="b63bdd79-8f1f-4731-b05b-d4447bc9a453"/>
+    <managerType typeId="e78920c3-8e1b-4a58-b247-c23b0d000ac8" valueTypeId="165406d4-5351-40d3-8945-b80582b3341f"/>
+  </producedTypes>
+  <name>СоответствиеЗапросовИсточникамИнформации</name>
+  <synonym>
+    <key>ru</key>
+    <value>Соответствие запросов источникам информации</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.СоответствиеЗапросовИсточникамИнформации.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>DontUse</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Соответствие запроса источнику информации</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Соответствие запроса источнику информации</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Соответствия запросов источникам информации</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Соответствия запросов источникам информации</value>
+  </extendedListPresentation>
+  <hierarchical>true</hierarchical>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>30</codeLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.СоответствиеЗапросовИсточникамИнформации.Form.ФормаЭлемента</defaultObjectForm>
+  <defaultListForm>Catalog.СоответствиеЗапросовИсточникамИнформации.Form.ФормаСписка</defaultListForm>
+  <defaultChoiceForm>Catalog.СоответствиеЗапросовИсточникамИнформации.Form.ФормаВыбора</defaultChoiceForm>
+  <defaultFolderChoiceForm>Catalog.СоответствиеЗапросовИсточникамИнформации.Form.ФормаВыбораГруппы</defaultFolderChoiceForm>
+  <attributes uuid="2c0237ee-c57d-4610-afcc-d34b6a0c0691">
+    <name>ВыполнятьВФоне</name>
+    <synonym>
+      <key>ru</key>
+      <value>Выполнять в фоне</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9dce9309-24f2-48e1-8907-aa19f3dd7eec">
+    <name>НеСохранятьОтветВЛогах</name>
+    <synonym>
+      <key>ru</key>
+      <value>Не сохранять ответ в логах</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="83fd8005-4880-4d5f-8168-074e01ff5994">
+    <name>СжиматьЛоги</name>
+    <synonym>
+      <key>ru</key>
+      <value>Сжимать логи</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="72e78666-1c90-4f2a-91bb-d269419332ac">
+    <name>ТолькоДляСотрудников</name>
+    <synonym>
+      <key>ru</key>
+      <value>Только для сотрудников</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="e1b41ca9-b3e3-4e38-88ba-c1f1242e6f44">
+    <producedTypes>
+      <objectType typeId="10e711ea-0707-4fb3-9343-5927dc9b72f4" valueTypeId="df0d9a92-734f-4ee7-b091-9e13d2022ea9"/>
+      <rowType typeId="a270d3bb-b682-4b26-81f2-b1cec1d64195" valueTypeId="21373a38-4243-40b2-a452-c67c72867998"/>
+    </producedTypes>
+    <name>ИсточникиИнформации</name>
+    <synonym>
+      <key>ru</key>
+      <value>Источники информации</value>
+    </synonym>
+    <attributes uuid="10a8760f-a255-4801-93ef-c1045daafceb">
+      <name>Атрибут</name>
+      <synonym>
+        <key>ru</key>
+        <value>Атрибут</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>20</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="82118ffa-8ed3-4404-9308-ca905627221a">
+      <name>ВыполнятьВФоне</name>
+      <synonym>
+        <key>ru</key>
+        <value>Выполнять в фоне</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="05efe525-e75d-4578-923f-6ddf9109f487">
+      <name>ЗапросИсточник</name>
+      <synonym>
+        <key>ru</key>
+        <value>Запрос источник</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>30</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="01511712-2f73-430d-a58a-d3634f7f2d5b">
+      <name>ЗапросПриемник</name>
+      <synonym>
+        <key>ru</key>
+        <value>Запрос приемник</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <fillChecking>ShowError</fillChecking>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="1f7c1cb2-5864-487a-af51-df4316dce678">
+      <name>ИсточникИнформации</name>
+      <synonym>
+        <key>ru</key>
+        <value>Источник информации</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.ИсточникиИнформации</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <fillChecking>ShowError</fillChecking>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="6e7b3cc8-0ee4-40db-831d-b45f64bc9a3d">
+      <name>НеИспользовать</name>
+      <synonym>
+        <key>ru</key>
+        <value>Не использовать</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e543d9e5-b949-4c60-901a-472ace57f1b7">
+      <name>НеСохранятьОтветВЛогах</name>
+      <synonym>
+        <key>ru</key>
+        <value>Не сохранять ответ в логах</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="9e956443-b46b-416a-bebb-230136501b00">
+      <name>СжиматьЛоги</name>
+      <synonym>
+        <key>ru</key>
+        <value>Сжимать логи</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e4f5d8ba-b505-4f1d-b05a-07e6b8b08907">
+      <name>ТолькоДляСотрудников</name>
+      <synonym>
+        <key>ru</key>
+        <value>Только для сотрудников</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <forms uuid="108387f4-9b90-4926-a954-25d0934a248b">
+    <name>ФормаЭлемента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма элемента</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="67655a28-4048-42f9-b495-a4befec13222">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="45772219-f682-48b9-830b-18a4d729a86b">
+    <name>ФормаВыбора</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма выбора</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="801a43ec-8233-4fe9-a98c-0047f4291857">
+    <name>ФормаВыбораГруппы</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма выбора группы</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

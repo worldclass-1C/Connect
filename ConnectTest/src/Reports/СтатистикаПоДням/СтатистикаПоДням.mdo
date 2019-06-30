@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="366dab83-0b5a-46f9-bafc-2dea3609a5db">
+  <producedTypes>
+    <objectType typeId="15745f8a-45a1-47aa-b3a8-22808a899abb" valueTypeId="0df3a62a-d56a-4e89-9f19-0779baa92832"/>
+    <managerType typeId="2f7b5653-708e-4e33-9ac1-42c3f89e2df3" valueTypeId="7dd770b4-9315-4f9f-b369-f321e96cbe95"/>
+  </producedTypes>
+  <name>СтатистикаПоДням</name>
+  <synonym>
+    <key>ru</key>
+    <value>Статистика по дням</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <mainDataCompositionSchema>Report.СтатистикаПоДням.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+  <templates uuid="e913a217-ad81-4626-bbc0-640e008b908b">
+    <name>ОсновнаяСхемаКомпоновкиДанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Основная схема компоновки данных</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+</mdclass:Report>

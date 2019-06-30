@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b2946ba7-1955-486c-a3ca-4cba7c8d38fc">
+  <producedTypes>
+    <refType typeId="d0d457ec-1179-4df5-ac74-ebcf64cc69a1" valueTypeId="c5ef78b0-c0ad-49eb-8afb-d7ca15dec9f9"/>
+    <listType typeId="c70a34ab-0b3a-46bc-a395-fb2fb09fdf92" valueTypeId="10ec1749-799a-4bfe-8de2-3853fbee6be8"/>
+    <managerType typeId="8a6cb648-7671-42c5-a4e6-02fbad2cefb3" valueTypeId="f43e12ad-639e-4913-9638-7cdaa1da428d"/>
+  </producedTypes>
+  <name>ВидыПриложений</name>
+  <synonym>
+    <key>ru</key>
+    <value>Виды приложений</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <listPresentation>
+    <key>ru</key>
+    <value>Виды приложений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Виды приложений</value>
+  </extendedListPresentation>
+  <enumValues uuid="1e8f9a64-91b1-4718-a34e-b987ca42cac6">
+    <name>Customer</name>
+    <synonym>
+      <key>ru</key>
+      <value>ЛК клиента</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="0cdcae31-fd9d-45ce-a4cd-1a2a8f976db0">
+    <name>Employee</name>
+    <synonym>
+      <key>ru</key>
+      <value>ЛК сотрудника</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="e6190bcc-6daf-4e35-aeda-a0abc1b12f2a">
+    <name>Web</name>
+    <synonym>
+      <key>ru</key>
+      <value>Web</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a1d19547-3740-4287-bbf3-c455ca430a00">
+  <producedTypes>
+    <selectionType typeId="26645674-16e5-44e6-bf14-6b2b62b48a42" valueTypeId="9234fa6b-8780-4c18-ac2a-5f997d8be796"/>
+    <listType typeId="b5da667b-e557-4070-be20-099d825a15fc" valueTypeId="884f2344-a4d9-4add-a1d1-026d4a8963b7"/>
+    <managerType typeId="48c69b98-1b27-4901-80f5-2ab6a03bbae2" valueTypeId="32f1bdc9-ff19-4f56-83d4-2276702ef732"/>
+    <recordSetType typeId="7f37fc8b-a5c3-4788-8214-61591e7a40ea" valueTypeId="01a67051-a0dd-40fe-ac4d-ae1742e6e032"/>
+    <recordKeyType typeId="e031e02e-a1da-442e-bd87-3740e9cd5f73" valueTypeId="5b89c9c1-7b98-41fc-ade7-83d7c1a07f3b"/>
+    <recordType typeId="837d307e-01e9-454b-a82a-f3ddb7a7b13e" valueTypeId="1a70ec1d-24af-4798-9cfe-acaa16879018"/>
+  </producedTypes>
+  <name>ПоказателиПользователей</name>
+  <synonym>
+    <key>ru</key>
+    <value>Показатели пользователей</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <registerType>Turnovers</registerType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="bd3dc672-f37e-442d-b21a-9614fc2c3918">
+    <name>Количество</name>
+    <synonym>
+      <key>ru</key>
+      <value>Количество</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>5</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <dimensions uuid="2368c81d-e273-45c1-bde9-39f5868cd0db">
+    <name>Холдинг</name>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.Холдинги</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="edaa79bb-154b-407d-9a1f-aa83ed7f95c9">
+    <name>АналитикаПриложений</name>
+    <synonym>
+      <key>ru</key>
+      <value>Аналитика приложений</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.АналитикиПриложений</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="34036b5a-e8a1-45fd-8c52-a59b08ffb20b">
+    <name>ПериодОтчета</name>
+    <synonym>
+      <key>ru</key>
+      <value>Период отчета</value>
+    </synonym>
+    <type>
+      <types>EnumRef.ПериодыОтчета</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="79297dde-e353-4fb3-ab91-0bb32685f70c">
+    <name>Показатель</name>
+    <synonym>
+      <key>ru</key>
+      <value>Показатель</value>
+    </synonym>
+    <type>
+      <types>EnumRef.Показатели</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="469e231b-e0a6-4730-8a6a-16a5293be6f8">
+    <name>Аналитика</name>
+    <synonym>
+      <key>ru</key>
+      <value>Аналитика</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.Аналитика</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+</mdclass:AccumulationRegister>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="86420c0a-5274-4e87-a2d2-da11b177d949">
+  <producedTypes>
+    <objectType typeId="ee8bd725-18c4-4bef-9220-6c46fcf9e815" valueTypeId="90594aa9-7bd1-457a-9bc5-671cc1f66e14"/>
+    <managerType typeId="7dc848c7-ed0d-43b2-b8ba-ec16be954d14" valueTypeId="0e005a2e-ff2c-41b9-a7ad-9d7c03355a97"/>
+  </producedTypes>
+  <name>ПерейтиТокеныИУстройства</name>
+  <synonym>
+    <key>ru</key>
+    <value>Токены и устройства</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>Report.ПерейтиТокеныИУстройства.Form.ФормаОтчета</defaultForm>
+  <mainDataCompositionSchema>Report.ПерейтиТокеныИУстройства.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+  <forms uuid="86f8d2e0-2b41-4b4f-8ec6-be3a4542573c">
+    <name>ФормаОтчета</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма отчета</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <templates uuid="1e07e568-0918-486b-89e5-1cd5ca8eab23">
+    <name>ОсновнаяСхемаКомпоновкиДанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Основная схема компоновки данных</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+  <commands uuid="ad5e8106-da7c-4fdc-9563-b53a62383aba">
+    <name>ТокеныИУстройства</name>
+    <synonym>
+      <key>ru</key>
+      <value>Токены и устройства</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.Пользователи</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+    <shortcut></shortcut>
+  </commands>
+</mdclass:Report>

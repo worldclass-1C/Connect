@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b1e49597-7b15-4580-8ebf-aeb80b3cd055">
+  <producedTypes>
+    <selectionType typeId="d839221e-232d-4c0c-bb90-d96649a1eb7e" valueTypeId="eb4e7081-07b0-4c7a-928b-b7db4501d2e7"/>
+    <listType typeId="d2687d68-7f0b-40e9-9cf7-b8511cf7c382" valueTypeId="57b84ae1-558f-4ab4-b7ca-98960d04664f"/>
+    <managerType typeId="68457f6c-ce6f-4be4-b455-9b1ca5a241d2" valueTypeId="bb69b21b-69c1-4e54-8c6f-a0572ef97bff"/>
+    <recordSetType typeId="654d360c-ccd6-4852-912f-cf36f75464bf" valueTypeId="6cecc21e-aa9c-4a6a-9f8d-8a3211a9ac49"/>
+    <recordKeyType typeId="ef1402fe-0611-4d74-a85f-2af4af228c69" valueTypeId="77ebefe0-3cfe-47fd-a17a-21bf087a06d3"/>
+    <recordType typeId="0fd4f5e4-601c-4493-903c-cfd8c2f59346" valueTypeId="f9049478-eb6d-4b51-892b-68eef35e80bc"/>
+    <recordManagerType typeId="f0c19497-cf14-49eb-9b78-61dc693e7aa8" valueTypeId="3444d632-619b-41d6-93d7-a878e5137a16"/>
+  </producedTypes>
+  <name>ПаролиПользователей</name>
+  <synonym>
+    <key>ru</key>
+    <value>Пароли пользователей</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="fc5c557c-8ed7-48b5-875e-32d24c382f3d">
+    <name>Пароль</name>
+    <synonym>
+      <key>ru</key>
+      <value>Пароль</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="b2010b45-91cb-426a-90b0-57c757ff8585">
+    <name>СрокДействия</name>
+    <synonym>
+      <key>ru</key>
+      <value>Срок действия</value>
+    </synonym>
+    <comment>указана дата, до которой пароль считается актуальным, если дата не указана значит это постоянный пароль</comment>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="5997123d-5e14-4399-99ef-c77a82217ed1">
+    <name>Пользователь</name>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.Пользователи</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

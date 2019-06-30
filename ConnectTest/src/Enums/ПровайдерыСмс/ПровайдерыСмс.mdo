@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="75096105-50ae-4ed8-bd36-77ffade2adff">
+  <producedTypes>
+    <refType typeId="90dd6547-3ad0-4e92-aca6-0e26a56da71b" valueTypeId="3be48d2b-7d7a-4fe7-bc1d-bbbab04a240e"/>
+    <listType typeId="2ede6e7d-7b60-4fa1-98a2-e43e9d9cbe11" valueTypeId="81a546f0-c8fe-4d1e-a21e-9b33fbdd74ed"/>
+    <managerType typeId="67893398-9cd4-4c42-8218-49c78ef0bd6a" valueTypeId="5c24918d-ca39-4b45-9ff7-3db2608d907f"/>
+  </producedTypes>
+  <name>ПровайдерыСмс</name>
+  <synonym>
+    <key>ru</key>
+    <value>Провайдеры смс</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <listPresentation>
+    <key>ru</key>
+    <value>Провайдеры смс</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Провайдеры смс</value>
+  </extendedListPresentation>
+  <enumValues uuid="2d014166-8ff4-4064-b9f1-95335f8909e8">
+    <name>Rapporto</name>
+    <synonym>
+      <key>ru</key>
+      <value>Rapporto</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="4b877388-b683-4e87-a087-a3de679e98a0">
+    <name>Smstraffic</name>
+    <synonym>
+      <key>ru</key>
+      <value>Smstraffic</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="672526f5-5130-4733-9b27-ccf66a698ad7">
+    <name>IDMkg</name>
+    <synonym>
+      <key>ru</key>
+      <value>IDM (kg)</value>
+    </synonym>
+    <comment>IDM.KG </comment>
+  </enumValues>
+  <enumValues uuid="d00dd0c2-9285-42d5-9cf9-6a6ff497675a">
+    <name>Stramedia</name>
+    <synonym>
+      <key>ru</key>
+      <value>Stramedia</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="4eab35da-1e7b-429a-aac2-255dd80f9e6e">
+    <name>SmsGold</name>
+    <synonym>
+      <key>ru</key>
+      <value>SmsGold</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

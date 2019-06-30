@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="84829bdd-24fc-4511-a456-aad945c4cc8b">
+  <name>Сообщения</name>
+  <synonym>
+    <key>ru</key>
+    <value>Сообщения</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>InformationRegister.ИсторияСообщений</content>
+  <content>Catalog.Сообщения</content>
+  <content>ExchangePlan.СообщенияКОтправке</content>
+  <content>ExchangePlan.СообщенияПроверкаСтатуса</content>
+  <content>InformationRegister.ИДСообщений</content>
+</mdclass:Subsystem>
