@@ -14,7 +14,7 @@
       <key>ru</key>
       <value>Выполнить запрос</value>
     </synonym>
-    <template>/request</template>
+    <template>/request/*</template>
     <methods uuid="193cddf3-e94d-4db3-bc4b-496c44e8543a">
       <name>POST</name>
       <synonym>

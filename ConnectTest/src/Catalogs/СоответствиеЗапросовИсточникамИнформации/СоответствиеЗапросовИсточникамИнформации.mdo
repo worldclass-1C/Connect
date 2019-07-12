@@ -241,6 +241,18 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <attributes uuid="cd1c3ce1-1fef-4300-863a-19fa2d5f4235">
+      <name>ТипЗапроса</name>
+      <synonym>
+        <key>ru</key>
+        <value>Тип HTTP запроса</value>
+      </synonym>
+      <type>
+        <types>EnumRef.ТипыHTTPЗапросов</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
     <attributes uuid="e4f5d8ba-b505-4f1d-b05a-07e6b8b08907">
       <name>ТолькоДляСотрудников</name>
       <synonym>

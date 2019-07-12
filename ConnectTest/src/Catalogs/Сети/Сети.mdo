@@ -122,26 +122,6 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.Сети.Form.ФормаСписка</defaultListForm>
-  <attributes uuid="0f62d6c3-602f-4307-a453-cad4aa4a95d0">
-    <name>Host</name>
-    <synonym>
-      <key>ru</key>
-      <value>Host</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="6a9ecc13-8430-48cd-8f4d-31c3008077be">
     <name>Валюта</name>
     <synonym>
@@ -160,6 +140,18 @@
     <fillValue xsi:type="core:StringValue">
       <value></value>
     </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="44b7b374-2db9-41af-a470-c43e465293ec">
+    <name>ВидСети</name>
+    <synonym>
+      <key>ru</key>
+      <value>Вид сети</value>
+    </synonym>
+    <type>
+      <types>EnumRef.ВидыСетей</types>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -184,6 +176,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="dbb55143-27cf-47b5-9ea6-4deaf707b253">
+    <name>НаименованиеRu</name>
+    <synonym>
+      <key>ru</key>
+      <value>Наименование Ru</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>40</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="4bc51f39-6eac-40ff-9c69-1d9895dcc405">
     <name>ПрограммаЛояльности</name>
     <synonym>
@@ -191,17 +198,11 @@
       <value>Программа лояльности</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>20</length>
-      </stringQualifiers>
+      <types>EnumRef.ТипыПрограммЛояльности</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillChecking>ShowError</fillChecking>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

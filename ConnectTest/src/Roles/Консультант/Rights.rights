@@ -369,13 +369,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Сети.Attribute.Host</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.СоответствиеЗапросовИсточникамИнформации.TabularSection.ИсточникиИнформации.Attribute.Атрибут</name>
 		<right>
 			<name>Edit</name>

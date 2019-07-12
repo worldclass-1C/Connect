@@ -11,4 +11,5 @@
   <content>InformationRegister.ПодключенияХолдинговКСмсПровайдерам</content>
   <content>Catalog.СоответствиеЗапросовИсточникамИнформации</content>
   <content>Catalog.ИсточникиИнформации</content>
+  <content>Constant.БазовыйURL</content>
 </mdclass:Subsystem>

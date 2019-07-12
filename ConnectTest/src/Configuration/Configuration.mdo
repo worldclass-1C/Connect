@@ -82,6 +82,7 @@
   <scheduledJobs>ScheduledJob.ПроверкаСтатусаSms</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
+  <constants>Constant.БазовыйURL</constants>
   <catalogs>Catalog.Аналитика</catalogs>
   <catalogs>Catalog.АналитикиПриложений</catalogs>
   <catalogs>Catalog.Города</catalogs>
@@ -99,12 +100,15 @@
   <catalogs>Catalog.ЧасовыеПояса</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.ВидыПриложений</enums>
+  <enums>Enum.ВидыСетей</enums>
   <enums>Enum.КаналыИнформирования</enums>
   <enums>Enum.ОперационныеСистемы</enums>
   <enums>Enum.ПериодыОтчета</enums>
   <enums>Enum.Показатели</enums>
   <enums>Enum.ПровайдерыСмс</enums>
   <enums>Enum.СтатусыСообщений</enums>
+  <enums>Enum.ТипыHTTPЗапросов</enums>
+  <enums>Enum.ТипыПрограммЛояльности</enums>
   <enums>Enum.ТипыРегистрации</enums>
   <reports>Report.ВерсииПриложений</reports>
   <reports>Report.ЗарегистрированныеСообщения</reports>
