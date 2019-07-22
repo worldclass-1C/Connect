@@ -1,4 +1,4 @@
 
-Функция ВыполнитьЗапросPOST(Запрос)		
-	Возврат ОбщегоНазначения.ВыполнитьЗапрос(Запрос);
-КонецФункции
+Function ProcessRequestPOST(Request)
+	Return General.ProcessRequest(Request);
+EndFunction

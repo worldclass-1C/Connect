@@ -65,6 +65,7 @@
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
+  <commonModules>CommonModule.General</commonModules>
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.Users</commonModules>
@@ -73,7 +74,6 @@
   <commonModules>CommonModule.ИнтеграцияСSmsGold</commonModules>
   <commonModules>CommonModule.ИнтеграцияСSMSTraffic</commonModules>
   <commonModules>CommonModule.ИнтеграцияСStramedia</commonModules>
-  <commonModules>CommonModule.ОбщегоНазначения</commonModules>
   <commonModules>CommonModule.ОбщегоНазначенияВызовСервера</commonModules>
   <commonModules>CommonModule.ОбщегоНазначенияПовторноеИспользование</commonModules>
   <commonModules>CommonModule.РаботаССообщениями</commonModules>
@@ -81,7 +81,7 @@
   <exchangePlans>ExchangePlan.СообщенияКОтправке</exchangePlans>
   <exchangePlans>ExchangePlan.СообщенияПроверкаСтатуса</exchangePlans>
   <exchangePlans>ExchangePlan.РегистрацияПользователей</exchangePlans>
-  <httpServices>HTTPService.ExternalServices</httpServices>
+  <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.ВнутренниеСервисы</httpServices>
   <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
   <scheduledJobs>ScheduledJob.ОтправкаPush</scheduledJobs>

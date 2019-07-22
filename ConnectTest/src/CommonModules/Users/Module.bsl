@@ -48,7 +48,7 @@ Function setUserPassword(user, password = "") Export
 	Return password;
 EndFunction
 
-Function token(requestStruct, user, chain, holding, timezone) Export
+Function getToken(requestStruct, user, chain, holding, timezone) Export
 	tokenObject	= Catalogs.Токены.CreateItem();
 	tokenObject.ДатаСоздания		= ToUniversalTime(CurrentDate());
 	tokenObject.Пользователь		= user;

@@ -340,7 +340,7 @@ Procedure userAuthorization(Parameters)
 				struct.Insert("result", ?(selection.validity = Date(1, 1, 1), "Ok", "PasswordHasExpirationDate"));
 				If requestStruct.Property("remember")
 						And requestStruct.remember = True Then
-					tokenObject = Users.token(requestStruct, selection.user, selection.chain, selection.holding, selection.timezone);
+					tokenObject = Users.getToken(requestStruct, selection.user, selection.chain, selection.holding, selection.timezone);
 					struct.Insert("authToken", New Structure("key,createTime", XMLString(tokenObject.Ref), tokenObject.ДатаСоздания));
 					parameters.Insert("token", tokenObject.Ref);
 				EndIf;
