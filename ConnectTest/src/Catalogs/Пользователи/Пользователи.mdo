@@ -363,6 +363,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="6bf6e690-8e4f-4b7f-aa86-dbe2979adeb0">
+    <name>ЗапретитьОбновлятьПерсональныеДанные</name>
+    <synonym>
+      <key>ru</key>
+      <value>Запретить обновлять персональные данные</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="d18c61ea-7a14-408c-a833-e5237e406bab">
     <name>ТипПользователя</name>
     <synonym>

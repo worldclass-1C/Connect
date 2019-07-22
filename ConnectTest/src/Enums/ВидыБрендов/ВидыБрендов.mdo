@@ -5,10 +5,10 @@
     <listType typeId="67773f03-e073-4e6f-aa48-9e18150af5a2" valueTypeId="d06f53de-0f1c-4fda-a73a-300be66ce973"/>
     <managerType typeId="1c0370e4-92a7-43a6-8138-ebda9bbf3e2b" valueTypeId="e589736d-0350-4ad4-97a5-d33206f8e3be"/>
   </producedTypes>
-  <name>ВидыСетей</name>
+  <name>ВидыБрендов</name>
   <synonym>
     <key>ru</key>
-    <value>Виды сетей</value>
+    <value>Виды брендов</value>
   </synonym>
   <quickChoice>true</quickChoice>
   <choiceMode>BothWays</choiceMode>
@@ -24,6 +24,13 @@
     <synonym>
       <key>ru</key>
       <value>Fizkult</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="24ac7cb2-e9af-4ae7-b76d-229fb27a6d5a">
+    <name>UFC</name>
+    <synonym>
+      <key>ru</key>
+      <value>UFC</value>
     </synonym>
   </enumValues>
 </mdclass:Enum>

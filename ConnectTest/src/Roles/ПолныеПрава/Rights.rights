@@ -454,4 +454,15 @@
 			<value>false</value>
 		</right>
 	</object>
+	<object>
+		<name>Catalog.МаскиНомеровТелефонов</name>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
 </Rights>

@@ -14,7 +14,6 @@
   <configurationExtensionCompatibilityMode>8.3.14</configurationExtensionCompatibilityMode>
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
-  <scriptVariant>Russian</scriptVariant>
   <vendor>Мелкумян Д.М.</vendor>
   <version>1.02.00</version>
   <defaultStyle>Style.СУЗ</defaultStyle>
@@ -58,6 +57,8 @@
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
+  <commonModules>CommonModule.HTTP</commonModules>
+  <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.ИнтеграцияСIDMkg</commonModules>
   <commonModules>CommonModule.ИнтеграцияСRapporto</commonModules>
   <commonModules>CommonModule.ИнтеграцияСSmsGold</commonModules>
@@ -66,14 +67,12 @@
   <commonModules>CommonModule.ОбщегоНазначения</commonModules>
   <commonModules>CommonModule.ОбщегоНазначенияВызовСервера</commonModules>
   <commonModules>CommonModule.ОбщегоНазначенияПовторноеИспользование</commonModules>
-  <commonModules>CommonModule.РаботаСHTTP</commonModules>
   <commonModules>CommonModule.РаботаССообщениями</commonModules>
   <commonModules>CommonModule.РегламентныеЗаданияСервер</commonModules>
-  <commonModules>CommonModule.Служебный</commonModules>
   <exchangePlans>ExchangePlan.СообщенияКОтправке</exchangePlans>
   <exchangePlans>ExchangePlan.СообщенияПроверкаСтатуса</exchangePlans>
   <exchangePlans>ExchangePlan.РегистрацияПользователей</exchangePlans>
-  <httpServices>HTTPService.ВнешниеСервисы</httpServices>
+  <httpServices>HTTPService.ExternalServices</httpServices>
   <httpServices>HTTPService.ВнутренниеСервисы</httpServices>
   <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
   <scheduledJobs>ScheduledJob.ОтправкаPush</scheduledJobs>
@@ -89,6 +88,7 @@
   <catalogs>Catalog.ИсторииЗапросов</catalogs>
   <catalogs>Catalog.ИсточникиИнформации</catalogs>
   <catalogs>Catalog.Клубы</catalogs>
+  <catalogs>Catalog.МаскиНомеровТелефонов</catalogs>
   <catalogs>Catalog.Пользователи</catalogs>
   <catalogs>Catalog.ПричиныОтменыЗаписи</catalogs>
   <catalogs>Catalog.Сети</catalogs>
@@ -100,7 +100,7 @@
   <catalogs>Catalog.ЧасовыеПояса</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.ВидыПриложений</enums>
-  <enums>Enum.ВидыСетей</enums>
+  <enums>Enum.ВидыБрендов</enums>
   <enums>Enum.КаналыИнформирования</enums>
   <enums>Enum.ОперационныеСистемы</enums>
   <enums>Enum.ПериодыОтчета</enums>

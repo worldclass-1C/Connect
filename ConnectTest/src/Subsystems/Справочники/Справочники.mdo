@@ -17,4 +17,5 @@
   <content>Catalog.ИсторииЗапросов</content>
   <content>Catalog.Токены</content>
   <content>Catalog.ТипыЗначенийКэша</content>
+  <content>Catalog.МаскиНомеровТелефонов</content>
 </mdclass:Subsystem>

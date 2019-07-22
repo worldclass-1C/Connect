@@ -176,13 +176,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Сети.Attribute.Тип</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.СоответствиеЗапросовИсточникамИнформации.TabularSection.ИсточникиИнформации.Attribute.ЗапросИсточник</name>
 		<right>
 			<name>Edit</name>
@@ -638,13 +631,6 @@
 		</right>
 		<right>
 			<name>InteractiveOpenExtReports</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>HTTPService.ВнешниеСервисы.URLTemplate.ВыполнитьЗапрос.Method.POST</name>
-		<right>
-			<name>Use</name>
 			<value>false</value>
 		</right>
 	</object>
@@ -3313,6 +3299,25 @@
 		<name>Catalog.Клубы.TabularSection.ГрафикРаботыОтделов.Attribute.ГрафикРаботыВВыходные</name>
 		<right>
 			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.МаскиНомеровТелефонов</name>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarked</name>
 			<value>false</value>
 		</right>
 	</object>

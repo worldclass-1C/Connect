@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="45aef736-1db5-4168-9c42-b6edb4185fbb">
+  <producedTypes>
+    <objectType typeId="12293e81-d5d0-4737-af83-a5ce01dfc4da" valueTypeId="5fe507be-5b91-4e85-9dc3-ea15c5325be5"/>
+    <refType typeId="15304232-9e05-440b-9b7b-e4e935b05e4f" valueTypeId="bc92ec67-b12e-46cf-b89d-f8fb5973b198"/>
+    <selectionType typeId="c9944c66-2565-4331-bbf3-cd739cfe1ff2" valueTypeId="72f35267-bd42-4428-8982-9c572d0bae29"/>
+    <listType typeId="c549d7c1-ac80-4db4-8a10-120427dfe7b5" valueTypeId="ed5600d4-9ecb-499f-9ea3-43e0687f934f"/>
+    <managerType typeId="71fbd88b-99bc-4c31-99e9-55c48d97e69f" valueTypeId="97c4873b-7aff-46fe-a3bf-88a4fb3be201"/>
+  </producedTypes>
+  <name>МаскиНомеровТелефонов</name>
+  <synonym>
+    <key>ru</key>
+    <value>Маски номеров телефонов</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.МаскиНомеровТелефонов.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.МаскиНомеровТелефонов.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Маска номера телефона</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Маска номера телефона</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Маски номеров телефонов</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Маски номеров телефонов</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>5</codeLength>
+  <descriptionLength>20</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.МаскиНомеровТелефонов.Form.ФормаЭлемента</defaultObjectForm>
+  <defaultListForm>Catalog.МаскиНомеровТелефонов.Form.ФормаСписка</defaultListForm>
+  <defaultChoiceForm>Catalog.МаскиНомеровТелефонов.Form.ФормаВыбора</defaultChoiceForm>
+  <attributes uuid="46e97aaf-9069-47ec-ab6f-a4cbc8cd6d33">
+    <name>КодСтраны</name>
+    <synonym>
+      <key>ru</key>
+      <value>Код страны</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>4</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="00e1d9e5-2d80-4ab1-b1a9-601165c76236">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="6f1eed71-8433-41c1-aa39-75a997908665">
+    <name>ФормаЭлемента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма элемента</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="f43d38b9-65b1-4b02-9dd2-7db59d56fbe1">
+    <name>ФормаВыбора</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма выбора</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
