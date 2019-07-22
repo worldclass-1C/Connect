@@ -2669,7 +2669,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ПаролиПользователей</name>
+		<name>InformationRegister.UserPasswords</name>
 		<right>
 			<name>TotalsControl</name>
 			<value>false</value>

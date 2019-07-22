@@ -1,4 +1,4 @@
 
 Function ProcessRequestPOST(Request)	
-	Return ОбщегоНазначения.ProcessRequest(Request);;
+	Return ОбщегоНазначения.ProcessRequest(Request);
 EndFunction

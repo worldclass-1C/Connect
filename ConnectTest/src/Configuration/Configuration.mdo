@@ -17,7 +17,7 @@
   <vendor>Мелкумян Д.М.</vendor>
   <version>1.02.00</version>
   <defaultStyle>Style.СУЗ</defaultStyle>
-  <defaultLanguage>Language.Русский</defaultLanguage>
+  <defaultLanguage>Language.English</defaultLanguage>
   <briefInformation>
     <key>ru</key>
     <value>Connect</value>
@@ -45,6 +45,14 @@
     </synonym>
     <languageCode>ru</languageCode>
   </languages>
+  <languages uuid="48aa1e92-8835-4160-a104-8e36ee823c57">
+    <name>English</name>
+    <synonym>
+      <key>ru</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
   <subsystems>Subsystem.МобильныеПриложения</subsystems>
   <subsystems>Subsystem.Настройки</subsystems>
   <subsystems>Subsystem.Отчеты</subsystems>
@@ -59,6 +67,7 @@
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Service</commonModules>
+  <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.ИнтеграцияСIDMkg</commonModules>
   <commonModules>CommonModule.ИнтеграцияСRapporto</commonModules>
   <commonModules>CommonModule.ИнтеграцияСSmsGold</commonModules>
@@ -122,7 +131,7 @@
   <informationRegisters>InformationRegister.ИДСообщений</informationRegisters>
   <informationRegisters>InformationRegister.ИсторияСлужебныхСообщений</informationRegisters>
   <informationRegisters>InformationRegister.ИсторияСообщений</informationRegisters>
-  <informationRegisters>InformationRegister.ПаролиПользователей</informationRegisters>
+  <informationRegisters>InformationRegister.UserPasswords</informationRegisters>
   <informationRegisters>InformationRegister.ПодключенияХолдинговКИсточникамИнформации</informationRegisters>
   <informationRegisters>InformationRegister.ПодключенияХолдинговКСмсПровайдерам</informationRegisters>
   <informationRegisters>InformationRegister.СертификатыПриложений</informationRegisters>

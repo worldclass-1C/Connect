@@ -251,39 +251,39 @@ Procedure FixSandingMessage(phone) Export
 	
 EndProcedure
 
-Процедура ЗафиксироватьЗапросВИсторииВФоне(Параметры) Экспорт //Длительность, ИмяЗапроса, Запрос, Ответ, Ошибка, Токен, Пользователь)Экспорт
-	ПередаваемыеПараметры	= Новый Массив;
-	ПередаваемыеПараметры.Добавить(Параметры);
-	ФоновыеЗадания.Выполнить("Service.ЗафиксироватьЗапросВИстории", ПередаваемыеПараметры, Новый УникальныйИдентификатор);
-КонецПроцедуры
+Procedure logRequestBackground(parameters) Export //Длительность, ИмяЗапроса, Запрос, Ответ, Ошибка, Токен, Пользователь)Экспорт
+	array	= New Array();
+	array.Add(Parameters);
+	BackgroundJobs.Execute("Service.logRequest", array, New UUID());
+EndProcedure
 	
-Процедура ЗафиксироватьЗапросВИстории(Параметры) Экспорт
+Procedure logRequest(parameters) Export
 		
-	Запись	= Справочники.ИсторииЗапросов.СоздатьЭлемент();
-	Запись.Период				= УниверсальноеВремя(ТекущаяДата());
-	Запись.Токен				= Параметры.Токен;	
-	Запись.ИмяЗапроса			= Параметры.ИмяЗапроса;
-	Запись.Длительность			= Параметры.Длительность;
-	Запись.Ошибка				= Параметры.Ошибка;	
+	record	= Catalogs.ИсторииЗапросов.CreateItem();
+	record.Период			= ToUniversalTime(CurrentDate());
+	record.Токен			= parameters.token;	
+	record.ИмяЗапроса		= parameters.requestName;
+	record.Длительность		= parameters.duration;
+	record.Ошибка			= parameters.isError;	
 	
-	ТелоЗапроса					= """Headers"":" + Символы.ПС + Параметры.Заголовки + Символы.ПС + """Body"":" + Символы.ПС + Параметры.ТелоЗапроса;
-	Если Параметры.СжиматьЛоги Тогда
-		Запись.Запрос			= Новый ХранилищеЗначения(Base64Значение(СериализаторXDTO.XMLСтрока(Новый ХранилищеЗначения(ТелоЗапроса, Новый СжатиеДанных(9)))));	
+	requestBody	= """Headers"":" + Chars.LF + parameters.headers + Chars.LF + """Body"":" + Chars.LF + parameters.requestBody;
+	If parameters.compressAnswer Then
+		record.Запрос			= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));	
 	Else                   	
-		Запись.ЗапросТело		= ТелоЗапроса;
+		record.ЗапросТело		= requestBody;
 	EndIf;
 	
-	Если Не Параметры.НеСохранятьОтветВЛогах Или Параметры.Ошибка Тогда
-		Если Параметры.СжиматьЛоги Тогда
-			Запись.Ответ		= Новый ХранилищеЗначения(Base64Значение(СериализаторXDTO.XMLСтрока(Новый ХранилищеЗначения(Параметры.ТелоОтвета, Новый СжатиеДанных(9)))));
+	If Not parameters.notSaveAnswer Or parameters.isError Then
+		If parameters.compressAnswer Then
+			record.Ответ		= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
 		Else
-			Запись.ОтветТело	= Параметры.ТелоОтвета;
+			record.ОтветТело	= parameters.answerBody;
 		EndIf;
 	EndIf;
 	
-	Запись.Записать();		
+	record.Write();		
 		
-КонецПроцедуры
+EndProcedure
 
 Процедура РассчитатьПоказатели() Экспорт
 	
@@ -713,10 +713,10 @@ EndProcedure
 	
 	Пока Выборка.Следующий() Цикл
 		
-		Если Выборка.ТокенУстройства = "" Тогда
-			Справочники.Токены.ЗаблокироватьТокенПользователя(Выборка.Токен);			
-		ElsIf Выборка.ТокенУстройства <> "" Тогда
-			Если Уведомление = Неопределено Тогда
+		If Выборка.ТокенУстройства = "" Then
+			Users.blockToken(Выборка.Токен);			
+		ElsIf Выборка.ТокенУстройства <> "" Then
+			If Уведомление = Неопределено Then
 				Уведомление	= Новый ДоставляемоеУведомление;	
 			EndIf;						
 			Уведомление.Получатели.Добавить(РаботаССообщениями.ПолучательPush(Выборка.ТокенУстройства, Выборка.ТипПодписчика));			
@@ -736,7 +736,7 @@ EndProcedure
 				Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 					НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "ТокенУстройства");					
 					Если НайденаяСтрока <> Неопределено Тогда						
-						Справочники.Токены.ЗаблокироватьТокенПользователя(НайденаяСтрока.Токен);
+						Users.blockToken(НайденаяСтрока.Токен);
 						ТаблицаПоиска.Удалить(НайденаяСтрока);
 					EndIf;					
 				КонецЦикла;				
@@ -759,7 +759,7 @@ EndProcedure
 			Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 				НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "ТокенУстройства");					
 				Если НайденаяСтрока <> Неопределено Тогда					
-					Справочники.Токены.ЗаблокироватьТокенПользователя(НайденаяСтрока.Токен);
+					Users.blockToken(НайденаяСтрока.Токен);
 					ТаблицаПоиска.Удалить(НайденаяСтрока);
 				EndIf;					
 			КонецЦикла;				
@@ -785,7 +785,7 @@ EndProcedure
 	
 	Выборка	= пЗапрос.Выполнить().Выбрать();
 	Пока Выборка.Следующий() Цикл
-		Справочники.Токены.ЗаблокироватьТокенПользователя(Выборка.Токен);
+		Users.blockToken(Выборка.Токен);
 	КонецЦикла;		
 	
 КонецПроцедуры
@@ -798,7 +798,7 @@ Function RunBackground(selection, headers, body, link,
 	Parameters.Add(body);
 	Parameters.Add(link);
 	Parameters.Add(RequestParametersFromURL);
-	Return BackgroundJobs.Execute("HTTP.RunRequestInAccountingSystem", Parameters, New UUID);
+	Return BackgroundJobs.Execute("HTTP.RunRequestInAccountingSystem", Parameters, New UUID());
 EndFunction
 
 Function СтруктураАтрибутовВнешнегоЗапроса(ИмяЗапроса) Export

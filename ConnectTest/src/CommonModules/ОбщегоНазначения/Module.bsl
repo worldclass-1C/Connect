@@ -29,57 +29,57 @@ Function ProcessRequest(request) Export
 		EndIf;
 
 		requestParameters = HTTP.GetStructureFromRequest(request);
-		Parameters.Insert("requestStruct", requestParameters.requestStruct);
-		Parameters.Insert("requestBody", requestParameters.requestBody);
-		Parameters.Insert("answerBody", "");
+		parameters.Insert("requestStruct", requestParameters.requestStruct);
+		parameters.Insert("requestBody", requestParameters.requestBody);
+		parameters.Insert("answerBody", "");
 
-		If Parameters.errorDescription.error = "" Then
+		If parameters.errorDescription.error = "" Then
 			Try
-				If Parameters.requestName = "kpolist" Then
-					getChainList(Parameters);
-				ElsIf Parameters.requestName = "phonemasklist" Then
-					getPhoneMaskList(Parameters);
-				ElsIf Parameters.requestName = "auth" Then
-					АутентифицироватьПользователя(Parameters);
-				ElsIf Parameters.requestName = "restore" Then
-					ВосстановитьПарольПользователя(Parameters);
-				ElsIf Parameters.requestName = "newpassword" Then
-					УстановитьПарольПользователя(Parameters);
-				ElsIf Parameters.requestName = "registerdevice" Then
-					ЗарегистрироватьУстройство(Parameters);
-				ElsIf Parameters.requestName = "unregisterdevice" Then
-					УдалитьУстройство(Parameters);
-				ElsIf Parameters.requestName = "userprofile" Then
-					ПолучитьПрофильПользователя(Parameters);
-				ElsIf Parameters.requestName = "cataloggyms"
-						Or Parameters.requestName = "gymlist" Then
-					ПолучитьСписокКлубов(Parameters);
-				ElsIf Parameters.requestName = "catalogcancelcauses" Then
-					ПолучитьСписокПричинОтменыЗаписи(Parameters);
-				ElsIf Parameters.requestName = "notificationlist" Then
-					ПолучитьСписокСообщений(Parameters);
-				ElsIf Parameters.requestName = "readnotification" Then
-					ПрочитатьСообщение(Parameters);
-				ElsIf Parameters.requestName = "unreadnotificationcount" Then
-					КоличествоНеПрочитанныхСообщений(Parameters);
+				If parameters.requestName = "kpolist" Then
+					getChainList(parameters);
+				ElsIf parameters.requestName = "phonemasklist" Then
+					getPhoneMaskList(parameters);
+				ElsIf parameters.requestName = "auth" Then
+					userAuthorization(parameters);
+				ElsIf parameters.requestName = "restore" Then
+					ВосстановитьПарольПользователя(parameters);
+				ElsIf parameters.requestName = "newpassword" Then
+					УстановитьПарольПользователя(parameters);
+				ElsIf parameters.requestName = "registerdevice" Then
+					ЗарегистрироватьУстройство(parameters);
+				ElsIf parameters.requestName = "unregisterdevice" Then
+					УдалитьУстройство(parameters);
+				ElsIf parameters.requestName = "userprofile" Then
+					ПолучитьПрофильПользователя(parameters);
+				ElsIf parameters.requestName = "cataloggyms"
+						Or parameters.requestName = "gymlist" Then
+					ПолучитьСписокКлубов(parameters);
+				ElsIf parameters.requestName = "catalogcancelcauses" Then
+					ПолучитьСписокПричинОтменыЗаписи(parameters);
+				ElsIf parameters.requestName = "notificationlist" Then
+					ПолучитьСписокСообщений(parameters);
+				ElsIf parameters.requestName = "readnotification" Then
+					ПрочитатьСообщение(parameters);
+				ElsIf parameters.requestName = "unreadnotificationcount" Then
+					КоличествоНеПрочитанныхСообщений(parameters);
 				Else
-					ВыполнитьВнешнийЗапрос(Parameters);
+					ВыполнитьВнешнийЗапрос(parameters);
 				EndIf;
 			Except
-				Parameters.Insert("errorDescription", Service.getErrorDescription(Parameters.language, "system", ErrorDescription()));
+				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "system", ErrorDescription()));
 			EndTry;
 		EndIf;
 	EndIf;
 
-	If Parameters.errorDescription.error <> "" Then
+	If parameters.errorDescription.error <> "" Then
 		JSONWriter = New JSONWriter();
 		JSONWriter.SetString();
 		answerStruct = New Structure();
-		answerStruct.Insert("result", Parameters.errorDescription.error);
-		answerStruct.Insert("description", Parameters.errorDescription.description);
+		answerStruct.Insert("result", parameters.errorDescription.error);
+		answerStruct.Insert("description", parameters.errorDescription.description);
 		WriteJSON(JSONWriter, answerStruct);
-		Parameters.Insert("answerBody", JSONWriter.Close());
-		If Parameters.errorDescription.error = "userNotIdentified" Then
+		parameters.Insert("answerBody", JSONWriter.Close());
+		If parameters.errorDescription.error = "userNotIdentified" Then
 			answer = New HTTPServiceResponse(401);
 		Else
 			answer = New HTTPServiceResponse(403);
@@ -89,13 +89,13 @@ Function ProcessRequest(request) Export
 	EndIf;
 
 	answer.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	answer.SetBodyFromString(Parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+	answer.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
 
-	Parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
+	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
 		- DateInMilliseconds);
-	Parameters.Insert("isError", Parameters.errorDescription.error <> "");
+	parameters.Insert("isError", parameters.errorDescription.error <> "");
 
-	Service.ЗафиксироватьЗапросВИсторииВФоне(Parameters);
+	Service.logRequestBackground(parameters);
 
 	Return answer;
 
@@ -285,103 +285,77 @@ Procedure getPhoneMaskList(Parameters)
 	Parameters.Insert("notSaveAnswer", True);
 EndProcedure
 
-Procedure АутентифицироватьПользователя(Parameters)
+Procedure userAuthorization(Parameters)
 
-	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	requestStruct	= Parameters.requestStruct;
+	language		= Parameters.language;
+	struct			= New Structure();
+	currentDate		= ToUniversalTime(CurrentDate());
+	errorDescription = Service.getErrorDescription();
 
-	ЗаписьJSON = Новый ЗаписьJSON;
-	ЗаписьJSON.УстановитьСтроку();
+	If Not requestStruct.Property("login") Then
+		errorDescription = Service.getErrorDescription(language, "noUserLogin");
+	ElsIf Not requestStruct.Property("password")
+			Or requestStruct.password = "" Then
+		errorDescription = Service.getErrorDescription(language, "noUserPassword");
+	ElsIf Not requestStruct.Property("kpoCode") Then
+		errorDescription = Service.getErrorDescription(language, "noKpoCode");
+	EndIf;
 
-	СтруктураJSON = Новый Структура;
-	ОписаниеОшибки = Service.getErrorDescription();
+	If errorDescription.error = "" Then
+		query = New Query();
+		query.Text = "ВЫБРАТЬ
+		|	Пользователи.Ref КАК ref,
+		|	Пользователи.Холдинг КАК holding,
+		|	Пользователи.ТипПользователя КАК userType,
+		|	UserPasswords.Validity КАК validity,
+		|	Сети.ЧасовойПояс КАК timezone,
+		|	Сети.Ссылка КАК chain
+		|FROM
+		|	Справочник.Пользователи КАК Пользователи
+		|		LEFT JOIN InformationRegister.UserPasswords AS UserPasswords
+		|		ON UserPasswords.user = Пользователи.Ref
+		|		LEFT СОЕДИНЕНИЕ Справочник.Сети КАК Сети
+		|		ПО Пользователи.Холдинг = Сети.Холдинг
+		|ГДЕ
+		|	Пользователи.Логин = &login
+		|	AND UserPasswords.password = &password
+		|	AND Сети.Code = &chainCode";
 
-	Если Не ДанныеЗапроса.Свойство("login") Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noUserLogin");
-	ИначеЕсли Не ДанныеЗапроса.Свойство("password") Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noUserPassword");
-	ИначеЕсли ДанныеЗапроса.password = "" Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noUserPassword");
-	ИначеЕсли Не ДанныеЗапроса.Свойство("kpoCode") Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noKpoCode");
-	КонецЕсли;
+		query.SetParameter("login", requestStruct.login);
+		query.SetParameter("password", requestStruct.password);
+		query.SetParameter("chainCode", requestStruct.kpoCode);		
 
-	Если ОписаниеОшибки.Служебное = "" Тогда
-		пЗапрос = Новый Запрос;
-		пЗапрос.Текст = "ВЫБРАТЬ
-			|	Пользователи.Ссылка КАК Ссылка,
-			|	Пользователи.Холдинг КАК Холдинг,
-			|	Пользователи.ТипПользователя КАК ТипПользователя
-			|ПОМЕСТИТЬ ВТ_Пользователи
-			|ИЗ
-			|	Справочник.Пользователи КАК Пользователи
-			|ГДЕ
-			|	Пользователи.КодПользователя = &КодЛогин
-			|
-			|ОБЪЕДИНИТЬ ВСЕ
-			|
-			|ВЫБРАТЬ
-			|	Пользователи.Ссылка,
-			|	Пользователи.Холдинг,
-			|	Пользователи.ТипПользователя
-			|ИЗ
-			|	Справочник.Пользователи КАК Пользователи
-			|ГДЕ
-			|	Пользователи.Логин = &КодЛогин
-			|;
-			|
-			|////////////////////////////////////////////////////////////////////////////////
-			|ВЫБРАТЬ ПЕРВЫЕ 1
-			|	ВТ_Пользователи.Ссылка КАК Пользователь,
-			|	Сети.Ссылка КАК Сеть,
-			|	ВТ_Пользователи.Холдинг КАК Холдинг,
-			|	ПаролиПользователей.СрокДействия КАК СрокДействия,
-			|	Сети.ЧасовойПояс КАК ЧасовойПояс,
-			|	ВТ_Пользователи.ТипПользователя КАК ТипПользователя
-			|ИЗ
-			|	ВТ_Пользователи КАК ВТ_Пользователи
-			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ПаролиПользователей КАК ПаролиПользователей
-			|		ПО (ПаролиПользователей.Пользователь = ВТ_Пользователи.Ссылка)
-			|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Сети КАК Сети
-			|		ПО ВТ_Пользователи.Холдинг = Сети.Холдинг
-			|ГДЕ
-			|	ПаролиПользователей.Пароль = &Пароль
-			|	И Сети.Код = &КодСети";
+		queryResult = query.Execute();
+		If queryResult.IsEmpty() Then
+			errorDescription = Service.getErrorDescription(language, "PasswordIsNotCorrect");
+		Else
+			selection = queryResult.Select();		
+			selection.Next();
+			If Lower(selection.userType) <> "employee"
+					And Lower(requestStruct.appType) = "employee" Then
+				errorDescription = Service.getErrorDescription(language, "staffOnly");
+			ElsIf selection.validity = Date(1, 1, 1)
+					Or selection.validity >= currentDate Then
+				struct.Insert("result", ?(selection.validity = Date(1, 1, 1), "Ok", "PasswordHasExpirationDate"));
+				If requestStruct.Property("remember")
+						And requestStruct.remember = True Then
+					tokenObject = Users.token(requestStruct, selection.user, selection.chain, selection.holding, selection.timezone);
+					struct.Insert("authToken", New Structure("key,createTime", XMLString(tokenObject.Ref), tokenObject.ДатаСоздания));
+					parameters.Insert("token", tokenObject.Ref);
+				EndIf;
+			Else
+				errorDescription = Service.getErrorDescription(language, "userPasswordExpired");
+			EndIf;
+		EndIf;
 
-		пЗапрос.УстановитьПараметр("КодЛогин", ДанныеЗапроса.login);
-		пЗапрос.УстановитьПараметр("Пароль", ДанныеЗапроса.password);
-		пЗапрос.УстановитьПараметр("КодСети", ДанныеЗапроса.kpoCode);
-		пЗапрос.УстановитьПараметр("СрокДействия", УниверсальноеВремя(ТекущаяДата()));
-
-		РезультатЗапроса = пЗапрос.Выполнить();
-		Если РезультатЗапроса.Пустой() Тогда
-			ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "PasswordIsNotCorrect");
-		Иначе
-			Выборка = РезультатЗапроса.Выбрать();
-			Выборка.Следующий();
-			Если НРег(Выборка.ТипПользователя) <> "employee"
-					И НРег(ДанныеЗапроса.appType) = "employee" Тогда
-				ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "staffOnly");
-			ИначеЕсли Выборка.СрокДействия = Дата(1, 1, 1)
-					Или Выборка.СрокДействия >= УниверсальноеВремя(ТекущаяДата()) Тогда
-				СтруктураJSON.Вставить("result", ?(Выборка.СрокДействия = Дата(1, 1, 1), "Ok", "PasswordHasExpirationDate"));
-				Если ДанныеЗапроса.Свойство("remember")
-						И ДанныеЗапроса.remember = Истина Тогда
-					ТокенОбъект = Справочники.Токены.ТокенПользователя(ДанныеЗапроса, Выборка.Пользователь, Выборка.Сеть, Выборка.Холдинг, Выборка.ЧасовойПояс);
-					СтруктураJSON.Вставить("authToken", Новый Структура("key,createTime", XMLСтрока(ТокенОбъект.Ссылка), ТокенОбъект.ДатаСоздания));
-					Parameters.Insert("Токен", ТокенОбъект.Ссылка);
-				КонецЕсли;
-			Иначе
-				ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userPasswordExpired");
-			КонецЕсли;
-		КонецЕсли;
-
-	КонецЕсли;
-
-	ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
-
-	Parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
-	Parameters.Insert("ОписаниеОшибки", ОписаниеОшибки);
+	EndIf;
+	
+	JSONWriter = New JSONWriter();;
+	JSONWriter.SetString();
+	WriteJSON(JSONWriter, Struct);		
+	Parameters.Insert("answerBody", JSONWriter.Close());
+	Parameters.Insert("errorDescription", errorDescription);
 
 EndProcedure
 
@@ -474,7 +448,7 @@ Procedure ВосстановитьПарольПользователя(Parameter
 			СтруктураJSON.Вставить("users", МассивJSON);
 		Иначе
 
-			Пароль = Справочники.Пользователи.УстановитьПарольПользователя(МассивПользователей[0]);
+			Пароль = Users.setUserPassword(МассивПользователей[0]);
 			МассивКаналов = Новый Массив;
 			МассивКаналов.Добавить(Перечисления.КаналыИнформирования.sms);
 
@@ -517,16 +491,16 @@ Procedure УстановитьПарольПользователя(Parameters)
 	ЗаписьJSON.УстановитьСтроку();
 	СтруктураJSON = Новый Структура;
 
-	ОписаниеОшибки = Справочники.Пользователи.ПроверитьПароль(ЯзыкПриложения, РезультатПроверки.Пользователь, ДанныеЗапроса.Password);
+	ОписаниеОшибки = Users.checkPassword(ЯзыкПриложения, РезультатПроверки.Пользователь, ДанныеЗапроса.Password);
 	Если ДанныеЗапроса.newPassword = "" Тогда
 		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "passwordIsEmpty");
 	КонецЕсли;
 	Если ОписаниеОшибки.Служебное = "" Тогда
-		Запись = РегистрыСведений.ПаролиПользователей.СоздатьМенеджерЗаписи();
-		Запись.Пользователь = РезультатПроверки.Пользователь;
-		Запись.Пароль = ДанныеЗапроса.newPassword;
-		Запись.СрокДействия = Дата(1, 1, 1);
-		Запись.Записать();
+		record = InformationRegisters.UserPasswords.CreateRecordManager();
+		record.User 	= РезультатПроверки.Пользователь;
+		record.Password = ДанныеЗапроса.newPassword;
+		record.Validity = Дата(1, 1, 1);
+		record.Write();
 		СтруктураJSON.Вставить("result", "Ok");
 	КонецЕсли;
 
@@ -644,7 +618,7 @@ Procedure ЗарегистрироватьУстройство(Parameters)
 		РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
 		Выборка = РезультатыЗапроса[0].Выбрать();
 		Пока Выборка.Следующий() Цикл
-			Справочники.Токены.ЗаблокироватьТокенПользователя(Выборка.Токен);
+			Users.blockToken(Выборка.Токен);
 		КонецЦикла;
 
 		Выборка = РезультатыЗапроса[1].Выбрать();
@@ -670,7 +644,7 @@ Procedure УдалитьУстройство(Parameters)
 	ЗаписьJSON.УстановитьСтроку();
 	СтруктураJSON = Новый Структура;
 
-	Справочники.Токены.ЗаблокироватьТокенПользователя(РезультатПроверки.Токен);
+	Users.blockToken(РезультатПроверки.Токен);
 	СтруктураJSON.Вставить("result", "Ok");
 
 	ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
@@ -1282,7 +1256,7 @@ EndProcedure
 			СправочникОбъект.Записать();
 			МассивЭлементов.Добавить(СправочникОбъект.Ссылка);
 			Если УстановитьПароль Тогда
-				Справочники.Пользователи.УстановитьПарольПользователя(СправочникОбъект.Ссылка, Пароль);
+				Users.setUserPassword(СправочникОбъект.Ссылка, Пароль);
 			КонецЕсли;
 		КонецЦикла;
 	КонецЕсли;
@@ -1341,7 +1315,7 @@ Procedure ОбновитьКэшПользователей(Parameters, Холд�
 	СтруктураЗапроса = HTTP.GetRequestStructure("userProfileCache", Холдинг);
 	Если СтруктураЗапроса.Количество() > 0 Тогда
 		Для Каждого Пользователь Из МассивПользователей Цикл
-		КонецЦикла;
+		КонецЦикла;		
 		Заголовки = Новый Соответствие;
 		Заголовки.Вставить("Content-Type", "application/json");
 		HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.Сервер, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.Пароль, , СтруктураЗапроса.Таймаут, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.ИспользоватьАутентификациюОС);
