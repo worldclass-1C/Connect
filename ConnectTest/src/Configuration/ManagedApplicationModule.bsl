@@ -1,4 +1,4 @@
 
-Процедура ПриНачалеРаботыСистемы()	
-	КлиентскоеПриложение.УстановитьЗаголовок(ОбщегоНазначенияВызовСервера.ПолучитьЗаголовок());
-КонецПроцедуры
+Procedure OnStart()	
+	ClientApplication.SetCaption(GeneralCallServer.getCaption());
+EndProcedure

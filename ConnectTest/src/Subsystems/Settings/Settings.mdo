@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="36cc7b45-0e01-4ca1-af1a-0ca14489ef83">
+  <name>Settings</name>
+  <synonym>
+    <key>en</key>
+    <value>Settings</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Настройки</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <help>
+    <pages>
+      <lang>ru</lang>
+    </pages>
+  </help>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>InformationRegister.holdingsConnectionsInformationSources</content>
+  <content>InformationRegister.holdingsConnectionsSMSProviders</content>
+  <content>Catalog.matchingRequestsInformationSources</content>
+  <content>Catalog.informationSources</content>
+  <content>Constant.BaseURL</content>
+</mdclass:Subsystem>

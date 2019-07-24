@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="eb798275-a217-4668-ad7a-76d868e1d4f3">
+  <producedTypes>
+    <objectType typeId="24b5ad07-09c0-426a-9330-670450e41d69" valueTypeId="59c01a0a-70d6-4ce4-8da5-bb265e095d5a"/>
+    <refType typeId="affb503f-7de2-4066-9fff-ca756e702c87" valueTypeId="dd1ce4f2-4a35-4cd1-9f25-1f9c840ad680"/>
+    <selectionType typeId="12d477b3-6c15-44c7-b3ec-1e68888c43de" valueTypeId="0d6698e6-2610-431a-8cc5-0760531b9568"/>
+    <listType typeId="d86e1ff5-87b7-4864-8a7c-8951feb698c0" valueTypeId="27000780-5624-4a95-bf5e-bc62dc04e7e7"/>
+    <managerType typeId="c2ba4bf3-3ef4-47f0-93e2-bbfd6acbeb24" valueTypeId="935cb4ab-c305-49f1-aa0e-f24d6eb009a6"/>
+  </producedTypes>
+  <name>gyms</name>
+  <synonym>
+    <key>en</key>
+    <value>Gyms</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Клубы</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.gyms.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.gyms.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <synonym>
+      <key>en</key>
+      <value>Code</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Код</value>
+    </synonym>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Description</name>
+    <synonym>
+      <key>en</key>
+      <value>Description</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Наименование</value>
+    </synonym>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Gym</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Клуб</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Gym</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Клуб</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Gyms</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Клубы</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Gyms</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Клубы</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>100</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.gyms.Form.ListForm</defaultListForm>
+  <attributes uuid="384d96cc-0f01-4e1f-94ea-80adf581bd1f">
+    <name>address</name>
+    <synonym>
+      <key>en</key>
+      <value>Address</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Адрес</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7f600935-4a6f-43b1-ae16-2d75832af6ee">
+    <name>city</name>
+    <synonym>
+      <key>en</key>
+      <value>City</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Город</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cities</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="b4e5ad73-8fc3-4ca3-b9af-7becec579a2c">
+    <name>latitude</name>
+    <synonym>
+      <key>en</key>
+      <value>Latitude</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Широта</value>
+    </synonym>
+    <synonym>
+      <key>es_ES</key>
+      <value>amplitud</value>
+    </synonym>
+    <synonym>
+      <key>fr_FR</key>
+      <value>largeur</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>8</precision>
+        <scale>6</scale>
+      </numberQualifiers>
+    </type>
+    <format>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
+    </format>
+    <format>
+      <key>en</key>
+      <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
+    </format>
+    <format>
+      <key>fr_FR</key>
+      <value>CC = 8; CHDTS = 6; = CHRD;. CHN = 00.000000; CVN =</value>
+    </format>
+    <format>
+      <key>es_ES</key>
+      <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </format>
+    <editFormat>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
+    </editFormat>
+    <editFormat>
+      <key>en</key>
+      <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>fr_FR</key>
+      <value>CC = 8; CHDTS = 6; = CHRD;. CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>es_ES</key>
+      <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <minValue xsi:type="core:StringValue">
+      <value>-90</value>
+    </minValue>
+    <maxValue xsi:type="core:StringValue">
+      <value>90</value>
+    </maxValue>
+    <fillValue xsi:type="core:NumberValue">
+      <value>0</value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="923129ce-5df0-410b-ad3b-6a427aeb4344">
+    <name>longitude</name>
+    <synonym>
+      <key>en</key>
+      <value>Longitude</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Долгота</value>
+    </synonym>
+    <synonym>
+      <key>es_ES</key>
+      <value>longitud</value>
+    </synonym>
+    <synonym>
+      <key>fr_FR</key>
+      <value>longitude</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>8</precision>
+        <scale>6</scale>
+      </numberQualifiers>
+    </type>
+    <format>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
+    </format>
+    <format>
+      <key>en</key>
+      <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
+    </format>
+    <format>
+      <key>fr_FR</key>
+      <value>CC = 8; CHDTS = 6; = CHRD;. CHN = 00.000000; CVN =</value>
+    </format>
+    <format>
+      <key>es_ES</key>
+      <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </format>
+    <editFormat>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
+    </editFormat>
+    <editFormat>
+      <key>en</key>
+      <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>fr_FR</key>
+      <value>CC = 8; CHDTS = 6; = CHRD;. CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>es_ES</key>
+      <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <minValue xsi:type="core:StringValue">
+      <value>-90</value>
+    </minValue>
+    <maxValue xsi:type="core:StringValue">
+      <value>90</value>
+    </maxValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="f53117e3-e0a5-47b3-9929-08e2f42d0133">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7c13c073-90b8-4567-bbf3-04b6f51f8710">
+    <name>segment</name>
+    <synonym>
+      <key>en</key>
+      <value>Segment</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сегмент</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="acaca55a-4ff5-4c28-9c42-fe03e5f845d2">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chain</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="d94aa14c-9aff-4fe7-b3b2-4ecebd725be1">
+    <name>type</name>
+    <synonym>
+      <key>en</key>
+      <value>Type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="dc75009f-8309-4b37-b4d0-0c9614c1e80e">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="d3e41726-82d4-4cc8-91a4-df2ea6b1111b">
+    <producedTypes>
+      <objectType typeId="1b4a67da-ddb2-4483-a08e-60b0a5331450" valueTypeId="d5b27080-dbfa-46d3-b777-6ead029b71e6"/>
+      <rowType typeId="bd373c4d-ec19-4e54-b4e3-9f7425be6947" valueTypeId="b8f53277-4356-47e6-82cc-1fd3b3dc8bb9"/>
+    </producedTypes>
+    <name>departmentWorkSchedule</name>
+    <synonym>
+      <key>en</key>
+      <value>Department work schedule</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>График работы отделов</value>
+    </synonym>
+    <standardAttributes>
+      <dataHistory>Use</dataHistory>
+      <name>LineNumber</name>
+      <fillValue xsi:type="core:UndefinedValue"/>
+      <fullTextSearch>Use</fullTextSearch>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+    </standardAttributes>
+    <attributes uuid="6b2677e5-bf3d-4e2c-88be-6371f25bd014">
+      <name>department</name>
+      <synonym>
+        <key>en</key>
+        <value>Department</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Отдел</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="ed8a3d02-0136-47ef-bcfb-05ef7ff4fc4a">
+      <name>phone</name>
+      <synonym>
+        <key>en</key>
+        <value>Phone</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Телефон</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>30</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="0a1b867c-41a2-4e58-843d-1111690d53c6">
+      <name>weekdaysTime</name>
+      <synonym>
+        <key>en</key>
+        <value>Weekdays time</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>График работы в будни</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="fb7c5982-e9a2-4716-b2e1-ba3b7cd9439b">
+      <name>holidaysTime</name>
+      <synonym>
+        <key>en</key>
+        <value>Holidays time</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>График работы в выходные</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <forms uuid="2e38cad2-cfaa-41aa-aac8-b2f6529c2fa1">
+    <name>ListForm</name>
+    <synonym>
+      <key>ru</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

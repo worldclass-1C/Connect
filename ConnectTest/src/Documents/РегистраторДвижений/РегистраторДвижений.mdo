@@ -33,7 +33,7 @@
       <value>Период отчета</value>
     </synonym>
     <type>
-      <types>EnumRef.ПериодыОтчета</types>
+      <types>EnumRef.reportPeriods</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

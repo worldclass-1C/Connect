@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Проверка актуальности токенов</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.ПроверитьАктуальностьТокенов</methodName>
+  <methodName>CommonModule.Jobs.ПроверитьАктуальностьТокенов</methodName>
   <use>true</use>
   <predefined>true</predefined>
   <restartCountOnFailure>3</restartCountOnFailure>

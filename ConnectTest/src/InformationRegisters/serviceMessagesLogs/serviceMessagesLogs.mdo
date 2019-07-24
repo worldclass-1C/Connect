@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ddff8a35-0325-4e87-9f92-a97a12eab98e">
+  <producedTypes>
+    <selectionType typeId="ab6c86a2-8f4a-4568-b8ba-c5d2c90d1394" valueTypeId="dc2eb3e1-cdbb-497f-a07a-58b80242af1c"/>
+    <listType typeId="2978d262-bea6-4bb0-a019-cc6b964d93f7" valueTypeId="3a8a54b4-7b60-4151-b193-53e4e683f646"/>
+    <managerType typeId="a789f298-2581-4c28-afec-f1cf3f61199d" valueTypeId="2de70320-214f-426e-98f1-ed3b5a1104c2"/>
+    <recordSetType typeId="689a86f1-d3e7-4aa3-aa0a-2c37c8e2af45" valueTypeId="778ca20a-983d-40c1-a639-686b02934f23"/>
+    <recordKeyType typeId="27f7a33b-b0b3-499b-b642-f3fac8e94ece" valueTypeId="6cffce3a-cbcd-4b88-8830-49e9161ac795"/>
+    <recordType typeId="85f81f5d-ed66-4fcf-985d-e075f0912010" valueTypeId="fda449b3-fda5-42b8-94d7-5c839a20e290"/>
+    <recordManagerType typeId="3a3f7839-ee30-4789-bf41-8ebae7ef4684" valueTypeId="068894ed-f27d-4d2a-983b-5dfcb8750be8"/>
+  </producedTypes>
+  <name>serviceMessagesLogs</name>
+  <synonym>
+    <key>en</key>
+    <value>Service messages logs</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>История служебных сообщений</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Active</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>LineNumber</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Recorder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Period</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Service message logs</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>История служебного сообщения</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Service message logs</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>История служебного сообщения</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Service messages logs</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>История служебных сообщений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Service messages logs</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>История служебных сообщений</value>
+  </extendedListPresentation>
+  <resources uuid="7d6d9f8e-bb56-457b-a7b3-0ab9e91cd264">
+    <name>quantity</name>
+    <synonym>
+      <key>en</key>
+      <value>Quantity</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Количество</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>2</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="5eda6285-aed9-42b7-965f-f6618e073b98">
+    <name>recordDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Record date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="ed98d25f-5411-476d-aaaf-9bc644bd5c61">
+    <name>phone</name>
+    <synonym>
+      <key>en</key>
+      <value>Phone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номер телефона</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

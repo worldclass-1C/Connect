@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2dcde496-c63c-49eb-954b-8296956f5bf5">
+  <producedTypes>
+    <selectionType typeId="94afd1cc-f5f6-46d1-8928-ff94a7a5f79a" valueTypeId="f79a2d08-6f1c-4b95-8535-d93fa98d76e9"/>
+    <listType typeId="a05ebae3-d11f-4c9b-970c-8a3f4ab446b4" valueTypeId="6d720941-a45a-40e4-9ffe-50500aecdb6d"/>
+    <managerType typeId="ad74bbb5-1d64-4632-a972-b1b490094746" valueTypeId="bc9c862d-e071-4fca-993e-049176fe2a67"/>
+    <recordSetType typeId="90148dbd-7e3a-4f3f-8b3a-96ec6701e3ee" valueTypeId="094aacaf-c1f7-489f-9e9d-5f44e5512f01"/>
+    <recordKeyType typeId="40fcf217-dfe3-494d-8fd8-9c508e7d3b3c" valueTypeId="a9358755-cdea-43cf-8d21-731f6e669e85"/>
+    <recordType typeId="6883fb9b-72ec-42ef-8802-a27c52f47eb4" valueTypeId="3cb9e75b-2d08-4a48-98a1-b03375c9651f"/>
+    <recordManagerType typeId="e1b215c3-91da-47b3-b67c-c8036040886c" valueTypeId="29515ad5-da71-4190-a512-63b382801a2f"/>
+  </producedTypes>
+  <name>registeredDevices</name>
+  <synonym>
+    <key>en</key>
+    <value>Registered devices</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Зарегистрированные устройства</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Registered device</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Зарегистрированное устройство</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Registered device</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>Зарегистрированное устройство</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Registered devices</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Зарегистрированные устройства</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Registered devices</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Зарегистрированные устройства</value>
+  </extendedListPresentation>
+  <resources uuid="29d3d129-7488-4a76-bafc-deb8e8c94165">
+    <name>systemVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>System version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия ОС</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="a8a1739a-5b57-45ab-a148-daea01843a66">
+    <name>appVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>App version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия приложения</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="8659062a-b84e-4651-93e4-d7ba68d1bcde">
+    <name>recordDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Record date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="bf706468-f9d0-4af3-a67d-f1f537e87565">
+    <name>deviceModel</name>
+    <synonym>
+      <key>en</key>
+      <value>Device model</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Модель устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="f94bc50e-2a99-4ed7-8a0c-a59e22ecb7e5">
+    <name>deviceToken</name>
+    <synonym>
+      <key>en</key>
+      <value>Device token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <dimensions uuid="fabf5be8-979b-4a18-895c-c1b2a6350559">
+    <name>token</name>
+    <synonym>
+      <key>en</key>
+      <value>Token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.tokens</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <commands uuid="bd907ce9-fdc8-4609-b694-844b5de8e51f">
+    <name>device</name>
+    <synonym>
+      <key>en</key>
+      <value>Device</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Устройства</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.tokens</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+    <shortcut></shortcut>
+  </commands>
+</mdclass:InformationRegister>

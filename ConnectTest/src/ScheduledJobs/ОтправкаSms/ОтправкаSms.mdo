@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Отправка sms</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.ОтправитьСмс</methodName>
+  <methodName>CommonModule.Jobs.ОтправитьСмс</methodName>
   <description>ОтправкаSms</description>
   <key>ОтправкаSms</key>
   <use>true</use>

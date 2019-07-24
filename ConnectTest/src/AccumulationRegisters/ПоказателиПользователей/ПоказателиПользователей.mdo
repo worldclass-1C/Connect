@@ -35,13 +35,13 @@
     <fullTextSearch>Use</fullTextSearch>
   </resources>
   <dimensions uuid="2368c81d-e273-45c1-bde9-39f5868cd0db">
-    <name>Холдинг</name>
+    <name>holding</name>
     <synonym>
       <key>ru</key>
-      <value>Холдинг</value>
+      <value>Holding</value>
     </synonym>
     <type>
-      <types>CatalogRef.Холдинги</types>
+      <types>CatalogRef.holdings</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -55,7 +55,7 @@
       <value>Аналитика приложений</value>
     </synonym>
     <type>
-      <types>CatalogRef.АналитикиПриложений</types>
+      <types>CatalogRef.appAnalytics</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -69,7 +69,7 @@
       <value>Период отчета</value>
     </synonym>
     <type>
-      <types>EnumRef.ПериодыОтчета</types>
+      <types>EnumRef.reportPeriods</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -98,7 +98,7 @@
       <value>Аналитика</value>
     </synonym>
     <type>
-      <types>CatalogRef.Аналитика</types>
+      <types>CatalogRef.analytics</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

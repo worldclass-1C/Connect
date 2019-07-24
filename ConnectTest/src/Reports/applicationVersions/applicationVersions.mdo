@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="86377b6b-d392-4cab-b717-88e6613dddc0">
+  <producedTypes>
+    <objectType typeId="fe50c5a0-d7d9-44a3-b317-3aabde9b4daa" valueTypeId="95168b32-60fc-4e5e-b5ff-af2fe8e59582"/>
+    <managerType typeId="efc9b7f9-46d5-46e9-8bfc-32f2473551ad" valueTypeId="167f954a-6447-4773-afd5-ff4c9f950dfe"/>
+  </producedTypes>
+  <name>applicationVersions</name>
+  <synonym>
+    <key>en</key>
+    <value>Application versions</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Версии приложений</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <mainDataCompositionSchema>Report.applicationVersions.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+  <templates uuid="0e1cd1a0-4dac-409d-bf24-962957cdc425">
+    <name>ОсновнаяСхемаКомпоновкиДанных</name>
+    <synonym>
+      <key>ru</key>
+      <value>Основная схема компоновки данных</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+</mdclass:Report>

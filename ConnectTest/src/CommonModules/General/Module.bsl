@@ -15,16 +15,17 @@ Function ProcessRequest(request) Export
 		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noRequest"));
 	Else
 
-		If parameters.requestName <> "kpolist" And parameters.requestName <> "auth"
+		If parameters.requestName <> "chainlist" And parameters.requestName <> "auth"
 				And parameters.requestName <> "phonemasklist"
+				And parameters.requestName <> "gymlist"
 				And parameters.requestName <> "restore" Then
 			parameters.Insert("token", HTTP.GetRequestHeader(request, "auth-key"));
-			checkResult = ОбщегоНазначенияПовторноеИспользование.checkToken(parameters.language, parameters.token);
+			checkResult = GeneralReuse.checkToken(parameters.language, parameters.token);
 			parameters.Insert("checkResult", checkResult);
 			parameters.Insert("token", checkResult.token);
 			parameters.Insert("errorDescription", checkResult.errorDescription);
 		Else
-			parameters.Insert("token", Catalogs.Токены.EmptyRef());
+			parameters.Insert("token", Catalogs.tokens.EmptyRef());
 			parameters.Insert("errorDescription", Service.getErrorDescription());
 		EndIf;
 
@@ -35,7 +36,7 @@ Function ProcessRequest(request) Export
 
 		If parameters.errorDescription.error = "" Then
 			Try
-				If parameters.requestName = "kpolist" Then
+				If parameters.requestName = "chainlist" Then
 					getChainList(parameters);
 				ElsIf parameters.requestName = "phonemasklist" Then
 					getPhoneMaskList(parameters);
@@ -53,7 +54,7 @@ Function ProcessRequest(request) Export
 					ПолучитьПрофильПользователя(parameters);
 				ElsIf parameters.requestName = "cataloggyms"
 						Or parameters.requestName = "gymlist" Then
-					ПолучитьСписокКлубов(parameters);
+					getGymList(parameters);
 				ElsIf parameters.requestName = "catalogcancelcauses" Then
 					ПолучитьСписокПричинОтменыЗаписи(parameters);
 				ElsIf parameters.requestName = "notificationlist" Then
@@ -104,13 +105,13 @@ EndFunction
 Функция ИзмененитьДанные(Запрос) Экспорт
 
 	ИмяЗапроса = НРег(HTTP.GetRequestHeader(Запрос, "request"));
-	ЯзыкПриложения = НРег(HTTP.GetRequestHeader(Запрос, "language"));
+	language = НРег(HTTP.GetRequestHeader(Запрос, "language"));
 	ОписаниеОшибки = Service.getErrorDescription();
 
 	Если ИмяЗапроса = Неопределено Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noRequest");
+		ОписаниеОшибки = Service.getErrorDescription(language, "noRequest");
 	Иначе
-		JSONСтрока = ИзменитьСоздатьЭлементыСправочника(ИмяЗапроса, Запрос, ЯзыкПриложения);
+		JSONСтрока = ИзменитьСоздатьЭлементыСправочника(ИмяЗапроса, Запрос, language);
 	КонецЕсли;
 
 	Если ОписаниеОшибки.Служебное <> "" Тогда
@@ -133,7 +134,7 @@ EndFunction
 
 Функция ОтправитьСообщение(Запрос) Экспорт
 
-	ЯзыкПриложения = НРег(HTTP.GetRequestHeader(Запрос, "language"));
+	language = НРег(HTTP.GetRequestHeader(Запрос, "language"));
 	ОписаниеОшибки = Service.getErrorDescription();
 	ТокенХолдинга = HTTP.GetRequestHeader(Запрос, "auth-key");
 
@@ -142,11 +143,11 @@ EndFunction
 	СтруктураJSON = Новый Структура;
 
 	Если ТокенХолдинга = Неопределено Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+		ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 	Иначе
-		Холдинг = Справочники.Холдинги.НайтиПоРеквизиту("Токен", ТокенХолдинга);
+		Холдинг = Catalogs.holdings.НайтиПоРеквизиту("token", ТокенХолдинга);
 		Если Холдинг.Пустая() Тогда
-			ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+			ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 		КонецЕсли;
 	КонецЕсли;
 
@@ -154,45 +155,45 @@ EndFunction
 		ДанныеЗапроса = HTTP.GetStructureFromRequest(Запрос).RequestStruct;
 		Если ОписаниеОшибки.Служебное = "" Тогда
 			Если Не ДанныеЗапроса.Свойство("messages") Тогда
-				ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noMessages");
+				ОписаниеОшибки = Service.getErrorDescription(language, "noMessages");
 			Иначе
 				Для Каждого Сообщение Из ДанныеЗапроса.messages Цикл
 					ДанныеСообщения = Новый Структура;
-					ДанныеСообщения.Вставить("ОбъектИД", ?(Сообщение.Свойство("objectId"), Сообщение.objectId, ""));
-					ДанныеСообщения.Вставить("ОбъектТип", ?(Сообщение.Свойство("objectType"), Сообщение.objectType, ""));
-					ДанныеСообщения.Вставить("НомерТелефона", ?(Сообщение.Свойство("phone"), Сообщение.phone, ""));
-					ДанныеСообщения.Вставить("Заголовок", ?(Сообщение.Свойство("title"), Сообщение.title, ?(ЯзыкПриложения = "ru", "Уведомление", "Notification")));
-					ДанныеСообщения.Вставить("Текст", ?(Сообщение.Свойство("text"), Сообщение.text, ""));
-					ДанныеСообщения.Вставить("Действие", ?(Сообщение.Свойство("action"), Сообщение.action, "ViewNotification"));
-					ДанныеСообщения.Вставить("Приоритет", ?(Сообщение.Свойство("priority"), Сообщение.priority, 5));
-					ДанныеСообщения.Вставить("Холдинг", Холдинг);
+					ДанныеСообщения.Вставить("objectId", ?(Сообщение.Свойство("objectId"), Сообщение.objectId, ""));
+					ДанныеСообщения.Вставить("objectType", ?(Сообщение.Свойство("objectType"), Сообщение.objectType, ""));
+					ДанныеСообщения.Вставить("phone", ?(Сообщение.Свойство("phone"), Сообщение.phone, ""));
+					ДанныеСообщения.Вставить("title", ?(Сообщение.Свойство("title"), Сообщение.title, ?(language = "ru", "Уведомление", "Notification")));
+					ДанныеСообщения.Вставить("text", ?(Сообщение.Свойство("text"), Сообщение.text, ""));
+					ДанныеСообщения.Вставить("action", ?(Сообщение.Свойство("action"), Сообщение.action, "ViewNotification"));
+					ДанныеСообщения.Вставить("priority", ?(Сообщение.Свойство("priority"), Сообщение.priority, 5));
+					ДанныеСообщения.Вставить("holding", Холдинг);
 					Если Сообщение.Свойство("gymId") И Сообщение.gymId <> "" Тогда
-						ДанныеСообщения.Вставить("Клуб", XMLЗначение(Тип("СправочникСсылка.Клубы"), Сообщение.gymId));
+						ДанныеСообщения.Вставить("gym", XMLЗначение(Тип("СправочникСсылка.gyms"), Сообщение.gymId));
 					Иначе
-						ДанныеСообщения.Вставить("Клуб", Справочники.Клубы.ПустаяСсылка());
+						ДанныеСообщения.Вставить("gym", Catalogs.gyms.ПустаяСсылка());
 					КонецЕсли;
 					Если Сообщение.Свойство("uid") И Сообщение.uid <> "" Тогда
-						ДанныеСообщения.Вставить("Пользователь", XMLЗначение(Тип("СправочникСсылка.Пользователи"), Сообщение.uid));
+						ДанныеСообщения.Вставить("user", XMLЗначение(Тип("СправочникСсылка.users"), Сообщение.uid));
 					Иначе
-						ДанныеСообщения.Вставить("Пользователь", Справочники.Пользователи.ПустаяСсылка());
+						ДанныеСообщения.Вставить("user", Catalogs.users.ПустаяСсылка());
 					КонецЕсли;
 					Если Сообщение.Свойство("token") И Сообщение.token <> "" Тогда
-						ДанныеСообщения.Вставить("Токен", XMLЗначение(Тип("СправочникСсылка.Токены"), Сообщение.token));
+						ДанныеСообщения.Вставить("token", XMLЗначение(Тип("СправочникСсылка.tokens"), Сообщение.token));
 					Иначе
-						ДанныеСообщения.Вставить("Токен", Справочники.Токены.ПустаяСсылка());
+						ДанныеСообщения.Вставить("token", Catalogs.tokens.ПустаяСсылка());
 					КонецЕсли;
 					МассивКаналов = Новый Массив;
 					Если Сообщение.Свойство("routes") Тогда
 						Для Каждого Канал Из Сообщение.routes Цикл
-							МассивКаналов.Добавить(Перечисления.КаналыИнформирования[Канал]);
+							МассивКаналов.Добавить(Enums.informationChannels[Канал]);
 						КонецЦикла;
 					КонецЕсли;
 					ДанныеСообщения.Вставить("КаналыИнформирования", МассивКаналов);
-					Если ДанныеСообщения.НомерТелефона = ""
-							И ДанныеСообщения.Пользователь.ПолучитьОбъект() = Неопределено Тогда
-					ИначеЕсли ДанныеСообщения.Пользователь = ДанныеСообщения.Токен.Пользователь Тогда
+					Если ДанныеСообщения.phone = ""
+							И ДанныеСообщения.user.ПолучитьОбъект() = Неопределено Тогда
+					ИначеЕсли ДанныеСообщения.user = ДанныеСообщения.token.user Тогда
 					Иначе
-						РаботаССообщениями.НовоеСообщение(ДанныеСообщения);
+						Messages.НовоеСообщение(ДанныеСообщения);
 					КонецЕсли;
 				КонецЦикла;
 			КонецЕсли;
@@ -225,29 +226,33 @@ Procedure getChainList(parameters)
 	array = New array;
 
 	query = New Query();
-	query.Текст = "ВЫБРАТЬ
-		|	Сети.Наименование КАК Наименование,
-		|	Сети.НаименованиеRu КАК НаименованиеRu,
-		|	Сети.code КАК code,
-		|	ПРЕДСТАВЛЕНИЕССЫЛКИ(Сети.ПрограммаЛояльности) КАК bonusSystem,
-		|	Сети.МаскаНомераТелефона КАК МаскаНомераТелефона,
-		|	Сети.Валюта КАК currencySymbol,
-		|	ПРЕДСТАВЛЕНИЕССЫЛКИ(Сети.Бренд) КАК brand,
-		|	Сети.МаскаНомераТелефона.КодСтраны КАК МаскаНомераТелефонаКодСтраны,
-		|	Сети.МаскаНомераТелефона.Наименование КАК МаскаНомераТелефонаНаименование
-		|ИЗ
-		|	Справочник.Сети КАК Сети
-		|ГДЕ
-		|	НЕ Сети.ПометкаУдаления
-		|	И Сети.Бренд = &brand
-		|УПОРЯДОЧИТЬ ПО
-		|	Код";
+	query.text = "SELECT
+	|	ISNULL(chaininterfaceText.description, chain.Description) AS Description,
+	|	chain.code AS code,
+	|	REFPRESENTATION(chain.loyaltyProgram) AS loyaltyProgram,
+	|	chain.phoneMask AS phoneMask,
+	|	chain.currencySymbol AS currencySymbol,
+	|	REFPRESENTATION(chain.brand) AS brand,
+	|	chain.phoneMask.CountryCode AS phoneMaskCountryCode,
+	|	chain.phoneMask.Description AS phoneMaskDescription
+	|FROM
+	|	Catalog.chain AS chain
+	|		LEFT JOIN Catalog.chain.translation AS chaininterfaceText
+	|		ON chaininterfaceText.Ref = chain.Ref
+	|		AND chaininterfaceText.language = &language
+	|WHERE
+	|	NOT chain.DeletionMark
+	|	AND chain.brand = &brand
+	|ORDER BY
+	|	code";
 
+	query.SetParameter("language", language);
+	
 	If brand = "" Then
-		query.Text = StrReplace(query.Text, "И Сети.Бренд = &brand", "");
+		query.Text = StrReplace(query.Text, "И Сети.brand = &brand", "");
 		nameTogetherChain = True;
 	Else
-		query.SetParameter("brand", Enums.ВидыБрендов[brand]);
+		query.SetParameter("brand", Enums.brandTypes[brand]);
 		nameTogetherChain = False;
 	EndIf;
 
@@ -257,13 +262,12 @@ Procedure getChainList(parameters)
 		chainStruct = New Structure();
 		chainStruct.Insert("brand", selection.brand);
 		chainStruct.Insert("code", selection.code);
-		chainStruct.Insert("bonusSystem", selection.bonusSystem);
+		chainStruct.Insert("loyaltyProgram", selection.loyaltyProgram);
 		chainStruct.Insert("currencySymbol", selection.currencySymbol);
-		chainName = ?(language = "ru", selection.НаименованиеRu, selection.Наименование);
 		chainName = ?(nameTogetherChain, selection.brand + " "
-			+ chainName, chainName);
-		chainStruct.Вставить("name", chainName);
-		chainStruct.Вставить("phoneMask", New Structure("code, mask", selection.МаскаНомераТелефонаКодСтраны, selection.МаскаНомераТелефонаНаименование));
+			+ selection.description, selection.description);
+		chainStruct.Insert("name", chainName);
+		chainStruct.Insert("phoneMask", New Structure("code, mask", selection.phoneMaskCountryCode, selection.phoneMaskDescription));
 
 		array.add(chainStruct);
 	EndDo;
@@ -280,7 +284,7 @@ EndProcedure
 Procedure getPhoneMaskList(Parameters)
 	JSONWriter = New JSONWriter();
 	JSONWriter.SetString();
-	WriteJSON(JSONWriter, ОбщегоНазначенияПовторноеИспользование.phoneMasksList());
+	WriteJSON(JSONWriter, GeneralReuse.phoneMasksList());
 	Parameters.Insert("answerBody", JSONWriter.Close());
 	Parameters.Insert("notSaveAnswer", True);
 EndProcedure
@@ -298,7 +302,7 @@ Procedure userAuthorization(Parameters)
 	ElsIf Not requestStruct.Property("password")
 			Or requestStruct.password = "" Then
 		errorDescription = Service.getErrorDescription(language, "noUserPassword");
-	ElsIf Not requestStruct.Property("kpoCode") Then
+	ElsIf Not requestStruct.Property("chain") Then
 		errorDescription = Service.getErrorDescription(language, "noKpoCode");
 	EndIf;
 
@@ -306,25 +310,25 @@ Procedure userAuthorization(Parameters)
 		query = New Query();
 		query.Text = "ВЫБРАТЬ
 		|	Пользователи.Ref КАК ref,
-		|	Пользователи.Холдинг КАК holding,
-		|	Пользователи.ТипПользователя КАК userType,
+		|	Пользователи.holding КАК holding,
+		|	Пользователи.userType КАК userType,
 		|	UserPasswords.Validity КАК validity,
-		|	Сети.ЧасовойПояс КАК timezone,
+		|	Сети.timeZone КАК timezone,
 		|	Сети.Ссылка КАК chain
 		|FROM
-		|	Справочник.Пользователи КАК Пользователи
-		|		LEFT JOIN InformationRegister.UserPasswords AS UserPasswords
+		|	Справочник.users КАК Пользователи
+		|		LEFT JOIN InformationRegister.usersPasswords AS UserPasswords
 		|		ON UserPasswords.user = Пользователи.Ref
-		|		LEFT СОЕДИНЕНИЕ Справочник.Сети КАК Сети
-		|		ПО Пользователи.Холдинг = Сети.Холдинг
+		|		LEFT СОЕДИНЕНИЕ Справочник.chain КАК Сети
+		|		ПО Пользователи.holding = Сети.holding
 		|ГДЕ
-		|	Пользователи.Логин = &login
+		|	Пользователи.login = &login
 		|	AND UserPasswords.password = &password
 		|	AND Сети.Code = &chainCode";
 
 		query.SetParameter("login", requestStruct.login);
 		query.SetParameter("password", requestStruct.password);
-		query.SetParameter("chainCode", requestStruct.kpoCode);		
+		query.SetParameter("chainCode", requestStruct.chain);		
 
 		queryResult = query.Execute();
 		If queryResult.IsEmpty() Then
@@ -341,7 +345,7 @@ Procedure userAuthorization(Parameters)
 				If requestStruct.Property("remember")
 						And requestStruct.remember = True Then
 					tokenObject = Users.getToken(requestStruct, selection.user, selection.chain, selection.holding, selection.timezone);
-					struct.Insert("authToken", New Structure("key,createTime", XMLString(tokenObject.Ref), tokenObject.ДатаСоздания));
+					struct.Insert("authToken", New Structure("key,createTime", XMLString(tokenObject.Ref), tokenObject.createDate));
 					parameters.Insert("token", tokenObject.Ref);
 				EndIf;
 			Else
@@ -362,7 +366,7 @@ EndProcedure
 Procedure ВосстановитьПарольПользователя(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
 	ЗаписьJSON.УстановитьСтроку();
@@ -372,13 +376,13 @@ Procedure ВосстановитьПарольПользователя(Parameter
 	МассивПользователей = Новый Массив;
 
 	Если Не ДанныеЗапроса.Свойство("phone") Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noUserPhone");
-	ИначеЕсли Не ДанныеЗапроса.Свойство("kpoCode") Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "noKpoCode");
+		ОписаниеОшибки = Service.getErrorDescription(language, "noUserPhone");
+	ИначеЕсли Не ДанныеЗапроса.Свойство("chain") Тогда
+		ОписаниеОшибки = Service.getErrorDescription(language, "noChain");
 	КонецЕсли;
 
 	Если ОписаниеОшибки.Служебное = "" Тогда
-		ОписаниеОшибки = Service.canSendSms(ЯзыкПриложения, ДанныеЗапроса.phone);
+		ОписаниеОшибки = Service.canSendSms(language, ДанныеЗапроса.phone);
 	КонецЕсли;
 
 	Если ОписаниеОшибки.Служебное = "" Тогда
@@ -386,37 +390,37 @@ Procedure ВосстановитьПарольПользователя(Parameter
 		пЗапрос = Новый Запрос;
 		ТекстЗапроса = "ВЫБРАТЬ
 			|	Пользователи.Ссылка КАК Ссылка,
-			|	Сети.Ссылка КАК Сеть,
-			|	Пользователи.Холдинг КАК Холдинг,
-			|	Пользователи.КодПользователя КАК КодПользователя
+			|	Сети.Ссылка КАК chain,
+			|	Пользователи.holding КАК holding,
+			|	Пользователи.userCode КАК userCode
 			|ИЗ
-			|	Справочник.Пользователи КАК Пользователи
-			|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Сети КАК Сети
-			|		ПО Пользователи.Холдинг = Сети.Холдинг
+			|	Справочник.users КАК Пользователи
+			|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.chain КАК Сети
+			|		ПО Пользователи.holding = Сети.holding
 			|ГДЕ
 			|	Сети.Код = &КодСети";
 
 		Если ДанныеЗапроса.Свойство("uid") И ДанныеЗапроса.uid <> "" Тогда
-			ДопУсловие = "И Пользователи.Ссылка = &Пользователь";
-			пЗапрос.УстановитьПараметр("Пользователь", Справочники.Пользователи.ПолучитьСсылку(Новый УникальныйИдентификатор(ДанныеЗапроса.uid)));
+			ДопУсловие = "И Пользователи.Ссылка = &user";
+			пЗапрос.УстановитьПараметр("user", Catalogs.users.ПолучитьСсылку(Новый УникальныйИдентификатор(ДанныеЗапроса.uid)));
 		Иначе
-			ДопУсловие = "И Пользователи.НомерТелефона = &НомерТелефона";
-			пЗапрос.УстановитьПараметр("НомерТелефона", ДанныеЗапроса.phone);
+			ДопУсловие = "И Пользователи.phone = &phone";
+			пЗапрос.УстановитьПараметр("phone", ДанныеЗапроса.phone);
 		КонецЕсли;
 
 		пЗапрос.УстановитьПараметр("КодСети", ДанныеЗапроса.kpoCode);
 		ТекстыЗапроса.Добавить(ТекстЗапроса);
 		ТекстыЗапроса.Добавить(ДопУсловие);
-		пЗапрос.Текст = СтрСоединить(ТекстыЗапроса, Символы.ПС);
+		пЗапрос.text = СтрСоединить(ТекстыЗапроса, Символы.ПС);
 
 		РезультатЗапроса = пЗапрос.Выполнить();
 		Если РезультатЗапроса.Пустой() Тогда
-			Холдинг = Справочники.Сети.НайтиПоКоду(ДанныеЗапроса.kpoCode).Холдинг;
+			Холдинг = Catalogs.chain.НайтиПоКоду(ДанныеЗапроса.kpoCode).holding;
 			СтруктураЗапроса = HTTP.GetRequestStructure("userProfile", Холдинг);
 			Если СтруктураЗапроса.Количество() > 0 Тогда
 				Заголовки = Новый Соответствие;
 				Заголовки.Вставить("Content-Type", "application/json");
-				HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.Сервер, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.Пароль, , СтруктураЗапроса.Таймаут, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.ИспользоватьАутентификациюОС);
+				HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.server, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.password, , СтруктураЗапроса.timeout, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.UseOSAuthentication);
 				ЗапросHTTP = Новый HTTPЗапрос(СтруктураЗапроса.URL
 					+ СтруктураЗапроса.Приемник, Заголовки);
 				ЗапросHTTP.УстановитьТелоИзСтроки(Parameters.ТелоЗапроса);
@@ -424,7 +428,7 @@ Procedure ВосстановитьПарольПользователя(Parameter
 				СтруктураАтрибутов = Service.СтруктураАтрибутовВнешнегоЗапроса("users");
 				МассивПользователей = СоздатьЭлементыСправочника(СтруктураАтрибутов, HTTP.GetStructureFromRequest(ОтветHTTP).RequestStruct, Холдинг);
 			Иначе
-				ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+				ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 			КонецЕсли;
 		Иначе
 			Выборка = РезультатЗапроса.Выбрать();
@@ -434,14 +438,14 @@ Procedure ВосстановитьПарольПользователя(Parameter
 		КонецЕсли;
 
 		Если МассивПользователей.Количество() = 0 Тогда
-			ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+			ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 		ИначеЕсли МассивПользователей.Количество() > 1 Тогда
 			МассивJSON = Новый Массив;
 			Для Каждого Пользователь Из МассивПользователей Цикл
 				СтруктураПользователя = Новый Структура;
 				СтруктураПользователя.Вставить("uid", XMLСтрока(Пользователь));
-				СтруктураПользователя.Вставить("name", Пользователь.Имя + " "
-					+ Пользователь.Отчество + " " + Лев(Пользователь.Фамилия, 1));
+				СтруктураПользователя.Вставить("name", Пользователь.firstName + " "
+					+ Пользователь.secondName + " " + Лев(Пользователь.Фамилия, 1));
 				МассивJSON.Добавить(СтруктураПользователя);
 			КонецЦикла;
 			СтруктураJSON.Вставить("result", "Ok");
@@ -450,24 +454,24 @@ Procedure ВосстановитьПарольПользователя(Parameter
 
 			Пароль = Users.setUserPassword(МассивПользователей[0]);
 			МассивКаналов = Новый Массив;
-			МассивКаналов.Добавить(Перечисления.КаналыИнформирования.sms);
+			МассивКаналов.Добавить(Enums.informationChannels.sms);
 
 			МассивСтрок = Новый Массив;
-			МассивСтрок.Добавить(?(ЯзыкПриложения = "ru", "Логин: ", "Login: "));
+			МассивСтрок.Добавить(?(language = "ru", "login: ", "Login: "));
 			МассивСтрок.Добавить(МассивПользователей[0].КодПользователя);
-			МассивСтрок.Добавить(?(ЯзыкПриложения = "ru", " пароль: ", " password: "));
+			МассивСтрок.Добавить(?(language = "ru", " password: ", " password: "));
 			МассивСтрок.Добавить(Пароль);
-			МассивСтрок.Добавить(?(ЯзыкПриложения = "ru", ", пароль действителен в течение 15 минут", ", password is valid for 15 minutes"));
+			МассивСтрок.Добавить(?(language = "ru", ", password действителен в течение 15 минут", ", password is valid for 15 minutes"));
 
 			ДанныеСообщения = Новый Структура;
-			ДанныеСообщения.Вставить("НомерТелефона", ДанныеЗапроса.phone);
-			ДанныеСообщения.Вставить("Пользователь", МассивПользователей[0]);
-			ДанныеСообщения.Вставить("Заголовок", "Восстановить доступ");
-			ДанныеСообщения.Вставить("Текст", СтрСоединить(МассивСтрок));
-			ДанныеСообщения.Вставить("Холдинг", МассивПользователей[0].Холдинг);
+			ДанныеСообщения.Вставить("phone", ДанныеЗапроса.phone);
+			ДанныеСообщения.Вставить("user", МассивПользователей[0]);
+			ДанныеСообщения.Вставить("title", "Восстановить доступ");
+			ДанныеСообщения.Вставить("text", СтрСоединить(МассивСтрок));
+			ДанныеСообщения.Вставить("holding", МассивПользователей[0].Холдинг);
 			ДанныеСообщения.Вставить("КаналыИнформирования", МассивКаналов);
-			ДанныеСообщения.Вставить("Приоритет", 0);
-			РаботаССообщениями.НовоеСообщение(ДанныеСообщения);
+			ДанныеСообщения.Вставить("priority", 0);
+			Messages.НовоеСообщение(ДанныеСообщения);
 			СтруктураJSON.Вставить("result", "Ok");
 			Service.FixSandingMessage(ДанныеЗапроса.phone);
 		КонецЕсли;
@@ -484,20 +488,20 @@ EndProcedure
 Procedure УстановитьПарольПользователя(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
 	ЗаписьJSON.УстановитьСтроку();
 	СтруктураJSON = Новый Структура;
 
-	ОписаниеОшибки = Users.checkPassword(ЯзыкПриложения, РезультатПроверки.Пользователь, ДанныеЗапроса.Password);
+	ОписаниеОшибки = Users.checkPassword(language, РезультатПроверки.Пользователь, ДанныеЗапроса.Password);
 	Если ДанныеЗапроса.newPassword = "" Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "passwordIsEmpty");
+		ОписаниеОшибки = Service.getErrorDescription(language, "passwordIsEmpty");
 	КонецЕсли;
 	Если ОписаниеОшибки.Служебное = "" Тогда
-		record = InformationRegisters.UserPasswords.CreateRecordManager();
-		record.User 	= РезультатПроверки.Пользователь;
+		record = InformationRegisters.usersPasswords.CreateRecordManager();
+		record.User 	= РезультатПроверки.user;
 		record.Password = ДанныеЗапроса.newPassword;
 		record.Validity = Дата(1, 1, 1);
 		record.Write();
@@ -514,7 +518,7 @@ EndProcedure
 Procedure ЗарегистрироватьУстройство(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -522,98 +526,98 @@ Procedure ЗарегистрироватьУстройство(Parameters)
 	СтруктураJSON = Новый Структура;
 
 	Если Не ДанныеЗапроса.Свойство("deviceToken") Тогда
-		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "noDeviceToken"));
+		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "noDeviceToken"));
 	ИначеЕсли Не ДанныеЗапроса.Свойство("systemVersion") Тогда
-		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "noSystemVersion"));
+		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "noSystemVersion"));
 	ИначеЕсли Не ДанныеЗапроса.Свойство("appVersion") Тогда
-		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "noAppVersion"));
+		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "noAppVersion"));
 	КонецЕсли;
 
 	Если Parameters.ОписаниеОшибки.Служебное = "" Тогда
 		СтруктураJSON.Вставить("result", "Ok");
-		Запись = РегистрыСведений.ЗарегистрированныеУстройства.СоздатьМенеджерЗаписи();
-		Запись.Токен = РезультатПроверки.Токен;
-		Запись.ТокенУстройства = ДанныеЗапроса.deviceToken;
-		Запись.ВерсияОС = ДанныеЗапроса.systemVersion;
+		Запись = РегистрыСведений.registeredDevices.СоздатьМенеджерЗаписи();
+		Запись.token = РезультатПроверки.token;
+		Запись.deviceToken = ДанныеЗапроса.deviceToken;
+		Запись.systemVersion = ДанныеЗапроса.systemVersion;
 		//Попытка
-		//	Запись.ВерсияПриложения		= ДанныеЗапроса.appVersion;
+		//	Запись.appVersion		= ДанныеЗапроса.appVersion;
 		//Исключение
-		Запись.ВерсияПриложения = Число(СтрЗаменить(ДанныеЗапроса.appVersion, ".", ""));
+		Запись.appVersion = Число(СтрЗаменить(ДанныеЗапроса.appVersion, ".", ""));
 		//КонецПопытки;
-		Запись.МодельУстройства = ДанныеЗапроса.deviceModel;
-		Запись.ДатаЗаписи = УниверсальноеВремя(ТекущаяДата());
+		Запись.deviceModel = ДанныеЗапроса.deviceModel;
+		Запись.recordDate = УниверсальноеВремя(ТекущаяДата());
 		Запись.Записать();
 
 		пЗапрос = Новый Запрос;
-		пЗапрос.Текст = "ВЫБРАТЬ
-			|	ЗарегистрированныеУстройства.Токен КАК Токен
+		пЗапрос.text = "ВЫБРАТЬ
+			|	ЗарегистрированныеУстройства.token КАК token
 			|ИЗ
-			|	РегистрСведений.ЗарегистрированныеУстройства КАК ЗарегистрированныеУстройства
+			|	РегистрСведений.registeredDevices КАК ЗарегистрированныеУстройства
 			|ГДЕ
-			|	ЗарегистрированныеУстройства.Токен <> &Токен
-			|	И ЗарегистрированныеУстройства.Токен.Пользователь = &Пользователь
-			|	И ЗарегистрированныеУстройства.ВерсияОС = &ВерсияОС
-			|	И ЗарегистрированныеУстройства.ВерсияПриложения = &ВерсияПриложения
-			|	И ЗарегистрированныеУстройства.МодельУстройства = &МодельУстройства
-			|	И ЗарегистрированныеУстройства.ТокенУстройства = &ТокенУстройства
+			|	ЗарегистрированныеУстройства.token <> &token
+			|	И ЗарегистрированныеУстройства.token.user = &user
+			|	И ЗарегистрированныеУстройства.systemVersion = &systemVersion
+			|	И ЗарегистрированныеУстройства.appVersion = &appVersion
+			|	И ЗарегистрированныеУстройства.deviceModel = &deviceModel
+			|	И ЗарегистрированныеУстройства.deviceToken = &deviceToken
 			|;
 			|
 			|////////////////////////////////////////////////////////////////////////////////
 			|ВЫБРАТЬ
-			|	ЗНАЧЕНИЕ(Справочник.Сообщения.ПустаяСсылка) КАК Сообщение,
+			|	ЗНАЧЕНИЕ(Справочник.messages.ПустаяСсылка) КАК message,
 			|	ВЫБОР
-			|		КОГДА &ЯзыкПриложения = ""ru""
+			|		КОГДА &language = ""ru""
 			|			ТОГДА ""Уведомление""
 			|		ИНАЧЕ ""Notification""
-			|	КОНЕЦ КАК Заголовок,
+			|	КОНЕЦ КАК title,
 			|	ВЫБОР
-			|		КОГДА &ЯзыкПриложения = ""ru""
+			|		КОГДА &language = ""ru""
 			|			ТОГДА ""Обновите приложение""
 			|		ИНАЧЕ ""Update the application""
-			|	КОНЕЦ КАК Текст,
-			|	""updateApp"" КАК Действие,
-			|	"""" КАК ОбъектИД,
-			|	"""" КАК ОбъектТип,
-			|	ЗНАЧЕНИЕ(ПланОбмена.СообщенияКОтправке.ПустаяСсылка) КАК УзелСообщенияКОтправке,
-			|	Токены.ОперационнаяСистема КАК ОперационнаяСистема,
+			|	КОНЕЦ КАК text,
+			|	""updateApp"" КАК action,
+			|	"""" КАК objectId,
+			|	"""" КАК objectType,
+			|	ЗНАЧЕНИЕ(ПланОбмена.messagesToSend.ПустаяСсылка) КАК УзелСообщенияКОтправке,
+			|	Токены.systemType КАК systemType,
 			|	ВЫБОР
-			|		КОГДА Токены.ОперационнаяСистема = ЗНАЧЕНИЕ(Перечисление.ОперационныеСистемы.Android)
+			|		КОГДА Токены.systemType = ЗНАЧЕНИЕ(Перечисление.systemTypes.Android)
 			|			ТОГДА ""GCM""
 			|		ИНАЧЕ ""APNS""
 			|	КОНЕЦ КАК ТипПодписчика,
-			|	&ТокенУстройства КАК ТокенУстройства,
-			|	Токены.Ссылка КАК Токен,
+			|	&deviceToken КАК deviceToken,
+			|	Токены.Ссылка КАК token,
 			|	ВЫБОР
-			|		КОГДА Токены.ВидПриложения = ЗНАЧЕНИЕ(Перечисление.ВидыПриложений.Customer)
-			|			ТОГДА ЗНАЧЕНИЕ(Перечисление.КаналыИнформирования.pushCustomer)
-			|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.КаналыИнформирования.pushEmployee)
-			|	КОНЕЦ КАК КаналИнформирования,
-			|	Токены.ДатаБлокировки КАК ДатаБлокировки,
-			|	ЕСТЬNULL(СертификатПриложенияДляСети.Сертификат, СертификатПриложенияОбщий.Сертификат) КАК Сертификат
+			|		КОГДА Токены.appType = ЗНАЧЕНИЕ(Перечисление.appTypes.Customer)
+			|			ТОГДА ЗНАЧЕНИЕ(Перечисление.informationChannels.pushCustomer)
+			|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.informationChannels.pushEmployee)
+			|	КОНЕЦ КАК informationChannel,
+			|	Токены.lockDate КАК lockDate,
+			|	ЕСТЬNULL(СертификатПриложенияДляСети.certificate, СертификатПриложенияОбщий.certificate) КАК certificate
 			|ИЗ
-			|	Справочник.Токены КАК Токены
-			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СертификатыПриложений КАК СертификатПриложенияДляСети
-			|		ПО Токены.Сеть = СертификатПриложенияДляСети.Сеть
-			|			И Токены.ВидПриложения = СертификатПриложенияДляСети.ВидПриложения
-			|			И Токены.ОперационнаяСистема = СертификатПриложенияДляСети.ОперационнаяСистема
-			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СертификатыПриложений КАК СертификатПриложенияОбщий
-			|		ПО (СертификатПриложенияОбщий.Сеть = ЗНАЧЕНИЕ(Справочник.Сети.ПустаяСсылка))
-			|			И Токены.ВидПриложения = СертификатПриложенияОбщий.ВидПриложения
-			|			И Токены.ОперационнаяСистема = СертификатПриложенияОбщий.ОперационнаяСистема
-			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.АктуальныеВерсииПриложений КАК АктуальныеВерсииПриложений
-			|		ПО Токены.ВидПриложения = АктуальныеВерсииПриложений.ВидПриложения
-			|			И Токены.ОперационнаяСистема = АктуальныеВерсииПриложений.ОперационнаяСистема
+			|	Справочник.tokens КАК Токены
+			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияДляСети
+			|		ПО Токены.chain = СертификатПриложенияДляСети.chain
+			|			И Токены.appType = СертификатПриложенияДляСети.appType
+			|			И Токены.systemType = СертификатПриложенияДляСети.systemType
+			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияОбщий
+			|		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chain.ПустаяСсылка))
+			|			И Токены.appType = СертификатПриложенияОбщий.appType
+			|			И Токены.systemType = СертификатПриложенияОбщий.systemType
+			|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.currentAppVersions КАК АктуальныеВерсииПриложений
+			|		ПО Токены.appType = АктуальныеВерсииПриложений.appType
+			|			И Токены.systemType = АктуальныеВерсииПриложений.systemType
 			|ГДЕ
-			|	ЕСТЬNULL(АктуальныеВерсииПриложений.ВерсияПриложения, 0) > &ВерсияПриложения
-			|	И Токены.Ссылка = &Токен";
+			|	ЕСТЬNULL(АктуальныеВерсииПриложений.appVersion, 0) > &appVersion
+			|	И Токены.Ссылка = &token";
 
-		пЗапрос.УстановитьПараметр("Токен", РезультатПроверки.Токен);
-		пЗапрос.УстановитьПараметр("ЯзыкПриложения", ЯзыкПриложения);
-		пЗапрос.УстановитьПараметр("Пользователь", РезультатПроверки.Пользователь);
-		пЗапрос.УстановитьПараметр("ВерсияОС", Запись.ВерсияОС);
-		пЗапрос.УстановитьПараметр("ВерсияПриложения", Запись.ВерсияПриложения);
-		пЗапрос.УстановитьПараметр("МодельУстройства", Запись.МодельУстройства);
-		пЗапрос.УстановитьПараметр("ТокенУстройства", Запись.ТокенУстройства);
+		пЗапрос.УстановитьПараметр("token", РезультатПроверки.Токен);
+		пЗапрос.УстановитьПараметр("language", language);
+		пЗапрос.УстановитьПараметр("user", РезультатПроверки.Пользователь);
+		пЗапрос.УстановитьПараметр("systemVersion", Запись.systemVersion);
+		пЗапрос.УстановитьПараметр("appVersion", Запись.appVersion);
+		пЗапрос.УстановитьПараметр("deviceModel", Запись.deviceModel);
+		пЗапрос.УстановитьПараметр("deviceToken", Запись.deviceToken);
 
 		РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
 		Выборка = РезультатыЗапроса[0].Выбрать();
@@ -623,7 +627,7 @@ Procedure ЗарегистрироватьУстройство(Parameters)
 
 		Выборка = РезультатыЗапроса[1].Выбрать();
 		Пока Выборка.Следующий() Цикл
-			РаботаССообщениями.ОтправитьPush(Выборка);
+			Messages.ОтправитьPush(Выборка);
 		КонецЦикла;
 
 	КонецЕсли;
@@ -637,7 +641,7 @@ EndProcedure
 Procedure УдалитьУстройство(Parameters)
 
 //@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -657,7 +661,7 @@ Procedure ПолучитьПрофильПользователя(Parameters)
 
 //@skip-warning
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -665,45 +669,45 @@ Procedure ПолучитьПрофильПользователя(Parameters)
 	СтруктураJSON = Новый Структура;
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
-		|	Пользователи.Ссылка КАК Пользователь,
-		|	Пользователи.Логин КАК Логин,
-		|	Пользователи.ДатаРождения КАК ДатаРождения,
-		|	Пользователи.НомерТелефона КАК НомерТелефона,
+	пЗапрос.text = "ВЫБРАТЬ
+		|	Пользователи.Ссылка КАК user,
+		|	Пользователи.login КАК login,
+		|	Пользователи.birthday КАК birthday,
+		|	Пользователи.phone КАК phone,
 		|	Пользователи.Email КАК Email,
-		|	НЕ Пользователи.НеУчаствоватьВРассылкеEmail КАК УчаствоватьВРассылкеEmail,
-		|	НЕ Пользователи.НеУчаствоватьВРассылкеСообщений КАК УчаствоватьВРассылкеСообщений,
-		|	Пользователи.Пол КАК Пол,
-		|	Не Пользователи.ЗапретитьОбновлятьПерсональныеДанные КАК РазрешитьОбновлятьПерсональныеДанные,
-		|	Пользователи.Штрихкод КАК Штрихкод,
-		|	Пользователи.КодПользователя КАК КодПользователя,
-		|	Пользователи.Фамилия КАК Фамилия,
-		|	Пользователи.Имя КАК Имя,
-		|	Пользователи.Отчество КАК Отчество
+		|	НЕ Пользователи.notSubscriptionEmail КАК УчаствоватьВРассылкеEmail,
+		|	НЕ Пользователи.notSubscriptionSms КАК УчаствоватьВРассылкеСообщений,
+		|	Пользователи.sex КАК sex,
+		|	Не Пользователи.canUpdatePersonalData КАК РазрешитьОбновлятьПерсональныеДанные,
+		|	Пользователи.barCode КАК barCode,
+		|	Пользователи.userCode КАК userCode,
+		|	Пользователи.lastName КАК lastName,
+		|	Пользователи.firstName КАК firstName,
+		|	Пользователи.secondName КАК secondName
 		|ИЗ
-		|	Справочник.Пользователи КАК Пользователи
+		|	Справочник.users КАК Пользователи
 		|ГДЕ
-		|	Пользователи.Ссылка = &Пользователь
+		|	Пользователи.Ссылка = &user
 		|;
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	СостояниеПользователя.ТипЗначенияКэша.Наименование КАК ТипЗначенияКэша,
+		|	СостояниеПользователя.cacheValuesType.Наименование КАК cacheValuesType,
 		|	СостояниеПользователя.Значение КАК ЗначениеКэша
 		|ИЗ
-		|	РегистрСведений.СостояниеПользователя КАК СостояниеПользователя
+		|	РегистрСведений.usersStates КАК СостояниеПользователя
 		|ГДЕ
-		|	СостояниеПользователя.Пользователь = &Пользователь
-		|	И СостояниеПользователя.ВидПриложения = &ВидПриложения";
+		|	СостояниеПользователя.user = &user
+		|	И СостояниеПользователя.appType = &appType";
 
-	пЗапрос.УстановитьПараметр("Пользователь", РезультатПроверки.Пользователь);
-	пЗапрос.УстановитьПараметр("ВидПриложения", РезультатПроверки.ВидПриложения);
+	пЗапрос.УстановитьПараметр("user", РезультатПроверки.Пользователь);
+	пЗапрос.УстановитьПараметр("appType", РезультатПроверки.ВидПриложения);
 
 	РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
 	РезультатЗапроса = РезультатыЗапроса[0];
 	РезультатЗапроса1 = РезультатыЗапроса[1];
 
 	Если РезультатЗапроса.Пустой() Тогда
-		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified"));
+		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "userNotIdentified"));
 	Иначе
 		Выборка = РезультатЗапроса.Выбрать();
 		Выборка.Следующий();
@@ -734,85 +738,83 @@ Procedure ПолучитьПрофильПользователя(Parameters)
 
 EndProcedure
 
-Procedure ПолучитьСписокКлубов(Parameters)
+Procedure getGymList(Parameters)
 
-//@skip-warning
-	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	//@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
-	РезультатПроверки = Parameters.РезультатПроверки;
+	requestStruct	= Parameters.requestStruct;
+	language		= Parameters.language;
+	gymArray 		= New Array();
+	
+	errorDescription = Service.getErrorDescription();
+	
+	If Not requestStruct.Property("chain") Then
+		errorDescription = Service.getErrorDescription(language, "noChain");
+	EndIf;
 
-	ЗаписьJSON = Новый ЗаписьJSON;
-	ЗаписьJSON.УстановитьСтроку();
-	МассивJSON = Новый Массив;
-	СтруктураJSON = Новый Структура;
+	If errorDescription.error = "" Then
+		query = New Query();
+		query.Text = "SELECT
+			|	gyms.Ref,
+			|	gyms.Description,
+			|	gyms.address,
+			|	gyms.city,
+			|	gyms.latitude,
+			|	gyms.longitude,
+			|	gyms.registrationDate,
+			|	gyms.segment,
+			|	gyms.chain,
+			|	gyms.type,
+			|	gyms.holding,
+			|	gyms.departmentWorkSchedule.(
+			|		department,
+			|		phone,
+			|		weekdaysTime,
+			|		holidaysTime)
+			|FROM
+			|	Catalog.gyms AS gyms
+			|WHERE
+			|	gyms.chain.code = &chainCode
+			|	AND
+			|	NOT gyms.DeletionMark";
 
-	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
-		|	Клубы.Наименование КАК Наименование,
-		|	Клубы.Адрес КАК Адрес,
-		|	Клубы.Ссылка КАК Клуб,
-		|	Клубы.Город КАК Город,
-		|	Клубы.Долгота КАК Долгота,
-		|	Клубы.Сегмент КАК Сегмент,
-		|	Клубы.Тип КАК Тип,
-		|	Клубы.Широта КАК Широта,
-		|	Клубы.Сеть КАК Сеть,
-		|	Клубы.ГрафикРаботыОтделов.(
-		|		Ссылка КАК Ссылка,
-		|		НомерСтроки КАК НомерСтроки,
-		|		Отдел КАК Отдел,
-		|		Телефон КАК Телефон,
-		|		ГрафикРаботыВБудни КАК ГрафикРаботыВБудни,
-		|		ГрафикРаботыВВыходные КАК ГрафикРаботыВВыходные
-		|	) КАК ГрафикРаботыОтделов,
-		|	Клубы.Предопределенный КАК Предопределенный,
-		|	Клубы.ИмяПредопределенныхДанных КАК ИмяПредопределенныхДанных
-		|ИЗ
-		|	Справочник.Клубы КАК Клубы
-		|ГДЕ
-		|	Клубы.Сеть = &Сеть
-		|	И НЕ Клубы.ПометкаУдаления";
+		query.SetParameter("chainCode", requestStruct.chain);
+		Selection = query.Execute().Select();
 
-	пЗапрос.УстановитьПараметр("Сеть", РезультатПроверки.Сеть);
-	Выборка = пЗапрос.Выполнить().Выбрать();
+		While Selection.Next() Do
+			gymStruct = New Structure();
+			gymStruct.Insert("gymId", XMLString(Selection.Ref));
+			gymStruct.Insert("name", Selection.Description);
+			gymStruct.Insert("type", Selection.type);
+			gymStruct.Insert("cityId", XMLString(Selection.city));
+			gymStruct.Insert("gymAddress", Selection.address);
+			gymStruct.Insert("divisionTitle", Selection.segment);
 
-	Пока Выборка.Следующий() Цикл
-		СтруктураКлуба = Новый Структура;
-		СтруктураКлуба.Вставить("gymId", XMLСтрока(Выборка.Клуб));
-		СтруктураКлуба.Вставить("name", Выборка.Наименование);
-		СтруктураКлуба.Вставить("type", Выборка.Тип);
-		СтруктураКлуба.Вставить("cityId", XMLСтрока(Выборка.Город));
-		СтруктураКлуба.Вставить("gymAddress", Выборка.Адрес);
-		СтруктураКлуба.Вставить("divisionTitle", Выборка.Сегмент);
+			coords = New Structure();
+			coords.Insert("latitude", Selection.latitude);
+			coords.Insert("longitude", Selection.longitude);
+			gymStruct.Вставить("coords", coords);
 
-		КоординатыКлуба = Новый Структура;
-		КоординатыКлуба.Вставить("latitude", Выборка.Широта);
-		КоординатыКлуба.Вставить("longitude", Выборка.Долгота);
-		СтруктураКлуба.Вставить("coords", КоординатыКлуба);
-
-		МассивГрафик = Новый Массив;
-		Для Каждого СтрокаГрафик Из Выборка.ГрафикРаботыОтделов.Выгрузить() Цикл
-			График = Новый Структура;
-			График.Вставить("name", СтрокаГрафик.Отдел);
-			График.Вставить("phone", СтрокаГрафик.Телефон);
-			График.Вставить("weekdaysTime", СтрокаГрафик.ГрафикРаботыВБудни);
-			График.Вставить("holidaysTime", СтрокаГрафик.ГрафикРаботыВВыходные);
-			МассивГрафик.Добавить(График);
-		КонецЦикла;
-		СтруктураКлуба.Вставить("departments", МассивГрафик);
-		МассивJSON.Добавить(СтруктураКлуба);
-	КонецЦикла;
-
-	Если МассивJSON.Количество() = 0 Тогда
-		ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
-	Иначе
-		ЗаписатьJSON(ЗаписьJSON, МассивJSON);
-	КонецЕсли;
-
-	Parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
-	Parameters.Insert("НеСохранятьОтветВЛогах", Истина);
-
+			scheduledArray = New Array();
+			For Each department In Selection.departmentWorkSchedule.Unload() Do
+				schedule = New Structure();
+				schedule.Insert("name", department.department);
+				schedule.Insert("phone", department.phone);
+				schedule.Insert("weekdaysTime", department.weekdaysTime);
+				schedule.Insert("holidaysTime", department.holidaysTime);
+				scheduledArray.add(schedule);
+			EndDo;
+			gymStruct.Insert("departments", scheduledArray);
+			gymArray.add(gymStruct);
+		EndDo;
+	EndIf;
+		
+	JSONWriter = New JSONWriter();
+	JSONWriter.SetString();
+	WriteJSON(JSONWriter, gymArray);
+	
+	Parameters.Insert("answerBody", JSONWriter.Close());
+	Parameters.Insert("notSaveAnswer", True);
+	Parameters.Insert("errorDescription", errorDescription);
+	
 EndProcedure
 
 Procedure ПолучитьСписокПричинОтменыЗаписи(Parameters)
@@ -820,7 +822,7 @@ Procedure ПолучитьСписокПричинОтменыЗаписи(Param
 //@skip-warning
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
 	//@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -828,16 +830,16 @@ Procedure ПолучитьСписокПричинОтменыЗаписи(Param
 	МассивПричинОтмены = Новый Массив;
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
+	пЗапрос.text = "ВЫБРАТЬ
 		|	ПричиныОтменыЗаписи.Ссылка КАК Ссылка,
 		|	ПричиныОтменыЗаписи.Наименование КАК Наименование
 		|ИЗ
-		|	Справочник.ПричиныОтменыЗаписи КАК ПричиныОтменыЗаписи
+		|	Справочник.cancellationReasons КАК ПричиныОтменыЗаписи
 		|ГДЕ
-		|	ПричиныОтменыЗаписи.Холдинг = &Холдинг
+		|	ПричиныОтменыЗаписи.holding = &holding
 		|	И НЕ ПричиныОтменыЗаписи.ПометкаУдаления";
 
-	пЗапрос.УстановитьПараметр("Холдинг", РезультатПроверки.Холдинг);
+	пЗапрос.УстановитьПараметр("holding", РезультатПроверки.Холдинг);
 	Выборка = пЗапрос.Выполнить().Выбрать();
 	Пока Выборка.Следующий() Цикл
 		СтруктураПричиныОтмены = Новый Структура("uid,name", XMLСтрока(Выборка.Ссылка), Выборка.Наименование);
@@ -846,7 +848,7 @@ Procedure ПолучитьСписокПричинОтменыЗаписи(Param
 
 	ЗаписатьJSON(ЗаписьJSON, МассивПричинОтмены);
 	Parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
-	Parameters.Insert("НеСохранятьОтветВЛогах", Истина);
+	Parameters.Insert("notSaveAnswer", Истина);
 
 EndProcedure
 
@@ -854,7 +856,7 @@ Procedure ПолучитьСписокСообщений(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
 	//@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -863,68 +865,68 @@ Procedure ПолучитьСписокСообщений(Parameters)
 
 	ДатаРегистрации = УниверсальноеВремя(?(ДанныеЗапроса.date = "", ТекущаяДата(), XMLЗначение(Тип("Дата"), ДанныеЗапроса.date)));
 
-	Если РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Employee Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushEmployee;
-	ИначеЕсли РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Customer Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushCustomer;
+	Если РезультатПроверки.appType = Enums.appTypes.Employee Тогда
+		КаналИнформирования = Enums.informationChannels.pushEmployee;
+	ИначеЕсли РезультатПроверки.appType = Enums.appTypes.Customer Тогда
+		КаналИнформирования = Enums.informationChannels.pushCustomer;
 	Иначе
-		КаналИнформирования = Перечисления.КаналыИнформирования.ПустаяСсылка();
+		КаналИнформирования = Enums.informationChannels.ПустаяСсылка();
 	КонецЕсли;
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ ПЕРВЫЕ 20
-		|	Сообщения.Ссылка КАК Сообщение,
-		|	Сообщения.ДатаРегистрации КАК ДатаРегистрации,
-		|	Сообщения.Заголовок КАК Заголовок,
-		|	Сообщения.Текст КАК Текст,
-		|	Сообщения.ОбъектИД КАК ОбъектИД,
-		|	Сообщения.ОбъектТип КАК ОбъектТип
+	пЗапрос.text = "ВЫБРАТЬ ПЕРВЫЕ 20
+		|	Messages.Ссылка КАК message,
+		|	Messages.registrationDate КАК registrationDate,
+		|	Messages.title КАК title,
+		|	Messages.text КАК text,
+		|	Messages.objectId КАК objectId,
+		|	Messages.objectType КАК objectType
 		|ПОМЕСТИТЬ ВТ
 		|ИЗ
-		|	Справочник.Сообщения КАК Сообщения
-		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Сообщения.ПриоритетыКаналовИнформирования КАК СообщенияПриоритетыКаналовИнформирования
-		|		ПО Сообщения.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
+		|	Справочник.messages КАК Messages
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.messages.channelPriorities КАК СообщенияПриоритетыКаналовИнформирования
+		|		ПО Messages.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
 		|ГДЕ
-		|	СообщенияПриоритетыКаналовИнформирования.Канал = &КаналИнформирования
-		|	И Сообщения.Пользователь = &Пользователь
-		|	И Сообщения.ДатаРегистрации < &ДатаРегистрации
+		|	СообщенияПриоритетыКаналовИнформирования.channel = &informationChannel
+		|	И Messages.user = &user
+		|	И Messages.registrationDate < &registrationDate
 		|
 		|УПОРЯДОЧИТЬ ПО
-		|	ДатаРегистрации УБЫВ
+		|	registrationDate УБЫВ
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	ВТ.Сообщение КАК Сообщение,
-		|	ВТ.ДатаРегистрации КАК ДатаРегистрации,
-		|	ВТ.Заголовок КАК Заголовок,
-		|	ВТ.Текст КАК Текст,
-		|	ВТ.ОбъектИД КАК ОбъектИД,
-		|	ВТ.ОбъектТип КАК ОбъектТип,
+		|	ВТ.message КАК message,
+		|	ВТ.registrationDate КАК registrationDate,
+		|	ВТ.title КАК title,
+		|	ВТ.text КАК text,
+		|	ВТ.objectId КАК objectId,
+		|	ВТ.objectType КАК objectType,
 		|	МАКСИМУМ(ВЫБОР
-		|			КОГДА ИсторияСообщенийСрезПоследних.СтатусСообщения = ЗНАЧЕНИЕ(Перечисление.СтатусыСообщений.Прочитано)
+		|			КОГДА ИсторияСообщенийСрезПоследних.messageStatus = ЗНАЧЕНИЕ(Перечисление.messageStatuses.read)
 		|				ТОГДА ИСТИНА
 		|			ИНАЧЕ ЛОЖЬ
-		|		КОНЕЦ) КАК Прочитано
+		|		КОНЕЦ) КАК read
 		|ИЗ
 		|	ВТ КАК ВТ
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсторияСообщений.СрезПоследних КАК ИсторияСообщенийСрезПоследних
-		|		ПО ВТ.Сообщение = ИсторияСообщенийСрезПоследних.Сообщение
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.messagesLogs.СрезПоследних КАК ИсторияСообщенийСрезПоследних
+		|		ПО ВТ.message = ИсторияСообщенийСрезПоследних.message
 		|
 		|СГРУППИРОВАТЬ ПО
-		|	ВТ.Сообщение,
-		|	ВТ.ДатаРегистрации,
-		|	ВТ.Заголовок,
-		|	ВТ.Текст,
-		|	ВТ.ОбъектИД,
-		|	ВТ.ОбъектТип
+		|	ВТ.message,
+		|	ВТ.registrationDate,
+		|	ВТ.title,
+		|	ВТ.text,
+		|	ВТ.objectId,
+		|	ВТ.objectType
 		|
 		|УПОРЯДОЧИТЬ ПО
-		|	ДатаРегистрации УБЫВ";
+		|	registrationDate УБЫВ";
 
-	пЗапрос.УстановитьПараметр("ДатаРегистрации", ДатаРегистрации);
-	пЗапрос.УстановитьПараметр("Пользователь", РезультатПроверки.Пользователь);
-	пЗапрос.УстановитьПараметр("КаналИнформирования", КаналИнформирования);
+	пЗапрос.УстановитьПараметр("registrationDate", ДатаРегистрации);
+	пЗапрос.УстановитьПараметр("user", РезультатПроверки.Пользователь);
+	пЗапрос.УстановитьПараметр("informationChannel", КаналИнформирования);
 
 	Выборка = пЗапрос.Выполнить().Выбрать();
 	Пока Выборка.Следующий() Цикл
@@ -948,7 +950,7 @@ Procedure ПрочитатьСообщение(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
 	//@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
@@ -956,35 +958,35 @@ Procedure ПрочитатьСообщение(Parameters)
 	СтруктураJSON = Новый Структура;
 
 	Если Не ДанныеЗапроса.Свойство("noteId") Или ДанныеЗапроса.noteId = "" Тогда
-		Сообщение = Справочники.Сообщения.ПустаяСсылка();
+		Сообщение = Catalogs.messages.ПустаяСсылка();
 	Иначе
-		Сообщение = XMLЗначение(Тип("СправочникСсылка.Сообщения"), ДанныеЗапроса.noteId);
+		Сообщение = XMLЗначение(Тип("СправочникСсылка.messages"), ДанныеЗапроса.noteId);
 	КонецЕсли;
 
-	Если РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Employee Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushEmployee;
-	ИначеЕсли РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Customer Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushCustomer;
+	Если РезультатПроверки.appType = Enums.appTypes.Employee Тогда
+		КаналИнформирования = Enums.informationChannels.pushEmployee;
+	ИначеЕсли РезультатПроверки.appType = Enums.appTypes.Customer Тогда
+		КаналИнформирования = Enums.informationChannels.pushCustomer;
 	Иначе
-		КаналИнформирования = Перечисления.КаналыИнформирования.ПустаяСсылка();
+		КаналИнформирования = Enums.informationChannels.ПустаяСсылка();
 	КонецЕсли;
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
-		|	Сообщения.Ссылка КАК Сообщение
+	пЗапрос.text = "ВЫБРАТЬ
+		|	Messages.Ссылка КАК message
 		|ИЗ
-		|	Справочник.Сообщения КАК Сообщения
-		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Сообщения.ПриоритетыКаналовИнформирования КАК СообщенияПриоритетыКаналовИнформирования
-		|		ПО Сообщения.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсторияСообщений.СрезПоследних КАК ИсторияСообщенийСрезПоследних
-		|		ПО Сообщения.Ссылка = ИсторияСообщенийСрезПоследних.Сообщение
+		|	Справочник.messages КАК Messages
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.messages.channelPriorities КАК СообщенияПриоритетыКаналовИнформирования
+		|		ПО Messages.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.messagesLogs.СрезПоследних КАК ИсторияСообщенийСрезПоследних
+		|		ПО Messages.Ссылка = ИсторияСообщенийСрезПоследних.message
 		|ГДЕ
-		|	СообщенияПриоритетыКаналовИнформирования.Канал = &КаналИнформирования
-		|	И ЕСТЬNULL(ИсторияСообщенийСрезПоследних.СтатусСообщения, ЗНАЧЕНИЕ(Перечисление.СтатусыСообщений.ПустаяСсылка)) <> ЗНАЧЕНИЕ(Перечисление.СтатусыСообщений.Прочитано)
-		|	И Сообщения.Пользователь = &Пользователь";
+		|	СообщенияПриоритетыКаналовИнформирования.channel = &informationChannel
+		|	И ЕСТЬNULL(ИсторияСообщенийСрезПоследних.messageStatus, ЗНАЧЕНИЕ(Перечисление.messageStatuses.ПустаяСсылка)) <> ЗНАЧЕНИЕ(Перечисление.messageStatuses.read)
+		|	И Messages.user = &user";
 
-	пЗапрос.УстановитьПараметр("Пользователь", РезультатПроверки.Пользователь);
-	пЗапрос.УстановитьПараметр("КаналИнформирования", КаналИнформирования);
+	пЗапрос.УстановитьПараметр("user", РезультатПроверки.Пользователь);
+	пЗапрос.УстановитьПараметр("informationChannel", КаналИнформирования);
 
 	РезультатЗапроса = пЗапрос.Выполнить();
 	Если Не РезультатЗапроса.Пустой() Тогда
@@ -993,25 +995,25 @@ Procedure ПрочитатьСообщение(Parameters)
 
 		Если Сообщение.Пустая() Тогда
 			Пока Выборка.Следующий() Цикл
-				Запись = РегистрыСведений.ИсторияСообщений.СоздатьМенеджерЗаписи();
-				Запись.Период = УниверсальноеВремя(ТекущаяДата());
-				Запись.Сообщение = Выборка.Сообщение;
-				Запись.Токен = РезультатПроверки.Токен;
-				Запись.ДатаСобытия = Запись.Период;
-				Запись.СтатусСообщения = Перечисления.СтатусыСообщений.Прочитано;
-				Запись.КаналИнформирования = КаналИнформирования;
+				Запись = РегистрыСведений.messagesLogs.СоздатьМенеджерЗаписи();
+				Запись.period = УниверсальноеВремя(ТекущаяДата());
+				Запись.message = Выборка.message;
+				Запись.token = РезультатПроверки.token;
+				Запись.recordDate = Запись.period;
+				Запись.messageStatus = Enums.messageStatuses.read;
+				Запись.informationChannel = КаналИнформирования;
 				Запись.Записать();
 			КонецЦикла;
 			КоличествоНеПрочитанныхСообщений = 0;
 		Иначе
-			Если Выборка.НайтиСледующий(Новый Структура("Сообщение", Сообщение)) Тогда
-				Запись = РегистрыСведений.ИсторияСообщений.СоздатьМенеджерЗаписи();
-				Запись.Период = УниверсальноеВремя(ТекущаяДата());
-				Запись.Сообщение = Сообщение;
-				Запись.Токен = РезультатПроверки.Токен;
-				Запись.ДатаСобытия = Запись.Период;
-				Запись.СтатусСообщения = Перечисления.СтатусыСообщений.Прочитано;
-				Запись.КаналИнформирования = КаналИнформирования;
+			Если Выборка.НайтиСледующий(Новый Структура("message", Сообщение)) Тогда
+				Запись = РегистрыСведений.messagesLogs.СоздатьМенеджерЗаписи();
+				Запись.period = УниверсальноеВремя(ТекущаяДата());
+				Запись.message = Сообщение;
+				Запись.token = РезультатПроверки.token;
+				Запись.recordDate = Запись.period;
+				Запись.messageStatus = Enums.messageStatuses.read;
+				Запись.informationChannel = КаналИнформирования;
 				Запись.Записать();
 				КоличествоНеПрочитанныхСообщений = КоличествоНеПрочитанныхСообщений - 1;
 			КонецЕсли;
@@ -1033,37 +1035,37 @@ Procedure КоличествоНеПрочитанныхСообщений(Param
 //@skip-warning
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
 	//@skip-warning
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 
 	ЗаписьJSON = Новый ЗаписьJSON;
 	ЗаписьJSON.УстановитьСтроку();
 	СтруктураJSON = Новый Структура;
 
-	Если РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Employee Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushEmployee;
-	ИначеЕсли РезультатПроверки.ВидПриложения = Перечисления.ВидыПриложений.Customer Тогда
-		КаналИнформирования = Перечисления.КаналыИнформирования.pushCustomer;
+	Если РезультатПроверки.appType = Enums.appTypes.Employee Тогда
+		КаналИнформирования = Enums.informationChannels.pushEmployee;
+	ИначеЕсли РезультатПроверки.appType = Enums.appTypes.Customer Тогда
+		КаналИнформирования = Enums.informationChannels.pushCustomer;
 	Иначе
-		КаналИнформирования = Перечисления.КаналыИнформирования.ПустаяСсылка();
+		КаналИнформирования = Enums.informationChannels.ПустаяСсылка();
 	КонецЕсли;
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
-		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Сообщения.Ссылка) КАК Количество
+	пЗапрос.text = "ВЫБРАТЬ
+		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Messages.Ссылка) КАК Количество
 		|ИЗ
-		|	Справочник.Сообщения КАК Сообщения
-		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Сообщения.ПриоритетыКаналовИнформирования КАК СообщенияПриоритетыКаналовИнформирования
-		|		ПО Сообщения.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсторияСообщений.СрезПоследних КАК ИсторияСообщенийСрезПоследних
-		|		ПО Сообщения.Ссылка = ИсторияСообщенийСрезПоследних.Сообщение
+		|	Справочник.messages КАК Messages
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.messages.channelPriorities КАК СообщенияПриоритетыКаналовИнформирования
+		|		ПО Messages.Ссылка = СообщенияПриоритетыКаналовИнформирования.Ссылка
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.messagesLogs.СрезПоследних КАК ИсторияСообщенийСрезПоследних
+		|		ПО Messages.Ссылка = ИсторияСообщенийСрезПоследних.message
 		|ГДЕ
-		|	СообщенияПриоритетыКаналовИнформирования.Канал = &КаналИнформирования
-		|	И ЕСТЬNULL(ИсторияСообщенийСрезПоследних.СтатусСообщения, ЗНАЧЕНИЕ(Перечисление.СтатусыСообщений.ПустаяСсылка)) <> ЗНАЧЕНИЕ(Перечисление.СтатусыСообщений.Прочитано)
-		|	И Сообщения.Пользователь = &Пользователь";
+		|	СообщенияПриоритетыКаналовИнформирования.channel = &informationChannel
+		|	И ЕСТЬNULL(ИсторияСообщенийСрезПоследних.messageStatus, ЗНАЧЕНИЕ(Перечисление.messageStatuses.ПустаяСсылка)) <> ЗНАЧЕНИЕ(Перечисление.messageStatuses.read)
+		|	И Messages.user = &user";
 
-	пЗапрос.УстановитьПараметр("Пользователь", РезультатПроверки.Пользователь);
-	пЗапрос.УстановитьПараметр("КаналИнформирования", КаналИнформирования);
+	пЗапрос.УстановитьПараметр("user", РезультатПроверки.Пользователь);
+	пЗапрос.УстановитьПараметр("informationChannel", КаналИнформирования);
 
 	Выборка = пЗапрос.Выполнить().Выбрать();
 	Выборка.Следующий();
@@ -1077,43 +1079,43 @@ EndProcedure
 Procedure ВыполнитьВнешнийЗапрос(Parameters)
 
 	ДанныеЗапроса = Parameters.ДанныеЗапроса;
-	ЯзыкПриложения = Parameters.ЯзыкПриложения;
+	language = Parameters.language;
 	РезультатПроверки = Parameters.РезультатПроверки;
 	ТелоОтвета = "";
 
 	пЗапрос = Новый Запрос;
-	пЗапрос.Текст = "ВЫБРАТЬ
-		|	СоответствиеЗапросовИсточникамИнформации.ВыполнятьВФоне КАК ВыполнятьВФоне,
-		|	СоответствиеЗапросовИсточникамИнформации.ЗапросПриемник КАК Приемник,
-		|	СоответствиеЗапросовИсточникамИнформации.ТипЗапроса КАК ТипЗапроса,
-		|	СоответствиеЗапросовИсточникамИнформации.Атрибут КАК Атрибут,
-		|	СоответствиеЗапросовИсточникамИнформации.ТолькоДляСотрудников КАК ТолькоДляСотрудников,
-		|	СоответствиеЗапросовИсточникамИнформации.НеСохранятьОтветВЛогах КАК НеСохранятьОтветВЛогах,
-		|	СоответствиеЗапросовИсточникамИнформации.СжиматьЛоги КАК СжиматьЛоги,
+	пЗапрос.text = "ВЫБРАТЬ
+		|	СоответствиеЗапросовИсточникамИнформации.performBackground КАК performBackground,
+		|	СоответствиеЗапросовИсточникамИнформации.requestReceiver КАК Приемник,
+		|	СоответствиеЗапросовИсточникамИнформации.HTTPRequestType КАК HTTPRequestType,
+		|	СоответствиеЗапросовИсточникамИнформации.Attribute КАК Attribute,
+		|	СоответствиеЗапросовИсточникамИнформации.staffOnly КАК staffOnly,
+		|	СоответствиеЗапросовИсточникамИнформации.notSaveAnswer КАК notSaveAnswer,
+		|	СоответствиеЗапросовИсточникамИнформации.compressAnswer КАК compressAnswer,
 		|	ПодключенияХолдинговКИсточникамИнформации.URL КАК URL,
-		|	ПодключенияХолдинговКИсточникамИнформации.Сервер КАК Сервер,
-		|	ПодключенияХолдинговКИсточникамИнформации.Порт КАК Порт,
-		|	ПодключенияХолдинговКИсточникамИнформации.Пользователь КАК УчетнаяЗапись,
-		|	ПодключенияХолдинговКИсточникамИнформации.Пароль КАК Пароль,
-		|	ПодключенияХолдинговКИсточникамИнформации.Таймаут КАК Таймаут,
-		|	ПодключенияХолдинговКИсточникамИнформации.ЗащищенноеСоединение КАК ЗащищенноеСоединение,
-		|	ПодключенияХолдинговКИсточникамИнформации.ИспользоватьАутентификациюОС КАК ИспользоватьАутентификациюОС
+		|	ПодключенияХолдинговКИсточникамИнформации.server КАК server,
+		|	ПодключенияХолдинговКИсточникамИнформации.port КАК port,
+		|	ПодключенияХолдинговКИсточникамИнформации.user КАК УчетнаяЗапись,
+		|	ПодключенияХолдинговКИсточникамИнформации.password КАК password,
+		|	ПодключенияХолдинговКИсточникамИнформации.timeout КАК timeout,
+		|	ПодключенияХолдинговКИсточникамИнформации.secureConnection КАК secureConnection,
+		|	ПодключенияХолдинговКИсточникамИнформации.UseOSAuthentication КАК UseOSAuthentication
 		|ИЗ
-		|	РегистрСведений.ПодключенияХолдинговКИсточникамИнформации КАК ПодключенияХолдинговКИсточникамИнформации
-		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.СоответствиеЗапросовИсточникамИнформации.ИсточникиИнформации КАК СоответствиеЗапросовИсточникамИнформации
-		|		ПО ПодключенияХолдинговКИсточникамИнформации.ИсточникИнформации = СоответствиеЗапросовИсточникамИнформации.ИсточникИнформации
-		|			И (СоответствиеЗапросовИсточникамИнформации.ЗапросИсточник = &ИмяЗапроса)
-		|			И (НЕ СоответствиеЗапросовИсточникамИнформации.НеИспользовать)
+		|	РегистрСведений.holdingsConnectionsInformationSources КАК ПодключенияХолдинговКИсточникамИнформации
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.matchingRequestsInformationSources.informationSources КАК СоответствиеЗапросовИсточникамИнформации
+		|		ПО ПодключенияХолдинговКИсточникамИнформации.informationSource = СоответствиеЗапросовИсточникамИнформации.informationSource
+		|			И (СоответствиеЗапросовИсточникамИнформации.requestSource = &requestName)
+		|			И (НЕ СоответствиеЗапросовИсточникамИнформации.notUse)
 		|ГДЕ
-		|	ПодключенияХолдинговКИсточникамИнформации.Холдинг = &Холдинг
-		|	И НЕ СоответствиеЗапросовИсточникамИнформации.ЗапросПриемник ЕСТЬ NULL";
+		|	ПодключенияХолдинговКИсточникамИнформации.holding = &holding
+		|	И НЕ СоответствиеЗапросовИсточникамИнформации.requestReceiver ЕСТЬ NULL";
 
-	пЗапрос.УстановитьПараметр("Холдинг", РезультатПроверки.Холдинг);
-	пЗапрос.УстановитьПараметр("ИмяЗапроса", Parameters.requestName);
+	пЗапрос.УстановитьПараметр("holding", РезультатПроверки.Холдинг);
+	пЗапрос.УстановитьПараметр("requestName", Parameters.requestName);
 	РезультатЗапроса = пЗапрос.Выполнить();
 
 	Если РезультатЗапроса.Пустой() Тогда
-		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "noUrl"));
+		Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "noUrl"));
 	Иначе
 		Заголовки = Новый Соответствие;
 		Заголовки.Вставить("Content-Type", "application/json");
@@ -1121,22 +1123,22 @@ Procedure ВыполнитьВнешнийЗапрос(Parameters)
 		Выборка = РезультатЗапроса.Выбрать();
 		Выборка.Следующий();
 
-		Parameters.Insert("НеСохранятьОтветВЛогах", Выборка.НеСохранятьОтветВЛогах);
-		Parameters.Insert("СжиматьЛоги", Выборка.СжиматьЛоги);
+		Parameters.Insert("notSaveAnswer", Выборка.НеСохранятьОтветВЛогах);
+		Parameters.Insert("compressAnswer", Выборка.СжиматьЛоги);
 
-		Если Выборка.ТолькоДляСотрудников
-				И РезультатПроверки.ТипПользователя <> "employee" Тогда
-			Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "staffOnly"));
+		Если Выборка.staffOnly
+				И РезультатПроверки.userType <> "employee" Тогда
+			Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "staffOnly"));
 		Иначе
 
-			ВыполнятьВФоне = Выборка.ВыполнятьВФоне;
+			ВыполнятьВФоне = Выборка.performBackground;
 			МассивФЗ = Новый Массив;
 			КодСостояния = 200;
-			Если Выборка.ТипЗапроса = Перечисления.ТипыHTTPЗапросов.GET Тогда
+			Если Выборка.HTTPRequestType = Enums.HTTPRequestTypes.GET Тогда
 				ТелоЗапроса = "";
-				ParametersИзURL = СтрЗаменить(Parameters.URL, ОбщегоНазначенияПовторноеИспользование.ПолучитьБазовыйURL(), "");
+				ParametersИзURL = СтрЗаменить(Parameters.URL, GeneralReuse.ПолучитьБазовыйURL(), "");
 			Иначе
-				ТелоЗапроса = HTTP.PrepareRequestBody(Parameters.КлючАвторизации, ДанныеЗапроса, РезультатПроверки.Пользователь, ЯзыкПриложения, РезультатПроверки.ЧасовойПояс, РезультатПроверки.ВидПриложения);
+				ТелоЗапроса = HTTP.PrepareRequestBody(Parameters.КлючАвторизации, ДанныеЗапроса, РезультатПроверки.Пользователь, language, РезультатПроверки.ЧасовойПояс, РезультатПроверки.ВидПриложения);
 				ParametersИзURL = "";
 			КонецЕсли;
 
@@ -1147,12 +1149,12 @@ Procedure ВыполнитьВнешнийЗапрос(Parameters)
 					Адрес = ПоместитьВоВременноеХранилище("");
 
 					СтруктураПодключения = Новый Структура;
-					СтруктураПодключения.Вставить("Сервер", Выборка.Сервер);
+					СтруктураПодключения.Вставить("server", Выборка.Сервер);
 					СтруктураПодключения.Вставить("УчетнаяЗапись", Выборка.УчетнаяЗапись);
-					СтруктураПодключения.Вставить("Пароль", Выборка.Пароль);
-					СтруктураПодключения.Вставить("Таймаут", Выборка.Таймаут);
-					СтруктураПодключения.Вставить("ЗащищенноеСоединение", Выборка.ЗащищенноеСоединение);
-					СтруктураПодключения.Вставить("ИспользоватьАутентификациюОС", Выборка.ИспользоватьАутентификациюОС);
+					СтруктураПодключения.Вставить("password", Выборка.Пароль);
+					СтруктураПодключения.Вставить("timeout", Выборка.Таймаут);
+					СтруктураПодключения.Вставить("secureConnection", Выборка.ЗащищенноеСоединение);
+					СтруктураПодключения.Вставить("UseOSAuthentication", Выборка.ИспользоватьАутентификациюОС);
 					СтруктураПодключения.Вставить("URL", Выборка.URL);
 					СтруктураПодключения.Вставить("Приемник", Выборка.Приемник);
 					ФЗ = Service.RunBackground(СтруктураПодключения, Заголовки, ТелоЗапроса, Адрес, ParametersИзURL);
@@ -1160,15 +1162,15 @@ Procedure ВыполнитьВнешнийЗапрос(Parameters)
 					СтруктураФЗ = Новый Структура();
 					СтруктураФЗ.Вставить("Адрес", Адрес);
 					СтруктураФЗ.Вставить("ФЗ", ФЗ);
-					СтруктураФЗ.Вставить("Атрибут", Выборка.Атрибут);
+					СтруктураФЗ.Вставить("Attribute", Выборка.Атрибут);
 					МассивФЗ.Добавить(СтруктураФЗ);
 				Иначе
-					HTTPСоединение = Новый HTTPСоединение(Выборка.Сервер, , Выборка.УчетнаяЗапись, Выборка.Пароль, , Выборка.Таймаут, ?(Выборка.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Выборка.ИспользоватьАутентификациюОС);
+					HTTPСоединение = Новый HTTPСоединение(Выборка.server, , Выборка.УчетнаяЗапись, Выборка.password, , Выборка.timeout, ?(Выборка.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Выборка.UseOSAuthentication);
 					ЗапросHTTP = Новый HTTPЗапрос(Выборка.URL + Выборка.Приемник
 						+ ParametersИзURL, Заголовки);
 					ЗапросHTTP.УстановитьТелоИзСтроки(ТелоЗапроса);
 
-					Если Выборка.ТипЗапроса = Перечисления.ТипыHTTPЗапросов.GET Тогда
+					Если Выборка.HTTPRequestType = Enums.HTTPRequestTypes.GET Тогда
 						ОтветHTTP = HTTPСоединение.Получить(ЗапросHTTP);
 					Иначе
 						ОтветHTTP = HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
@@ -1190,7 +1192,7 @@ Procedure ВыполнитьВнешнийЗапрос(Parameters)
 						Parameters.Insert("ОписаниеОшибки", Новый Структура("Служебное, Пользовательское", СтруктураHTTPЗапроса.result, СтруктураHTTPЗапроса.description));
 					КонецЕсли;
 				Иначе
-					Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(ЯзыкПриложения, "system", ТелоОтвета));
+					Parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "system", ТелоОтвета));
 				КонецЕсли;
 			КонецЕсли;
 
@@ -1210,14 +1212,14 @@ EndProcedure
 
 	Если ТипЗнч(ДанныеЗапроса) = Тип("Массив") Тогда
 		Для Каждого ПараметрЗапроса Из ДанныеЗапроса Цикл
-			СправочникСсылка = Справочники[СтруктураАтрибутов.ИмяОбъектаМетаданных].ПолучитьСсылку(Новый УникальныйИдентификатор(ПараметрЗапроса.uid));
+			СправочникСсылка = Catalogs[СтруктураАтрибутов.ИмяОбъектаМетаданных].ПолучитьСсылку(Новый УникальныйИдентификатор(ПараметрЗапроса.uid));
 			СправочникОбъект = СправочникСсылка.ПолучитьОбъект();
 			УстановитьПароль = Ложь;
 			Если СправочникОбъект = Неопределено Тогда
-				СправочникОбъект = Справочники[СтруктураАтрибутов.ИмяОбъектаМетаданных].СоздатьЭлемент();
+				СправочникОбъект = Catalogs[СтруктураАтрибутов.ИмяОбъектаМетаданных].СоздатьЭлемент();
 				СправочникОбъект.УстановитьСсылкуНового(СправочникСсылка);
 				Для Каждого Атрибут Из СтруктураАтрибутов.ТаблицаАтрибутовДляНовогоЭлемента Цикл
-					Если Атрибут.Ключ = "Пароль"
+					Если Атрибут.Ключ = "password"
 							И ПараметрЗапроса.Свойство(Атрибут.Значение) Тогда
 						УстановитьПароль = Истина;
 						Пароль = XMLЗначение(Тип(Атрибут.Тип), ПараметрЗапроса[Атрибут.Значение])
@@ -1234,7 +1236,7 @@ EndProcedure
 						Для Каждого РеквизитТЧ Из СтруктураАтрибутов.СтруктураМД[Атрибут.Ключ] Цикл
 							Если РеквизитТЧ.Тип = "Ссылка" Тогда
 								Для Каждого РеквизитСсылки Из СтруктураАтрибутов.СтруктураМД[РеквизитТЧ.Ключ] Цикл
-									НоваяСтрока[РеквизитТЧ.Ключ] = Справочники[РеквизитСсылки.Ключ].ПолучитьСсылку(Новый УникальныйИдентификатор(ЭлементМассива[РеквизитТЧ.Значение][РеквизитСсылки.Значение]));
+									НоваяСтрока[РеквизитТЧ.Ключ] = Catalogs[РеквизитСсылки.Ключ].ПолучитьСсылку(Новый УникальныйИдентификатор(ЭлементМассива[РеквизитТЧ.Значение][РеквизитСсылки.Значение]));
 								КонецЦикла;
 							Иначе
 								НоваяСтрока[РеквизитТЧ.Ключ] = ЭлементМассива[РеквизитТЧ.Значение];
@@ -1243,15 +1245,15 @@ EndProcedure
 					КонецЦикла;
 				ИначеЕсли Атрибут.Тип = "Ссылка" Тогда
 					Для Каждого РеквизитСсылки Из СтруктураАтрибутов.СтруктураМД[Атрибут.Ключ] Цикл
-						СправочникОбъект[Атрибут.Ключ] = Справочники[РеквизитСсылки.Ключ].ПолучитьСсылку(Новый УникальныйИдентификатор(ПараметрЗапроса[Атрибут.Значение][РеквизитСсылки.Значение]));
+						СправочникОбъект[Атрибут.Ключ] = Catalogs[РеквизитСсылки.Ключ].ПолучитьСсылку(Новый УникальныйИдентификатор(ПараметрЗапроса[Атрибут.Значение][РеквизитСсылки.Значение]));
 					КонецЦикла;
 				Иначе
 					СправочникОбъект[Атрибут.Ключ] = XMLЗначение(Тип(Атрибут.Тип), ПараметрЗапроса[Атрибут.Значение]);
 				КонецЕсли;
 			КонецЦикла;
 			Если СтруктураАтрибутов.ИмяОбъектаМетаданных <> "СоответствиеЗапросовИсточникамИнформации" Тогда
-				СправочникОбъект.Холдинг = Холдинг;
-				СправочникОбъект.ДатаРегистрации = УниверсальноеВремя(ТекущаяДата());
+				СправочникОбъект.holding = Холдинг;
+				СправочникОбъект.registrationDate = УниверсальноеВремя(ТекущаяДата());
 			КонецЕсли;
 			СправочникОбъект.Записать();
 			МассивЭлементов.Добавить(СправочникОбъект.Ссылка);
@@ -1265,7 +1267,7 @@ EndProcedure
 
 КонецФункции
 
-Функция ИзменитьСоздатьЭлементыСправочника(ИмяЗапроса, Запрос, ЯзыкПриложения)
+Функция ИзменитьСоздатьЭлементыСправочника(ИмяЗапроса, Запрос, language)
 
 	ЗаписьJSON = Новый ЗаписьJSON;
 	ЗаписьJSON.УстановитьСтроку();
@@ -1280,11 +1282,11 @@ EndProcedure
 
 	ТокенХолдинга = HTTP.GetRequestHeader(Запрос, "auth-key");
 	Если ТокенХолдинга = Неопределено Тогда
-		ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+		ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 	Иначе
-		Холдинг = Справочники.Холдинги.НайтиПоРеквизиту("Токен", ТокенХолдинга);
+		Холдинг = Catalogs.holdings.НайтиПоРеквизиту("token", ТокенХолдинга);
 		Если Холдинг.Пустая() Тогда
-			ОписаниеОшибки = Service.getErrorDescription(ЯзыкПриложения, "userNotIdentified");
+			ОписаниеОшибки = Service.getErrorDescription(language, "userNotIdentified");
 		КонецЕсли;
 	КонецЕсли;
 
@@ -1318,7 +1320,7 @@ Procedure ОбновитьКэшПользователей(Parameters, Холд�
 		КонецЦикла;		
 		Заголовки = Новый Соответствие;
 		Заголовки.Вставить("Content-Type", "application/json");
-		HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.Сервер, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.Пароль, , СтруктураЗапроса.Таймаут, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.ИспользоватьАутентификациюОС);
+		HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.server, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.password, , СтруктураЗапроса.timeout, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.UseOSAuthentication);
 		ЗапросHTTP = Новый HTTPЗапрос(СтруктураЗапроса.URL
 			+ СтруктураЗапроса.Приемник, Заголовки);
 		ЗапросHTTP.УстановитьТелоИзСтроки(Parameters.ТелоЗапроса);

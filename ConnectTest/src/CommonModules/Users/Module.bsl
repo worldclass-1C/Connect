@@ -5,7 +5,7 @@ Function checkPassword(language, user, password) Export
 	query.Text	= "select TOP 1
 	|	UserPasswords.user as user
 	|from
-	|	InformationRegister.UserPasswords as UserPasswords
+	|	InformationRegister.usersPasswords as UserPasswords
 	|where
 	|	UserPasswords.user = &user
 	|	and UserPasswords.password = &password";
@@ -40,7 +40,7 @@ Function setUserPassword(user, password = "") Export
 		password	= tempPassword();
 		validity	= ToUniversalTime(CurrentDate()) + 900; //время действия пароля 15 минут
 	EndIf;	
-	record	= InformationRegisters.UserPasswords.CreateRecordManager();
+	record	= InformationRegisters.usersPasswords.CreateRecordManager();
 	record.User			= user;
 	record.Password		= password;
 	record.Validity	= validity;
@@ -49,28 +49,28 @@ Function setUserPassword(user, password = "") Export
 EndFunction
 
 Function getToken(requestStruct, user, chain, holding, timezone) Export
-	tokenObject	= Catalogs.Токены.CreateItem();
-	tokenObject.ДатаСоздания		= ToUniversalTime(CurrentDate());
-	tokenObject.Пользователь		= user;
-	tokenObject.Холдинг				= holding;
-	tokenObject.Сеть				= chain;
-	tokenObject.ЧасовойПояс			= timezone;
-	tokenObject.ВидПриложения		= Перечисления.ВидыПриложений[requestStruct.appType];
-	tokenObject.ОперационнаяСистема	= Перечисления.ОперационныеСистемы[requestStruct.systemType];
+	tokenObject	= Catalogs.tokens.CreateItem();
+	tokenObject.createDate		= ToUniversalTime(CurrentDate());
+	tokenObject.user		= user;
+	tokenObject.holding				= holding;
+	tokenObject.chain				= chain;
+	tokenObject.timeZone			= timezone;
+	tokenObject.appType		= Enums.appTypes[requestStruct.appType];
+	tokenObject.systemType	= Enums.systemTypes[requestStruct.systemType];
 	tokenObject.Write();
-	ExchangePlans.RecordChanges(ОбщегоНазначенияПовторноеИспользование.УзелРегистрацияПользователя(Enums.ТипыРегистрации.Регистрация), user);
+	ExchangePlans.RecordChanges(GeneralReuse.УзелРегистрацияПользователя(Enums.registrationTypes.checkIn), user);
 	Return tokenObject;
 EndFunction
 
 Procedure blockToken(token) Export	
 	tokenObject	= token.GetObject();
-	tokenObject.ДатаБлокировки	= ToUniversalTime(CurrentDate());
+	tokenObject.lockDate	= ToUniversalTime(CurrentDate());
 	tokenObject.Write();	
-	record	= InformationRegisters.ЗарегистрированныеУстройства.CreateRecordManager();
-	record.Токен	= token;
+	record	= InformationRegisters.registeredDevices.CreateRecordManager();
+	record.token	= token;
 	record.Read();
 	If record.Selected() Then
 		record.Delete();
 	EndIf;	
-	ExchangePlans.RecordChanges(ОбщегоНазначенияПовторноеИспользование.УзелРегистрацияПользователя(Enums.ТипыРегистрации.Регистрация), tokenObject.user);	
+	ExchangePlans.RecordChanges(GeneralReuse.УзелРегистрацияПользователя(Enums.registrationTypes.checkIn), tokenObject.user);	
 EndProcedure

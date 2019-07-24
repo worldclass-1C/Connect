@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Проверка статуса sms</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.ПроверитьСтатусСмс</methodName>
+  <methodName>CommonModule.Jobs.ПроверитьСтатусСмс</methodName>
   <description>ПроверкаСтатусаSms</description>
   <key>ПроверкаСтатусаSms</key>
   <use>true</use>

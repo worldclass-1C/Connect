@@ -820,7 +820,7 @@
       </title>
       <id>1</id>
       <valueType>
-        <types>CatalogRef.Пользователи</types>
+        <types>CatalogRef.users</types>
       </valueType>
       <view>
         <common>true</common>
@@ -837,7 +837,7 @@
       </title>
       <id>2</id>
       <valueType>
-        <types>CatalogRef.Токены</types>
+        <types>CatalogRef.tokens</types>
       </valueType>
       <view>
         <common>true</common>

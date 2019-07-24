@@ -2,25 +2,25 @@
 <cmi:CommandInterface xmlns:cmi="http://g5.1c.ru/v8/dt/cmi">
   <commandsVisibility>
     <visibilityFragments>
-      <command>Report.ВерсииПриложений.StandardCommand.Open</command>
+      <command>Report.applicationVersions.StandardCommand.Open</command>
       <visible>
         <common>true</common>
       </visible>
     </visibilityFragments>
     <visibilityFragments>
-      <command>Report.ЗарегистрированныеСообщения.StandardCommand.Open</command>
+      <command>Report.registeredMessages.StandardCommand.Open</command>
       <visible>
         <common>true</common>
       </visible>
     </visibilityFragments>
     <visibilityFragments>
-      <command>Report.СтатистикаПоДням.StandardCommand.Open</command>
+      <command>Report.statisticsByDay.StandardCommand.Open</command>
       <visible>
         <common>true</common>
       </visible>
     </visibilityFragments>
     <visibilityFragments>
-      <command>Report.СтатистикаПоМесяцам.StandardCommand.Open</command>
+      <command>Report.statisticsByMonth.StandardCommand.Open</command>
       <visible>
         <common>true</common>
       </visible>
@@ -35,10 +35,10 @@
   <commandsPlacement>
     <placementFragments>
       <group>ActionsPanelReports</group>
-      <commands>Report.ВерсииПриложений.StandardCommand.Open</commands>
-      <commands>Report.ЗарегистрированныеСообщения.StandardCommand.Open</commands>
-      <commands>Report.СтатистикаПоДням.StandardCommand.Open</commands>
-      <commands>Report.СтатистикаПоМесяцам.StandardCommand.Open</commands>
+      <commands>Report.applicationVersions.StandardCommand.Open</commands>
+      <commands>Report.registeredMessages.StandardCommand.Open</commands>
+      <commands>Report.statisticsByDay.StandardCommand.Open</commands>
+      <commands>Report.statisticsByMonth.StandardCommand.Open</commands>
     </placementFragments>
     <placementFragments>
       <group>ActionsPanelTools</group>

@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Оповещение источника информации</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.ОповеститьИсточникИнформации</methodName>
+  <methodName>CommonModule.Jobs.ОповеститьИсточникИнформации</methodName>
   <description>ОповещениеИсточникаИнформации</description>
   <key>ОповещениеИсточникаИнформации</key>
   <use>true</use>

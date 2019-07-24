@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="150337b0-d98c-450c-bd91-403d9dfa552e">
+  <producedTypes>
+    <selectionType typeId="c78300a5-f89d-4c33-abf0-316eb50b245b" valueTypeId="bfd34c4d-a4d8-43ef-bc81-68d906b66c2e"/>
+    <listType typeId="65ddebf6-c08e-402a-90f4-d71357cbe26d" valueTypeId="4b657fdd-3fd7-4e10-a3a5-721f23cff8a5"/>
+    <managerType typeId="0fcc4800-6987-419f-bef7-148e66884f1d" valueTypeId="a79d5dc1-bb76-468d-a427-eca38ca2bcdb"/>
+    <recordSetType typeId="da660353-1c71-4391-bbed-d694491e5201" valueTypeId="8ca8a1fc-bed8-4120-9eb2-a537a7c4019b"/>
+    <recordKeyType typeId="3c2f320f-8333-4fd2-b9ce-692bca8ee1ea" valueTypeId="1bf4982b-7c34-408d-809d-22c4b208d0c1"/>
+    <recordType typeId="4c9c38e5-d7a1-4d96-9370-4cab59eaaf44" valueTypeId="4baec5b2-7667-4c93-ae99-3a5484975313"/>
+    <recordManagerType typeId="4c82fe09-ae4b-47fa-ae33-f7083163e8aa" valueTypeId="8fd97e24-6318-4f31-9ce9-74f15584755d"/>
+  </producedTypes>
+  <name>holdingsConnectionsInformationSources</name>
+  <synonym>
+    <key>en</key>
+    <value>Connections of holdings to sources of information</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Подключения холдингов к источникам информации</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Active</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>LineNumber</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Recorder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Period</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Connection of holdings to sources of information</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Подключение холдинга к источнику информации</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Connection of holdings to sources of information</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>Подключение холдинга к источнику информации</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Connections of holdings to sources of information</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Подключения холдингов к источникам информации</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Connections of holdings to sources of information</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Подключения холдингов к источникам информации</value>
+  </extendedListPresentation>
+  <resources uuid="0c392aec-2ca7-481c-9a7d-818b21e9c1c7">
+    <name>server</name>
+    <synonym>
+      <key>en</key>
+      <value>Server</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сервер</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="0056184b-4abb-433c-8600-17d2fded5592">
+    <name>port</name>
+    <synonym>
+      <key>en</key>
+      <value>Port</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Порт</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="b8328440-1330-4e21-9ca4-9c95a5462747">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="ad99a98c-20a4-4d15-91ea-9d85b66e9549">
+    <name>password</name>
+    <synonym>
+      <key>en</key>
+      <value>Password</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пароль</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <passwordMode>true</passwordMode>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="b4534140-9545-4f27-a901-258bca3777fa">
+    <name>URL</name>
+    <synonym>
+      <key>en</key>
+      <value>URL</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>URL</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="9e29d3e8-2f04-4bc7-8cca-907eb5d80b15">
+    <name>timeout</name>
+    <synonym>
+      <key>en</key>
+      <value>Timeout</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Таймаут</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="0f12decd-1e9c-4fc5-8fdb-f8d381d7b162">
+    <name>secureConnection</name>
+    <synonym>
+      <key>en</key>
+      <value>Secure connection</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Защищенное соединение</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <resources uuid="b7803a2b-63cc-4f50-a7d8-6a638017d1ff">
+    <name>UseOSAuthentication</name>
+    <synonym>
+      <key>en</key>
+      <value>Use OS authentication</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Использовать аутентификацию ОС</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="9a163cf2-ed31-4c1c-b9aa-86f926a1cd7b">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="6596e83d-1b1d-4f7f-b8fb-e6778913fd76">
+    <name>informationSource</name>
+    <synonym>
+      <key>en</key>
+      <value>Information source</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Источник информации</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.informationSources</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

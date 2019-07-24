@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Расчет показателей</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.РассчитатьПоказатели</methodName>
+  <methodName>CommonModule.Jobs.РассчитатьПоказатели</methodName>
   <description>РасчетПоказателей</description>
   <key>РасчетПоказателей</key>
   <use>true</use>

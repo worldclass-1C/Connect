@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Отправка push</value>
   </synonym>
-  <methodName>CommonModule.РегламентныеЗаданияСервер.ОтправитьPush</methodName>
+  <methodName>CommonModule.Jobs.ОтправитьPush</methodName>
   <description>ОтправкаPush</description>
   <key>ОтправкаPush</key>
   <use>true</use>

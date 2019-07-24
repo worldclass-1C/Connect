@@ -2,6 +2,10 @@
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="18a738e8-d933-474a-a54c-0399456f0db0">
   <name>Connect</name>
   <synonym>
+    <key>en</key>
+    <value>Connect</value>
+  </synonym>
+  <synonym>
     <key>ru</key>
     <value>Connect</value>
   </synonym>
@@ -24,7 +28,7 @@
   </briefInformation>
   <detailedInformation>
     <key>ru</key>
-    <value>World Class Connect</value>
+    <value>RFG Connect</value>
   </detailedInformation>
   <logo/>
   <splash/>
@@ -37,36 +41,48 @@
   <modalityUseMode>DontUse</modalityUseMode>
   <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
   <compatibilityMode>8.3.14</compatibilityMode>
-  <languages uuid="732895f6-229d-45b4-9830-768702db9414">
-    <name>Русский</name>
-    <synonym>
-      <key>ru</key>
-      <value>Русский</value>
-    </synonym>
-    <languageCode>ru</languageCode>
-  </languages>
   <languages uuid="48aa1e92-8835-4160-a104-8e36ee823c57">
     <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>English</value>
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <subsystems>Subsystem.МобильныеПриложения</subsystems>
-  <subsystems>Subsystem.Настройки</subsystems>
-  <subsystems>Subsystem.Отчеты</subsystems>
-  <subsystems>Subsystem.Сообщения</subsystems>
-  <subsystems>Subsystem.Справочники</subsystems>
+  <languages uuid="732895f6-229d-45b4-9830-768702db9414">
+    <name>Русский</name>
+    <synonym>
+      <key>en</key>
+      <value>Русский</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Русский</value>
+    </synonym>
+    <languageCode>ru</languageCode>
+  </languages>
+  <subsystems>Subsystem.MobileApplications</subsystems>
+  <subsystems>Subsystem.Settings</subsystems>
+  <subsystems>Subsystem.Reports</subsystems>
+  <subsystems>Subsystem.Messages</subsystems>
+  <subsystems>Subsystem.Catalogs</subsystems>
   <styles>Style.СУЗ</styles>
-  <roles>Role.ПолныеПрава</roles>
-  <roles>Role.Консультант</roles>
+  <roles>Role.FullRight</roles>
+  <roles>Role.Consultant</roles>
   <commonTemplates>CommonTemplate.WCL</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
   <commonModules>CommonModule.General</commonModules>
+  <commonModules>CommonModule.GeneralCallServer</commonModules>
+  <commonModules>CommonModule.GeneralReuse</commonModules>
   <commonModules>CommonModule.HTTP</commonModules>
+  <commonModules>CommonModule.Jobs</commonModules>
+  <commonModules>CommonModule.Messages</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.ИнтеграцияСIDMkg</commonModules>
@@ -74,13 +90,9 @@
   <commonModules>CommonModule.ИнтеграцияСSmsGold</commonModules>
   <commonModules>CommonModule.ИнтеграцияСSMSTraffic</commonModules>
   <commonModules>CommonModule.ИнтеграцияСStramedia</commonModules>
-  <commonModules>CommonModule.ОбщегоНазначенияВызовСервера</commonModules>
-  <commonModules>CommonModule.ОбщегоНазначенияПовторноеИспользование</commonModules>
-  <commonModules>CommonModule.РаботаССообщениями</commonModules>
-  <commonModules>CommonModule.РегламентныеЗаданияСервер</commonModules>
-  <exchangePlans>ExchangePlan.СообщенияКОтправке</exchangePlans>
-  <exchangePlans>ExchangePlan.СообщенияПроверкаСтатуса</exchangePlans>
-  <exchangePlans>ExchangePlan.РегистрацияПользователей</exchangePlans>
+  <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
+  <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
+  <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.ВнутренниеСервисы</httpServices>
   <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
@@ -90,51 +102,51 @@
   <scheduledJobs>ScheduledJob.ПроверкаСтатусаSms</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
-  <constants>Constant.БазовыйURL</constants>
-  <catalogs>Catalog.Аналитика</catalogs>
-  <catalogs>Catalog.АналитикиПриложений</catalogs>
-  <catalogs>Catalog.Города</catalogs>
-  <catalogs>Catalog.ИсторииЗапросов</catalogs>
-  <catalogs>Catalog.ИсточникиИнформации</catalogs>
-  <catalogs>Catalog.Клубы</catalogs>
-  <catalogs>Catalog.МаскиНомеровТелефонов</catalogs>
-  <catalogs>Catalog.Пользователи</catalogs>
-  <catalogs>Catalog.ПричиныОтменыЗаписи</catalogs>
-  <catalogs>Catalog.Сети</catalogs>
-  <catalogs>Catalog.Сообщения</catalogs>
-  <catalogs>Catalog.СоответствиеЗапросовИсточникамИнформации</catalogs>
-  <catalogs>Catalog.ТипыЗначенийКэша</catalogs>
-  <catalogs>Catalog.Токены</catalogs>
-  <catalogs>Catalog.Холдинги</catalogs>
-  <catalogs>Catalog.ЧасовыеПояса</catalogs>
+  <constants>Constant.BaseURL</constants>
+  <catalogs>Catalog.analytics</catalogs>
+  <catalogs>Catalog.appAnalytics</catalogs>
+  <catalogs>Catalog.cacheValuesTypes</catalogs>
+  <catalogs>Catalog.cancellationReasons</catalogs>
+  <catalogs>Catalog.chain</catalogs>
+  <catalogs>Catalog.cities</catalogs>
+  <catalogs>Catalog.gyms</catalogs>
+  <catalogs>Catalog.holdings</catalogs>
+  <catalogs>Catalog.informationSources</catalogs>
+  <catalogs>Catalog.logs</catalogs>
+  <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
+  <catalogs>Catalog.messages</catalogs>
+  <catalogs>Catalog.phoneMasks</catalogs>
+  <catalogs>Catalog.timeZones</catalogs>
+  <catalogs>Catalog.tokens</catalogs>
+  <catalogs>Catalog.users</catalogs>
   <documents>Document.РегистраторДвижений</documents>
-  <enums>Enum.ВидыПриложений</enums>
-  <enums>Enum.ВидыБрендов</enums>
-  <enums>Enum.КаналыИнформирования</enums>
-  <enums>Enum.ОперационныеСистемы</enums>
-  <enums>Enum.ПериодыОтчета</enums>
+  <enums>Enum.appTypes</enums>
+  <enums>Enum.brandTypes</enums>
+  <enums>Enum.HTTPRequestTypes</enums>
+  <enums>Enum.informationChannels</enums>
+  <enums>Enum.loyaltyTypes</enums>
+  <enums>Enum.messageStatuses</enums>
+  <enums>Enum.registrationTypes</enums>
+  <enums>Enum.reportPeriods</enums>
+  <enums>Enum.SMSProviders</enums>
+  <enums>Enum.systemTypes</enums>
   <enums>Enum.Показатели</enums>
-  <enums>Enum.ПровайдерыСмс</enums>
-  <enums>Enum.СтатусыСообщений</enums>
-  <enums>Enum.ТипыHTTPЗапросов</enums>
-  <enums>Enum.ТипыПрограммЛояльности</enums>
-  <enums>Enum.ТипыРегистрации</enums>
-  <reports>Report.ВерсииПриложений</reports>
-  <reports>Report.ЗарегистрированныеСообщения</reports>
-  <reports>Report.ПерейтиСообщения</reports>
-  <reports>Report.ПерейтиТокеныИУстройства</reports>
-  <reports>Report.СтатистикаПоДням</reports>
-  <reports>Report.СтатистикаПоМесяцам</reports>
+  <reports>Report.applicationVersions</reports>
+  <reports>Report.registeredMessages</reports>
+  <reports>Report.goMessages</reports>
+  <reports>Report.goTokensDevices</reports>
+  <reports>Report.statisticsByDay</reports>
+  <reports>Report.statisticsByMonth</reports>
   <dataProcessors>DataProcessor.ОтправитьПуш</dataProcessors>
-  <informationRegisters>InformationRegister.АктуальныеВерсииПриложений</informationRegisters>
-  <informationRegisters>InformationRegister.ЗарегистрированныеУстройства</informationRegisters>
-  <informationRegisters>InformationRegister.ИДСообщений</informationRegisters>
-  <informationRegisters>InformationRegister.ИсторияСлужебныхСообщений</informationRegisters>
-  <informationRegisters>InformationRegister.ИсторияСообщений</informationRegisters>
-  <informationRegisters>InformationRegister.UserPasswords</informationRegisters>
-  <informationRegisters>InformationRegister.ПодключенияХолдинговКИсточникамИнформации</informationRegisters>
-  <informationRegisters>InformationRegister.ПодключенияХолдинговКСмсПровайдерам</informationRegisters>
-  <informationRegisters>InformationRegister.СертификатыПриложений</informationRegisters>
-  <informationRegisters>InformationRegister.СостояниеПользователя</informationRegisters>
+  <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
+  <informationRegisters>InformationRegister.messagesId</informationRegisters>
+  <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
+  <informationRegisters>InformationRegister.registeredDevices</informationRegisters>
+  <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
+  <informationRegisters>InformationRegister.usersPasswords</informationRegisters>
+  <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
+  <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
+  <informationRegisters>InformationRegister.applicationsCertificates</informationRegisters>
+  <informationRegisters>InformationRegister.usersStates</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>

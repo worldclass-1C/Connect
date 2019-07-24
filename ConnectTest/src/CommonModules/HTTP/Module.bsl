@@ -39,11 +39,11 @@ Function prepareRequestBody(val token, val requestStruct, val user,
 	JSONStruct.Insert("language", language);
 	JSONStruct.Insert("userId", XMLString(user));
 	JSONStruct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), timezone));
-	If appType = Enums.ВидыПриложений.Customer Then
+	If appType = Enums.appTypes.Customer Then
 		JSONStruct.Insert("appType", "Customer");
-	ElsIf appType = Enums.ВидыПриложений.Employee Then
+	ElsIf appType = Enums.appTypes.Employee Then
 		JSONStruct.Insert("appType", "Employee");
-	ElsIf appType = Enums.ВидыПриложений.Web Then
+	ElsIf appType = Enums.appTypes.Web Then
 		JSONStruct.Insert("appType", "Web");
 	Else
 		JSONStruct.Insert("appType", TrimAll(appType));
@@ -91,39 +91,39 @@ Function getRequestStructure(request, holding) Export
 	
 	query = New Query();
 	query.Text = "ВЫБРАТЬ
-	|	ПодключенияХолдинговКИсточникамИнформации.Холдинг КАК Холдинг,
-	|	ПодключенияХолдинговКИсточникамИнформации.ИсточникИнформации КАК ИсточникИнформации,
-	|	ПодключенияХолдинговКИсточникамИнформации.Сервер КАК Сервер,
-	|	ПодключенияХолдинговКИсточникамИнформации.Порт КАК Порт,
-	|	ПодключенияХолдинговКИсточникамИнформации.Пользователь КАК Пользователь,
-	|	ПодключенияХолдинговКИсточникамИнформации.Пароль КАК Пароль,
+	|	ПодключенияХолдинговКИсточникамИнформации.holding КАК holding,
+	|	ПодключенияХолдинговКИсточникамИнформации.informationSource КАК informationSource,
+	|	ПодключенияХолдинговКИсточникамИнформации.server КАК server,
+	|	ПодключенияХолдинговКИсточникамИнформации.port КАК port,
+	|	ПодключенияХолдинговКИсточникамИнформации.user КАК user,
+	|	ПодключенияХолдинговКИсточникамИнформации.password КАК password,
 	|	ПодключенияХолдинговКИсточникамИнформации.URL КАК URL,
-	|	ПодключенияХолдинговКИсточникамИнформации.Таймаут КАК Таймаут,
-	|	ПодключенияХолдинговКИсточникамИнформации.ЗащищенноеСоединение КАК ЗащищенноеСоединение,
-	|	ПодключенияХолдинговКИсточникамИнформации.ИспользоватьАутентификациюОС КАК ИспользоватьАутентификациюОС
+	|	ПодключенияХолдинговКИсточникамИнформации.timeout КАК timeout,
+	|	ПодключенияХолдинговКИсточникамИнформации.secureConnection КАК secureConnection,
+	|	ПодключенияХолдинговКИсточникамИнформации.UseOSAuthentication КАК UseOSAuthentication
 	|ПОМЕСТИТЬ ВТ
 	|ИЗ
-	|	РегистрСведений.ПодключенияХолдинговКИсточникамИнформации КАК ПодключенияХолдинговКИсточникамИнформации
+	|	РегистрСведений.holdingsConnectionsInformationSources КАК ПодключенияХолдинговКИсточникамИнформации
 	|ГДЕ
-	|	ПодключенияХолдинговКИсточникамИнформации.Холдинг = &holding
+	|	ПодключенияХолдинговКИсточникамИнформации.holding = &holding
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ.Сервер КАК Сервер,
-	|	ВТ.Порт КАК Порт,
-	|	ВТ.Пользователь КАК УчетнаяЗапись,
-	|	ВТ.Пароль КАК Пароль,
-	|	ВТ.Таймаут КАК Таймаут,
-	|	ВТ.ЗащищенноеСоединение КАК ЗащищенноеСоединение,
-	|	ВТ.ИспользоватьАутентификациюОС КАК ИспользоватьАутентификациюОС,
+	|	ВТ.server КАК server,
+	|	ВТ.port КАК port,
+	|	ВТ.user КАК УчетнаяЗапись,
+	|	ВТ.password КАК password,
+	|	ВТ.timeout КАК timeout,
+	|	ВТ.secureConnection КАК secureConnection,
+	|	ВТ.UseOSAuthentication КАК UseOSAuthentication,
 	|	ВТ.URL КАК URL,
-	|	ИсточникиИнформации.ЗапросПриемник КАК Приемник
+	|	informationSources.requestReceiver КАК Приемник
 	|ИЗ
-	|	Справочник.СоответствиеЗапросовИсточникамИнформации.ИсточникиИнформации КАК ИсточникиИнформации
+	|	Справочник.matchingRequestsInformationSources.informationSources КАК informationSources
 	|		INNER СОЕДИНЕНИЕ ВТ КАК ВТ
-	|		ПО ИсточникиИнформации.ИсточникИнформации = ВТ.ИсточникИнформации
+	|		ПО informationSources.informationSource = ВТ.informationSource
 	|ГДЕ
-	|	ИсточникиИнформации.ЗапросИсточник = &request";
+	|	informationSources.requestSource = &request";
 
 	query.SetParameter("holding", holding);
 	query.SetParameter("request", request);
@@ -132,13 +132,13 @@ Function getRequestStructure(request, holding) Export
 	If Not resultQuery.IsEmpty() Then
 		selection = resultQuery.Select();
 		selection.Next();
-		requestStruct.Insert("Сервер", selection.Сервер);
-		requestStruct.Insert("Порт", selection.Порт);
+		requestStruct.Insert("server", selection.Сервер);
+		requestStruct.Insert("port", selection.Порт);
 		requestStruct.Insert("УчетнаяЗапись", selection.УчетнаяЗапись);
-		requestStruct.Insert("Пароль", selection.Пароль);
-		requestStruct.Insert("Таймаут", selection.Таймаут);
-		requestStruct.Insert("ЗащищенноеСоединение", selection.ЗащищенноеСоединение);
-		requestStruct.Insert("ИспользоватьАутентификациюОС", selection.ИспользоватьАутентификациюОС);
+		requestStruct.Insert("password", selection.Пароль);
+		requestStruct.Insert("timeout", selection.Таймаут);
+		requestStruct.Insert("secureConnection", selection.ЗащищенноеСоединение);
+		requestStruct.Insert("UseOSAuthentication", selection.ИспользоватьАутентификациюОС);
 		requestStruct.Insert("URL", selection.URL);
 		requestStruct.Insert("Приемник", selection.Приемник);
 	EndIf;
@@ -160,11 +160,11 @@ EndFunction
 
 Procedure runRequestInAccountingSystem(selection, headers, body, link,
 		RequestParametersFromURL) Export
-	HTTPConnection = New HTTPConnection(selection.Сервер, , selection.УчетнаяЗапись, selection.Пароль, , selection.Таймаут, ?(selection.ЗащищенноеСоединение, New OpenSSLSecureConnection(), Undefined), selection.ИспользоватьАутентификациюОС);
+	HTTPConnection = New HTTPConnection(selection.server, , selection.УчетнаяЗапись, selection.password, , selection.timeout, ?(selection.ЗащищенноеСоединение, New OpenSSLSecureConnection(), Undefined), selection.UseOSAuthentication);
 	HTTPRequest = New HTTPRequest(selection.URL + selection.Приемник
 		+ RequestParametersFromURL, headers);
 	HTTPRequest.SetBodyFromString(body);
-	If selection.ТипЗапроса = Enums.ТипыHTTPЗапросов.GET Then
+	If selection.HTTPRequestType = Enums.HTTPRequestTypes.GET Then
 		HTTPResponse = HTTPConnection.Get(HTTPRequest);
 	Else
 		HTTPResponse = HTTPConnection.Post(HTTPRequest);

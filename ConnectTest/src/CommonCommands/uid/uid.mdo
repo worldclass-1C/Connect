@@ -7,12 +7,12 @@
   </synonym>
   <group>FormCommandBarImportant</group>
   <commandParameterType>
-    <types>CatalogRef.Холдинги</types>
-    <types>CatalogRef.Токены</types>
-    <types>CatalogRef.Сети</types>
-    <types>CatalogRef.Клубы</types>
-    <types>CatalogRef.Города</types>
-    <types>CatalogRef.Пользователи</types>
+    <types>CatalogRef.holdings</types>
+    <types>CatalogRef.tokens</types>
+    <types>CatalogRef.chain</types>
+    <types>CatalogRef.gyms</types>
+    <types>CatalogRef.cities</types>
+    <types>CatalogRef.users</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

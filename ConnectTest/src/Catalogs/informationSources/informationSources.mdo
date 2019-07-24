@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7f8938bc-3922-4658-9e4a-ec2abfd42a97">
+  <producedTypes>
+    <objectType typeId="d2ddb470-2cbf-47b7-a62d-2c711c7f7d83" valueTypeId="496ddcbd-211f-4bee-bf63-4950cff90ea1"/>
+    <refType typeId="7eb7e906-3ad0-4cfe-b35e-b53e90569287" valueTypeId="9fe4a14a-f2de-4f4d-a41f-6e2ec38f7b11"/>
+    <selectionType typeId="7086e4b0-8484-4f0c-80aa-75a8fdbb6f06" valueTypeId="09485cf8-4c42-4900-8593-cdf42fb3278e"/>
+    <listType typeId="c89109ba-595a-419c-88d6-9f7f7d490c8b" valueTypeId="fa369764-61f8-404b-bf24-de6567b2acdd"/>
+    <managerType typeId="f4bb7f19-db24-44a2-b92a-b4ffa9b9f2b1" valueTypeId="a29f2e4c-fdb5-4ef1-83ce-d2663e76d519"/>
+  </producedTypes>
+  <name>informationSources</name>
+  <synonym>
+    <key>en</key>
+    <value>Information sources</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Источники информации</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.informationSources.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.informationSources.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <synonym>
+      <key>en</key>
+      <value>Code</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Код</value>
+    </synonym>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Description</name>
+    <synonym>
+      <key>en</key>
+      <value>Description</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Наименование</value>
+    </synonym>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Information source</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Источник информации</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Information source</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Источник информации</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Information sources</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Источники информации</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Information sources</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Источники информации</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>
