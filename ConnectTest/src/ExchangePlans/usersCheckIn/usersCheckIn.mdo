@@ -118,10 +118,10 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <attributes uuid="f9ca6a94-4e00-4a80-903d-96b4d9329853">
-    <name>ТипРегистрации</name>
+    <name>registrationType</name>
     <synonym>
       <key>ru</key>
-      <value>Тип регистрации</value>
+      <value>Registration type</value>
     </synonym>
     <type>
       <types>EnumRef.registrationTypes</types>

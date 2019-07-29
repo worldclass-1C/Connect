@@ -8,36 +8,39 @@
     Возврат Подписчик;    
 КонецФункции
 
-Функция НовоеСообщение(ДанныеСообщения) Экспорт
+Function newMessage(messageData, sendImmediately = False) Export
 	
-	СообщениеОбъект	= Справочники.messages.СоздатьЭлемент();
+	messageObject = Catalogs.messages.CreateItem();
+
+	messageObject.objectId = ?(messageData.Property("objectId"), messageData.objectId, "");
+	messageObject.objectType = ?(messageData.Property("objectType"), messageData.objectType, "");
+	messageObject.action = ?(messageData.Property("action"), messageData.action, "");
+	messageObject.registrationDate = ToUniversalTime(CurrentDate());
+	messageObject.title = ?(messageData.Property("title"), messageData.title, "");
+	messageObject.gym = ?(messageData.Property("gym"), messageData.gym, Catalogs.gyms.EmptyRef());
+	messageObject.phone = StrReplace(?(messageData.Property("phone"), messageData.phone, ""), "+", "");
+	messageObject.user = ?(messageData.Property("user"), messageData.user, Catalogs.users.EmptyRef());	
+	messageObject.priority = ?(messageData.Property("priority"), messageData.priority, 10000);
+	messageObject.text = ?(messageData.Property("text"), messageData.text, "");
+	messageObject.holding = messageData.holding;
+
+	For Each informationChannel In messageData.informationChannels Do
+		newRow = messageObject.channelPriorities.Add();
+		newRow.channel = informationChannel;
+	EndDo;
+	messageObject.Write();
 	
-	СообщениеОбъект.objectId		= ?(ДанныеСообщения.Свойство("objectId"), ДанныеСообщения.ОбъектИД, "");
-	СообщениеОбъект.objectType		= ?(ДанныеСообщения.Свойство("objectType"), ДанныеСообщения.ОбъектТип, "");
-	СообщениеОбъект.action		= ?(ДанныеСообщения.Свойство("action"), ДанныеСообщения.Действие, "");
-	СообщениеОбъект.registrationDate	= УниверсальноеВремя(ТекущаяДата());
-	СообщениеОбъект.title		= ?(ДанныеСообщения.Свойство("title"), ДанныеСообщения.Заголовок, "");
-	СообщениеОбъект.gym			= ?(ДанныеСообщения.Свойство("gym"), ДанныеСообщения.Клуб, Справочники.gyms.ПустаяСсылка());
-	СообщениеОбъект.phone	= СтрЗаменить(?(ДанныеСообщения.Свойство("phone"), ДанныеСообщения.НомерТелефона, ""),"+","");
-	СообщениеОбъект.user	= ?(ДанныеСообщения.Свойство("user"), ДанныеСообщения.Пользователь, Справочники.users.ПустаяСсылка());
-	//СообщениеОбъект.token			= ?(ДанныеСообщения.Свойство("token"), ДанныеСообщения.token, Catalogs.tokens.ПустаяСсылка());
-	СообщениеОбъект.priority		= ?(ДанныеСообщения.Свойство("priority"), ДанныеСообщения.Приоритет, 10000);
-	СообщениеОбъект.text			= ?(ДанныеСообщения.Свойство("text"), ДанныеСообщения.Текст, "");
-	СообщениеОбъект.holding			= ДанныеСообщения.holding;
+	If sendImmediately then
+		Messages.ОтправитьСмсПоХолдингу(GeneralReuse.nodeMessagesToSend(informationChannel), GeneralReuse.nodeMessagesToCheckStatus(informationChannel), messageData.holding, informationChannel);	
+	Else
+		If messageObject.channelPriorities.Count() > 0 Then
+			ExchangePlans.RecordChanges(GeneralReuse.nodeMessagesToSend(messageObject.channelPriorities[0].channel), messageObject);
+		EndIf;
+	EndIf;
+
+	Return messageObject.ref;
 	
-	Для Каждого КаналИнформирования Из ДанныеСообщения.informationChannels Цикл
-		НоваяСтрока	= СообщениеОбъект.channelPriorities.Добавить();
-		НоваяСтрока.channel	= КаналИнформирования;
-	КонецЦикла;	
-	СообщениеОбъект.Записать();
-	
-	Если СообщениеОбъект.channelPriorities.Количество() > 0 Тогда 
-		ПланыОбмена.ЗарегистрироватьИзменения(GeneralReuse.УзелСообщенияКОтправке(СообщениеОбъект.channelPriorities[0].Канал), СообщениеОбъект);
-	КонецЕсли; 
-	
-	Возврат СообщениеОбъект.Ссылка;
-	
-КонецФункции
+EndFunction
 
 Функция ДанныеPush(action = "", objectId = "", objectType = "", noteId = "") Экспорт
 	СтруктураJSON	= Новый Структура;
@@ -45,7 +48,7 @@
 	СтруктураJSON.Вставить("objectId", objectId);
 	СтруктураJSON.Вставить("objectType", objectType);
 	СтруктураJSON.Вставить("noteId", XMLСтрока(noteId));
-	Возврат	HTTP.GetJSONFromStructure(СтруктураJSON);    
+	Возврат	HTTP.encodeJSON(СтруктураJSON);    
 КонецФункции
 
 Процедура ОтправитьPush(Параметры) Экспорт
@@ -63,9 +66,9 @@
 		СтруктураJSON.Вставить("objectId", Параметры.ОбъектИД);
 		СтруктураJSON.Вставить("objectType", Параметры.ОбъектТип);
 		СтруктураJSON.Вставить("noteId", XMLСтрока(Параметры.Сообщение));
-		Уведомление.Данные	= HTTP.GetJSONFromStructure(СтруктураJSON);
+		Уведомление.Данные	= HTTP.encodeJSON(СтруктураJSON);
 		
-		ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.ДанныеАутентификации(Параметры.ОперационнаяСистема, Параметры.Сертификат));
+		ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.getAuthorizationKey(Параметры.ОперационнаяСистема, Параметры.Сертификат));
 		Если Не Параметры.message.Пустая() Тогда
 			ДобавитьИсторию(Параметры.Сообщение, Параметры.КаналИнформирования, Перечисления.messageStatuses.sent, "", УниверсальноеВремя(ТекущаяДата()), Параметры.Токен);
 		КонецЕсли;
@@ -108,8 +111,8 @@
 
 Процедура ОтправитьСообщения(КаналИнформирования) Экспорт
 	
-	УзелСообщенияКОтправке			= GeneralReuse.УзелСообщенияКОтправке(КаналИнформирования);
-	УзелСообщенияПроверкаСтатуса	= GeneralReuse.УзелСообщенияПроверкаСтатуса(КаналИнформирования);	
+	УзелСообщенияКОтправке			= GeneralReuse.nodeMessagesToSend(КаналИнформирования);
+	УзелСообщенияПроверкаСтатуса	= GeneralReuse.nodeMessagesToCheckStatus(КаналИнформирования);	
 	
 	Если КаналИнформирования = Перечисления.informationChannels.sms Тогда
 		ИмяМетода	= "РаботаССообщениями.ОтправитьСмсПоХолдингу";
@@ -177,7 +180,7 @@
 		КоличествоКаналов		= Сообщение.channelPriorities.Количество();
 		ИндексТекущегоКанала	= СтрокаТекущийКанал.НомерСтроки - 1;
 		Если ИндексТекущегоКанала < КоличествоКаналов - 1 Тогда
-			ПланыОбмена.ЗарегистрироватьИзменения(GeneralReuse.УзелСообщенияКОтправке(Сообщение.channelPriorities[ИндексТекущегоКанала + 1].Канал), Сообщение);
+			ПланыОбмена.ЗарегистрироватьИзменения(GeneralReuse.nodeMessagesToSend(Сообщение.channelPriorities[ИндексТекущегоКанала + 1].Канал), Сообщение);
 		КонецЕсли;
 	КонецЕсли;
 КонецПроцедуры
@@ -391,12 +394,12 @@
 	             	  |	ЕСТЬNULL(НеПрочитанныеСообщения.Количество, 0) КАК Наклейка
 	             	  |ИЗ
 	             	  |	ВТ_Устройства КАК ВТ_Устройства
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияДляСети
+	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияДляСети
 	             	  |		ПО ВТ_Устройства.chain = СертификатПриложенияДляСети.chain
 	             	  |			И ВТ_Устройства.appType = СертификатПриложенияДляСети.appType
 	             	  |			И ВТ_Устройства.systemType = СертификатПриложенияДляСети.systemType
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияОбщий
-	             	  |		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chain.ПустаяСсылка))
+	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияОбщий
+	             	  |		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chains.ПустаяСсылка))
 	             	  |			И ВТ_Устройства.appType = СертификатПриложенияОбщий.appType
 	             	  |			И ВТ_Устройства.systemType = СертификатПриложенияОбщий.systemType
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НеПрочитанныеСообщения КАК НеПрочитанныеСообщения

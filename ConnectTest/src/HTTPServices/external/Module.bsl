@@ -1,4 +1,4 @@
 
 Function ProcessRequestPOST(Request)
-	Return General.ProcessRequest(Request);
+	Return HTTP.processRequest(Request);
 EndFunction

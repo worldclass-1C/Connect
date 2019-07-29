@@ -525,19 +525,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>informationSourcesrequestSource</name>
-      <id>53</id>
+      <name>informationSourcesrequestReceiver</name>
+      <id>80</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Items.List.CurrentData.informationSources.requestSource</segments>
+        <segments>Items.List.CurrentData.informationSources.requestReceiver</segments>
       </dataPath>
       <extendedTooltip>
-        <name>informationSourcesrequestSourceExtendedTooltip</name>
-        <id>55</id>
+        <name>informationSourcesrequestReceiverExtendedTooltip</name>
+        <id>82</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -551,58 +551,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>informationSourcesrequestSourceContextMenu</name>
-        <id>54</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>InputField</type>
-      <editMode>Enter</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:InputFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <wrap>true</wrap>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
-      </extInfo>
-    </items>
-    <items xsi:type="form:FormField">
-      <name>informationSourcesinformationSource</name>
-      <id>47</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Items.List.CurrentData.informationSources.informationSource</segments>
-      </dataPath>
-      <extendedTooltip>
-        <name>informationSourcesinformationSourceExtendedTooltip</name>
-        <id>49</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <contextMenu>
-        <name>informationSourcesinformationSourceContextMenu</name>
-        <id>48</id>
+        <name>informationSourcesrequestReceiverContextMenu</name>
+        <id>81</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>

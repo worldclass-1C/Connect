@@ -328,7 +328,7 @@
       <value>Сеть</value>
     </synonym>
     <type>
-      <types>CatalogRef.chain</types>
+      <types>CatalogRef.chains</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

@@ -1,142 +1,154 @@
 
-Function getErrorDescription(language = "", error = "", description = "") Export
+Function getErrorDescription(language = "", result = "", description = "") Export
 	
-	errorDescription	= New Structure("error, description", error, description);
+	errorDescription	= New Structure("result, description", result, description);
 	
 	If description = "" Then
-		If error = "noRequest" Then
+		If result = "noRequest" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Не определен запрос");
 			Else
 				errorDescription.Insert("description", "no request");
 			EndIf;
-		ElsIf error = "userNotIdentified" Then
+		ElsIf result = "userNotIdentified" Then
 			If language = "ru" Then
-				errorDescription.Insert("description", "user не идентифицирован");
+				errorDescription.Insert("description", "Пользователь не идентифицирован");
 			Else
-				errorDescription.Insert("description", "User not identified");
+				errorDescription.Insert("description", "User is not identified");
 			EndIf;
-		ElsIf error = "userPasswordExpired" Then
+		ElsIf result = "userNotfound" Then
 			If language = "ru" Then
-				errorDescription.Insert("description", "password просрочен");
+				errorDescription.Insert("description", "Пользователь не найден");
+			Else
+				errorDescription.Insert("description", "User is not found");
+			EndIf;
+		ElsIf result = "userPasswordExpired" Then
+			If language = "ru" Then
+				errorDescription.Insert("description", "Пароль просрочен");
 			Else
 				errorDescription.Insert("description", "Password expired");
 			EndIf;	
-		ElsIf error = "noUserLogin" Then
+		ElsIf result = "noUserLogin" Then
 			If language = "ru" Then
-				errorDescription.Insert("description", "Не указан login");
+				errorDescription.Insert("description", "Не указан логин");
 			Else
 				errorDescription.Insert("description", "No user login");
 			EndIf;
-		ElsIf error = "noUserPassword" Then	
+		ElsIf result = "noUserPassword" Then	
 			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан password");
+				errorDescription.Insert("description", "Не указан пароль");
 			Else
 				errorDescription.Insert("description", "No user password");
 			EndIf;
-		ElsIf error = "PasswordIsNotCorrect" Then	
+		ElsIf result = "passwordIsNotCorrect" Then	
 			Если language = "ru" Then
-				errorDescription.Insert("description", "Неверный password");
+				errorDescription.Insert("description", "Неверный пароль");
 			Else
 				errorDescription.Insert("description", "Password is not correct");
 			EndIf;
-		ElsIf error = "passwordIsEmpty" Then	
+		ElsIf result = "passwordIsEmpty" Then	
 			Если language = "ru" Then
-				errorDescription.Insert("description", "password не может быть пустым");
+				errorDescription.Insert("description", "Пароль не может быть пустым");
 			Else
 				errorDescription.Insert("description", "Password can not be empty");
 			EndIf;	
-		ElsIf error = "noChain" Then	
+		ElsIf result = "noChain" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан код сети");
 			Else
 				errorDescription.Insert("description", "No chain code");
 			EndIf;
-		ElsIf error = "noAuthKey" Then	
+		ElsIf result = "noAuthKey" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан код авторизации");
 			Else
 				errorDescription.Insert("description", "No auth-key");
 			EndIf;
-		ElsIf error = "noAppType" Then	
+		ElsIf result = "noAppType" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан тип приложения");
 			Else
 				errorDescription.Insert("description", "No app type");
 			EndIf;
-		ElsIf error = "noDeviceToken" Then	
+		ElsIf result = "noDeviceToken" Then	
 			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан token устройства");
+				errorDescription.Insert("description", "Не указан токен устройства");
 			Else
 				errorDescription.Insert("description", "No device token");
 			EndIf;
-		ElsIf error = "noSystemType" Then	
+		ElsIf result = "noToken" Then	
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Не указан токен");
+			Else
+				errorDescription.Insert("description", "No token");
+			EndIf;	
+		ElsIf result = "noSystemType" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан тип ОС");
 			Else
 				errorDescription.Insert("description", "No system type");
 			EndIf;
-		ElsIf error = "noSystemVersion" Then	
+		ElsIf result = "noSystemVersion" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указана версия ОС");
 			Else
 				errorDescription.Insert("description", "No system version");
 			EndIf;
-		ElsIf error = "noAppVersion" Then	
+		ElsIf result = "noAppVersion" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указана версия приложения");
 			Else
 				errorDescription.Insert("description", "No app version");
 			EndIf;
-		ElsIf error = "noCauses" Then	
+		ElsIf result = "noCauses" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не заполнены причины отмены");
 			Else
 				errorDescription.Insert("description", "No causes");
 			EndIf;
-		ElsIf error = "staffOnly" Then	
+		ElsIf result = "staffOnly" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Только для сотрудников");
 			Else
 				errorDescription.Insert("description", "staff only");
 			EndIf;	
-		ElsIf error = "noUrl" Then	
+		ElsIf result = "noUrl" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан url");
 			Else
 				errorDescription.Insert("description", "No url");
 			EndIf;
-		ElsIf error = "noRoutes" Then	
+		ElsIf result = "noRoutes" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указаны каналы информирования");
 			Else
 				errorDescription.Insert("description", "No information routes");
 			EndIf;
-		ElsIf error = "noMessages" Then	
+		ElsIf result = "noMessages" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Нет сообщений");
 			Else
 				errorDescription.Insert("description", "No messages");
 			EndIf;
-		ElsIf error = "noUserPhone" Then	
+		ElsIf result = "noUserPhone" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан телефон");
 			Else
 				errorDescription.Insert("description", "no user phone");
 			EndIf;
-		ElsIf error = "noNoteId" Then	
+		ElsIf result = "noNoteId" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указано уведомление");
 			Else
 				errorDescription.Insert("description", "no notification");
 			EndIf;
-		ElsIf error = "limitExceeded" Then	
+		ElsIf result = "limitExceeded" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Превышен лимит сообщений");
 			Else
 				errorDescription.Insert("description", "Message limit exceeded");
 			EndIf;	
-		ElsIf error = "messageCanNotSent" Then	
+		ElsIf result = "messageCanNotSent" Then	
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Повторное сообщение можно отправить через 15 минут");
 			Else
@@ -186,29 +198,29 @@ Function canSendSms(language, phone) Export
 	universalTime		= ToUniversalTime(CurrentDate());
 	
 	query	= New Query();
-	query.Text	= "ВЫБРАТЬ
-	|	РАЗНОСТЬДАТ(ИсторияСлужебныхСообщений.registrationDate, &universalTime, МИНУТА) КАК minutesPassed,
-	|	ЕСТЬNULL(ИсторияСлужебныхСообщений.quantity, 0) КАК quantity,
-	|	ЕСТЬNULL(ИсторияСлужебныхСообщений.registrationDate, &universalTime) КАК registrationDate
-	|ПОМЕСТИТЬ ВТ
-	|ИЗ
-	|	РегистрСведений.serviceMessagesLogs КАК ИсторияСлужебныхСообщений
-	|ГДЕ
-	|	ИсторияСлужебныхСообщений.phone = &phone
+	query.Text	= "SELECT
+	|	DATEDIFF(serviceMessagesLogs.recordDate, &universalTime, MINUTE) AS minutesPassed,
+	|	ISNULL(serviceMessagesLogs.quantity, 0) AS quantity,
+	|	ISNULL(serviceMessagesLogs.recordDate, &universalTime) AS recordDate
+	|INTO TT
+	|FROM
+	|	InformationRegister.serviceMessagesLogs AS serviceMessagesLogs
+	|WHERE
+	|	serviceMessagesLogs.phone = &phone
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|ВЫБРАТЬ
-	|	СУММА(ВТ.minutesPassed) КАК minutesPassed,
-	|	СУММА(ВТ.quantity) КАК quantity
-	|ИЗ
-	|	ВТ КАК ВТ
-	|ГДЕ
-	|	ВТ.registrationDate >= &registrationDate
-	|ИМЕЮЩИЕ
-	|	СУММА(ВТ.quantity) > 0";
+	|SELECT
+	|	SUM(TT.minutesPassed) AS minutesPassed,
+	|	SUM(TT.quantity) AS quantity
+	|FROM
+	|	TT AS TT
+	|WHERE
+	|	TT.recordDate >= &recordDate
+	|HAVING
+	|	SUM(TT.quantity) > 0";
 	
 	query.SetParameter("phone", phone);
-	query.SetParameter("registrationDate", AddMonth(universalTime, - 1));
+	query.SetParameter("recordDate", AddMonth(universalTime, - 1));
 	query.SetParameter("universalTime", universalTime);
 	
 	queryResult	= query.Execute();
@@ -227,7 +239,228 @@ Function canSendSms(language, phone) Export
 
 EndFunction 
 
-Procedure FixSandingMessage(phone) Export
+Function createCatalogItems(parameters) Export
+
+	attributesStruct	= Service.attributesStructure(parameters.requestName);
+	requestStruct		= parameters.requestStruct;
+	items 				= New Array();
+	password			= "";
+	
+	If TypeOf(requestStruct) = Type("Array") Then
+		For Each requestParameter In requestStruct Do		
+			catalogRef		= Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
+			catalogObject	= catalogRef.GetObject();
+			setPassword = False;
+			If catalogObject = Undefined Then
+				catalogObject = Catalogs[attributesStruct.mdObjectName].CreateItem();
+				catalogObject.SetNewObjectRef(catalogRef);
+				For Each attribute In attributesStruct.attributesTableForNewItem Do
+					If attribute.key = "password"
+							And requestParameter.Propery(attribute.value) Then
+						setPassword = True;
+						password = XMLValue(Type(attribute.type), requestParameter[attribute.value])
+					Else
+						catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+					EndIf;
+				EndDo;
+			EndIf;
+			For Each attribute In attributesStruct.attributesTable Do			
+				If attribute.type = "valueTable" Then
+					catalogObject[attribute.key].Clear();
+					For Each item In requestParameter[attribute.value] Do
+						newRow = catalogObject[attribute.key].Add();
+						For Each tableProperty In attributesStruct.mdStruct[attribute.key] Do
+							If tableProperty.type = "ref" Then
+								For Each refProperty In attributesStruct.mdStruct[tableProperty.key] Do
+									newRow[tableProperty.key] = Catalogs[refProperty.key].GetRef(New UUID(item[tableProperty.Значение][refProperty.value]));
+								EndDo;
+							Else
+								newRow[tableProperty.key] = item[tableProperty.value];
+							EndIf;
+						EndDo;
+					EndDo;
+				ElsIf attribute.type = "ref" Then
+					For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
+						catalogObject[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
+					EndDo;
+				Else
+					catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+				EndIf;
+			EndDo;
+			If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
+				catalogObject.holding = parameters.holding;
+				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
+			EndIf;
+			catalogObject.Write();
+			items.Add(catalogObject.Ref);
+			If setPassword Then
+				Users.setUserPassword(catalogObject.Ref, password);
+			EndIf;
+		EndDo;
+	EndIf;
+
+	Return items;
+
+EndFunction
+
+Function runRequest(parameters, body, address = "") Export
+	headers = New Map();
+	headers.Insert("Content-Type", "application/json");	
+	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.UseOSAuthentication);
+	request = New HTTPRequest(parameters.URL + parameters.requestReceiver
+		+ parameters.parametersFromURL, headers);
+	request.SetBodyFromString(body);
+	response	= ?(parameters.HTTPRequestType = Enums.HTTPRequestTypes.GET, connection.Get(request), connection.Post(request));
+	If address = "" Then
+		Return response;
+	Else
+		PutToTempStorage(New Structure("statusCode, answerBody", response.statusCode, response.GetBodyAsString()), address);
+	EndIf;
+EndFunction
+
+Function runRequestBackground(parameters, body) Export	
+	address	= PutToTempStorage("");
+	array = New Array();
+	array.Add(parameters);	
+	array.Add(body);
+	array.Add(address);	
+	Return New Structure("address, BJ", address, BackgroundJobs.Execute("Service.runRequest", array, New UUID()));
+EndFunction
+
+Function checkBackgroundJobs(array) Export
+	answer = New Structure();
+	minStatusCode = 600;
+	For Each struct In array Do
+		If struct.BJ.State = BackgroundJobState.Active Then
+			backgroundJob = struct.BJ.WaitForExecutionCompletion(25);
+			If backgroundJob.State <> BackgroundJobState.Active Then
+				response = GetFromTempStorage(struct.address);
+				minStatusCode = Min(minStatusCode, response.statusCode);				
+				answer.Insert(struct.attribute, HTTP.decodeJSON(response.answerBody));
+			EndIf;
+		Else			
+			response = GetFromTempStorage(struct.address);
+			minStatusCode = Min(minStatusCode, response.statusCode);				
+			answer.Insert(struct.attribute, HTTP.decodeJSON(response.answerBody));
+		EndIf;	
+	EndDo;
+	Return New Structure("statusCode, answerBody", minStatusCode, HTTP.encodeJSON(answer));
+EndFunction
+
+Function attributesStructure(requestName) Export
+
+	attributesTable = New ValueTable;
+	attributesTable.Columns.Add("key");
+	attributesTable.Columns.Add("value");
+	attributesTable.Columns.Add("type");
+
+	attributesTableForNewItem = New ValueTable;
+	attributesTableForNewItem.Columns.Add("key");
+	attributesTableForNewItem.Columns.Add("value");
+	attributesTableForNewItem.Columns.Add("type");
+
+	mdStruct 		= New Structure();
+	mdObjectName	= "";
+
+	If requestName = "addUsers" Then
+
+		mdObjectName = "users";
+
+		addRowInAttributesTable(attributesTable, "email", "email", "string");
+		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
+		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
+		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
+		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");
+		addRowInAttributesTable(attributesTable, "phone", "phoneNumber", "string");
+		addRowInAttributesTable(attributesTable, "sex", "gender", "string");
+		addRowInAttributesTable(attributesTable, "userType", "userType", "string");
+		addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
+		addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
+		addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
+
+		//addRowInAttributesTable(attributesTableForNewItem, "login", "phoneNumber", "string");
+		//addRowInAttributesTable(attributesTableForNewItem, "password", "password", "Строка");
+
+	ElsIf requestName = "addGyms" Then
+
+		mdObjectName = "gyms";
+
+		addRowInAttributesTable(attributesTable, "Наименование", "name", "string");
+		addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
+		addRowInAttributesTable(attributesTable, "segment", "division", "string");
+		addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
+		addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
+		addRowInAttributesTable(attributesTable, "type", "type", "string");
+		addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "valueTable");
+		addRowInAttributesTable(attributesTable, "city", "city", "ref");
+
+		attributesTableDepartmentWorkSchedule = New ValueTable();;
+		attributesTableDepartmentWorkSchedule.Columns.Add("key");
+		attributesTableDepartmentWorkSchedule.Columns.Add("value");
+		attributesTableDepartmentWorkSchedule.Columns.Add("type");
+
+		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "department", "name", "string");
+		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "phone", "phone", "string");
+		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "weekdaysTime", "weekdaysTime", "string");
+		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "holidaysTime", "holidaysTime", "string");
+
+		cityStruct = New Structure();
+		cityStruct.Insert("cities", "id");
+
+		mdStruct.Insert("departmentWorkSchedule", attributesTableDepartmentWorkSchedule);
+		mdStruct.Insert("city", cityStruct);
+
+	ElsIf requestName = "addCities" Then
+
+		mdObjectName = "cities";
+		addRowInAttributesTable(attributesTable, "description", "name", "string");
+
+	ElsIf requestName = "addCancelcauses" Then
+
+		mdObjectName = "cancellationReasons";
+		addRowInAttributesTable(attributesTable, "description", "name", "string");
+
+	ElsIf requestName = "addRequest" Then
+
+		mdObjectName = "matchingRequestsInformationSources";
+
+		addRowInAttributesTable(attributesTable, "code", "code", "string");
+		addRowInAttributesTable(attributesTable, "performBackground", "performBackground", "boolean");
+		addRowInAttributesTable(attributesTable, "notSaveAnswer", "notSaveAnswer", "boolean");
+		addRowInAttributesTable(attributesTable, "compressAnswer", "compressAnswer", "boolean");
+		addRowInAttributesTable(attributesTable, "staffOnly", "staffOnly", "boolean");
+
+		addRowInAttributesTable(attributesTable, "informationSources", "informationSources", "valueTable");
+
+		attributesTableInformationSources = New ТаблицаЗначений;
+		attributesTableInformationSources.Columns.Add("key");
+		attributesTableInformationSources.Columns.Add("value");
+		attributesTableInformationSources.Columns.Add("type");
+
+		addRowInAttributesTable(attributesTableInformationSources, "atribute", "atribute", "string");
+		addRowInAttributesTable(attributesTableInformationSources, "performBackground", "performBackground", "boolean");
+		addRowInAttributesTable(attributesTableInformationSources, "notSaveAnswer", "notSaveAnswer", "boolean");
+		addRowInAttributesTable(attributesTableInformationSources, "compressAnswer", "compressAnswer", "boolean");
+		addRowInAttributesTable(attributesTableInformationSources, "staffOnly", "staffOnly", "boolean");
+		addRowInAttributesTable(attributesTableInformationSources, "notUse", "notUse", "boolean");
+		addRowInAttributesTable(attributesTableInformationSources, "requestSource", "requestSource", "string");
+		addRowInAttributesTable(attributesTableInformationSources, "requestReceiver", "requestReceiver", "string");
+		addRowInAttributesTable(attributesTableInformationSources, "informationSource", "informationSource", "ref");
+
+		informationSourceStruct = New Structure();
+		informationSourceStruct.Insert("informationSources", "uid");
+
+		mdStruct.Insert("informationSources", attributesTableInformationSources);
+		mdStruct.Insert("informationSource", informationSourceStruct);
+
+	EndIf;
+
+	Return New Structure("mdObjectName, attributesTable, attributesTableForNewItem, mdStruct", mdObjectName, attributesTable, attributesTableForNewItem, mdStruct);
+
+EndFunction
+
+Procedure logServiceMessage(phone) Export
 	
 	universalTime		= ToUniversalTime(CurrentDate());
 	
@@ -283,6 +516,14 @@ Procedure logRequest(parameters) Export
 	
 	record.Write();		
 		
+EndProcedure
+
+Procedure addRowInAttributesTable(attributesTable, key, value,
+		type)
+	newRow			= attributesTable.Add();
+	newRow.key		= key;
+	newRow.value	= value;
+	newRow.type		= type;
 EndProcedure
 
 Процедура РассчитатьПоказатели() Экспорт
@@ -637,7 +878,7 @@ EndProcedure
 	
 	Выборка	= пЗапрос.Выполнить().Выбрать();
 	
-	Узел	= GeneralReuse.УзелРегистрацияПользователя(Enums.registrationTypes.checkIn);
+	Узел	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
 	
 	Пока Выборка.Следующий() Цикл	
 		СтруктураЗапроса = HTTP.GetRequestStructure(?(Выборка.lockDate = Дата(1,1,1), "registerAccount", "unregisterAccount"), Выборка.Холдинг);
@@ -648,7 +889,7 @@ EndProcedure
 			СтруктураHTTPЗапроса.Вставить("appType", XMLСтрока(Выборка.ВидПриложения));			
 			HTTPСоединение	= Новый HTTPСоединение(СтруктураЗапроса.server,, СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.password,, СтруктураЗапроса.timeout, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.UseOSAuthentication);
 			ЗапросHTTP = Новый HTTPЗапрос(СтруктураЗапроса.URL + СтруктураЗапроса.Приемник, Заголовки);
-			ЗапросHTTP.УстановитьТелоИзСтроки(HTTP.GetJSONFromStructure(СтруктураHTTPЗапроса));			
+			ЗапросHTTP.УстановитьТелоИзСтроки(HTTP.encodeJSON(СтруктураHTTPЗапроса));			
 			ОтветHTTP	= HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
 			Если ОтветHTTP.КодСостояния = 200 Тогда
 				ПланыОбмена.УдалитьРегистрациюИзменений(Узел, Выборка.Пользователь);
@@ -691,12 +932,12 @@ EndProcedure
 	             	  |	ВТ.systemType КАК systemType
 	             	  |ИЗ
 	             	  |	ВТ КАК ВТ
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияДляСети
+	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияДляСети
 	             	  |		ПО ВТ.chain = СертификатПриложенияДляСети.chain
 	             	  |			И ВТ.appType = СертификатПриложенияДляСети.appType
 	             	  |			И ВТ.systemType = СертификатПриложенияДляСети.systemType
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.applicationsCertificates КАК СертификатПриложенияОбщий
-	             	  |		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chain.ПустаяСсылка))
+	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияОбщий
+	             	  |		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chains.ПустаяСсылка))
 	             	  |			И ВТ.appType = СертификатПриложенияОбщий.appType
 	             	  |			И ВТ.systemType = СертификатПриложенияОбщий.systemType
 	             	  |ГДЕ
@@ -730,7 +971,7 @@ EndProcedure
 			Уведомление.text				= "registerDevice";
 					
 			ИсключенныеПолучатели	= Новый Массив;			
-			ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.ДанныеАутентификации(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
+			ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.getAuthorizationKey(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
 						
 			Если ИсключенныеПолучатели.Количество() > 0 Тогда				
 				Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
@@ -753,7 +994,7 @@ EndProcedure
 		//Уведомление.ЗвуковоеОповещение	= ЗвуковоеОповещение.ПоУмолчанию;
 		
 		ИсключенныеПолучатели	= Новый Массив;			
-		ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.ДанныеАутентификации(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
+		ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.getAuthorizationKey(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
 		
 		Если ИсключенныеПолучатели.Количество() > 0 Тогда				
 			Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
@@ -790,135 +1031,4 @@ EndProcedure
 	
 КонецПроцедуры
 
-Function RunBackground(selection, headers, body, link,
-		RequestParametersFromURL) Export
-	Parameters = New Array();
-	Parameters.Add(selection);
-	Parameters.Add(headers);
-	Parameters.Add(body);
-	Parameters.Add(link);
-	Parameters.Add(RequestParametersFromURL);
-	Return BackgroundJobs.Execute("HTTP.RunRequestInAccountingSystem", Parameters, New UUID());
-EndFunction
-
-Function СтруктураАтрибутовВнешнегоЗапроса(ИмяЗапроса) Export
-
-	ТаблицаАтрибутов = New ТаблицаЗначений;
-	ТаблицаАтрибутов.Колонки.Добавить("Ключ");
-	ТаблицаАтрибутов.Колонки.Добавить("Значение");
-	ТаблицаАтрибутов.Колонки.Добавить("Тип");
-
-	ТаблицаАтрибутовДляНовогоЭлемента = New ТаблицаЗначений;
-	ТаблицаАтрибутовДляНовогоЭлемента.Колонки.Добавить("Ключ");
-	ТаблицаАтрибутовДляНовогоЭлемента.Колонки.Добавить("Значение");
-	ТаблицаАтрибутовДляНовогоЭлемента.Колонки.Добавить("Тип");
-
-	СтруктураМД = New Структура;
-	ИмяОбъектаМетаданных = "";
-
-	Если ИмяЗапроса = "users" Тогда
-
-		ИмяОбъектаМетаданных = "Пользователи";
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Email", "email", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "birthday", "birthdayDate", "Дата");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "lastName", "lastName", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "firstName", "firstName", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "secondName", "secondName", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "userCode", "cid", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "phone", "phoneNumber", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "sex", "gender", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "userType", "userType", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "barCode", "barcode", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "notSubscriptionEmail", "noSubscriptionEmail", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "notSubscriptionSms", "noSubscriptionSms", "Булево");
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовДляНовогоЭлемента, "login", "cid", "Строка");
-		//ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовДляНовогоЭлемента, "password", "password", "Строка");
-
-	ElsIf ИмяЗапроса = "gyms" Тогда
-
-		ИмяОбъектаМетаданных = "Клубы";
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Наименование", "name", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Адрес", "gymAddress", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Сегмент", "division", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Широта", "latitude", "Число");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Долгота", "longitude", "Число");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Тип", "type", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "departmentWorkSchedule", "departments", "ТабличнаяЧасть");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Город", "city", "Ссылка");
-
-		ТаблицаАтрибутовТЧГрафикРаботыОтделов = New ТаблицаЗначений;
-		ТаблицаАтрибутовТЧГрафикРаботыОтделов.Колонки.Добавить("Ключ");
-		ТаблицаАтрибутовТЧГрафикРаботыОтделов.Колонки.Добавить("Значение");
-		ТаблицаАтрибутовТЧГрафикРаботыОтделов.Колонки.Добавить("Тип");
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧГрафикРаботыОтделов, "department", "name", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧГрафикРаботыОтделов, "phone", "phone", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧГрафикРаботыОтделов, "weekdaysTime", "weekdaysTime", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧГрафикРаботыОтделов, "holidaysTime", "holidaysTime", "Строка");
-
-		СтруктураГород = New Структура;
-		СтруктураГород.Вставить("Города", "id");
-
-		СтруктураМД.Вставить("departmentWorkSchedule", ТаблицаАтрибутовТЧГрафикРаботыОтделов);
-		СтруктураМД.Вставить("Город", СтруктураГород);
-
-	ElsIf ИмяЗапроса = "cities" Тогда
-
-		ИмяОбъектаМетаданных = "Города";
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Наименование", "name", "Строка");
-
-	ElsIf ИмяЗапроса = "cancelcauses" Тогда
-
-		ИмяОбъектаМетаданных = "ПричиныОтменыЗаписи";
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Наименование", "name", "Строка");
-
-	ElsIf ИмяЗапроса = "request" Тогда
-
-		ИмяОбъектаМетаданных = "СоответствиеЗапросовИсточникамИнформации";
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "Код", "code", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "performBackground", "background", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "notSaveAnswer", "notSaveLogs", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "compressAnswer", "compressLogs", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "staffOnly", "staffOnly", "Булево");
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, "informationSources", "informationSources", "ТабличнаяЧасть");
-
-		ТаблицаАтрибутовТЧИсточникиИнформации = New ТаблицаЗначений;
-		ТаблицаАтрибутовТЧИсточникиИнформации.Колонки.Добавить("Ключ");
-		ТаблицаАтрибутовТЧИсточникиИнформации.Колонки.Добавить("Значение");
-		ТаблицаАтрибутовТЧИсточникиИнформации.Колонки.Добавить("Тип");
-
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "Attribute", "atribute", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "performBackground", "background", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "notSaveAnswer", "notSaveLogs", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "compressAnswer", "compressLogs", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "staffOnly", "staffOnly", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "notUse", "notUse", "Булево");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "requestSource", "requestSource", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "requestReceiver", "requestReceiver", "Строка");
-		ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутовТЧИсточникиИнформации, "informationSource", "informationSource", "Ссылка");
-
-		СтруктураИсточникИнформации = New Структура;
-		СтруктураИсточникИнформации.Вставить("informationSources", "uid");
-
-		СтруктураМД.Вставить("informationSources", ТаблицаАтрибутовТЧИсточникиИнформации);
-		СтруктураМД.Вставить("informationSource", СтруктураИсточникИнформации);
-
-	EndIf;
-
-	Return New Структура("ИмяОбъектаМетаданных, ТаблицаАтрибутов, ТаблицаАтрибутовДляНовогоЭлемента, СтруктураМД", ИмяОбъектаМетаданных, ТаблицаАтрибутов, ТаблицаАтрибутовДляНовогоЭлемента, СтруктураМД);
-
-EndFunction
-
-Procedure ДобавитьСтрокуВТаблицуАтрибутов(ТаблицаАтрибутов, Ключ, Значение,
-		Тип)
-	НоваяСтрока = ТаблицаАтрибутов.Добавить();
-	НоваяСтрока.Ключ = Ключ;
-	НоваяСтрока.Значение = Значение;
-	НоваяСтрока.Тип = Тип;
-EndProcedure
 

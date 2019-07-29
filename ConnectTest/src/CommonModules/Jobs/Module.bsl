@@ -10,7 +10,7 @@
 
 Процедура ПроверитьСтатусСмс() Экспорт
 		
-	УзелСообщенияПроверкаСтатуса	= GeneralReuse.УзелСообщенияПроверкаСтатуса(Перечисления.informationChannels.sms); 
+	УзелСообщенияПроверкаСтатуса	= GeneralReuse.nodeMessagesToCheckStatus(Перечисления.informationChannels.sms); 
 	
 	пЗапрос	= Новый Запрос;
 	пЗапрос.text	= "ВЫБРАТЬ РАЗЛИЧНЫЕ

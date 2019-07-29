@@ -569,7 +569,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.Attribute.phoneMask</name>
+		<name>Catalog.chains.Attribute.phoneMask</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -814,7 +814,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain</name>
+		<name>Catalog.chains</name>
 		<right>
 			<name>Delete</name>
 			<value>false</value>
@@ -881,63 +881,63 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.PredefinedDataName</name>
+		<name>Catalog.chains.StandardAttribute.PredefinedDataName</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Predefined</name>
+		<name>Catalog.chains.StandardAttribute.Predefined</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Ref</name>
+		<name>Catalog.chains.StandardAttribute.Ref</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.DeletionMark</name>
+		<name>Catalog.chains.StandardAttribute.DeletionMark</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.IsFolder</name>
+		<name>Catalog.chains.StandardAttribute.IsFolder</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Owner</name>
+		<name>Catalog.chains.StandardAttribute.Owner</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Parent</name>
+		<name>Catalog.chains.StandardAttribute.Parent</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Description</name>
+		<name>Catalog.chains.StandardAttribute.Description</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.StandardAttribute.Code</name>
+		<name>Catalog.chains.StandardAttribute.Code</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1016,7 +1016,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.applicationsCertificates</name>
+		<name>InformationRegister.appCertificates</name>
 		<right>
 			<name>Update</name>
 			<value>false</value>
@@ -1205,7 +1205,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.Attribute.loyaltyProgram</name>
+		<name>Catalog.chains.Attribute.loyaltyProgram</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1583,7 +1583,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.Attribute.currencySymbol</name>
+		<name>Catalog.chains.Attribute.currencySymbol</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1611,7 +1611,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.Attribute.holding</name>
+		<name>Catalog.chains.Attribute.holding</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2336,7 +2336,7 @@
 		</right>
 	</object>
 	<object>
-		<name>HTTPService.ВнутренниеСервисы.URLTemplate.ИзмененитьДанные.Method.POST</name>
+		<name>HTTPService.internal.URLTemplate.changeData.Method.POST</name>
 		<right>
 			<name>Use</name>
 			<value>false</value>
@@ -2662,7 +2662,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain.Attribute.timeZone</name>
+		<name>Catalog.chains.Attribute.timeZone</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2798,7 +2798,7 @@
 		</right>
 	</object>
 	<object>
-		<name>HTTPService.ВнутренниеСервисы.URLTemplate.ОтправитьСообщение.Method.POST</name>
+		<name>HTTPService.internal.URLTemplate.sendMessage.Method.POST</name>
 		<right>
 			<name>Use</name>
 			<value>false</value>
@@ -3303,7 +3303,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.phoneMasks</name>
+		<name>Catalog.CountryCodes</name>
 		<right>
 			<name>InteractiveDelete</name>
 			<value>false</value>

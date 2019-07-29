@@ -1,5 +1,74 @@
 
-Function getStructureFromRequestBody(body) Export
+Function processRequest(request) Export
+
+	dateInMilliseconds = CurrentUniversalDateInMilliseconds();
+
+	parameters = New Structure();
+	parameters.Insert("url", request.BaseURL + request.RelativeURL);
+	parameters.Insert("headers", HTTP.encodeJSON(request.Headers));
+	parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
+	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
+	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
+	parameters.Insert("notSaveAnswer", False);
+	parameters.Insert("compressAnswer", False);
+
+	If parameters.requestName = Undefined Or parameters.requestName = "" Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noRequest"));
+	Else
+
+		If parameters.requestName <> "chainlist" And parameters.requestName <> "auth"
+				And parameters.requestName <> "countrycodelist"
+				And parameters.requestName <> "gymlist"
+				And parameters.requestName <> "config"
+				And parameters.requestName <> "restore" Then
+			parameters.Insert("authKey", HTTP.GetRequestHeader(request, "auth-key"));
+			checkResult = GeneralReuse.checkToken(parameters.language, parameters.authKey);
+			parameters.Insert("checkResult", checkResult);
+			parameters.Insert("token", checkResult.token);
+			parameters.Insert("errorDescription", checkResult.errorDescription);
+		Else
+			parameters.Insert("token", Catalogs.tokens.EmptyRef());
+			parameters.Insert("errorDescription", Service.getErrorDescription());
+		EndIf;
+
+		parameters.Insert("requestBody", request.GetBodyAsString());
+		parameters.Insert("answerBody", "");		
+		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
+
+		If parameters.errorDescription.result = "" Then
+			Try
+				General.executeRequestMethod(parameters);	
+			Except
+				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "system", ErrorDescription()));
+			EndTry;
+		EndIf;
+	EndIf;
+
+	If parameters.errorDescription.result <> "" Then
+		parameters.Insert("answerBody", HTTP.encodeJSON(parameters.errorDescription));
+		If parameters.errorDescription.result = "userNotIdentified" Then
+			answer = New HTTPServiceResponse(401);
+		Else
+			answer = New HTTPServiceResponse(403);
+		EndIf;
+	Else
+		answer = New HTTPServiceResponse(200);
+	EndIf;
+
+	answer.Headers.Insert("Content-type", "application/json;  charset=utf-8");
+	answer.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+
+	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
+		- DateInMilliseconds);
+	parameters.Insert("isError", parameters.errorDescription.result <> "");
+
+	Service.logRequestBackground(parameters);
+
+	Return answer;
+
+EndFunction
+
+Function decodeJSON(body, isArray = False) Export
 	body	= TrimAll(body);	
 	If StrLen(Body) > 0 Then			
 		JSONReader = New JSONReader();
@@ -8,20 +77,14 @@ Function getStructureFromRequestBody(body) Export
 		JSONReader.Close();
 		Return RequestStruct;
 	Else
-		Return New Structure;
+		Return ?(isArray, New Array(), New Structure());
 	EndIf;	
 EndFunction
 
-Function getStructureFromRequest(request) Export
-	requestBody = request.GetBodyAsString();
-	requestStruct = HTTP.GetStructureFromRequestBody(requestBody);
-	Return New Structure("requestStruct, requestBody", requestStruct, requestBody);
-EndFunction
-
-Function getJSONFromStructure(struct) Export
+Function encodeJSON(data) Export
 	JSONWriter = New JSONWriter();
 	JSONWriter.SetString();
-	WriteJSON(JSONWriter, struct);
+	WriteJSON(JSONWriter, data);
 	Return JSONWriter.Close();
 EndFunction
 
@@ -29,59 +92,27 @@ Function prepareRequestBody(val token, val requestStruct, val user,
 		val language, val timezone, val appType) Export
 
 	If TypeOf(requestStruct) = Type("Structure") Then
-		JSONStruct = requestStruct;
+		struct = requestStruct;
 	Else
-		JSONStruct = New Structure;
-		JSONStruct.Insert("array", requestStruct);
+		struct = New Structure;
+		struct.Insert("array", requestStruct);
 	EndIf;
 
-	JSONStruct.Insert("token", token);
-	JSONStruct.Insert("language", language);
-	JSONStruct.Insert("userId", XMLString(user));
-	JSONStruct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), timezone));
+	struct.Insert("token", token);
+	struct.Insert("language", language);
+	struct.Insert("userId", XMLString(user));
+	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), timezone));
 	If appType = Enums.appTypes.Customer Then
-		JSONStruct.Insert("appType", "Customer");
+		struct.Insert("appType", "Customer");
 	ElsIf appType = Enums.appTypes.Employee Then
-		JSONStruct.Insert("appType", "Employee");
+		struct.Insert("appType", "Employee");
 	ElsIf appType = Enums.appTypes.Web Then
-		JSONStruct.Insert("appType", "Web");
+		struct.Insert("appType", "Web");
 	Else
-		JSONStruct.Insert("appType", TrimAll(appType));
+		struct.Insert("appType", TrimAll(appType));
 	EndIf;
 
-	Return HTTP.GetJSONFromStructure(JSONStruct);
-
-EndFunction
-
-Function checkBackgroundJobs(array) Export
-
-	answer = New Structure();	
-	
-	For Each struct In array Do
-		If struct.ФЗ.Состояние = BackgroundJobState.Active Then
-			backgroundJob = struct.ФЗ.WaitForExecutionCompletion(25);
-			If backgroundJob.State <> BackgroundJobState.Active Then				
-				JSONReader = New JSONReader();
-				JSONReader.SetString(GetFromTempStorage(struct.Адрес));
-				answer.Insert(struct.Атрибут, ReadJSON(JSONReader));
-				JSONReader.Close();
-			EndIf;
-		Else			
-			JSONReader = New JSONReader();
-			JSONReader.SetString(GetFromTempStorage(struct.Адрес));
-			answer.Insert(struct.Атрибут, ReadJSON(JSONReader));
-			JSONReader.Close();
-		EndIf;	
-	EndDo;
-
-	If answer.Count() > 0 Then
-		JSONWriter = New JSONWriter();
-		JSONWriter.SetString();
-		WriteJSON(JSONWriter, answer);
-		Return JSONWriter.Close();
-	Else
-		Return "";	
-	EndIf;
+	Return HTTP.encodeJSON(struct);
 
 EndFunction
 
@@ -157,17 +188,3 @@ Function getRequestHeader(request, key) Export
 	EndIf;
 	Return Lower(value);
 EndFunction
-
-Procedure runRequestInAccountingSystem(selection, headers, body, link,
-		RequestParametersFromURL) Export
-	HTTPConnection = New HTTPConnection(selection.server, , selection.УчетнаяЗапись, selection.password, , selection.timeout, ?(selection.ЗащищенноеСоединение, New OpenSSLSecureConnection(), Undefined), selection.UseOSAuthentication);
-	HTTPRequest = New HTTPRequest(selection.URL + selection.Приемник
-		+ RequestParametersFromURL, headers);
-	HTTPRequest.SetBodyFromString(body);
-	If selection.HTTPRequestType = Enums.HTTPRequestTypes.GET Then
-		HTTPResponse = HTTPConnection.Get(HTTPRequest);
-	Else
-		HTTPResponse = HTTPConnection.Post(HTTPRequest);
-	EndIf;
-	PutToTempStorage(HTTPResponse.GetBodyAsString(), link);
-EndProcedure

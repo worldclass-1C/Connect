@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:HTTPService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0e300502-e5ef-4efb-a93b-0c6103b83c22">
-  <name>ВнутренниеСервисы</name>
+  <name>internal</name>
   <synonym>
     <key>ru</key>
-    <value>Внутренние сервисы</value>
+    <value>Internal</value>
   </synonym>
   <rootURL>internal</rootURL>
   <reuseSessions>AutoUse</reuseSessions>
   <sessionMaxAge>120</sessionMaxAge>
   <urlTemplates uuid="4eb9fc59-3e41-4b37-928d-021316d4a37c">
-    <name>ИзмененитьДанные</name>
+    <name>changeData</name>
     <synonym>
       <key>ru</key>
-      <value>Измененить данные</value>
+      <value>Change data</value>
     </synonym>
     <template>/edit</template>
     <methods uuid="a902940d-2fc6-429a-9f10-48a0150bff41">
@@ -22,14 +22,14 @@
         <value>POST</value>
       </synonym>
       <httpMethod>POST</httpMethod>
-      <handler>ИзмененитьДанныеPOST</handler>
+      <handler>changeDataPOST</handler>
     </methods>
   </urlTemplates>
   <urlTemplates uuid="2d308ec6-5db8-4aa8-9ee7-782d20aefbae">
-    <name>ОтправитьСообщение</name>
+    <name>sendMessage</name>
     <synonym>
       <key>ru</key>
-      <value>Отправить сообщение</value>
+      <value>Send message</value>
     </synonym>
     <template>/sendMessage</template>
     <methods uuid="befd3799-1b4b-4eb9-a4d6-3cdcc7a1c9e8">
@@ -39,7 +39,7 @@
         <value>POST</value>
       </synonym>
       <httpMethod>POST</httpMethod>
-      <handler>ОтправитьСообщениеPOST</handler>
+      <handler>sendMessagePOST</handler>
     </methods>
   </urlTemplates>
 </mdclass:HTTPService>

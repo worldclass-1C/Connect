@@ -94,7 +94,7 @@
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
-  <httpServices>HTTPService.ВнутренниеСервисы</httpServices>
+  <httpServices>HTTPService.internal</httpServices>
   <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
   <scheduledJobs>ScheduledJob.ОтправкаPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.ОтправкаSms</scheduledJobs>
@@ -107,15 +107,15 @@
   <catalogs>Catalog.appAnalytics</catalogs>
   <catalogs>Catalog.cacheValuesTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
-  <catalogs>Catalog.chain</catalogs>
+  <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.cities</catalogs>
+  <catalogs>Catalog.CountryCodes</catalogs>
   <catalogs>Catalog.gyms</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
   <catalogs>Catalog.logs</catalogs>
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
-  <catalogs>Catalog.phoneMasks</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
@@ -132,21 +132,22 @@
   <enums>Enum.systemTypes</enums>
   <enums>Enum.Показатели</enums>
   <reports>Report.applicationVersions</reports>
-  <reports>Report.registeredMessages</reports>
   <reports>Report.goMessages</reports>
   <reports>Report.goTokensDevices</reports>
+  <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
   <dataProcessors>DataProcessor.ОтправитьПуш</dataProcessors>
+  <informationRegisters>InformationRegister.appCertificates</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
+  <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
+  <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
   <informationRegisters>InformationRegister.messagesId</informationRegisters>
   <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.registeredDevices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
+  <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersPasswords</informationRegisters>
-  <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
-  <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
-  <informationRegisters>InformationRegister.applicationsCertificates</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>

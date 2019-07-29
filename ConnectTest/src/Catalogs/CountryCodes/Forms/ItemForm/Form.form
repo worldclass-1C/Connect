@@ -56,6 +56,14 @@
     <items xsi:type="form:FormField">
       <name>Description</name>
       <id>4</id>
+      <title>
+        <key>en</key>
+        <value>Mask</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Маска</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -156,7 +164,7 @@
     <name>Object</name>
     <id>1</id>
     <valueType>
-      <types>CatalogObject.phoneMasks</types>
+      <types>CatalogObject.CountryCodes</types>
     </valueType>
     <view>
       <common>true</common>

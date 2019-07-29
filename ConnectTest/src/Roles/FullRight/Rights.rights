@@ -96,7 +96,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.chain</name>
+		<name>Catalog.chains</name>
 		<right>
 			<name>Delete</name>
 			<value>false</value>
@@ -455,7 +455,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.phoneMasks</name>
+		<name>Catalog.CountryCodes</name>
 		<right>
 			<name>InteractiveDelete</name>
 			<value>false</value>

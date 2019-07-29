@@ -896,7 +896,7 @@
     <name>Object</name>
     <id>1</id>
     <valueType>
-      <types>CatalogObject.chain</types>
+      <types>CatalogObject.chains</types>
     </valueType>
     <view>
       <common>true</common>

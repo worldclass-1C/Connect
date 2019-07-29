@@ -7,18 +7,18 @@
     <listType typeId="c549d7c1-ac80-4db4-8a10-120427dfe7b5" valueTypeId="ed5600d4-9ecb-499f-9ea3-43e0687f934f"/>
     <managerType typeId="71fbd88b-99bc-4c31-99e9-55c48d97e69f" valueTypeId="97c4873b-7aff-46fe-a3bf-88a4fb3be201"/>
   </producedTypes>
-  <name>phoneMasks</name>
+  <name>CountryCodes</name>
   <synonym>
     <key>en</key>
-    <value>Phone masks</value>
+    <value>Country codes</value>
   </synonym>
   <synonym>
     <key>ru</key>
-    <value>Маски номеров телефонов</value>
+    <value>Коды стран номеров телефонов</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.phoneMasks.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.phoneMasks.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.CountryCodes.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CountryCodes.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
@@ -52,35 +52,35 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>Phone mask</value>
+    <value>Country code</value>
   </objectPresentation>
   <objectPresentation>
     <key>ru</key>
-    <value>Маска номера телефона</value>
+    <value>Код страны номеров телефонов</value>
   </objectPresentation>
   <extendedObjectPresentation>
     <key>en</key>
-    <value>Phone mask</value>
+    <value>Country code</value>
   </extendedObjectPresentation>
   <extendedObjectPresentation>
     <key>ru</key>
-    <value>Маска номера телефона</value>
+    <value>Код страны номеров телефонов</value>
   </extendedObjectPresentation>
   <listPresentation>
     <key>en</key>
-    <value>Phone masks</value>
+    <value>Country codes</value>
   </listPresentation>
   <listPresentation>
     <key>ru</key>
-    <value>Маски номеров телефонов</value>
+    <value>Коды стран номеров телефонов</value>
   </listPresentation>
   <extendedListPresentation>
     <key>en</key>
-    <value>Phone masks</value>
+    <value>Country codes</value>
   </extendedListPresentation>
   <extendedListPresentation>
     <key>ru</key>
-    <value>Маски номеров телефонов</value>
+    <value>Коды стран номеров телефонов</value>
   </extendedListPresentation>
   <explanation>
     <key>en</key>
@@ -97,9 +97,9 @@
   <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
-  <defaultObjectForm>Catalog.phoneMasks.Form.ItemForm</defaultObjectForm>
-  <defaultListForm>Catalog.phoneMasks.Form.ListForm</defaultListForm>
-  <defaultChoiceForm>Catalog.phoneMasks.Form.ChoiceForm</defaultChoiceForm>
+  <defaultObjectForm>Catalog.CountryCodes.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.CountryCodes.Form.ListForm</defaultListForm>
+  <defaultChoiceForm>Catalog.CountryCodes.Form.ChoiceForm</defaultChoiceForm>
   <attributes uuid="46e97aaf-9069-47ec-ab6f-a4cbc8cd6d33">
     <name>CountryCode</name>
     <synonym>

@@ -14,12 +14,12 @@
   <content>Catalog.cities</content>
   <content>Catalog.gyms</content>
   <content>Catalog.users</content>
-  <content>Catalog.chain</content>
+  <content>Catalog.chains</content>
   <content>Catalog.holdings</content>
   <content>Catalog.cancellationReasons</content>
   <content>Catalog.timeZones</content>
   <content>Catalog.logs</content>
   <content>Catalog.tokens</content>
   <content>Catalog.cacheValuesTypes</content>
-  <content>Catalog.phoneMasks</content>
+  <content>Catalog.CountryCodes</content>
 </mdclass:Subsystem>

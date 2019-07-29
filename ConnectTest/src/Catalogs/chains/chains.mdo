@@ -7,18 +7,18 @@
     <listType typeId="aed34489-4389-4bd9-a995-4a4ecf4345d9" valueTypeId="5c79380d-03cc-427e-919c-c0be78383bd5"/>
     <managerType typeId="a8044afd-fd79-4b48-a49b-6a27a501979a" valueTypeId="85be4474-9dbf-4901-8e0c-2be4b5a58176"/>
   </producedTypes>
-  <name>chain</name>
+  <name>chains</name>
   <synonym>
     <key>en</key>
-    <value>Chain</value>
+    <value>Chains</value>
   </synonym>
   <synonym>
     <key>ru</key>
     <value>Сети</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.chain.StandardAttribute.Description</inputByString>
-  <inputByString>Catalog.chain.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.chains.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.chains.StandardAttribute.Code</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
@@ -157,8 +157,8 @@
   <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
-  <defaultObjectForm>Catalog.chain.Form.ItemForm</defaultObjectForm>
-  <defaultListForm>Catalog.chain.Form.ListForm</defaultListForm>
+  <defaultObjectForm>Catalog.chains.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.chains.Form.ListForm</defaultListForm>
   <attributes uuid="6a9ecc13-8430-48cd-8f4d-31c3008077be">
     <name>currencySymbol</name>
     <synonym>
@@ -211,7 +211,7 @@
       <value>Маска номера телефона</value>
     </synonym>
     <type>
-      <types>CatalogRef.phoneMasks</types>
+      <types>CatalogRef.CountryCodes</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

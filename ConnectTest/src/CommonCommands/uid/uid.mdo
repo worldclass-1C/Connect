@@ -9,7 +9,7 @@
   <commandParameterType>
     <types>CatalogRef.holdings</types>
     <types>CatalogRef.tokens</types>
-    <types>CatalogRef.chain</types>
+    <types>CatalogRef.chains</types>
     <types>CatalogRef.gyms</types>
     <types>CatalogRef.cities</types>
     <types>CatalogRef.users</types>

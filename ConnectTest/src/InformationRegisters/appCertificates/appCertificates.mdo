@@ -9,10 +9,10 @@
     <recordType typeId="6fd84c54-0c1f-41e2-b0f2-652b08936401" valueTypeId="82adfc3b-e282-4875-ad51-43f2a911bde2"/>
     <recordManagerType typeId="8a6e9a90-366e-4ca5-a26c-861e177c1428" valueTypeId="438b8cb6-ae33-42d6-9529-fe936bd7eb2a"/>
   </producedTypes>
-  <name>applicationsCertificates</name>
+  <name>appCertificates</name>
   <synonym>
     <key>en</key>
-    <value>Applications certificates</value>
+    <value>App certificates</value>
   </synonym>
   <synonym>
     <key>ru</key>
@@ -131,7 +131,7 @@
       <value>Сеть</value>
     </synonym>
     <type>
-      <types>CatalogRef.chain</types>
+      <types>CatalogRef.chains</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

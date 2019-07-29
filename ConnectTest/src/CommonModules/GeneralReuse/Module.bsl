@@ -1,22 +1,22 @@
 
-Function УзелСообщенияКОтправке(КаналИнформирования) Export
-	Возврат ПланыОбмена.messagesToSend.НайтиПоРеквизиту("informationChannel", КаналИнформирования);	
+Function nodeMessagesToSend(informationChannel) Export
+	Return ExchangePlans.messagesToSend.FindByAttribute("informationChannel", informationChannel);	
 EndFunction
 
-Function УзелСообщенияПроверкаСтатуса(КаналИнформирования) Export
-	Возврат ПланыОбмена.messagesToCheckStatus.НайтиПоРеквизиту("informationChannel", КаналИнформирования);	
+Function nodeMessagesToCheckStatus(informationChannel) Export
+	Return ExchangePlans.messagesToCheckStatus.FindByAttribute("informationChannel", informationChannel);	
 EndFunction
 
-Function УзелРегистрацияПользователя(ТипРегистрации) Export
-	Возврат ПланыОбмена.usersCheckIn.НайтиПоРеквизиту("ТипРегистрации", ТипРегистрации);	
+Function nodeUsersCheckIn(registrationType) Export
+	Return ExchangePlans.usersCheckIn.FindByAttribute("registrationType", registrationType);	
 EndFunction
 
-Function ДанныеАутентификации(ОперационнаяСистема, Сертификат) Export
-	Если ОперационнаяСистема = Enums.systemTypes.Android Тогда
-		Возврат Сертификат;
-	Иначе	
-		Возврат ПолучитьОбщийМакет(Сертификат);
-	КонецЕсли;
+Function getAuthorizationKey(systemType, certificate) Export
+	If systemType = Enums.systemTypes.Android Then
+		Return certificate;
+	Else	
+		Return GetCommonTemplate(certificate);
+	EndIf;
 EndFunction
 
 Function checkToken(language, token) Export
@@ -26,7 +26,7 @@ Function checkToken(language, token) Export
 	answer.Insert("user", Catalogs.users.EmptyRef());
 	answer.Insert("userType", "");
 	answer.Insert("holding", Catalogs.holdings.EmptyRef());
-	answer.Insert("chain", Catalogs.chain.EmptyRef());
+	answer.Insert("chain", Catalogs.chains.EmptyRef());
 	answer.Insert("appType", Enums.appTypes.EmptyRef());
 	answer.Insert("systemType", Enums.systemTypes.EmptyRef());
 	answer.Insert("timezone", Catalogs.timeZones.EmptyRef());
@@ -35,32 +35,32 @@ Function checkToken(language, token) Export
 	If ValueIsFilled(token) Then
 		
 		query = New Query();			
-		query.Text	= "ВЫБРАТЬ
-		|	ВЗ.token КАК token,
-		|	ВЗ.user КАК user,
-		|	ВЗ.userType КАК userType,
-		|	ВЗ.chain КАК chain,
-		|	ВЗ.holding КАК holding,
-		|	ВЗ.appType КАК appType,
-		|	ВЗ.systemType КАК systemType,
-		|	ВЗ.timezone КАК timezone
-		|ИЗ
-		|	(ВЫБРАТЬ
-		|		Токены.Ссылка КАК token,
-		|		Токены.user КАК user,
-		|		Токены.user.userType КАК userType,
-		|		Токены.chain КАК chain,
-		|		Токены.holding КАК holding,
-		|		Токены.appType КАК appType,
-		|		Токены.systemType КАК systemType,
-		|		Токены.timeZone КАК timezone,
-		|		Токены.lockDate КАК lockDate
-		|	ИЗ
-		|		Справочник.tokens КАК Токены
-		|	ГДЕ
-		|		Токены.Ссылка = &token) КАК ВЗ
-		|ГДЕ
-		|	ВЗ.lockDate = ДАТАВРЕМЯ(1, 1, 1)";
+		query.Text	= "SELECT
+		|	SQ.token AS token,
+		|	SQ.user AS user,
+		|	SQ.userType AS userType,
+		|	SQ.chain AS chain,
+		|	SQ.holding AS holding,
+		|	SQ.appType AS appType,
+		|	SQ.systemType AS systemType,
+		|	SQ.timezone AS timezone
+		|FROM
+		|	(SELECT
+		|		tokens.ref AS token,
+		|		tokens.user AS user,
+		|		tokens.user.userType AS userType,
+		|		tokens.chain AS chain,
+		|		tokens.holding AS holding,
+		|		tokens.appType AS appType,
+		|		tokens.systemType AS systemType,
+		|		tokens.timeZone AS timezone,
+		|		tokens.lockDate AS lockDate
+		|	FROM
+		|		Catalog.tokens AS tokens
+		|	WHERE
+		|		tokens.ref = &token) AS SQ
+		|WHERE
+		|	SQ.lockDate = DATETIME(1, 1, 1)";
 		
 		query.SetParameter("token", XMLValue(Type("CatalogRef.tokens"), token));		
 		
@@ -86,28 +86,28 @@ Function checkToken(language, token) Export
 	
 EndFunction
 
-Function ПолучитьБазовыйURL() Export
-	Возврат  Константы.BaseURL.Получить();	
+Function getBaseURL() Export
+	Return  Constants.BaseURL.Get;	
 EndFunction
 
-Function phoneMasksList() Export
+Function getCountryCodeList() Export
 	
 	array	= New Array();		
 	query	= New Query();
 	
-	query.Text	= "ВЫБРАТЬ
-	|	МаскиНомеровТелефонов.CountryCode,
-	|	МаскиНомеровТелефонов.Description
-	|ИЗ
-	|	Справочник.phoneMasks КАК МаскиНомеровТелефонов
-	|ГДЕ
-	|	Не МаскиНомеровТелефонов.ПометкаУдаления";
+	query.Text	= "SELECT
+	|	CountryCodes.CountryCode,
+	|	CountryCodes.Description
+	|FROM
+	|	Catalog.CountryCodes AS CountryCodes
+	|WHERE
+	|	NOT CountryCodes.DeletionMark";
 	
 	selection	= query.Execute().Select();
 	
 	While selection.Next() Do
 		answer	= New Structure();
-		answer.Вставить("code", selection.КодСтраны);
+		answer.Вставить("code", selection.CountryCode);
 		answer.Вставить("mask", selection.Description);		
 		array.add(answer);
 	EndDo;

@@ -75,6 +75,23 @@
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
   </resources>
+  <dimensions uuid="1de3772c-b475-4520-9e2d-50eb142edc90">
+    <name>brand</name>
+    <synonym>
+      <key>en</key>
+      <value>Brand</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Бренд</value>
+    </synonym>
+    <type>
+      <types>EnumRef.brandTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
   <dimensions uuid="626d01cf-5eb1-4d8c-8814-863dc2e83fd5">
     <name>appType</name>
     <synonym>

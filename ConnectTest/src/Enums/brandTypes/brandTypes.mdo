@@ -33,4 +33,11 @@
       <value>UFC</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="a174bca8-a93e-4d50-939e-0a14946c070b">
+    <name>None</name>
+    <synonym>
+      <key>en</key>
+      <value>None</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>
