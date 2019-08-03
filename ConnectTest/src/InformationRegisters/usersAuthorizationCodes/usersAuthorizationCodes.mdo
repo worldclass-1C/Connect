@@ -63,10 +63,28 @@
       <value>Код</value>
     </synonym>
     <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>5</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="bbc9ca9c-de74-49e1-bceb-39fc67417946">
+    <name>quantity</name>
+    <synonym>
+      <key>en</key>
+      <value>Quantity</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Количество</value>
+    </synonym>
+    <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>4</precision>
-        <nonNegative>true</nonNegative>
+        <precision>2</precision>
       </numberQualifiers>
     </type>
     <fullTextSearch>Use</fullTextSearch>
@@ -89,6 +107,23 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </resources>
+  <dimensions uuid="e0ce1d31-481d-4745-8998-b331d5ccf776">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
   <dimensions uuid="2cb2b85e-5900-4e71-88da-eb9691007fa4">
     <name>phone</name>
     <synonym>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="54536217-8589-4b46-8edd-2e8e7a238e12">
-  <name>ИнтеграцияСStramedia</name>
+  <name>Stramedia</name>
   <synonym>
     <key>ru</key>
     <value>Интеграция с Stramedia</value>

@@ -1,15 +1,21 @@
+Function getErrorDescription(language = "", result = "",
+		description = "") Export
 
-Function getErrorDescription(language = "", result = "", description = "") Export
-	
-	errorDescription	= New Structure("result, description", result, description);
-	
+	errorDescription = New Structure("result, description", result, description);
+
 	If description = "" Then
-		If result = "noRequest" Then
+		If result = "requestError" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Не определен запрос");
 			Else
-				errorDescription.Insert("description", "no request");
+				errorDescription.Insert("description", "No request");
 			EndIf;
+		ElsIf result = "brandError" Then
+			If language = "ru" Then
+				errorDescription.Insert("description", "Не определен бренд");
+			Else
+				errorDescription.Insert("description", "No brand");
+			EndIf;	
 		ElsIf result = "userNotIdentified" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Пользователь не идентифицирован");
@@ -27,128 +33,134 @@ Function getErrorDescription(language = "", result = "", description = "") Expor
 				errorDescription.Insert("description", "Пароль просрочен");
 			Else
 				errorDescription.Insert("description", "Password expired");
-			EndIf;	
-		ElsIf result = "noUserLogin" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Не указан логин");
-			Else
-				errorDescription.Insert("description", "No user login");
 			EndIf;
-		ElsIf result = "noUserPassword" Then	
+		ElsIf result = "appTokenExpired" Then
+			If language = "ru" Then
+				errorDescription.Insert("description", "срок действия токена приложения истек");
+			Else
+				errorDescription.Insert("description", "application token expired");
+			EndIf;	
+		ElsIf result = "passwordError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан пароль");
 			Else
 				errorDescription.Insert("description", "No user password");
 			EndIf;
-		ElsIf result = "passwordIsNotCorrect" Then	
+		ElsIf result = "passwordIsNotCorrect" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Неверный пароль");
 			Else
 				errorDescription.Insert("description", "Password is not correct");
 			EndIf;
-		ElsIf result = "passwordIsEmpty" Then	
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Пароль не может быть пустым");
-			Else
-				errorDescription.Insert("description", "Password can not be empty");
-			EndIf;	
-		ElsIf result = "noChain" Then	
+		ElsIf result = "chainCodeError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан код сети");
 			Else
 				errorDescription.Insert("description", "No chain code");
 			EndIf;
-		ElsIf result = "noAuthKey" Then	
+		ElsIf result = "authkeyError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан код авторизации");
 			Else
 				errorDescription.Insert("description", "No auth-key");
 			EndIf;
-		ElsIf result = "noAppType" Then	
+		ElsIf result = "appTypeError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан тип приложения");
 			Else
 				errorDescription.Insert("description", "No app type");
 			EndIf;
-		ElsIf result = "noDeviceToken" Then	
+		ElsIf result = "deviceTokenError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан токен устройства");
 			Else
 				errorDescription.Insert("description", "No device token");
 			EndIf;
-		ElsIf result = "noToken" Then	
+		ElsIf result = "deviceModelError" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Не указана модель устройства");
+			Else
+				errorDescription.Insert("description", "No device model");
+			EndIf;	
+		ElsIf result = "tokenError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан токен");
 			Else
 				errorDescription.Insert("description", "No token");
-			EndIf;	
-		ElsIf result = "noSystemType" Then	
+			EndIf;
+		ElsIf result = "systemTypeError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан тип ОС");
 			Else
 				errorDescription.Insert("description", "No system type");
 			EndIf;
-		ElsIf result = "noSystemVersion" Then	
+		ElsIf result = "systemVersionError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указана версия ОС");
 			Else
 				errorDescription.Insert("description", "No system version");
 			EndIf;
-		ElsIf result = "noAppVersion" Then	
+		ElsIf result = "appVersionError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указана версия приложения");
 			Else
 				errorDescription.Insert("description", "No app version");
 			EndIf;
-		ElsIf result = "noCauses" Then	
+		ElsIf result = "causesError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не заполнены причины отмены");
 			Else
 				errorDescription.Insert("description", "No causes");
 			EndIf;
-		ElsIf result = "staffOnly" Then	
+		ElsIf result = "staffOnly" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Только для сотрудников");
 			Else
 				errorDescription.Insert("description", "staff only");
-			EndIf;	
-		ElsIf result = "noUrl" Then	
+			EndIf;
+		ElsIf result = "urlError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан url");
 			Else
 				errorDescription.Insert("description", "No url");
 			EndIf;
-		ElsIf result = "noRoutes" Then	
+		ElsIf result = "routesError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указаны каналы информирования");
 			Else
 				errorDescription.Insert("description", "No information routes");
 			EndIf;
-		ElsIf result = "noMessages" Then	
+		ElsIf result = "messagesError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Нет сообщений");
 			Else
 				errorDescription.Insert("description", "No messages");
 			EndIf;
-		ElsIf result = "noUserPhone" Then	
+		ElsIf result = "phoneError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан телефон");
 			Else
 				errorDescription.Insert("description", "no user phone");
 			EndIf;
-		ElsIf result = "noNoteId" Then	
+		ElsIf result = "noteIdError" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указано уведомление");
 			Else
 				errorDescription.Insert("description", "no notification");
 			EndIf;
-		ElsIf result = "limitExceeded" Then	
+		ElsIf result = "limitExceeded" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Превышен лимит сообщений");
 			Else
 				errorDescription.Insert("description", "Message limit exceeded");
-			EndIf;	
-		ElsIf result = "messageCanNotSent" Then	
+			EndIf;
+		ElsIf result = "noValidRequest" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "недействительный запрос");
+			Else
+				errorDescription.Insert("description", "not valid request");
+			EndIf;
+		ElsIf result = "messageCanNotSent" Then
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Повторное сообщение можно отправить через 15 минут");
 			Else
@@ -156,9 +168,9 @@ Function getErrorDescription(language = "", result = "", description = "") Expor
 			EndIf;
 		EndIf;
 	EndIf;
-	
+
 	Return errorDescription;
-	
+
 EndFunction
 
 Function getRecorder(day, reportPeriod)
@@ -191,6 +203,34 @@ Function getRecorder(day, reportPeriod)
 	EndIf;
 
 EndFunction 
+
+Function timeBeforeSendSms(holding, phone) Export
+	query	= New Query();
+	query.Text	= "SELECT
+	|	usersAuthorizationCodes.quantity,
+	|	usersAuthorizationCodes.recordDate
+	|FROM
+	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
+	|WHERE
+	|	usersAuthorizationCodes.holding = &holding
+	|	AND usersAuthorizationCodes.phone = &phone";
+	
+	query.SetParameter("holding", holding);
+	query.SetParameter("phone", phone);
+		
+	queryResult	= query.Execute();
+	
+	If queryResult.IsEmpty() Then
+		Return 0; 
+	Else
+		universalTime		= ToUniversalTime(CurrentDate());
+		selection = queryResult.Select();
+		selection.Next();
+		retryTime = ?(selection.quantity > 2, 600, 60);
+		delta = universalTime - selection.recordDate;
+		Return ?(delta > retryTime, 0, retryTime - delta);						
+	EndIf;
+EndFunction
 
 Function canSendSms(language, phone) Export
 
@@ -239,10 +279,10 @@ Function canSendSms(language, phone) Export
 
 EndFunction 
 
-Function createCatalogItems(parameters) Export
+Function createCatalogItems(requestName, holding, requestStruct) Export
 
-	attributesStruct	= Service.attributesStructure(parameters.requestName);
-	requestStruct		= parameters.requestStruct;
+	attributesStruct	= Service.attributesStructure(requestName);
+	requestStruct		= requestStruct;
 	items 				= New Array();
 	password			= "";
 	
@@ -288,7 +328,7 @@ Function createCatalogItems(parameters) Export
 				EndIf;
 			EndDo;
 			If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
-				catalogObject.holding = parameters.holding;
+				catalogObject.holding = holding;
 				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
 			EndIf;
 			catalogObject.Write();
@@ -362,7 +402,7 @@ Function attributesStructure(requestName) Export
 	mdStruct 		= New Structure();
 	mdObjectName	= "";
 
-	If requestName = "addUsers" Then
+	If requestName = "addChangeUsers" Then
 
 		mdObjectName = "users";
 
@@ -460,6 +500,41 @@ Function attributesStructure(requestName) Export
 
 EndFunction
 
+Function getAmountOfNumbers(number) Export	
+	str	= StrReplace(number, Chars.NBSp, "");
+	res	= 0;	
+	For i = 1 To StrLen(str) Do
+		res = res + Number(Mid(str, i, 1));		
+	EndDo;
+	Return res;
+EndFunction
+
+Function getStructCopy(struct) Export	
+	structNew	= New Structure();	
+	For Each element In struct Do
+		structNew.Insert(element.key, element.value);	
+	EndDo;
+	Return structNew;
+EndFunction
+
+Procedure addUsersAuthCode(holding, phone, code) Export	
+	record = InformationRegisters.usersAuthorizationCodes.CreateRecordManager();
+	record.holding = holding;
+	record.phone = phone;	
+	record.Read();
+	If record.Selected() Then
+		record.code = code;
+		record.quantity = record.quantity + 1;  
+	Else
+		record.holding = holding;
+		record.phone = phone;
+		record.code = code;
+		record.quantity = 1;
+	EndIf;	
+	record.recordDate	= ToUniversalTime(CurrentDate());			
+	record.Write();
+EndProcedure
+
 Procedure logServiceMessage(phone) Export
 	
 	universalTime		= ToUniversalTime(CurrentDate());
@@ -468,18 +543,17 @@ Procedure logServiceMessage(phone) Export
 	record.phone	= phone;
 	record.Read();
 	If record.Selected() Then		
-		If record.registrationDate < AddMonth(universalTime, - 1) Then
+		If record.recordDate < AddMonth(universalTime, - 1) Then
 			record.quantity = 1;
 		Else
 			record.quantity = record.quantity + 1;
 		EndIf;
-		record.registrationDate	= universalTime;
+		record.recordDate	= universalTime;
 	Else
 		record.phone	= phone;
-		record.registrationDate	= universalTime;
+		record.recordDate	= universalTime;
 		record.quantity		= 1;
-	EndIf;
-	
+	EndIf;	
 	record.Write();
 	
 EndProcedure
@@ -499,7 +573,7 @@ Procedure logRequest(parameters) Export
 	record.duration		= parameters.duration;
 	record.isError			= parameters.isError;	
 	
-	requestBody	= """Headers"":" + Chars.LF + parameters.headers + Chars.LF + """Body"":" + Chars.LF + parameters.requestBody;
+	requestBody	= """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF + """Body"":" + Chars.LF + parameters.requestBody;
 	If parameters.compressAnswer Then
 		record.request			= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));	
 	Else                   	
@@ -966,7 +1040,7 @@ EndProcedure
 		
 		Если Сч = 10 Тогда 
 			Сч = 0;
-			Уведомление.Данные				= Messages.ДанныеPush("registerDevice");
+			Уведомление.Данные				= Messages.pushData("registerDevice");
 			Уведомление.title			= "";
 			Уведомление.text				= "registerDevice";
 					
@@ -988,7 +1062,7 @@ EndProcedure
 	КонецЦикла;			
 			
 	Если Уведомление <> Неопределено Тогда
-		Уведомление.Данные				= Messages.ДанныеPush("registerDevice");
+		Уведомление.Данные				= Messages.pushData("registerDevice");
 		Уведомление.title			= "";
 		Уведомление.text				= "registerDevice";
 		//Уведомление.ЗвуковоеОповещение	= ЗвуковоеОповещение.ПоУмолчанию;

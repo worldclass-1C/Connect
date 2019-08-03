@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a523446a-ac9e-410b-8cfe-75e884b8f51d">
-  <name>ИнтеграцияСSMSTraffic</name>
+  <name>SMSTraffic</name>
   <synonym>
     <key>ru</key>
-    <value>Интеграция СSMSTraffic</value>
+    <value>SMSTraffic</value>
   </synonym>
   <server>true</server>
 </mdclass:CommonModule>

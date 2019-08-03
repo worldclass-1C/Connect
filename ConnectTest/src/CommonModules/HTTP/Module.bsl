@@ -5,58 +5,36 @@ Function processRequest(request) Export
 
 	parameters = New Structure();
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);
-	parameters.Insert("headers", HTTP.encodeJSON(request.Headers));
+	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
 	parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
 	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
+	parameters.Insert("answerBody", "");
+	parameters.Insert("errorDescription", Service.getErrorDescription());
 
-	If parameters.requestName = Undefined Or parameters.requestName = "" Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noRequest"));
-	Else
-
-		If parameters.requestName <> "chainlist" And parameters.requestName <> "auth"
-				And parameters.requestName <> "countrycodelist"
-				And parameters.requestName <> "gymlist"
-				And parameters.requestName <> "config"
-				And parameters.requestName <> "restore" Then
-			parameters.Insert("authKey", HTTP.GetRequestHeader(request, "auth-key"));
-			checkResult = GeneralReuse.checkToken(parameters.language, parameters.authKey);
-			parameters.Insert("checkResult", checkResult);
-			parameters.Insert("token", checkResult.token);
-			parameters.Insert("errorDescription", checkResult.errorDescription);
-		Else
-			parameters.Insert("token", Catalogs.tokens.EmptyRef());
-			parameters.Insert("errorDescription", Service.getErrorDescription());
-		EndIf;
-
+	If Not ValueIsFilled(parameters.requestName) Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noRequest"));	
+	ElsIf Not ValueIsFilled(parameters.brand) Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noBrand"));
+	ElsIf Not ValueIsFilled(parameters.language) Then
+		parameters.Insert("language", "en");
+	EndIf;
+	If parameters.errorDescription.result = ""
+			And parameters.requestName <> "chainlist"
+			And parameters.requestName <> "countrycodelist" Then
+		Check.legality(request, parameters);
+	EndIf;
+	If parameters.errorDescription.result = "" Then
 		parameters.Insert("requestBody", request.GetBodyAsString());
-		parameters.Insert("answerBody", "");		
-		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
-
-		If parameters.errorDescription.result = "" Then
-			Try
-				General.executeRequestMethod(parameters);	
-			Except
-				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "system", ErrorDescription()));
-			EndTry;
-		EndIf;
-	EndIf;
-
-	If parameters.errorDescription.result <> "" Then
-		parameters.Insert("answerBody", HTTP.encodeJSON(parameters.errorDescription));
-		If parameters.errorDescription.result = "userNotIdentified" Then
-			answer = New HTTPServiceResponse(401);
-		Else
-			answer = New HTTPServiceResponse(403);
-		EndIf;
-	Else
-		answer = New HTTPServiceResponse(200);
-	EndIf;
-
-	answer.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	answer.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));		
+		Try
+			General.executeRequestMethod(parameters);
+		Except
+			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "system", ErrorDescription()));
+		EndTry;
+	EndIf;	
 
 	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
 		- DateInMilliseconds);
@@ -64,7 +42,7 @@ Function processRequest(request) Export
 
 	Service.logRequestBackground(parameters);
 
-	Return answer;
+	Return HTTP.prepareResponse(parameters);
 
 EndFunction
 
@@ -114,6 +92,22 @@ Function prepareRequestBody(val token, val requestStruct, val user,
 
 	Return HTTP.encodeJSON(struct);
 
+EndFunction
+
+Function prepareResponse(parameters) Export	
+	If parameters.errorDescription.result <> "" Then
+		parameters.Insert("answerBody", HTTP.encodeJSON(parameters.errorDescription));
+		If parameters.errorDescription.result = "userNotIdentified" Then
+			response = New HTTPServiceResponse(401);
+		Else
+			response = New HTTPServiceResponse(403);
+		EndIf;
+	Else
+		response = New HTTPServiceResponse(200);
+	EndIf;
+	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
+	response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+	Return response;		
 EndFunction
 
 Function getRequestStructure(request, holding) Export
@@ -185,6 +179,7 @@ Function getRequestHeader(request, key) Export
 	EndIf;
 	If value = Undefined Then
 		value	= request.Headers.Get(Upper(key));
-	EndIf;
-	Return Lower(value);
+	EndIf;	 
+	Return ?(TypeOf(value) = Undefined, Undefined, Lower(value));
 EndFunction
+

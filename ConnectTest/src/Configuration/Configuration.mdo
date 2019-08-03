@@ -73,33 +73,36 @@
   <styles>Style.СУЗ</styles>
   <roles>Role.FullRight</roles>
   <roles>Role.Consultant</roles>
+  <commonTemplates>CommonTemplate.Connect</commonTemplates>
   <commonTemplates>CommonTemplate.WCL</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
+  <commonModules>CommonModule.Check</commonModules>
+  <commonModules>CommonModule.Crypto</commonModules>
   <commonModules>CommonModule.General</commonModules>
   <commonModules>CommonModule.GeneralCallServer</commonModules>
   <commonModules>CommonModule.GeneralReuse</commonModules>
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
+  <commonModules>CommonModule.Rapporto</commonModules>
   <commonModules>CommonModule.Service</commonModules>
+  <commonModules>CommonModule.SmsGold</commonModules>
+  <commonModules>CommonModule.SMSTraffic</commonModules>
+  <commonModules>CommonModule.Stramedia</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.ИнтеграцияСIDMkg</commonModules>
-  <commonModules>CommonModule.ИнтеграцияСRapporto</commonModules>
-  <commonModules>CommonModule.ИнтеграцияСSmsGold</commonModules>
-  <commonModules>CommonModule.ИнтеграцияСSMSTraffic</commonModules>
-  <commonModules>CommonModule.ИнтеграцияСStramedia</commonModules>
+  <commonModules>CommonModule.СIDMkg</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.internal</httpServices>
+  <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
+  <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
+  <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
   <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ОтправкаPush</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ОтправкаSms</scheduledJobs>
   <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ПроверкаСтатусаSms</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseURL</constants>

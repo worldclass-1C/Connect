@@ -108,15 +108,56 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="cb57383d-7b20-4591-b24a-d96fad7d002a">
-    <name>lockDate</name>
+  <attributes uuid="da732dd5-6a1a-416a-94bc-552be2f5d531">
+    <name>appVersion</name>
     <synonym>
       <key>en</key>
-      <value>Lock date</value>
+      <value>App version</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Дата блокировки</value>
+      <value>Версия приложения</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="47800124-5bfc-4fb9-9f32-622ce6342cac">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="48af4938-60e1-4598-b906-1fe187f1d37d">
+    <name>changeDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Change date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
     </synonym>
     <type>
       <types>Date</types>
@@ -148,8 +189,56 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="d05b8c76-497a-4de6-8710-ef6c4faded36">
+    <name>deviceModel</name>
+    <synonym>
+      <key>en</key>
+      <value>Device model</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Модель устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e5535a0e-28d8-4863-9519-4c0fe5581282">
+    <name>deviceToken</name>
+    <synonym>
+      <key>en</key>
+      <value>Device token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="1d859ee1-840b-452a-81f3-f84e4c4dce76">
-    <name>FullName</name>
+    <name>fullName</name>
     <synonym>
       <key>en</key>
       <value>Full name</value>
@@ -172,6 +261,45 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="bfede6b2-09c5-4ddd-9dcb-8cb96ca4aace">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="cb57383d-7b20-4591-b24a-d96fad7d002a">
+    <name>lockDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Lock date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата блокировки</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="f3bdf242-95d5-456c-86dc-c3091331bd22">
     <name>systemType</name>
     <synonym>
@@ -188,6 +316,50 @@
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="4f6ad9fe-b40a-4301-bd74-15a029a01cbe">
+    <name>systemVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>System version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия ОС</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="984056c4-6782-4448-96cb-9769edd9acdc">
+    <name>timeZone</name>
+    <synonym>
+      <key>en</key>
+      <value>Time zone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Часовой пояс</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.timeZones</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
     <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
@@ -213,73 +385,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="47800124-5bfc-4fb9-9f32-622ce6342cac">
-    <name>chain</name>
-    <synonym>
-      <key>en</key>
-      <value>Chain</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Сеть</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.chains</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="bfede6b2-09c5-4ddd-9dcb-8cb96ca4aace">
-    <name>holding</name>
-    <synonym>
-      <key>en</key>
-      <value>Holding</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Холдинг</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.holdings</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="984056c4-6782-4448-96cb-9769edd9acdc">
-    <name>timeZone</name>
-    <synonym>
-      <key>en</key>
-      <value>Time zone</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Часовой пояс</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.timeZones</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <forms uuid="6618fe21-3123-419e-9324-13aa2c544904">
-    <name>ListForm</name>
-    <synonym>
-      <key>ru</key>
-      <value>List form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
   <forms uuid="1e3a6805-578a-4cc1-8d29-b5960649492d">
     <name>ChoiceForm</name>
     <synonym>
@@ -289,11 +394,20 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
-  <forms uuid="147f6f5c-3a33-4767-a08d-e3784cdaedda">
+  <forms uuid="5db4b20a-dfd7-44e6-9084-0dd42e06cd12">
     <name>ItemForm</name>
     <synonym>
-      <key>ru</key>
+      <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="6618fe21-3123-419e-9324-13aa2c544904">
+    <name>ListForm</name>
+    <synonym>
+      <key>ru</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

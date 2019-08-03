@@ -19,73 +19,6 @@ Function getAuthorizationKey(systemType, certificate) Export
 	EndIf;
 EndFunction
 
-Function checkToken(language, token) Export
-	
-	answer		= New Structure();
-	answer.Insert("token", Catalogs.tokens.EmptyRef());
-	answer.Insert("user", Catalogs.users.EmptyRef());
-	answer.Insert("userType", "");
-	answer.Insert("holding", Catalogs.holdings.EmptyRef());
-	answer.Insert("chain", Catalogs.chains.EmptyRef());
-	answer.Insert("appType", Enums.appTypes.EmptyRef());
-	answer.Insert("systemType", Enums.systemTypes.EmptyRef());
-	answer.Insert("timezone", Catalogs.timeZones.EmptyRef());
-	answer.Insert("errorDescription", Service.getErrorDescription(language, "userNotIdentified"));		
-	
-	If ValueIsFilled(token) Then
-		
-		query = New Query();			
-		query.Text	= "SELECT
-		|	SQ.token AS token,
-		|	SQ.user AS user,
-		|	SQ.userType AS userType,
-		|	SQ.chain AS chain,
-		|	SQ.holding AS holding,
-		|	SQ.appType AS appType,
-		|	SQ.systemType AS systemType,
-		|	SQ.timezone AS timezone
-		|FROM
-		|	(SELECT
-		|		tokens.ref AS token,
-		|		tokens.user AS user,
-		|		tokens.user.userType AS userType,
-		|		tokens.chain AS chain,
-		|		tokens.holding AS holding,
-		|		tokens.appType AS appType,
-		|		tokens.systemType AS systemType,
-		|		tokens.timeZone AS timezone,
-		|		tokens.lockDate AS lockDate
-		|	FROM
-		|		Catalog.tokens AS tokens
-		|	WHERE
-		|		tokens.ref = &token) AS SQ
-		|WHERE
-		|	SQ.lockDate = DATETIME(1, 1, 1)";
-		
-		query.SetParameter("token", XMLValue(Type("CatalogRef.tokens"), token));		
-		
-		queryResult	= query.Execute();		
-		
-		If Not queryResult.IsEmpty() Then
-			selection	= queryResult.Select();
-			selection.Next();		
-			answer.Insert("token", selection.token);
-			answer.Insert("user", selection.user);
-			answer.Insert("userType", selection.userType);
-			answer.Insert("holding", selection.holding);
-			answer.Insert("chain", selection.chain);
-			answer.Insert("appType", selection.appType);
-			answer.Insert("systemType", selection.systemType);
-			answer.Insert("timezone", selection.timezone);
-			answer.Insert("errorDescription", Service.getErrorDescription(language, ""));
-		EndIf;		
-	
-	EndIf;
-	
-	Return answer;
-	
-EndFunction
-
 Function getBaseURL() Export
 	Return  Constants.BaseURL.Get;	
 EndFunction
@@ -116,4 +49,61 @@ Function getCountryCodeList() Export
 	
 EndFunction
 
+Function initTokenContext() Export
+	tokenСontext		= New Structure();
+	tokenСontext.Insert("token", Catalogs.tokens.EmptyRef());
+	tokenСontext.Insert("appType", Enums.appTypes.EmptyRef());
+	tokenСontext.Insert("appVersion", 0);
+	tokenСontext.Insert("chain", Catalogs.chains.EmptyRef());
+	tokenСontext.Insert("changeDate", Date(1,1,1));
+	tokenСontext.Insert("createDate", Date(1,1,1));
+	tokenСontext.Insert("deviceModel", "");
+	tokenСontext.Insert("deviceToken", "");
+	tokenСontext.Insert("holding", Catalogs.holdings.EmptyRef());
+	tokenСontext.Insert("lockDate", Date(1,1,1));
+	tokenСontext.Insert("systemType", Enums.systemTypes.EmptyRef());
+	tokenСontext.Insert("systemVersion", "");
+	tokenСontext.Insert("timezone", Catalogs.timeZones.EmptyRef());
+	tokenСontext.Insert("user", Catalogs.users.EmptyRef());
+	tokenСontext.Insert("userType", "");
+	Return tokenСontext;	
+EndFunction
+
+Function getTokenContext(language, authKey) Export
+		
+	query = New Query();
+	query.Text = "SELECT
+	|	tokens.Ref AS token,
+	|	tokens.appType,
+	|	tokens.appVersion,
+	|	tokens.chain,
+	|	tokens.changeDate,
+	|	tokens.createDate,
+	|	tokens.deviceModel,
+	|	tokens.deviceToken,
+	|	tokens.holding,
+	|	tokens.lockDate,
+	|	tokens.systemType,
+	|	tokens.systemVersion,
+	|	tokens.timeZone,
+	|	tokens.user,
+	|	ISNULL(tokens.user.userType, """") AS userType
+	|FROM
+	|	Catalog.tokens AS tokens
+	|WHERE
+	|	NOT tokens.DeletionMark
+	|	AND tokens.Ref = &token";
+
+	query.SetParameter("token", XMLValue(Type("CatalogRef.tokens"), authKey));
+	queryResult = query.Execute();
+	tokenСontext = GeneralReuse.initTokenContext();
+	If Not queryResult.IsEmpty() Then		
+		selection = queryResult.Select();
+		selection.Next();
+		FillPropertyValues(tokenСontext, selection);				
+	EndIf;
+		
+	Return tokenСontext;
+	
+EndFunction
 

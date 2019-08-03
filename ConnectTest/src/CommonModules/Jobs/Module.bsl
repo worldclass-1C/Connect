@@ -1,43 +1,37 @@
 
-Процедура ОтправитьСмс() Экспорт
-	Messages.ОтправитьСообщения(Перечисления.informationChannels.sms);
-КонецПроцедуры
+Procedure sendSMS() Export
+	Messages.sendMessages(Enums.informationChannels.sms);
+EndProcedure
 
-Процедура ОтправитьPush() Экспорт
-	Messages.ОтправитьСообщения(Перечисления.informationChannels.pushEmployee);
-	Messages.ОтправитьСообщения(Перечисления.informationChannels.pushCustomer);
-КонецПроцедуры
+Procedure sendPush() Export
+	Messages.sendMessages(Enums.informationChannels.pushEmployee);
+	Messages.sendMessages(Enums.informationChannels.pushCustomer);
+EndProcedure
 
-Процедура ПроверитьСтатусСмс() Экспорт
-		
-	УзелСообщенияПроверкаСтатуса	= GeneralReuse.nodeMessagesToCheckStatus(Перечисления.informationChannels.sms); 
-	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ РАЗЛИЧНЫЕ
-	             	  |	СообщенияИзменения.Ссылка.holding КАК holding
-	             	  |ИЗ
-	             	  |	Справочник.messages.Изменения КАК СообщенияИзменения
-	             	  |ГДЕ
-	             	  |	СообщенияИзменения.Узел = &Узел";
-	
-	пЗапрос.УстановитьПараметр("Узел", УзелСообщенияПроверкаСтатуса);
-	
-	Выборка	= пЗапрос.Выполнить().Выбрать();
-	
-	Пока Выборка.Следующий() Цикл
-		Messages.ПроверитьСтатусСмсПоХолдингу(УзелСообщенияПроверкаСтатуса, Выборка.Холдинг);
-	КонецЦикла;	
-	
-КонецПроцедуры 
+Procedure checkSmsStatus() Export		
+	nodeMessagesToCheckStatus	= GeneralReuse.nodeMessagesToCheckStatus(Enums.informationChannels.sms);
+	query	= New Query();
+	query.text	= "SELECT DISTINCT
+	|	messages.Ref.holding AS holding
+	|FROM
+	|	Catalog.messages.Changes AS messages
+	|WHERE
+	|	messages.node = &node";	
+	query.SetParameter("node", nodeMessagesToCheckStatus);	
+	selection	= query.Execute().Select();	
+	While selection.Next() Do
+		Messages.checkHoldingSmsStatus(nodeMessagesToCheckStatus, selection.holding);
+	EndDo;
+EndProcedure 
 
-Процедура РассчитатьПоказатели() Экспорт	
+Procedure РассчитатьПоказатели() Export
 	Service.РассчитатьПоказатели();
-КонецПроцедуры
+EndProcedure
 
-Процедура ОповеститьИсточникИнформации() Экспорт
+Procedure ОповеститьИсточникИнформации() Export
 	Service.ОповеститьИсточникИнформации();
-КонецПроцедуры
+EndProcedure
 
-Процедура ПроверитьАктуальностьТокенов() Экспорт
+Procedure ПроверитьАктуальностьТокенов() Export
 	Service.ПроверитьАктуальностьТокенов();
-КонецПроцедуры
+EndProcedure
