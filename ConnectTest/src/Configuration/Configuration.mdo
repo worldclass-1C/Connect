@@ -78,6 +78,7 @@
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
+  <commonModules>CommonModule.Accounts</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
   <commonModules>CommonModule.General</commonModules>
@@ -91,7 +92,6 @@
   <commonModules>CommonModule.SmsGold</commonModules>
   <commonModules>CommonModule.SMSTraffic</commonModules>
   <commonModules>CommonModule.Stramedia</commonModules>
-  <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.СIDMkg</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
@@ -106,6 +106,7 @@
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseURL</constants>
+  <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
   <catalogs>Catalog.cacheValuesTypes</catalogs>
@@ -113,6 +114,7 @@
   <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.cities</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
+  <catalogs>Catalog.users</catalogs>
   <catalogs>Catalog.gyms</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
@@ -121,7 +123,6 @@
   <catalogs>Catalog.messages</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
-  <catalogs>Catalog.users</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
@@ -150,7 +151,6 @@
   <informationRegisters>InformationRegister.registeredDevices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
-  <informationRegisters>InformationRegister.usersPasswords</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>

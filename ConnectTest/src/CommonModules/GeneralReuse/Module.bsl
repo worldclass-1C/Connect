@@ -23,32 +23,6 @@ Function getBaseURL() Export
 	Return  Constants.BaseURL.Get;	
 EndFunction
 
-Function getCountryCodeList() Export
-	
-	array	= New Array();		
-	query	= New Query();
-	
-	query.Text	= "SELECT
-	|	CountryCodes.CountryCode,
-	|	CountryCodes.Description
-	|FROM
-	|	Catalog.CountryCodes AS CountryCodes
-	|WHERE
-	|	NOT CountryCodes.DeletionMark";
-	
-	selection	= query.Execute().Select();
-	
-	While selection.Next() Do
-		answer	= New Structure();
-		answer.Вставить("code", selection.CountryCode);
-		answer.Вставить("mask", selection.Description);		
-		array.add(answer);
-	EndDo;
-		
-	Return array;
-	
-EndFunction
-
 Function initTokenContext() Export
 	tokenСontext		= New Structure();
 	tokenСontext.Insert("token", Catalogs.tokens.EmptyRef());
@@ -64,7 +38,7 @@ Function initTokenContext() Export
 	tokenСontext.Insert("systemType", Enums.systemTypes.EmptyRef());
 	tokenСontext.Insert("systemVersion", "");
 	tokenСontext.Insert("timezone", Catalogs.timeZones.EmptyRef());
-	tokenСontext.Insert("user", Catalogs.users.EmptyRef());
+	tokenСontext.Insert("account", Catalogs.accounts.EmptyRef());
 	tokenСontext.Insert("userType", "");
 	Return tokenСontext;	
 EndFunction
@@ -86,6 +60,7 @@ Function getTokenContext(language, authKey) Export
 	|	tokens.systemType,
 	|	tokens.systemVersion,
 	|	tokens.timeZone,
+	|	tokens.account,
 	|	tokens.user,
 	|	ISNULL(tokens.user.userType, """") AS userType
 	|FROM

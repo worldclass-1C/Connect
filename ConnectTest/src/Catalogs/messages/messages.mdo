@@ -315,18 +315,18 @@
     <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="264ea937-3dcb-4291-961c-0e6a7ef84a30">
-    <name>user</name>
+    <name>account</name>
     <synonym>
       <key>en</key>
-      <value>User</value>
+      <value>Account</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Пользователь</value>
+      <value>Учетная запись</value>
     </synonym>
     <comment>Определяется если пользователь зарегистирован в МП</comment>
     <type>
-      <types>CatalogRef.users</types>
+      <types>CatalogRef.accounts</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

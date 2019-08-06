@@ -13,7 +13,7 @@
   <includeInCommandInterface>true</includeInCommandInterface>
   <content>Catalog.cities</content>
   <content>Catalog.gyms</content>
-  <content>Catalog.users</content>
+  <content>Catalog.accounts</content>
   <content>Catalog.chains</content>
   <content>Catalog.holdings</content>
   <content>Catalog.cancellationReasons</content>
@@ -22,4 +22,5 @@
   <content>Catalog.tokens</content>
   <content>Catalog.cacheValuesTypes</content>
   <content>Catalog.CountryCodes</content>
+  <content>Catalog.users</content>
 </mdclass:Subsystem>

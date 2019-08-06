@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormField">
-    <name>appType</name>
+    <name>Code</name>
     <id>1</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -9,10 +9,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.appType</segments>
+      <segments>Object.Code</segments>
     </dataPath>
     <extendedTooltip>
-      <name>appTypeExtendedTooltip</name>
+      <name>CodeExtendedTooltip</name>
       <id>3</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -27,7 +27,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>appTypeContextMenu</name>
+      <name>CodeContextMenu</name>
       <id>2</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -51,57 +51,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>appVersion</name>
-    <id>4</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.appVersion</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>appVersionExtendedTooltip</name>
-      <id>6</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>appVersionContextMenu</name>
-      <id>5</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>chain</name>
+    <name>birthday</name>
     <id>7</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -109,10 +59,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.chain</segments>
+      <segments>Object.birthday</segments>
     </dataPath>
     <extendedTooltip>
-      <name>chainExtendedTooltip</name>
+      <name>birthdayExtendedTooltip</name>
       <id>9</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -127,7 +77,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>chainContextMenu</name>
+      <name>birthdayContextMenu</name>
       <id>8</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -151,57 +101,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>changeDate</name>
-    <id>10</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.changeDate</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>changeDateExtendedTooltip</name>
-      <id>12</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>changeDateContextMenu</name>
-      <id>11</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>createDate</name>
+    <name>lastName</name>
     <id>13</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -209,10 +109,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.createDate</segments>
+      <segments>Object.lastName</segments>
     </dataPath>
     <extendedTooltip>
-      <name>createDateExtendedTooltip</name>
+      <name>lastNameExtendedTooltip</name>
       <id>15</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -227,7 +127,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>createDateContextMenu</name>
+      <name>lastNameContextMenu</name>
       <id>14</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -251,7 +151,57 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>deviceModel</name>
+    <name>firstName</name>
+    <id>10</id>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <dataPath xsi:type="form:DataPath">
+      <segments>Object.firstName</segments>
+    </dataPath>
+    <extendedTooltip>
+      <name>firstNameExtendedTooltip</name>
+      <id>12</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <contextMenu>
+      <name>firstNameContextMenu</name>
+      <id>11</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <autoFill>true</autoFill>
+    </contextMenu>
+    <type>InputField</type>
+    <editMode>EnterOnInput</editMode>
+    <showInHeader>true</showInHeader>
+    <headerHorizontalAlign>Left</headerHorizontalAlign>
+    <showInFooter>true</showInFooter>
+    <extInfo xsi:type="form:InputFieldExtInfo">
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <wrap>true</wrap>
+      <chooseType>true</chooseType>
+      <typeDomainEnabled>true</typeDomainEnabled>
+      <textEdit>true</textEdit>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormField">
+    <name>secondName</name>
     <id>16</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -259,10 +209,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.deviceModel</segments>
+      <segments>Object.secondName</segments>
     </dataPath>
     <extendedTooltip>
-      <name>deviceModelExtendedTooltip</name>
+      <name>secondNameExtendedTooltip</name>
       <id>18</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -277,7 +227,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>deviceModelContextMenu</name>
+      <name>secondNameContextMenu</name>
       <id>17</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -301,7 +251,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>deviceToken</name>
+    <name>sex</name>
     <id>19</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -309,10 +259,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.deviceToken</segments>
+      <segments>Object.sex</segments>
     </dataPath>
     <extendedTooltip>
-      <name>deviceTokenExtendedTooltip</name>
+      <name>sexExtendedTooltip</name>
       <id>21</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -327,7 +277,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>deviceTokenContextMenu</name>
+      <name>sexContextMenu</name>
       <id>20</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -351,7 +301,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>fullName</name>
+    <name>canUpdatePersonalData</name>
     <id>22</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -359,10 +309,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.fullName</segments>
+      <segments>Object.canUpdatePersonalData</segments>
     </dataPath>
     <extendedTooltip>
-      <name>fullNameExtendedTooltip</name>
+      <name>canUpdatePersonalDataExtendedTooltip</name>
       <id>24</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -377,7 +327,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>fullNameContextMenu</name>
+      <name>canUpdatePersonalDataContextMenu</name>
       <id>23</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -386,22 +336,15 @@
       </userVisible>
       <autoFill>true</autoFill>
     </contextMenu>
-    <type>InputField</type>
+    <type>CheckBoxField</type>
     <editMode>EnterOnInput</editMode>
     <showInHeader>true</showInHeader>
     <headerHorizontalAlign>Left</headerHorizontalAlign>
     <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
+    <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
   </items>
   <items xsi:type="form:FormField">
-    <name>holding</name>
+    <name>Email</name>
     <id>25</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -409,10 +352,10 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.holding</segments>
+      <segments>Object.Email</segments>
     </dataPath>
     <extendedTooltip>
-      <name>holdingExtendedTooltip</name>
+      <name>EmailExtendedTooltip</name>
       <id>27</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -427,258 +370,8 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>holdingContextMenu</name>
+      <name>EmailContextMenu</name>
       <id>26</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>lockDate</name>
-    <id>28</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.lockDate</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>lockDateExtendedTooltip</name>
-      <id>30</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>lockDateContextMenu</name>
-      <id>29</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>systemType</name>
-    <id>31</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.systemType</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>systemTypeExtendedTooltip</name>
-      <id>33</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>systemTypeContextMenu</name>
-      <id>32</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>systemVersion</name>
-    <id>34</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.systemVersion</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>systemVersionExtendedTooltip</name>
-      <id>36</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>systemVersionContextMenu</name>
-      <id>35</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>timeZone</name>
-    <id>37</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.timeZone</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>timeZoneExtendedTooltip</name>
-      <id>39</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>timeZoneContextMenu</name>
-      <id>38</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:InputFieldExtInfo">
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <wrap>true</wrap>
-      <chooseType>true</chooseType>
-      <typeDomainEnabled>true</typeDomainEnabled>
-      <textEdit>true</textEdit>
-    </extInfo>
-  </items>
-  <items xsi:type="form:FormField">
-    <name>account</name>
-    <id>40</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.account</segments>
-    </dataPath>
-    <extendedTooltip>
-      <name>accountExtendedTooltip</name>
-      <id>42</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>accountContextMenu</name>
-      <id>41</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -711,6 +404,7 @@
     <horizontalAlign>Left</horizontalAlign>
     <autoFill>true</autoFill>
   </autoCommandBar>
+  <windowOpeningMode>LockOwnerWindow</windowOpeningMode>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -723,7 +417,7 @@
     <name>Object</name>
     <id>1</id>
     <valueType>
-      <types>CatalogObject.tokens</types>
+      <types>CatalogObject.accounts</types>
     </valueType>
     <view>
       <common>true</common>

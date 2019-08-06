@@ -113,7 +113,7 @@
   <codeAllowedLength>Variable</codeAllowedLength>
   <descriptionLength>10</descriptionLength>
   <content>
-    <mdObject>Catalog.users</mdObject>
+    <mdObject>Catalog.accounts</mdObject>
   </content>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>

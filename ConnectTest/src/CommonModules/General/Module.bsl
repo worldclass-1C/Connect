@@ -9,17 +9,17 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "countrycodelist" Then // проверить описание в API 
 			getCountryCodeList(parameters);
 		ElsIf parameters.requestName = "config" Then
-			getAppConfig(parameters);
+			getConfig(parameters);
 		ElsIf parameters.requestName = "signin" Then
 			userSignIn(parameters);
 		ElsIf parameters.requestName = "confirm" Then
 			userConfirm(parameters);
-		ElsIf parameters.requestName = "newpassword" Then // проверить описание в API
-			setUserPassword(parameters);
+		ElsIf parameters.requestName = "addusertotoken" Then
+			addUserToToken(parameters);
 		ElsIf parameters.requestName = "registerdevice" Then
 			registerDevice(parameters);
-		ElsIf parameters.requestName = "unregisterdevice" Then
-			unRegisterDevice(parameters);
+		ElsIf parameters.requestName = "deluserintoken" Then
+			delUserInToken(parameters);
 		ElsIf parameters.requestName = "userprofile" Then // проверить описание в API
 			ПолучитьПрофильПользователя(parameters);
 		ElsIf parameters.requestName = "cataloggyms"
@@ -45,6 +45,83 @@ Procedure executeRequestMethod(parameters) Export
 		EndIf;
 	EndIf;
 			
+EndProcedure
+
+Procedure getConfig(parameters)
+
+	tokenСontext = parameters.tokenСontext;
+	requestStruct = parameters.requestStruct;	
+	brand = parameters.brand;
+	language = parameters.language;
+	errorDescription = parameters.ErrorDescription;
+
+	struct = New Structure();
+
+	query = New Query();
+	query.Text = "SELECT
+	|	currentAppVersions.appVersion AS minVersion
+	|FROM
+	|	InformationRegister.currentAppVersions AS currentAppVersions
+	|WHERE
+	|	currentAppVersions.appType = &appType
+	|	AND currentAppVersions.systemType = &systemType
+	|	AND currentAppVersions.brand = &brand
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	REFPRESENTATION(tokens.appType) AS appType,
+	|	tokens.appVersion AS appVersion,
+	|	tokens.chain.Code AS chainCode,
+	|	tokens.deviceModel AS deviceModel,
+	|	tokens.deviceToken AS deviceToken,
+	|	REFPRESENTATION(tokens.systemType) AS systemType,
+	|	tokens.systemVersion AS systemVersion,
+	|	tokens.lockDate
+	|FROM
+	|	Catalog.tokens AS tokens
+	|WHERE
+	|	tokens.Ref = &token";
+
+	query.SetParameter("brand", Enums.brandTypes[brand]);
+	query.SetParameter("appType", Enums.appTypes[requestStruct.appType]);
+	query.SetParameter("systemType", Enums.systemTypes[requestStruct.systemType]);
+	query.SetParameter("token", tokenСontext.token);
+
+	queryResults = query.ExecuteBatch();
+	queryResult = queryResults[0];
+
+	If queryResult.IsEmpty() Then
+		struct.Insert("minVersion", 0);
+	Else
+		selection = queryResult.Select();
+		selection.Next();
+		struct.Insert("minVersion", selection.minVersion);
+	EndIf;
+
+	queryResult = queryResults[1];
+
+	If not queryResult.IsEmpty() Then		
+		selection = queryResult.Select();
+		selection.Next();
+		If selection.lockDate < ToUniversalTime(CurrentDate()) Then
+			errorDescription = Service.getErrorDescription(language, "tokenExpired");	
+		Else
+			tokenStruct = New Structure();
+			tokenStruct.Insert("appType", selection.appType);
+			tokenStruct.Insert("appVersion", selection.appVersion);
+			tokenStruct.Insert("chainCode", selection.chainCode);
+			tokenStruct.Insert("deviceModel", selection.deviceModel);
+			tokenStruct.Insert("deviceToken", selection.deviceToken);
+			tokenStruct.Insert("systemType", selection.systemType);
+			tokenStruct.Insert("systemVersion", selection.systemVersion);
+			tokenStruct.Insert("userStatus", selection.userStatus);
+			struct.Insert("token", tokenStruct);
+		EndIf;
+	EndIf;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+
 EndProcedure
 
 Procedure getChainList(parameters)
@@ -105,6 +182,33 @@ Procedure getChainList(parameters)
 
 EndProcedure
 
+Procedure getCountryCodeList(parameters)
+	
+	array	= New Array();		
+	query	= New Query();
+	
+	query.Text	= "SELECT
+	|	CountryCodes.CountryCode,
+	|	CountryCodes.Description
+	|FROM
+	|	Catalog.CountryCodes AS CountryCodes
+	|WHERE
+	|	NOT CountryCodes.DeletionMark";
+	
+	selection	= query.Execute().Select();
+	
+	While selection.Next() Do
+		answer	= New Structure();
+		answer.Insert("code", selection.CountryCode);
+		answer.Insert("mask", selection.Description);		
+		array.add(answer);
+	EndDo;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(array));
+	parameters.Insert("notSaveAnswer", True);
+	
+EndProcedure
+
 Procedure registerDevice(parameters)
 	
 	tokenСontext = parameters.tokenСontext;
@@ -123,107 +227,25 @@ Procedure registerDevice(parameters)
 	queryResult = query.Execute();
 	If queryResult.IsEmpty() Then
 		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noChainCode"));
-	Else
-		currentDate = ToUniversalTime(CurrentDate());
+	Else		
 		select = queryResult.Select();
-		select.Next();
-		If tokenСontext.token.IsEmpty() Then
-			tokenObject = Catalogs.tokens.CreateItem();
-			tokenObject.createDate = currentDate;
-		Else
-			tokenObject = tokenСontext.token.GetObject();
-		EndIf;
-		tokenObject.appType = Enums.appTypes[requestStruct.appType];
-		tokenObject.appVersion = requestStruct.appVersion;
-		tokenObject.chain = select.chain;
-		tokenObject.changeDate = currentDate;
-		tokenObject.deviceModel = requestStruct.deviceModel;
-		tokenObject.deviceToken = requestStruct.deviceToken;
-		tokenObject.holding = select.holding;
-		tokenObject.systemType = Enums.systemTypes[requestStruct.systemType];
-		tokenObject.systemVersion = requestStruct.systemVersion;
-		tokenObject.timeZone = select.timeZone;
-		tokenObject.Write();
+		select.Next();		
+		tokenStruct = New Structure();
+		tokenStruct.Insert("appType", Enums.appTypes[requestStruct.appType]);
+		tokenStruct.Insert("appVersion", requestStruct.appVersion);
+		tokenStruct.Insert("chain", select.chain);
+		tokenStruct.Insert("deviceModel", requestStruct.deviceModel);
+		tokenStruct.Insert("deviceToken", requestStruct.deviceToken);
+		tokenStruct.Insert("holding", select.holding);
+		tokenStruct.Insert("systemType", Enums.systemTypes[requestStruct.systemType]);
+		tokenStruct.Insert("systemVersion", requestStruct.systemVersion);
+		tokenStruct.Insert("timeZone", select.timeZone);
 		struct = New Structure();
-		struct.Insert("token", XMLString(tokenObject.Ref));
+		struct.Insert("token", XMLString(Accounts.getToken(tokenСontext.token, tokenStruct)));
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 
-EndProcedure
-
-Procedure getCountryCodeList(parameters)
-	parameters.Insert("answerBody", HTTP.encodeJSON(GeneralReuse.getCountryCodeList()));
-	parameters.Insert("notSaveAnswer", True);
-EndProcedure
-
-Procedure getAppConfig(parameters)
-	
-	requestStruct	= parameters.requestStruct;
-	language		= parameters.language;
-	brand 			= parameters.brand;
-	
-	struct			= New Structure();	
-	errorDescription = Service.getErrorDescription();
-
-	If Not requestStruct.Property("appType") Then
-		errorDescription = Service.getErrorDescription(language, "noAppType");
-	ElsIf Not requestStruct.Property("systemType") Then
-		errorDescription = Service.getErrorDescription(language, "noSystemType");
-	ElsIf Not requestStruct.Property("token") Then
-		errorDescription = Service.getErrorDescription(language, "noToken");	
-	EndIf;
-
-	If errorDescription.result = "" Then
-		query = New Query();
-		query.Text = "SELECT
-		|	currentAppVersions.appVersion AS minVersion
-		|FROM
-		|	InformationRegister.currentAppVersions AS currentAppVersions
-		|WHERE
-		|	currentAppVersions.appType = &appType
-		|	AND currentAppVersions.systemType = &systemType
-		|	AND currentAppVersions.brand = &brand
-		|;
-		|////////////////////////////////////////////////////////////////////////////////
-		|SELECT
-		|	registeredDevices.appVersion AS backendVersion
-		|FROM
-		|	InformationRegister.registeredDevices AS registeredDevices
-		|WHERE
-		|	registeredDevices.token = &token";
-
-		query.SetParameter("brand", Enums.brandTypes[brand]);
-		query.SetParameter("appType", Enums.appTypes[requestStruct.appType]);
-		query.SetParameter("systemType", Enums.systemTypes[requestStruct.systemType]);
-		query.SetParameter("token", ?(requestStruct.token = "", Catalogs.tokens.EmptyRef(), XMLValue(Type("CatalogRef.tokens"),requestStruct.token)));		
-
-		queryResults = query.ExecuteBatch();		
-		queryResult	= queryResults[0];
-		
-		If queryResult.IsEmpty() Then
-			struct.Insert("minVersion", 0);
-		Else
-			selection = queryResult.Select();		
-			selection.Next();
-			struct.Insert("minVersion", selection.minVersion);			
-		EndIf;
-		
-		queryResult	= queryResults[1];
-		
-		If queryResult.IsEmpty() Then
-			struct.Insert("backendVersion", 0);
-		Else
-			selection = queryResult.Select();		
-			selection.Next();
-			struct.Insert("backendVersion", selection.backendVersion);			
-		EndIf;
-
-	EndIf;
-	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
-	
 EndProcedure
 
 Procedure userSignIn(parameters)
@@ -231,158 +253,176 @@ Procedure userSignIn(parameters)
 	tokenСontext = parameters.tokenСontext;
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
+	errorDescription = parameters.errorDescription;
+	
 	struct = New Structure();
 
-	retryTime = Service.timeBeforeSendSms(tokenСontext.holding, requestStruct.phone);
+	retryTime = Service.timeBeforeSendSms(tokenСontext.token);
 	If retryTime > 0 Then
 		struct.Insert("result", "Fail");
 		struct.Insert("retryTime", retryTime);
 	Else
-		tempCode = Users.tempPassword();
-		informationChannels = New Array();
-		informationChannels.Add(Enums.informationChannels.sms);
-		rowsArray = New Array();
-		rowsArray.Add(tempCode);
-		rowsArray.Add(?(language = "ru", " - ваш код для входа", " - your login code"));		
-		rowsArray.Add(?(language = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
-		messageStruct = New Структура;
-		messageStruct.Insert("phone", requestStruct.phone);
-		messageStruct.Insert("title", "SMS code");
-		messageStruct.Insert("text", StrConcat(rowsArray));
-		messageStruct.Insert("holding", tokenСontext.holding);
-		messageStruct.Insert("informationChannels", informationChannels);
-		messageStruct.Insert("priority", 0);
-		Messages.newMessage(messageStruct, True);
-		Service.addUsersAuthCode(tokenСontext.holding, requestStruct.phone, tempCode);
-		struct.Insert("result", "Ok");
-		struct.Insert("retryTime", 60);
+		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
+		If ValueIsFilled(chain) Then
+			If tokenСontext.chain <> chain Then
+				tokenСontext.Insert("chain", chain);
+				Accounts.editPropertyInToken(tokenСontext.token, "chain", chain);
+			EndIf;
+		Else
+			errorDescription = Service.getErrorDescription(language, "chainCodeError");
+		EndIf;
+		If errorDescription.result = "" Then
+			tempCode = Accounts.tempPassword();
+			informationChannels = New Array();
+			informationChannels.Add(Enums.informationChannels.sms);
+			rowsArray = New Array();
+			rowsArray.Add(tempCode);
+			rowsArray.Add(?(language = "ru", " - ваш код для входа", " - your login code"));
+			rowsArray.Add(?(language = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
+			messageStruct = New Структура;
+			messageStruct.Insert("phone", requestStruct.phone);
+			messageStruct.Insert("title", "SMS code");
+			messageStruct.Insert("text", StrConcat(rowsArray));
+			messageStruct.Insert("holding", tokenСontext.holding);
+			messageStruct.Insert("informationChannels", informationChannels);
+			messageStruct.Insert("priority", 0);
+			Messages.newMessage(messageStruct, True);
+			Service.addUsersAuthCode(tokenСontext.token, requestStruct.phone, tempCode);
+			struct.Insert("result", "Ok");
+			struct.Insert("retryTime", 60);
+		EndIf;
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-
+	parameters.Insert("errorDescription", errorDescription);
+	
 EndProcedure
 
 Procedure userConfirm(parameters)
 
-	requestStruct = parameters.requestStruct;	
+	tokenСontext = parameters.tokenСontext;
+	requestStruct = parameters.requestStruct;
 	language = parameters.language;
+	errorDescription = parameters.errorDescription;
+	
+	struct = New Structure();
+
+	query = New Query();
+	query.Text = "SELECT
+	|	usersAuthorizationCodes.code,
+	|	usersAuthorizationCodes.phone,
+	|	usersAuthorizationCodes.quantity,
+	|	usersAuthorizationCodes.recordDate
+	|FROM
+	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
+	|WHERE
+	|	usersAuthorizationCodes.token = &token";
+
+	query.SetParameter("token", tokenСontext.token);
+	
+	queryResult = query.Execute();
+	If queryResult.isEmpty() Then
+		errorDescription = Service.getErrorDescription(language, "passwordIsRequired");
+	Else
+		selection = queryResult.Select();
+		selection.Next();
+		If selection.code = requestStruct.password Then
+			record = InformationRegisters.usersAuthorizationCodes.CreateRecordManager();
+			record.token = tokenСontext.token;			
+			record.Read();
+			If record.Selected() Then
+				record.Delete();
+			EndIf;
+			queryUser = New Query("SELECT
+			|	users.Ref AS account,
+			|	ISNULL(customers.Ref, VALUE(Catalog.users.EmptyRef)) AS account
+			|FROM
+			|	Catalog.accounts AS users
+			|		LEFT JOIN Catalog.users AS customers
+			|		ON customers.Owner = users.Ref
+			|		AND customers.holding = &holding
+			|WHERE
+			|	users.code = &phone");
+
+			queryUser.SetParameter("holding", tokenСontext.holding);
+			queryUser.SetParameter("phone", selection.phone);
+			queryUserResult = queryUser.Execute();
+			If queryUserResult.isEmpty() Then
+				parametersNew = Service.getStructCopy(parameters);
+				parametersNew.Insert("requestName", "userProfile");
+				parametersNew.requestStruct.Insert("phone", selection.phone);
+				executeExternalRequest(parametersNew);
+				If parametersNew.errorDescription.result = "" Then
+					answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
+					If answerStruct.Count() = 1 Then
+						userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, answerStruct);
+						Accounts.editPropertyInToken(tokenСontext.token, "account", userArray[0]);
+						customerArray = Service.createCatalogItems("addChangeCustomers", tokenСontext.holding, answerStruct, userArray[0]);
+						Accounts.editPropertyInToken(tokenСontext.token, "account", customerArray[0]);
+						struct.Insert("result", "Ok");
+					ElsIf answerStruct.Count() > 1 Then
+						userList = New Array();
+						For Each user In answerStruct Do
+							userList.Add(New Structure("name, uid", user.lastName + " "
+								+ user.firstName + " " + user.secondName, user.uid));
+						EndDo;
+						struct.Insert("userList", userList);
+					Else
+						errorDescription = Service.getErrorDescription(language, "passwordIsNotCorrect"); //Хотя такого быть не должно									
+					EndIf;
+				Else
+					errorDescription = parametersNew.errorDescription;
+				EndIf;
+			Else
+				selectionUser = queryUserResult.Select();
+				selectionUser.Next();
+				Accounts.editPropertyInToken(tokenСontext.token, "account", selectionUser.user);
+				struct.Insert("result", "Ok");
+			EndIf;
+		Else
+			errorDescription = Service.getErrorDescription(language, "passwordIsNotCorrect");
+		EndIf;
+	EndIf;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+
+EndProcedure
+
+Procedure addUserToToken(parameters)
+
+	tokenСontext = parameters.tokenСontext;
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	errorDescription = parameters.errorDescription;
 		
 	struct = New Structure();
 
-			
-		query = New Query();
-		query.Text = "SELECT
-		|	usersAuthorizationCodes.holding,
-		|	usersAuthorizationCodes.phone,
-		|	usersAuthorizationCodes.code,
-		|	chains.Ref AS chain,
-		|	chains.timeZone
-		|FROM
-		|	Catalog.chains AS chains
-		|		LEFT JOIN InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
-		|		ON chains.holding = usersAuthorizationCodes.holding
-		|		AND usersAuthorizationCodes.phone = &phone
-		|WHERE
-		|	chains.Code = &chainCode";
-	
-		query.SetParameter("chainCode", requestStruct.chainCode);
-		query.SetParameter("phone", requestStruct.phone);
-		
-		queryResult = query.Execute();
-		If queryResult.isEmpty() Then
-			errorDescription = Service.getErrorDescription(language, "passwordIsNotCorrect");			
+	parametersNew = Service.getStructCopy(parameters);
+	parametersNew.Insert("requestName", "userProfile");
+	parametersNew.requestStruct.Insert("uid", requestStruct.uid);
+	executeExternalRequest(parametersNew);
+	If parametersNew.errorDescription.result = "" Then
+		tempArray = HTTP.decodeJSON(parametersNew.answerBody);
+		If tempArray.Count() = 1 Then
+			userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, tempArray);
+			Accounts.editPropertyInToken(tokenСontext.token, "account", userArray[0]);
+			struct.Insert("result", "Ok");
 		Else
-			selection = queryResult.Select();
-			selection.Next();			
-			If selection.code = requestStruct.password Then				
-				record = InformationRegisters.usersAuthorizationCodes.CreateRecordManager();
-				record.holding = selection.holding;
-				record.phone = selection.phone;
-				record.Read();
-				If record.Selected() Then
-					record.Delete();											
-				EndIf;
-				queryUser = New Query();
-				queryUser.Text = "SELECT
-				|	users.Ref AS user
-				|FROM
-				|	Catalog.users AS users
-				|WHERE
-				|	users.holding = &holding
-				|	AND users.phone = &phone";
-
-				queryUser.SetParameter("holding", selection.holding);
-				queryUser.SetParameter("phone", selection.phone);
-				queryUserResult = queryUser.Execute();
-				If queryUserResult.isEmpty() Then
-					parametersNew = Service.getStructCopy(parameters);
-					parametersNew.Insert("requestName", "userProfile");
-					executeExternalRequest(parametersNew);
-					If parametersNew.errorDescription.result = "" Then
-						userArray = Service.createCatalogItems("addChangeUsers", selection.holding, HTTP.decodeJSON(parametersNew.answerBody));
-						If userArray.Count() = 1 Then
-							tokenObject = Users.getToken(requestStruct, userArray[0], selection.chain, selection.holding, selection.timezone);
-							struct.Insert("token", XMLString(tokenObject.Ref));
-						ElsIf userArray.Count() > 1 Then
-							userList = New Array();
-							For Each user In userArray Do
-								userList.Add(New Structure("name, uid", user.lastName + " " + user.firstName + " " + user.secondName, XMLString(user)));	
-							EndDo;
-							struct.Insert("userList", userList);									 
-						Else
-							errorDescription = Service.getErrorDescription(language, "passwordIsNotCorrect");//Хотя такого быть не должно									
-						EndIf;												
-					Else
-						errorDescription = parametersNew.errorDescription;		
-					EndIf;				
-				Else
-					selectionUser = queryUserResult.Select();
-					selectionUser.Next();
-					tokenObject = Users.getToken(requestStruct, selectionUser.user, selection.chain, selection.holding, selection.timezone);
-					struct.Insert("token", XMLString(tokenObject.Ref));
-				EndIf;
-			Else
-				errorDescription = Service.getErrorDescription(language, "passwordIsNotCorrect");
-			EndIf;						
+			errorDescription = Service.getErrorDescription(language, "userNotfound"); //Хотя такого быть не должно									
 		EndIf;
-	
+	Else
+		errorDescription = parametersNew.errorDescription;
+	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);
 
 EndProcedure
 
-Procedure setUserPassword(parameters)
-
-	requestStruct	= parameters.requestStruct;
-	language		= parameters.language;
-	tokenСontext		= parameters.tokenСontext;	
-	struct 			= New Structure();
-
-	errorDescription = Users.checkPassword(language, tokenСontext.user, requestStruct.password);
-	If requestStruct.newPassword = "" Then
-		errorDescription = Service.getErrorDescription(language, "passwordIsEmpty");
-	EndIf;
-	If errorDescription.result = "" Then
-		record = InformationRegisters.usersPasswords.CreateRecordManager();
-		record.user 	= tokenСontext.user;
-		record.password = requestStruct.newPassword;
-		record.validity = Date(1, 1, 1);
-		record.Write();
-		struct.Insert("result", "Ok");
-	EndIf;
-
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
-
-EndProcedure
-
-Procedure unRegisterDevice(parameters)
-	tokenСontext		= parameters.tokenСontext;
-	struct 			= New Structure();
-	Users.blockToken(tokenСontext.token);
-	struct.Insert("result", "Ok");
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+Procedure delUserInToken(parameters)
+	Accounts.delUserIoToken(parameters.tokenСontext.token);	
+	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("result", "Ok")));	
 EndProcedure
 
 Procedure ПолучитьПрофильПользователя(parameters)
@@ -398,7 +438,7 @@ Procedure ПолучитьПрофильПользователя(parameters)
 
 	пЗапрос = Новый Запрос;
 	пЗапрос.text = "ВЫБРАТЬ
-		|	Пользователи.Ссылка КАК user,
+		|	Пользователи.Ссылка КАК account,
 		|	Пользователи.login КАК login,
 		|	Пользователи.birthday КАК birthday,
 		|	Пользователи.phone КАК phone,
@@ -413,9 +453,9 @@ Procedure ПолучитьПрофильПользователя(parameters)
 		|	Пользователи.firstName КАК firstName,
 		|	Пользователи.secondName КАК secondName
 		|ИЗ
-		|	Справочник.users КАК Пользователи
+		|	Справочник.accounts КАК Пользователи
 		|ГДЕ
-		|	Пользователи.Ссылка = &user
+		|	Пользователи.Ссылка = &account
 		|;
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
@@ -424,10 +464,10 @@ Procedure ПолучитьПрофильПользователя(parameters)
 		|ИЗ
 		|	РегистрСведений.usersStates КАК СостояниеПользователя
 		|ГДЕ
-		|	СостояниеПользователя.user = &user
+		|	СостояниеПользователя.account = &account
 		|	И СостояниеПользователя.appType = &appType";
 
-	пЗапрос.УстановитьПараметр("user", tokenСontext.Пользователь);
+	пЗапрос.УстановитьПараметр("account", tokenСontext.Пользователь);
 	пЗапрос.УстановитьПараметр("appType", tokenСontext.ВидПриложения);
 
 	РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
@@ -599,7 +639,7 @@ Procedure getNotificationList(parameters)
 	|		LEFT JOIN Catalog.messages.channelPriorities AS messageschannelPriorities
 	|		ON messageschannelPriorities.Ref = messages.Ref
 	|WHERE
-	|	messages.user = &user
+	|	messages.account = &account
 	|	AND messages.registrationDate < &registrationDate
 	|	AND messageschannelPriorities.channel = &informationChannel
 	|ORDER BY
@@ -633,7 +673,7 @@ Procedure getNotificationList(parameters)
 	|	registrationDate DESC";
 
 	query.SetParameter("registrationDate", registrationDate);
-	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("account", tokenСontext.user);
 	query.SetParameter("informationChannel", informationChannel);
 
 	selection = query.Execute().Select();
@@ -687,9 +727,9 @@ Procedure readNotification(parameters)
 	|	messagesChannelPriorities.channel = &informationChannel
 	|	И ISNULL(messagesLogsSliceLast.messageStatus,
 	|		VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	И Messages.user = &user";
+	|	И Messages.account = &account";
 
-	query.SetParameter("user", tokenСontext.Пользователь);
+	query.SetParameter("account", tokenСontext.Пользователь);
 	query.SetParameter("informationChannel", informationChannel);
 
 	queryResult = query.Execute();
@@ -760,9 +800,9 @@ Procedure unReadNotificationCount(parameters)
 	|	messagesChannelPriorities.channel = &informationChannel
 	|	И ISNULL(messagesLogsSliceLast.messageStatus,
 	|		VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	И Messages.user = &user";
+	|	И Messages.account = &account";
 
-	query.SetParameter("user", tokenСontext.Пользователь);
+	query.SetParameter("account", tokenСontext.Пользователь);
 	query.SetParameter("informationChannel", informationChannel);
 
 	selection = query.Execute().Select();
@@ -775,11 +815,11 @@ EndProcedure
 
 Procedure executeExternalRequest(parameters)
 
-	requestStruct		= parameters.requestStruct;
-	tokenСontext			= parameters.tokenСontext;
-	language			= parameters.language;
-	errorDescription	= Service.getErrorDescription();
-	answerBody 			= "";
+	requestStruct = parameters.requestStruct;
+	tokenСontext = parameters.tokenСontext;
+	language = parameters.language;
+	errorDescription = Service.getErrorDescription();
+	answerBody = "";
 
 	query = New Query();
 	query.text = "SELECT
@@ -797,7 +837,7 @@ Procedure executeExternalRequest(parameters)
 	|			THEN UNDEFINED
 	|		ELSE holdingsConnectionsInformationSources.port
 	|	END AS port,
-	|	holdingsConnectionsInformationSources.user AS user,
+	|	holdingsConnectionsInformationSources.account AS account,
 	|	holdingsConnectionsInformationSources.password AS password,
 	|	holdingsConnectionsInformationSources.timeout AS timeout,
 	|	holdingsConnectionsInformationSources.secureConnection AS secureConnection,
@@ -835,7 +875,7 @@ Procedure executeExternalRequest(parameters)
 				requestBody = "";
 				parametersFromURL = StrReplace(parameters.URL, GeneralReuse.getBaseURL(), "");
 			Else
-				requestBody = HTTP.PrepareRequestBody(parameters.authKey, requestStruct, tokenСontext.user, language, tokenСontext.timeZone, tokenСontext.appType);
+				requestBody = HTTP.PrepareRequestBody(parameters);
 				parametersFromURL = "";
 			EndIf;
 			selection.Reset();
@@ -843,7 +883,7 @@ Procedure executeExternalRequest(parameters)
 				connectStruct = New Structure();
 				connectStruct.Insert("server", selection.server);
 				connectStruct.Insert("port", selection.port);
-				connectStruct.Insert("user", selection.user);
+				connectStruct.Insert("account", selection.user);
 				connectStruct.Insert("password", selection.password);
 				connectStruct.Insert("timeout", selection.timeout);
 				connectStruct.Insert("secureConnection", selection.secureConnection);
@@ -922,9 +962,9 @@ Procedure sendMessage(parameters)
 				messageStruct.Insert("gym", Catalogs.gyms.EmptyRef());
 			EndIf;
 			If message.Property("uid") And message.uid <> "" Then
-				messageStruct.Insert("user", XMLValue(Type("CatalogRef.users"), message.uid));
+				messageStruct.Insert("account", XMLValue(Type("CatalogRef.accounts"), message.uid));
 			Else
-				messageStruct.Insert("user", Catalogs.users.EmptyRef());
+				messageStruct.Insert("account", Catalogs.accounts.EmptyRef());
 			EndIf;
 			If message.Property("token") And message.token <> "" Then
 				messageStruct.Insert("token", XMLValue(Type("CatalogRef.tokens"), message.token));
@@ -939,8 +979,8 @@ Procedure sendMessage(parameters)
 			EndIf;
 			messageStruct.Insert("informationChannels", channelsArray);
 			If messageStruct.phone = ""
-					And messageStruct.user.GetObject() = Undefined Then
-			ElsIf messageStruct.user = messageStruct.token.user Then
+					And messageStruct.account.GetObject() = Undefined Then
+			ElsIf messageStruct.account = messageStruct.token.account Then
 			Else
 				Messages.НовоеСообщение(messageStruct);
 			EndIf;

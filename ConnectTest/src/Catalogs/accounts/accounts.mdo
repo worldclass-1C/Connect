@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="72a3d800-7fec-4c5e-9af4-19a4d0c52796">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="20ea9dbe-f222-4724-bdc0-f29f1dfade89">
   <producedTypes>
-    <objectType typeId="c1dffd03-25c5-4790-84ea-6fb82c84662c" valueTypeId="1f33104a-d33b-4c80-88da-aea26792bf25"/>
-    <refType typeId="9050ecfd-bc24-4b15-b057-93c1ebd08e83" valueTypeId="18c3a61c-ad7d-4614-b4ad-09e6829ae6ef"/>
-    <selectionType typeId="89fb7dab-edd3-4573-94be-c126317f3c10" valueTypeId="44219998-66af-42a3-8580-a1b6ec516fd3"/>
-    <listType typeId="6b9194a5-0138-40d4-8d93-280171df0418" valueTypeId="0c9cbca8-4137-4576-85e9-5d7a874c3460"/>
-    <managerType typeId="2b47c58f-4b6c-4283-8f60-d5bef2f84ef6" valueTypeId="c26ac741-f124-4d33-a82c-5d0e0d5f481b"/>
+    <objectType typeId="4e4ede92-a251-4ade-abbb-60ee0e4e83cd" valueTypeId="59f2894f-5136-440e-80e1-649a87258932"/>
+    <refType typeId="e0dba537-25cf-462d-b978-7ae250c6902e" valueTypeId="2820d5a4-c1cb-4d7f-bb62-ba8159a14f8e"/>
+    <selectionType typeId="03daee12-45aa-4c3b-874a-64e1ca312e03" valueTypeId="2c219395-b62e-414f-9ec9-e7ee2c34d609"/>
+    <listType typeId="b83cb1e9-3011-4a56-87a7-3583cb3fa950" valueTypeId="2516c21c-66f6-4b57-823f-802b48f53b4d"/>
+    <managerType typeId="21e9928b-ec9d-4510-9ea5-60cb55aef473" valueTypeId="7ad58c70-3eb4-40fb-865f-ee9ba9b616da"/>
   </producedTypes>
-  <name>users</name>
+  <name>accounts</name>
   <synonym>
     <key>en</key>
-    <value>Users</value>
+    <value>Accounts</value>
   </synonym>
   <synonym>
     <key>ru</key>
     <value>Пользователи</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.users.Attribute.userCode</inputByString>
+  <inputByString>Catalog.accounts.StandardAttribute.Code</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
@@ -115,82 +115,48 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>User</value>
+    <value>Account</value>
   </objectPresentation>
   <objectPresentation>
     <key>ru</key>
-    <value>Пользователь</value>
+    <value>Учетная запись</value>
   </objectPresentation>
   <extendedObjectPresentation>
     <key>en</key>
-    <value>User</value>
+    <value>Account</value>
   </extendedObjectPresentation>
   <extendedObjectPresentation>
     <key>ru</key>
-    <value>Пользователь</value>
+    <value>Учетная запись</value>
   </extendedObjectPresentation>
   <listPresentation>
     <key>en</key>
-    <value>Users</value>
+    <value>Accounts</value>
   </listPresentation>
   <listPresentation>
     <key>ru</key>
-    <value>Пользователи</value>
+    <value>Учетные записи</value>
   </listPresentation>
   <extendedListPresentation>
     <key>en</key>
-    <value>Users</value>
+    <value>Accounts</value>
   </extendedListPresentation>
   <extendedListPresentation>
     <key>ru</key>
-    <value>Пользователи</value>
+    <value>Учетные записи</value>
   </extendedListPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
-  <codeLength>9</codeLength>
-  <descriptionLength>100</descriptionLength>
+  <codeLength>20</codeLength>
+  <descriptionLength>20</descriptionLength>
   <codeType>String</codeType>
   <codeAllowedLength>Variable</codeAllowedLength>
-  <codeSeries>WithinOwnerSubordination</codeSeries>
   <checkUnique>true</checkUnique>
-  <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
-  <defaultObjectForm>Catalog.users.Form.ItemForm</defaultObjectForm>
-  <defaultListForm>Catalog.users.Form.ListForm</defaultListForm>
-  <attributes uuid="6af8271f-8292-4602-88a7-b092c506caaa">
-    <name>barCode</name>
-    <synonym>
-      <key>en</key>
-      <value>Barcode</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Штрихкод</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
-      <value>cуdigo de barras</value>
-    </synonym>
-    <synonym>
-      <key>fr_FR</key>
-      <value>code а barres</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>30</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="d34f1242-a838-4bf5-bd0f-a27137557dc5">
+  <defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.accounts.Form.ListForm</defaultListForm>
+  <attributes uuid="16d224e9-10ab-47d4-b16a-63822187ceda">
     <name>birthday</name>
     <synonym>
       <key>en</key>
@@ -212,7 +178,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="b45b7365-de82-492c-ad08-3e6cd79600cc">
+  <attributes uuid="dfa799e0-e716-4db2-b378-aba09e03e03f">
     <name>canUpdatePersonalData</name>
     <synonym>
       <key>en</key>
@@ -228,7 +194,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="3b3f3cbe-132a-4217-b2ea-fe96982a2b43">
+  <attributes uuid="916cc2c3-ef0a-40a6-b3dd-bbe0af882881">
     <name>Email</name>
     <synonym>
       <key>ru</key>
@@ -260,7 +226,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="daa75080-5745-4b70-85f7-687bc19ffcbd">
+  <attributes uuid="22b5a7d7-bd7d-4191-834e-2ecb87613f87">
     <name>firstName</name>
     <synonym>
       <key>en</key>
@@ -284,26 +250,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="867427de-a0a0-4d93-b6de-4d8105033d71">
-    <name>holding</name>
-    <synonym>
-      <key>en</key>
-      <value>Holding</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Холдинг</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.holdings</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="2ce6b748-fa3d-40ee-aadd-b9b569e75e0d">
+  <attributes uuid="3da2ca06-09a1-4d5e-a736-9c6f61c81dce">
     <name>lastName</name>
     <synonym>
       <key>en</key>
@@ -327,104 +274,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="ea5ea5c0-40f0-4109-8e7e-e42ea03757ab">
-    <name>notSubscriptionEmail</name>
-    <synonym>
-      <key>ru</key>
-      <value>Не участвовать в email-рассылке</value>
-    </synonym>
-    <synonym>
-      <key>en</key>
-      <value>Do not participate in an email-newsletter</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
-      <value>No se debe participar en un correo electrónico boletín</value>
-    </synonym>
-    <synonym>
-      <key>fr_FR</key>
-      <value>Ne pas participer à un e-mail bulletin</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="c08738b0-9f05-4459-8141-f2acf421d1c1">
-    <name>notSubscriptionSms</name>
-    <synonym>
-      <key>ru</key>
-      <value>Не участвовать в sms-рассылке</value>
-    </synonym>
-    <synonym>
-      <key>en</key>
-      <value>Do not participate in the sms-mailing</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
-      <value>No participar en el sms-mailing</value>
-    </synonym>
-    <synonym>
-      <key>fr_FR</key>
-      <value>Ne pas participer à la sms-mailing</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="bbe7955c-4add-40b6-b893-e91c69be6909">
-    <name>phone</name>
-    <synonym>
-      <key>en</key>
-      <value>Phone</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Номер телефона</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>20</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <indexing>Index</indexing>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="0c81da3b-d1ff-475d-98d4-ad5a7963a9a0">
-    <name>registrationDate</name>
-    <synonym>
-      <key>en</key>
-      <value>Registration date</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Дата регистрации</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers/>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="87093e4c-72fa-407e-89bc-fbdacfc06633">
+  <attributes uuid="54e47297-4a91-4017-931a-4119605a7491">
     <name>secondName</name>
     <synonym>
       <key>en</key>
@@ -448,7 +298,7 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="8491083d-40a6-4501-a31b-4cf65f0d5747">
+  <attributes uuid="b28eb326-1aac-4ee4-8fee-535ae5fba4c2">
     <name>sex</name>
     <synonym>
       <key>en</key>
@@ -472,69 +322,20 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="cff71b07-2788-4ba7-96c0-74fe63f4f94c">
-    <name>userCode</name>
-    <synonym>
-      <key>en</key>
-      <value>User code</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Код пользователя</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>9</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <indexing>Index</indexing>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="61fde2af-5bae-4c57-ac0b-67798e14831f">
-    <name>userType</name>
-    <synonym>
-      <key>en</key>
-      <value>User type</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Тип пользователя</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>10</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <forms uuid="b122b0ae-236a-460b-953f-32a2977ded70">
-    <name>ListForm</name>
-    <synonym>
-      <key>en</key>
-      <value>List form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
-  <forms uuid="3f4e37e9-63c4-4036-8644-361cb38c090c">
+  <forms uuid="d179634c-fa46-42f9-aafc-4011b5cb769a">
     <name>ItemForm</name>
     <synonym>
       <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="93813de3-42a5-4b3f-9de3-5b417c1f95ba">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

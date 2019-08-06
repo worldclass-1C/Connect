@@ -73,11 +73,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users</name>
-		<right>
-			<name>Delete</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.accounts</name>
 		<right>
 			<name>InteractiveDelete</name>
 			<value>false</value>

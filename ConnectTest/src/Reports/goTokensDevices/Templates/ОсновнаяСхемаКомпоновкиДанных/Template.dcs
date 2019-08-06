@@ -78,7 +78,7 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.registeredDevices КАК ЗарегистрированныеУстройства
 		ПО (ЗарегистрированныеУстройства.token = Токены.Ссылка)
 ГДЕ
-	Токены.user = &amp;user</query>
+	Токены.account = &amp;account</query>
 	</dataSet>
 	<parameter>
 		<name>Пользователь</name>
@@ -89,7 +89,7 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.users</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.accounts</v8:Type>
 		</valueType>
 		<value xsi:nil="true"/>
 		<useRestriction>true</useRestriction>

@@ -21,9 +21,7 @@ Function processRequest(request) Export
 	ElsIf Not ValueIsFilled(parameters.language) Then
 		parameters.Insert("language", "en");
 	EndIf;
-	If parameters.errorDescription.result = ""
-			And parameters.requestName <> "chainlist"
-			And parameters.requestName <> "countrycodelist" Then
+	If parameters.errorDescription.result = "" Then		
 		Check.legality(request, parameters);
 	EndIf;
 	If parameters.errorDescription.result = "" Then
@@ -66,9 +64,11 @@ Function encodeJSON(data) Export
 	Return JSONWriter.Close();
 EndFunction
 
-Function prepareRequestBody(val token, val requestStruct, val user,
-		val language, val timezone, val appType) Export
-
+Function prepareRequestBody(parameters) Export
+	
+	requestStruct = parameters.requestStruct;
+	tokenСontext = parameters.tokenСontext;
+	
 	If TypeOf(requestStruct) = Type("Structure") Then
 		struct = requestStruct;
 	Else
@@ -76,28 +76,29 @@ Function prepareRequestBody(val token, val requestStruct, val user,
 		struct.Insert("array", requestStruct);
 	EndIf;
 
-	struct.Insert("token", token);
-	struct.Insert("language", language);
-	struct.Insert("userId", XMLString(user));
-	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), timezone));
-	If appType = Enums.appTypes.Customer Then
-		struct.Insert("appType", "Customer");
-	ElsIf appType = Enums.appTypes.Employee Then
+	struct.Insert("token", parameters.authKey);
+	struct.Insert("language", parameters.language);
+	struct.Insert("userId", XMLString(tokenСontext.user));
+	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenСontext.timezone));
+	If tokenСontext.appType = Enums.appTypes.Customer Then
+		struct.Insert("appType", "account");
+	ElsIf tokenСontext.appType = Enums.appTypes.Employee Then
 		struct.Insert("appType", "Employee");
-	ElsIf appType = Enums.appTypes.Web Then
+	ElsIf tokenСontext.appType = Enums.appTypes.Web Then
 		struct.Insert("appType", "Web");
 	Else
-		struct.Insert("appType", TrimAll(appType));
+		struct.Insert("appType", TrimAll(tokenСontext.appType));
 	EndIf;
 
 	Return HTTP.encodeJSON(struct);
 
 EndFunction
 
-Function prepareResponse(parameters) Export	
+Function prepareResponse(parameters) Export
 	If parameters.errorDescription.result <> "" Then
 		parameters.Insert("answerBody", HTTP.encodeJSON(parameters.errorDescription));
-		If parameters.errorDescription.result = "userNotIdentified" Then
+		If parameters.errorDescription.result = "noValidRequest"
+				or parameters.errorDescription.result = "tokenExpired" Then
 			response = New HTTPServiceResponse(401);
 		Else
 			response = New HTTPServiceResponse(403);
@@ -107,7 +108,7 @@ Function prepareResponse(parameters) Export
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
 	response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
-	Return response;		
+	Return response;
 EndFunction
 
 Function getRequestStructure(request, holding) Export
@@ -120,7 +121,7 @@ Function getRequestStructure(request, holding) Export
 	|	ПодключенияХолдинговКИсточникамИнформации.informationSource КАК informationSource,
 	|	ПодключенияХолдинговКИсточникамИнформации.server КАК server,
 	|	ПодключенияХолдинговКИсточникамИнформации.port КАК port,
-	|	ПодключенияХолдинговКИсточникамИнформации.user КАК user,
+	|	ПодключенияХолдинговКИсточникамИнформации.account КАК account,
 	|	ПодключенияХолдинговКИсточникамИнформации.password КАК password,
 	|	ПодключенияХолдинговКИсточникамИнформации.URL КАК URL,
 	|	ПодключенияХолдинговКИсточникамИнформации.timeout КАК timeout,
@@ -136,7 +137,7 @@ Function getRequestStructure(request, holding) Export
 	|ВЫБРАТЬ
 	|	ВТ.server КАК server,
 	|	ВТ.port КАК port,
-	|	ВТ.user КАК УчетнаяЗапись,
+	|	ВТ.account КАК УчетнаяЗапись,
 	|	ВТ.password КАК password,
 	|	ВТ.timeout КАК timeout,
 	|	ВТ.secureConnection КАК secureConnection,

@@ -20,20 +20,32 @@ Function getErrorDescription(language = "", result = "",
 			If language = "ru" Then
 				errorDescription.Insert("description", "Пользователь не идентифицирован");
 			Else
-				errorDescription.Insert("description", "User is not identified");
+				errorDescription.Insert("description", "account is not identified");
 			EndIf;
 		ElsIf result = "userNotfound" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Пользователь не найден");
 			Else
-				errorDescription.Insert("description", "User is not found");
+				errorDescription.Insert("description", "account is not found");
 			EndIf;
+		ElsIf result = "tokenExpired" Then
+			If language = "ru" Then
+				errorDescription.Insert("description", "токен просрочен");
+			Else
+				errorDescription.Insert("description", "Token expired");
+			EndIf;	
 		ElsIf result = "userPasswordExpired" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Пароль просрочен");
 			Else
 				errorDescription.Insert("description", "Password expired");
 			EndIf;
+		ElsIf result = "passwordIsRequired" Then
+			If language = "ru" Then
+				errorDescription.Insert("description", "Необходимо получить пароль");
+			Else
+				errorDescription.Insert("description", "Password is required");
+			EndIf;	
 		ElsIf result = "appTokenExpired" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "срок действия токена приложения истек");
@@ -44,7 +56,7 @@ Function getErrorDescription(language = "", result = "",
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан пароль");
 			Else
-				errorDescription.Insert("description", "No user password");
+				errorDescription.Insert("description", "No account password");
 			EndIf;
 		ElsIf result = "passwordIsNotCorrect" Then
 			Если language = "ru" Then
@@ -140,7 +152,7 @@ Function getErrorDescription(language = "", result = "",
 			Если language = "ru" Then
 				errorDescription.Insert("description", "Не указан телефон");
 			Else
-				errorDescription.Insert("description", "no user phone");
+				errorDescription.Insert("description", "no account phone");
 			EndIf;
 		ElsIf result = "noteIdError" Then
 			Если language = "ru" Then
@@ -204,7 +216,7 @@ Function getRecorder(day, reportPeriod)
 
 EndFunction 
 
-Function timeBeforeSendSms(holding, phone) Export
+Function timeBeforeSendSms(token) Export
 	query	= New Query();
 	query.Text	= "SELECT
 	|	usersAuthorizationCodes.quantity,
@@ -212,14 +224,10 @@ Function timeBeforeSendSms(holding, phone) Export
 	|FROM
 	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
 	|WHERE
-	|	usersAuthorizationCodes.holding = &holding
-	|	AND usersAuthorizationCodes.phone = &phone";
+	|	usersAuthorizationCodes.token = &token";
 	
-	query.SetParameter("holding", holding);
-	query.SetParameter("phone", phone);
-		
-	queryResult	= query.Execute();
-	
+	query.SetParameter("token", token);
+	queryResult	= query.Execute();	
 	If queryResult.IsEmpty() Then
 		Return 0; 
 	Else
@@ -279,29 +287,21 @@ Function canSendSms(language, phone) Export
 
 EndFunction 
 
-Function createCatalogItems(requestName, holding, requestStruct) Export
+Function createCatalogItems(requestName, holding, requestStruct, owner = Undefined) Export
 
 	attributesStruct	= Service.attributesStructure(requestName);
 	requestStruct		= requestStruct;
 	items 				= New Array();
-	password			= "";
-	
+		
 	If TypeOf(requestStruct) = Type("Array") Then
 		For Each requestParameter In requestStruct Do		
 			catalogRef		= Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
-			catalogObject	= catalogRef.GetObject();
-			setPassword = False;
+			catalogObject	= catalogRef.GetObject();			
 			If catalogObject = Undefined Then
 				catalogObject = Catalogs[attributesStruct.mdObjectName].CreateItem();
 				catalogObject.SetNewObjectRef(catalogRef);
 				For Each attribute In attributesStruct.attributesTableForNewItem Do
-					If attribute.key = "password"
-							And requestParameter.Propery(attribute.value) Then
-						setPassword = True;
-						password = XMLValue(Type(attribute.type), requestParameter[attribute.value])
-					Else
-						catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
-					EndIf;
+					catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);					
 				EndDo;
 			EndIf;
 			For Each attribute In attributesStruct.attributesTable Do			
@@ -328,14 +328,14 @@ Function createCatalogItems(requestName, holding, requestStruct) Export
 				EndIf;
 			EndDo;
 			If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
+				If owner <> Undefined Then
+					catalogObject.owner = owner;
+				EndIf;
 				catalogObject.holding = holding;
 				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
 			EndIf;
 			catalogObject.Write();
-			items.Add(catalogObject.Ref);
-			If setPassword Then
-				Users.setUserPassword(catalogObject.Ref, password);
-			EndIf;
+			items.Add(catalogObject.Ref);			
 		EndDo;
 	EndIf;
 
@@ -346,7 +346,7 @@ EndFunction
 Function runRequest(parameters, body, address = "") Export
 	headers = New Map();
 	headers.Insert("Content-Type", "application/json");	
-	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.UseOSAuthentication);
+	connection = New HTTPConnection(parameters.server, parameters.port, parameters.account, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.UseOSAuthentication);
 	request = New HTTPRequest(parameters.URL + parameters.requestReceiver
 		+ parameters.parametersFromURL, headers);
 	request.SetBodyFromString(body);
@@ -399,33 +399,38 @@ Function attributesStructure(requestName) Export
 	attributesTableForNewItem.Columns.Add("value");
 	attributesTableForNewItem.Columns.Add("type");
 
-	mdStruct 		= New Structure();
-	mdObjectName	= "";
+	mdStruct = New Structure();
+	mdObjectName = "";
 
 	If requestName = "addChangeUsers" Then
 
 		mdObjectName = "users";
+		addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
+		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
+		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
+		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
+		addRowInAttributesTable(attributesTable, "sex", "gender", "string");		
+		addRowInAttributesTable(attributesTable, "email", "email", "string");
+		
+	elsIf requestName = "addChangeCustomers" Then
 
+		mdObjectName = "customers";
 		addRowInAttributesTable(attributesTable, "email", "email", "string");
 		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
 		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
 		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
 		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
-		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");
-		addRowInAttributesTable(attributesTable, "phone", "phoneNumber", "string");
+		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");		
 		addRowInAttributesTable(attributesTable, "sex", "gender", "string");
 		addRowInAttributesTable(attributesTable, "userType", "userType", "string");
 		addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
 		addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
 		addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
-
-		//addRowInAttributesTable(attributesTableForNewItem, "login", "phoneNumber", "string");
-		//addRowInAttributesTable(attributesTableForNewItem, "password", "password", "Строка");
-
+				
 	ElsIf requestName = "addGyms" Then
 
 		mdObjectName = "gyms";
-
 		addRowInAttributesTable(attributesTable, "Наименование", "name", "string");
 		addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
 		addRowInAttributesTable(attributesTable, "segment", "division", "string");
@@ -464,7 +469,6 @@ Function attributesStructure(requestName) Export
 	ElsIf requestName = "addRequest" Then
 
 		mdObjectName = "matchingRequestsInformationSources";
-
 		addRowInAttributesTable(attributesTable, "code", "code", "string");
 		addRowInAttributesTable(attributesTable, "performBackground", "performBackground", "boolean");
 		addRowInAttributesTable(attributesTable, "notSaveAnswer", "notSaveAnswer", "boolean");
@@ -517,18 +521,18 @@ Function getStructCopy(struct) Export
 	Return structNew;
 EndFunction
 
-Procedure addUsersAuthCode(holding, phone, code) Export	
+Procedure addUsersAuthCode(token, phone, code) Export	
 	record = InformationRegisters.usersAuthorizationCodes.CreateRecordManager();
-	record.holding = holding;
-	record.phone = phone;	
+	record.token = token;		
 	record.Read();
 	If record.Selected() Then
 		record.code = code;
+		record.phone = phone;
 		record.quantity = record.quantity + 1;  
 	Else
-		record.holding = holding;
-		record.phone = phone;
+		record.token = token;		
 		record.code = code;
+		record.phone = phone;
 		record.quantity = 1;
 	EndIf;	
 	record.recordDate	= ToUniversalTime(CurrentDate());			
@@ -558,7 +562,7 @@ Procedure logServiceMessage(phone) Export
 	
 EndProcedure
 
-Procedure logRequestBackground(parameters) Export //duration, requestName, request, response, isError, token, user)Экспорт
+Procedure logRequestBackground(parameters) Export //duration, requestName, request, response, isError, token, account)Экспорт
 	array	= New Array();
 	array.Add(Parameters);
 	BackgroundJobs.Execute("Service.logRequest", array, New UUID());
@@ -682,7 +686,7 @@ EndProcedure
 	             	  |	ИсторияЗапросов.period КАК period,
 	             	  |	ИсторияЗапросов.requestName КАК requestName,
 	             	  |	ИсторияЗапросов.token КАК token,
-	             	  |	ИсторияЗапросов.token.user КАК user,
+	             	  |	ИсторияЗапросов.token.account КАК account,
 	             	  |	ИсторияЗапросов.token.holding КАК holding,
 	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
 	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
@@ -702,7 +706,7 @@ EndProcedure
 	             	  |	РАЗНОСТЬДАТ(ВТ_ИсторияЗапросов.period, МИНИМУМ(ЕСТЬNULL(ВТ_ИсторияЗапросов1.period, &Завтра)), МИНУТА) КАК Дельта,
 	             	  |	ВТ_ИсторияЗапросов.requestName КАК requestName,
 	             	  |	ВТ_ИсторияЗапросов.token КАК token,
-	             	  |	ВТ_ИсторияЗапросов.user КАК user,
+	             	  |	ВТ_ИсторияЗапросов.account КАК account,
 	             	  |	ВТ_ИсторияЗапросов.holding КАК holding,
 	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений КАК АналитикаПриложений
 	             	  |ПОМЕСТИТЬ ВТ_Сеансы
@@ -718,7 +722,7 @@ EndProcedure
 	             	  |	ВТ_ИсторияЗапросов.period,
 	             	  |	ВТ_ИсторияЗапросов.requestName,
 	             	  |	ВТ_ИсторияЗапросов.token,
-	             	  |	ВТ_ИсторияЗапросов.user,
+	             	  |	ВТ_ИсторияЗапросов.account,
 	             	  |	ВТ_ИсторияЗапросов.holding,
 	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
 	             	  |;
@@ -748,11 +752,11 @@ EndProcedure
 	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений,
 	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Регистраций),
 	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.user)
+	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account)
 	             	  |ИЗ
 	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
 	             	  |ГДЕ
-	             	  |	ВТ_ИсторияЗапросов.user.registrationDate МЕЖДУ &ДатаНачала И &ДатаОкончания
+	             	  |	ВТ_ИсторияЗапросов.account.registrationDate МЕЖДУ &ДатаНачала И &ДатаОкончания
 	             	  |
 	             	  |СГРУППИРОВАТЬ ПО
 	             	  |	ВТ_ИсторияЗапросов.holding,
@@ -766,7 +770,7 @@ EndProcedure
 	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений,
 	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.АктивныхПользователей),
 	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.user)
+	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account)
 	             	  |ИЗ
 	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
 	             	  |
@@ -809,7 +813,7 @@ EndProcedure
 	             	  |	АналитикиПриложений.Ссылка,
 	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Пользователей),
 	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ Токены.user)
+	             	  |	quantity(РАЗЛИЧНЫЕ Токены.account)
 	             	  |ИЗ
 	             	  |	Справочник.tokens КАК Токены
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
@@ -849,7 +853,7 @@ EndProcedure
 	             	  |	ИсторияЗапросов.period КАК period,
 	             	  |	ИсторияЗапросов.requestName КАК requestName,
 	             	  |	ИсторияЗапросов.token КАК token,
-	             	  |	ИсторияЗапросов.token.user КАК user,
+	             	  |	ИсторияЗапросов.token.account КАК account,
 	             	  |	ИсторияЗапросов.token.holding КАК holding,
 	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
 	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
@@ -870,7 +874,7 @@ EndProcedure
 	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений КАК АналитикаПриложений,
 	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.АктивныхПользователей) КАК Показатель,
 	             	  |	&ПериодОтчета КАК ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.user) КАК quantity
+	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account) КАК quantity
 	             	  |ИЗ
 	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
 	             	  |
@@ -886,7 +890,7 @@ EndProcedure
 	             	  |	АналитикиПриложений.Ссылка,
 	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Пользователей),
 	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ Токены.user)
+	             	  |	quantity(РАЗЛИЧНЫЕ Токены.account)
 	             	  |ИЗ
 	             	  |	Справочник.tokens КАК Токены
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
@@ -935,14 +939,14 @@ EndProcedure
 		
 	пЗапрос	= Новый Запрос;
 	пЗапрос.text	= "ВЫБРАТЬ ПЕРВЫЕ 100
-	             	  |	ПользователиИзменения.Ссылка КАК user,
+	             	  |	ПользователиИзменения.Ссылка КАК account,
 	             	  |	Токены.appType КАК appType,
 	             	  |	МИНИМУМ(Токены.lockDate) КАК lockDate,
 	             	  |	Токены.holding КАК holding
 	             	  |ИЗ
-	             	  |	Справочник.users.Изменения КАК ПользователиИзменения
+	             	  |	Справочник.accounts.Изменения КАК ПользователиИзменения
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.tokens КАК Токены
-	             	  |		ПО ПользователиИзменения.Ссылка = Токены.user
+	             	  |		ПО ПользователиИзменения.Ссылка = Токены.account
 	             	  |
 	             	  |СГРУППИРОВАТЬ ПО
 	             	  |	ПользователиИзменения.Ссылка,
@@ -1029,7 +1033,7 @@ EndProcedure
 	Пока Выборка.Следующий() Цикл
 		
 		If Выборка.deviceToken = "" Then
-			Users.blockToken(Выборка.Токен);			
+			Accounts.blockToken(Выборка.Токен);			
 		ElsIf Выборка.deviceToken <> "" Then
 			If Уведомление = Неопределено Then
 				Уведомление	= Новый ДоставляемоеУведомление;	
@@ -1051,7 +1055,7 @@ EndProcedure
 				Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 					НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
 					Если НайденаяСтрока <> Неопределено Тогда						
-						Users.blockToken(НайденаяСтрока.Токен);
+						Accounts.blockToken(НайденаяСтрока.Токен);
 						ТаблицаПоиска.Удалить(НайденаяСтрока);
 					EndIf;					
 				КонецЦикла;				
@@ -1074,7 +1078,7 @@ EndProcedure
 			Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 				НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
 				Если НайденаяСтрока <> Неопределено Тогда					
-					Users.blockToken(НайденаяСтрока.Токен);
+					Accounts.blockToken(НайденаяСтрока.Токен);
 					ТаблицаПоиска.Удалить(НайденаяСтрока);
 				EndIf;					
 			КонецЦикла;				
@@ -1096,11 +1100,11 @@ EndProcedure
 	                |ГДЕ
 	                |	Токены.appType = ЗНАЧЕНИЕ(Перечисление.appTypes.Employee)
 	                |	И Токены.lockDate = ДАТАВРЕМЯ(1, 1, 1)
-	                |	И Токены.user.userType <> ""employee""";
+	                |	И Токены.account.userType <> ""employee""";
 	
 	Выборка	= пЗапрос.Выполнить().Выбрать();
 	Пока Выборка.Следующий() Цикл
-		Users.blockToken(Выборка.Токен);
+		Accounts.blockToken(Выборка.Токен);
 	КонецЦикла;		
 	
 КонецПроцедуры

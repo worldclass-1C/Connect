@@ -3,7 +3,7 @@
 	
 	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
 	
-	URL	= "SmsService.svc/SendSms?login=" + Параметры.user + "&password=" + Параметры.password + "&phone=" + Параметры.phone + "&body=" + Параметры.text + "&senderName=" + Параметры.senderName;
+	URL	= "SmsService.svc/SendSms?login=" + Параметры.account + "&password=" + Параметры.password + "&phone=" + Параметры.phone + "&body=" + Параметры.text + "&senderName=" + Параметры.senderName;
 	ЗапросHTTP	= Новый HTTPЗапрос(URL);
 	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
 	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
@@ -44,7 +44,7 @@
 	
 	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
 	
-	URL	= "SmsService.svc/GetMessageState?login=" + Параметры.user + "&password=" + Параметры.password + "&messageid=" + Параметры.id;
+	URL	= "SmsService.svc/GetMessageState?login=" + Параметры.account + "&password=" + Параметры.password + "&messageid=" + Параметры.id;
 	ЗапросHTTP	= Новый HTTPЗапрос(URL);
 	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
 	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());

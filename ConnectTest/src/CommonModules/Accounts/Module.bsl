@@ -2,14 +2,14 @@ Function checkPassword(language, user, password) Export
 
 	query = New Query();
 	query.Text = "select TOP 1
-		|	UserPasswords.user as user
+		|	UserPasswords.account as account
 		|from
 		|	InformationRegister.usersPasswords as UserPasswords
 		|where
-		|	UserPasswords.user = &user
+		|	UserPasswords.account = &account
 		|	and UserPasswords.password = &password";
 
-	query.SetParameter("user", user);
+	query.SetParameter("account", user);
 	query.SetParameter("password", password);
 
 	queryResult = query.Execute();
@@ -40,26 +40,34 @@ Function setUserPassword(user, password = "") Export
 		validity = ToUniversalTime(CurrentDate()) + 900; //время действия пароля 15 минут
 	EndIf;
 	record = InformationRegisters.usersPasswords.CreateRecordManager();
-	record.User = user;
+	record.account = user;
 	record.Password = password;
 	record.Validity = validity;
 	record.Write();
 	Return password;
 EndFunction
 
-Function getToken(requestStruct, user, chain, holding, timezone) Export
-	tokenObject = Catalogs.tokens.CreateItem();
-	tokenObject.createDate = ToUniversalTime(CurrentDate());
-	tokenObject.user = user;
-	tokenObject.holding = holding;
-	tokenObject.chain = chain;
-	tokenObject.timeZone = timezone;
-	tokenObject.appType = Enums.appTypes[requestStruct.appType];
-	tokenObject.systemType = Enums.systemTypes[requestStruct.systemType];
+Function getToken(token, parameters) Export
+	currentDate = ToUniversalTime(CurrentDate());
+	If token.IsEmpty() Then
+		tokenObject = Catalogs.tokens.CreateItem();
+		tokenObject.createDate = currentDate;
+	Else
+		tokenObject = token.GetObject();
+	EndIf;
+	tokenObject.appType = parameters.appType;
+	tokenObject.appVersion = parameters.appVersion;
+	tokenObject.chain = parameters.chain;
+	tokenObject.changeDate = currentDate;
+	tokenObject.deviceModel = parameters.deviceModel;
+	tokenObject.deviceToken = parameters.deviceToken;
+	tokenObject.holding = parameters.holding;
+	tokenObject.systemType = parameters.systemType;
+	tokenObject.systemVersion = parameters.systemVersion;
+	tokenObject.timeZone = parameters.timeZone;
 	tokenObject.Write();
-	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), user);
-	Return tokenObject;
-EndFunction
+	Return tokenObject.Ref;
+EndFunction	
 
 Procedure blockToken(token) Export
 	tokenObject = token.GetObject();
@@ -73,3 +81,14 @@ Procedure blockToken(token) Export
 	EndIf;
 	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), tokenObject.user);
 EndProcedure
+
+Procedure editPropertyInToken(token, name, value) Export
+	tokenObject = token.GetObject();
+	If name = "account" Then
+		ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(value), value, tokenObject[name]));
+	EndIf;
+	tokenObject[name] = value;
+	tokenObject.changeDate = ToUniversalTime(CurrentDate());
+	tokenObject.Write();
+EndProcedure
+

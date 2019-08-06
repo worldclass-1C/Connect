@@ -4,13 +4,6 @@
 	<setForAttributesByDefault>true</setForAttributesByDefault>
 	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
-		<name>Catalog.users.Attribute.firstName</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.matchingRequestsInformationSources.TabularSection.informationSources.Attribute.requestReceiver</name>
 		<right>
 			<name>Edit</name>
@@ -562,13 +555,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.login</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.chains.Attribute.phoneMask</name>
 		<right>
 			<name>Edit</name>
@@ -649,7 +635,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users</name>
+		<name>Catalog.accounts</name>
 		<right>
 			<name>Insert</name>
 			<value>false</value>
@@ -744,63 +730,63 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.PredefinedDataName</name>
+		<name>Catalog.accounts.StandardAttribute.PredefinedDataName</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Predefined</name>
+		<name>Catalog.accounts.StandardAttribute.Predefined</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Ref</name>
+		<name>Catalog.accounts.StandardAttribute.Ref</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.DeletionMark</name>
+		<name>Catalog.accounts.StandardAttribute.DeletionMark</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.IsFolder</name>
+		<name>Catalog.accounts.StandardAttribute.IsFolder</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Owner</name>
+		<name>Catalog.accounts.StandardAttribute.Owner</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Parent</name>
+		<name>Catalog.accounts.StandardAttribute.Parent</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Description</name>
+		<name>Catalog.accounts.StandardAttribute.Description</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.StandardAttribute.Code</name>
+		<name>Catalog.accounts.StandardAttribute.Code</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -937,7 +923,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.messages.Attribute.user</name>
+		<name>Catalog.messages.Attribute.account</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1052,28 +1038,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.secondName</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.holding</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.holdings.Attribute.token</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.phone</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1590,21 +1555,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.Email</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.chains.Attribute.holding</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.sex</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2024,13 +1975,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.userCode</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>InformationRegister.holdingsConnectionsSMSProviders</name>
 		<right>
 			<name>TotalsControl</name>
@@ -2315,13 +2259,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.barCode</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Document.РегистраторДвижений</name>
 		<right>
 			<name>Insert</name>
@@ -2550,49 +2487,6 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.usersPasswords</name>
-		<right>
-			<name>TotalsControl</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>ReadDataHistory</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>ReadDataHistoryOfMissingData</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>UpdateDataHistory</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>UpdateDataHistoryOfMissingData</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>UpdateDataHistorySettings</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>UpdateDataHistoryVersionComment</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>ViewDataHistory</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>EditDataHistoryVersionComment</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>SwitchToDataHistoryVersion</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>InformationRegister.messagesLogs</name>
 		<right>
 			<name>Update</name>
@@ -2644,13 +2538,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.registrationDate</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.appAnalytics.Attribute.systemType</name>
 		<right>
 			<name>Edit</name>
@@ -2672,13 +2559,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.users.Attribute.notSubscriptionSms</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.messages.Attribute.text</name>
 		<right>
 			<name>Edit</name>
@@ -2687,20 +2567,6 @@
 	</object>
 	<object>
 		<name>Catalog.messages.Attribute.objectType</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.birthday</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.userType</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2964,20 +2830,6 @@
 	</object>
 	<object>
 		<name>Catalog.cities.Attribute.holding</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.notSubscriptionEmail</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.users.Attribute.lastName</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

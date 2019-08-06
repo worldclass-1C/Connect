@@ -87,8 +87,27 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.tokens.Form.ItemForm</defaultObjectForm>
-  <defaultListForm>Catalog.tokens.Form.ListForm</defaultListForm>
-  <defaultChoiceForm>Catalog.tokens.Form.ChoiceForm</defaultChoiceForm>
+  <attributes uuid="bcc9341d-1385-42b0-9385-2b95800a296b">
+    <name>account</name>
+    <synonym>
+      <key>en</key>
+      <value>Account</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Учетная запись</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.accounts</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="b5d77d93-0b4d-4a03-a1e9-ded3171aa124">
     <name>appType</name>
     <synonym>
@@ -186,6 +205,22 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ef02965c-872e-4780-8734-88e1a896da13">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -364,50 +399,11 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="bcc9341d-1385-42b0-9385-2b95800a296b">
-    <name>user</name>
-    <synonym>
-      <key>en</key>
-      <value>User</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Пользователь</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.users</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <indexing>Index</indexing>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <forms uuid="1e3a6805-578a-4cc1-8d29-b5960649492d">
-    <name>ChoiceForm</name>
-    <synonym>
-      <key>ru</key>
-      <value>Choice form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
   <forms uuid="5db4b20a-dfd7-44e6-9084-0dd42e06cd12">
     <name>ItemForm</name>
     <synonym>
       <key>en</key>
       <value>Item form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
-  <forms uuid="6618fe21-3123-419e-9324-13aa2c544904">
-    <name>ListForm</name>
-    <synonym>
-      <key>ru</key>
-      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

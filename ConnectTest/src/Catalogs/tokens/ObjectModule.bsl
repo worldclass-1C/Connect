@@ -1,4 +1,4 @@
 
-Процедура ПередЗаписью(Отказ)
-	FullName	= "" + user + " / " + appType + " / " + systemType + " / " + Формат(createDate, "ДФ='dd.MM.yyyy HH:mm'");
-КонецПроцедуры
+Procedure BeforeWrite(Cansel)
+	fullName	= "" + account + " / " + appType + " / " + systemType + " / " + Format(createDate, "ДФ='dd.MM.yyyy HH:mm'");
+EndProcedure

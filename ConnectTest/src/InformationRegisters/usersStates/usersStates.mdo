@@ -86,7 +86,7 @@
       <value>Пользователь</value>
     </synonym>
     <type>
-      <types>CatalogRef.users</types>
+      <types>CatalogRef.accounts</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

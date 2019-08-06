@@ -820,7 +820,7 @@
       </title>
       <id>1</id>
       <valueType>
-        <types>CatalogRef.users</types>
+        <types>CatalogRef.accounts</types>
       </valueType>
       <view>
         <common>true</common>

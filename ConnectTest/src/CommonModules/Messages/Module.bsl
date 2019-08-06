@@ -17,7 +17,7 @@ Function newMessage(messageData, sendImmediately = False) Export
 	messageObject.title = ?(messageData.Property("title"), messageData.title, "");
 	messageObject.gym = ?(messageData.Property("gym"), messageData.gym, Catalogs.gyms.EmptyRef());
 	messageObject.phone = StrReplace(?(messageData.Property("phone"), messageData.phone, ""), "+", "");
-	messageObject.user = ?(messageData.Property("user"), messageData.user, Catalogs.users.EmptyRef());
+	messageObject.account = ?(messageData.Property("account"), messageData.account, Catalogs.accounts.EmptyRef());
 	messageObject.priority = ?(messageData.Property("priority"), messageData.priority, 10000);
 	messageObject.text = ?(messageData.Property("text"), messageData.text, "");
 	messageObject.holding = messageData.holding;
@@ -219,7 +219,7 @@ Procedure sendHoldingSms(nodeMessagesToSend,
 	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
 	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
 	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
+	|	ISNULL(gymSMSProviders.account, SMSProviders.account) AS account,
 	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
 	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
 	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
@@ -264,7 +264,7 @@ Procedure sendSmsImmediately(nodeMessagesToSend,
 	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
 	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
 	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
+	|	ISNULL(gymSMSProviders.account, SMSProviders.account) AS account,
 	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
 	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
 	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
@@ -306,7 +306,7 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
 	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
 	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
+	|	ISNULL(gymSMSProviders.account, SMSProviders.account) AS account,
 	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
 	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
 	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
@@ -354,7 +354,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	tokens.chain AS chain,
 	|	tokens.appType AS appType,
 	|	tokens.systemType AS systemType,
-	|	messages.Ref.user AS user,
+	|	messages.Ref.account AS account,
 	|	CASE
 	|		WHEN tokens.systemType = VALUE(Enum.systemTypes.Android)
 	|			THEN ""GCM""
@@ -366,7 +366,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|FROM
 	|	Catalog.messages.Changes AS messages
 	|		LEFT JOIN Catalog.tokens AS tokens
-	|		ON messages.Ref.user = tokens.user
+	|		ON messages.Ref.account = tokens.account
 	|		AND messages.Ref.token <> tokens.Ref
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
 	|WHERE
@@ -376,13 +376,13 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT.user AS user,
+	|	TT.account AS account,
 	|	COUNT(DISTINCT messages.Ref) AS count
 	|INTO TT_unreadMessages
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN Catalog.messages AS messages
-	|		ON TT.user = Messages.user
+	|		ON TT.account = Messages.account
 	|		LEFT JOIN Catalog.messages.channelPriorities AS messagesChannelPriorities
 	|		ON Messages.Ref = messagesChannelPriorities.Ref
 	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogs
@@ -391,7 +391,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	messagesChannelPriorities.channel = &informationChannel
 	|	AND ISNULL(messagesLogs.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
 	|GROUP BY
-	|	TT.user
+	|	TT.account
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -408,7 +408,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT.subscriberType AS subscriberType,
 	|	ISNULL(registeredDevices.deviceToken, """") AS deviceToken,
 	|	TT.token AS token,
-	|	TT.user AS user,
+	|	TT.account AS account,
 	|	&informationChannel AS informationChannel
 	|INTO TT_devices
 	|FROM
@@ -443,7 +443,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND TT_devices.appType = appCertificates.appType
 	|		AND TT_devices.systemType = appCertificates.systemType
 	|		LEFT JOIN TT_unreadMessages AS unreadMessages
-	|		ON TT_devices.user = unreadMessages.user";
+	|		ON TT_devices.account = unreadMessages.account";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
 	query.SetParameter("holding", holding);

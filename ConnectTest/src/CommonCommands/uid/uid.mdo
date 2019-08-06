@@ -12,7 +12,7 @@
     <types>CatalogRef.chains</types>
     <types>CatalogRef.gyms</types>
     <types>CatalogRef.cities</types>
-    <types>CatalogRef.users</types>
+    <types>CatalogRef.accounts</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

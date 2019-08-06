@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="457321d4-f4df-4696-8d03-479eb88c17d3">
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="457321d4-f4df-4696-8d03-479eb88c17d3">
   <producedTypes>
     <selectionType typeId="008d914f-cd4f-4999-a9ef-b1f262695364" valueTypeId="0b882a77-d48c-4eaf-a05a-988ca8db5119"/>
     <listType typeId="8ab77fb3-61d5-4e8f-b8a3-4424ed6a38f8" valueTypeId="821817ef-d7cf-4a1a-8ad4-673f2718bd44"/>
@@ -71,6 +71,31 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </resources>
+  <resources uuid="0112d9a2-c052-4388-96c0-b9301ff29ae1">
+    <name>phone</name>
+    <synonym>
+      <key>en</key>
+      <value>Phone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номер телефона</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <indexing>Index</indexing>
+  </resources>
   <resources uuid="bbc9ca9c-de74-49e1-bceb-39fc67417946">
     <name>quantity</name>
     <synonym>
@@ -108,37 +133,17 @@
     <dataHistory>Use</dataHistory>
   </resources>
   <dimensions uuid="e0ce1d31-481d-4745-8998-b331d5ccf776">
-    <name>holding</name>
+    <name>token</name>
     <synonym>
       <key>en</key>
-      <value>Holding</value>
+      <value>Token</value>
     </synonym>
     <synonym>
       <key>ru</key>
       <value>Холдинг</value>
     </synonym>
     <type>
-      <types>CatalogRef.holdings</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-    <mainFilter>true</mainFilter>
-  </dimensions>
-  <dimensions uuid="2cb2b85e-5900-4e71-88da-eb9691007fa4">
-    <name>phone</name>
-    <synonym>
-      <key>en</key>
-      <value>Phone</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Телефон</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>20</length>
-      </stringQualifiers>
+      <types>CatalogRef.tokens</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
