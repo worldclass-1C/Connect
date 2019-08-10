@@ -75,10 +75,6 @@
 	<object>
 		<name>Catalog.accounts</name>
 		<right>
-			<name>InteractiveDelete</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>InteractiveDeleteMarked</name>
 			<value>false</value>
 		</right>

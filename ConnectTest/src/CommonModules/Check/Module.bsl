@@ -1,4 +1,39 @@
 
+Function password(token, password, language) Export
+
+	query = New Query();
+	query.Text = "SELECT
+		|	usersAuthorizationCodes.password,
+		|	usersAuthorizationCodes.phone,
+		|	usersAuthorizationCodes.inputCount,
+		|	usersAuthorizationCodes.recordDate
+		|FROM
+		|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
+		|WHERE
+		|	usersAuthorizationCodes.token = &token";
+
+	query.SetParameter("token", token);
+
+	queryResult = query.Execute();
+	If queryResult.isEmpty() Then
+		Return New Structure("phone, errorDescription", "", Service.getErrorDescription(language, "passwordRequired"));
+	Else
+		selection = queryResult.Select();
+		selection.Next();
+		If selection.inputCount > 3 Or ToUniversalTime(CurrentDate())
+				- selection.recordDate > 900 Then
+			Account.delPassword(token);
+			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordExpired"));			
+		ElsIf selection.password = password Then			
+			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription());
+		Else
+			Account.incPasswordInputCount(token);
+			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordNotCorrect"));			
+		EndIf;
+	EndIf;
+
+EndFunction
+
 Function requestParameters(parameters) Export
 	For Each parameter In StrSplit(getRequiredParameters(parameters.requestName), ",") Do
 		If parameter <> "" Then
@@ -17,14 +52,38 @@ Function getRequiredParameters(requestName)
 		Return "appType,systemType";
 	ElsIf requestName = "signin" Then
 		Return "phone,chainCode";
-	ElsIF requestName = "confirm" Then
+	ElsIF requestName = "confirmphone" Then
 		Return "password";
 	ElsIF requestName = "registerdevice" Then
-		Return "appType,appVersion,deviceModel,deviceToken,systemType,systemVersion";
+		Return "appType,appVersion,deviceModel,systemType,systemVersion";
 	ElsIF requestName = "addusertotoken" Then
 		Return "uid";	
 	Else
 		Return "";		
+	EndIf;
+EndFunction
+
+Function timeBeforeSendSms(token) Export
+	query	= New Query();
+	query.Text	= "SELECT
+	|	usersAuthorizationCodes.sendCount,
+	|	usersAuthorizationCodes.recordDate
+	|FROM
+	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
+	|WHERE
+	|	usersAuthorizationCodes.token = &token";
+	
+	query.SetParameter("token", token);
+	queryResult	= query.Execute();	
+	If queryResult.IsEmpty() Then
+		Return 0; 
+	Else
+		universalTime		= ToUniversalTime(CurrentDate());
+		selection = queryResult.Select();
+		selection.Next();
+		retryTime = ?(selection.sendCount > 2, 600, 60);
+		delta = universalTime - selection.recordDate;
+		Return ?(delta > retryTime, 0, retryTime - delta);						
 	EndIf;
 EndFunction
 
@@ -35,23 +94,20 @@ Procedure legality(request, parameters) Export
 		If parameters.requestName <> "config"
 				And parameters.requestName <> "chainlist"
 				And parameters.requestName <> "countrycodelist" Then
-			source = "";
 			timeStamp = 0;
 			hash = "";
 			requestBody = request.GetBodyAsString();
-			requestStruct = HTTP.decodeJSON(requestBody);
-			requestStruct.Property("source", source);
+			requestStruct = HTTP.decodeJSON(requestBody);			
 			requestStruct.Property("timeStamp", timeStamp);
 			requestStruct.Property("hash", hash);
-			If Not ValueIsFilled(source) Or Not ValueIsFilled(timeStamp)
-					Or Not ValueIsFilled(hash) Then
+			If Not ValueIsFilled(timeStamp)	Or Not ValueIsFilled(hash) Then
 				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
 			Else
-				parameters.Insert("errorDescription", Crypto.checkHasp(parameters.language, source, timeStamp, hash));				
+				parameters.Insert("errorDescription", Crypto.checkHasp(parameters.language, timeStamp, hash));				
 			EndIf;
 		EndIf;
 	Else
-		tokenСontext = GeneralReuse.getTokenContext(parameters.language, parameters.authKey);
+		tokenСontext = TokenReuse.getContext(parameters.language, parameters.authKey);		
 		If tokenСontext.token.IsEmpty() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
 		Else

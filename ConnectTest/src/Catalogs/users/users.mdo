@@ -99,11 +99,11 @@
     <name>Code</name>
     <synonym>
       <key>en</key>
-      <value>Phone</value>
+      <value>Code</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Телефон</value>
+      <value>Код</value>
     </synonym>
     <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
@@ -147,6 +147,7 @@
   </extendedListPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
+  <owners>Catalog.accounts</owners>
   <codeLength>9</codeLength>
   <descriptionLength>100</descriptionLength>
   <codeType>String</codeType>
@@ -229,21 +230,21 @@
     <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="3b3f3cbe-132a-4217-b2ea-fe96982a2b43">
-    <name>Email</name>
+    <name>email</name>
+    <synonym>
+      <key>en</key>
+      <value>email</value>
+    </synonym>
+    <synonym>
+      <key>es_ES</key>
+      <value>E-mail</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>Email</value>
     </synonym>
     <synonym>
-      <key>en</key>
-      <value>E-mail</value>
-    </synonym>
-    <synonym>
       <key>fr_FR</key>
-      <value>E-mail</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
       <value>E-mail</value>
     </synonym>
     <type>
@@ -476,11 +477,11 @@
     <name>userCode</name>
     <synonym>
       <key>en</key>
-      <value>User code</value>
+      <value>Code from an external system</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Код пользователя</value>
+      <value>Код из внешней системы</value>
     </synonym>
     <type>
       <types>String</types>

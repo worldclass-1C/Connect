@@ -7,7 +7,7 @@
 	Заголовки.Вставить("Content-Type", "application/x-www-form-urlencoded");
 	
 	ЗапросHTTP = Новый HTTPЗапрос("/modules/send_sms.php", Заголовки);
-	СтрокаПараметров = "username=" + Параметры.account + 
+	СтрокаПараметров = "username=" + Параметры.user + 
 						"&password=" + Параметры.password +
 						"&to=" + Параметры.phone +
 						"&from=" + Параметры.senderName +
@@ -50,7 +50,7 @@
 	Заголовки.Вставить("Content-Type", "application/x-www-form-urlencoded");
 	
 	ЗапросHTTP = Новый HTTPЗапрос("/modules/sms_status.php", Заголовки);
-	СтрокаПараметров =  "username=" + Параметры.account + 
+	СтрокаПараметров =  "username=" + Параметры.user + 
 						"&password=" + Параметры.password +
 						"&id=" + Параметры.id;
 	
@@ -88,7 +88,7 @@
 	РасшифрокаОшибки = "";
 	Если ТекстОшибки = "Invalid request" Тогда 
 		РасшифрокаОшибки = "проверьте наличие всех неоходимых параметров в запросе";
-	ИначеЕсли ТекстОшибки = "Invalid username username or password password or account is blocked" Тогда 
+	ИначеЕсли ТекстОшибки = "Invalid username username or password password or user is blocked" Тогда 
 		РасшифрокаОшибки = "Проверьте login и password и то, что ваш аккаунт не заблокирован";
 	ИначеЕсли ТекстОшибки = "Invalid or missing 'from' address" Тогда 
 		РасшифрокаОшибки = "Проверьте наличие и формат номера получателя";

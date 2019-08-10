@@ -53,14 +53,14 @@
     <value>Коды авторизации пользователей</value>
   </extendedListPresentation>
   <resources uuid="17684c8e-99e9-4ff1-a283-1640a7e95d50">
-    <name>code</name>
+    <name>password</name>
     <synonym>
       <key>en</key>
-      <value>Code</value>
+      <value>Password</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Код</value>
+      <value>Пароль</value>
     </synonym>
     <type>
       <types>String</types>
@@ -97,14 +97,33 @@
     <indexing>Index</indexing>
   </resources>
   <resources uuid="bbc9ca9c-de74-49e1-bceb-39fc67417946">
-    <name>quantity</name>
+    <name>sendCount</name>
     <synonym>
       <key>en</key>
-      <value>Quantity</value>
+      <value>Send count</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Количество</value>
+      <value>Количество отправленных смс</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>2</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="6c17b2a7-2501-4f48-a401-36de5175ef49">
+    <name>inputCount</name>
+    <synonym>
+      <key>en</key>
+      <value>Input count</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Количество вводов смс</value>
     </synonym>
     <type>
       <types>Number</types>

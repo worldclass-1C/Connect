@@ -110,19 +110,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>Code</name>
-      <id>28</id>
+      <name>userCode</name>
+      <id>31</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>List.Code</segments>
+        <segments>List.userCode</segments>
       </dataPath>
       <extendedTooltip>
-        <name>CodeExtendedTooltip</name>
-        <id>30</id>
+        <name>userCodeExtendedTooltip</name>
+        <id>33</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -136,8 +136,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>CodeContextMenu</name>
-        <id>29</id>
+        <name>userCodeContextMenu</name>
+        <id>32</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>

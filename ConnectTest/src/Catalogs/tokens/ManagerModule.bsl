@@ -1,12 +1,14 @@
 
-Процедура ОбработкаПолученияПолейПредставления(Поля, СтандартнаяОбработка)
-	СтандартнаяОбработка = Ложь;
-	ПоляПредставления = Новый Массив;
-	ПоляПредставления.Добавить("fullName");
-	Поля = ПоляПредставления;
-КонецПроцедуры
+Procedure PresentationFieldsGetProcessing(fields, standardProcessing)
+	standardProcessing = False;	
+	array = New Array();	
+	array.Add("appType");
+	array.Add("systemType");
+	array.Add("createDate");		
+	fields = array;	
+EndProcedure
 
-Процедура ОбработкаПолученияПредставления(Данные, Представление, СтандартнаяОбработка)
-	СтандартнаяОбработка = Ложь;
-	Представление	= Данные.fullName;
-КонецПроцедуры
+Procedure PresentationGetProcessing(data, presentation, standardProcessing)
+	standardProcessing = False;
+	presentation = "" + data.appType + " / " + data.systemType + " / " + Format(data.createDate, "DF='dd.MM.yyyy HH:mm'");
+EndProcedure

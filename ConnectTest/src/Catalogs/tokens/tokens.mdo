@@ -87,6 +87,7 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.tokens.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.tokens.Form.ListForm</defaultListForm>
   <attributes uuid="bcc9341d-1385-42b0-9385-2b95800a296b">
     <name>account</name>
     <synonym>
@@ -272,30 +273,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="1d859ee1-840b-452a-81f3-f84e4c4dce76">
-    <name>fullName</name>
-    <synonym>
-      <key>en</key>
-      <value>Full name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Наименование полное</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>100</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="bfede6b2-09c5-4ddd-9dcb-8cb96ca4aace">
     <name>holding</name>
     <synonym>
@@ -394,7 +371,6 @@
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
     <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
@@ -404,6 +380,15 @@
     <synonym>
       <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="f1306456-681e-4171-8e4b-16df6b3f99a5">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

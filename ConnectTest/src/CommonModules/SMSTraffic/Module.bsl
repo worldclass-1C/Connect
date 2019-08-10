@@ -3,7 +3,7 @@
 	
 	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
 	
-	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.account + "&password=" + Параметры.password + "&phones=" + Параметры.phone + "&message=" + Параметры.text + "&originator=" + Параметры.senderName + "&want_sms_ids=1";
+	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.user + "&password=" + Параметры.password + "&phones=" + Параметры.phone + "&message=" + Параметры.text + "&originator=" + Параметры.senderName + "&want_sms_ids=1";
 	ЗапросHTTP	= Новый HTTPЗапрос(URL);
 	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
 	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
@@ -55,7 +55,7 @@
 	
 	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
 	
-	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.account + "&password=" + Параметры.password + "&operation=status&sd=false" + "&sms_id=" + Параметры.id + "&sd=false&route=viber(60)-sms";
+	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.user + "&password=" + Параметры.password + "&operation=status&sd=false" + "&sms_id=" + Параметры.id + "&sd=false&route=viber(60)-sms";
 	ЗапросHTTP	= Новый HTTPЗапрос(URL);
 	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
 	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());

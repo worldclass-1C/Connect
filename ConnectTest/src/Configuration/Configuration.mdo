@@ -78,7 +78,7 @@
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
-  <commonModules>CommonModule.Accounts</commonModules>
+  <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
   <commonModules>CommonModule.General</commonModules>
@@ -92,6 +92,8 @@
   <commonModules>CommonModule.SmsGold</commonModules>
   <commonModules>CommonModule.SMSTraffic</commonModules>
   <commonModules>CommonModule.Stramedia</commonModules>
+  <commonModules>CommonModule.Token</commonModules>
+  <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.СIDMkg</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
@@ -124,6 +126,7 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <documents>Document.РегистраторДвижений</documents>
+  <enums>Enum.accountStatuses</enums>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
   <enums>Enum.HTTPRequestTypes</enums>

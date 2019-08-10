@@ -2,7 +2,7 @@
 <form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormField">
     <name>Code</name>
-    <id>1</id>
+    <id>55</id>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -13,7 +13,7 @@
     </dataPath>
     <extendedTooltip>
       <name>CodeExtendedTooltip</name>
-      <id>3</id>
+      <id>57</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -28,7 +28,7 @@
     </extendedTooltip>
     <contextMenu>
       <name>CodeContextMenu</name>
-      <id>2</id>
+      <id>56</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -37,7 +37,7 @@
       <autoFill>true</autoFill>
     </contextMenu>
     <type>InputField</type>
-    <editMode>EnterOnInput</editMode>
+    <editMode>Enter</editMode>
     <showInHeader>true</showInHeader>
     <headerHorizontalAlign>Left</headerHorizontalAlign>
     <showInFooter>true</showInFooter>
@@ -59,7 +59,7 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Object.Email</segments>
+      <segments>Object.email</segments>
     </dataPath>
     <extendedTooltip>
       <name>EmailExtendedTooltip</name>

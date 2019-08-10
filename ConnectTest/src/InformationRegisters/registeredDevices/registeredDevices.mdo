@@ -186,7 +186,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
-    <mainFilter>true</mainFilter>
   </dimensions>
   <commands uuid="bd907ce9-fdc8-4609-b694-844b5de8e51f">
     <name>device</name>

@@ -33,14 +33,26 @@ Function getErrorDescription(language = "", result = "",
 				errorDescription.Insert("description", "токен просрочен");
 			Else
 				errorDescription.Insert("description", "Token expired");
-			EndIf;	
-		ElsIf result = "userPasswordExpired" Then
+			EndIf;
+		ElsIf result = "passwordError" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Не указан пароль");
+			Else
+				errorDescription.Insert("description", "No account password");
+			EndIf;
+		ElsIf result = "passwordNotCorrect" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Неверный пароль");
+			Else
+				errorDescription.Insert("description", "Password is not correct");
+			EndIf;		
+		ElsIf result = "passwordExpired" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Пароль просрочен");
 			Else
 				errorDescription.Insert("description", "Password expired");
 			EndIf;
-		ElsIf result = "passwordIsRequired" Then
+		ElsIf result = "passwordRequired" Then
 			If language = "ru" Then
 				errorDescription.Insert("description", "Необходимо получить пароль");
 			Else
@@ -51,18 +63,6 @@ Function getErrorDescription(language = "", result = "",
 				errorDescription.Insert("description", "срок действия токена приложения истек");
 			Else
 				errorDescription.Insert("description", "application token expired");
-			EndIf;	
-		ElsIf result = "passwordError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан пароль");
-			Else
-				errorDescription.Insert("description", "No account password");
-			EndIf;
-		ElsIf result = "passwordIsNotCorrect" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Неверный пароль");
-			Else
-				errorDescription.Insert("description", "Password is not correct");
 			EndIf;
 		ElsIf result = "chainCodeError" Then
 			Если language = "ru" Then
@@ -216,30 +216,6 @@ Function getRecorder(day, reportPeriod)
 
 EndFunction 
 
-Function timeBeforeSendSms(token) Export
-	query	= New Query();
-	query.Text	= "SELECT
-	|	usersAuthorizationCodes.quantity,
-	|	usersAuthorizationCodes.recordDate
-	|FROM
-	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
-	|WHERE
-	|	usersAuthorizationCodes.token = &token";
-	
-	query.SetParameter("token", token);
-	queryResult	= query.Execute();	
-	If queryResult.IsEmpty() Then
-		Return 0; 
-	Else
-		universalTime		= ToUniversalTime(CurrentDate());
-		selection = queryResult.Select();
-		selection.Next();
-		retryTime = ?(selection.quantity > 2, 600, 60);
-		delta = universalTime - selection.recordDate;
-		Return ?(delta > retryTime, 0, retryTime - delta);						
-	EndIf;
-EndFunction
-
 Function canSendSms(language, phone) Export
 
 	errorDescription	= Service.getErrorDescription();
@@ -300,6 +276,7 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 			If catalogObject = Undefined Then
 				catalogObject = Catalogs[attributesStruct.mdObjectName].CreateItem();
 				catalogObject.SetNewObjectRef(catalogRef);
+				catalogObject.SetNewCode();
 				For Each attribute In attributesStruct.attributesTableForNewItem Do
 					catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);					
 				EndDo;
@@ -331,7 +308,9 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 				If owner <> Undefined Then
 					catalogObject.owner = owner;
 				EndIf;
-				catalogObject.holding = holding;
+				If attributesStruct.mdObjectName <> "accounts" Then
+					catalogObject.holding = holding;
+				EndIf;
 				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
 			EndIf;
 			catalogObject.Write();
@@ -358,7 +337,7 @@ Function runRequest(parameters, body, address = "") Export
 	EndIf;
 EndFunction
 
-Function runRequestBackground(parameters, body) Export	
+Function runRequestBackground(parameters, body) Export
 	address	= PutToTempStorage("");
 	array = New Array();
 	array.Add(parameters);	
@@ -402,9 +381,9 @@ Function attributesStructure(requestName) Export
 	mdStruct = New Structure();
 	mdObjectName = "";
 
-	If requestName = "addChangeUsers" Then
+	If requestName = "addChangeAccounts" Then
 
-		mdObjectName = "users";
+		mdObjectName = "accounts";
 		addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
 		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
 		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
@@ -413,9 +392,10 @@ Function attributesStructure(requestName) Export
 		addRowInAttributesTable(attributesTable, "sex", "gender", "string");		
 		addRowInAttributesTable(attributesTable, "email", "email", "string");
 		
-	elsIf requestName = "addChangeCustomers" Then
+	elsIf requestName = "addChangeUsers" Then
 
-		mdObjectName = "customers";
+		mdObjectName = "users";
+		addRowInAttributesTable(attributesTable, "phone", "phoneNumber", "string");
 		addRowInAttributesTable(attributesTable, "email", "email", "string");
 		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
 		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
@@ -513,54 +493,13 @@ Function getAmountOfNumbers(number) Export
 	Return res;
 EndFunction
 
-Function getStructCopy(struct) Export	
+Function getStructCopy(struct) Export
 	structNew	= New Structure();	
 	For Each element In struct Do
 		structNew.Insert(element.key, element.value);	
 	EndDo;
 	Return structNew;
 EndFunction
-
-Procedure addUsersAuthCode(token, phone, code) Export	
-	record = InformationRegisters.usersAuthorizationCodes.CreateRecordManager();
-	record.token = token;		
-	record.Read();
-	If record.Selected() Then
-		record.code = code;
-		record.phone = phone;
-		record.quantity = record.quantity + 1;  
-	Else
-		record.token = token;		
-		record.code = code;
-		record.phone = phone;
-		record.quantity = 1;
-	EndIf;	
-	record.recordDate	= ToUniversalTime(CurrentDate());			
-	record.Write();
-EndProcedure
-
-Procedure logServiceMessage(phone) Export
-	
-	universalTime		= ToUniversalTime(CurrentDate());
-	
-	record	= InformationRegisters.serviceMessagesLogs.CreateRecordManager();
-	record.phone	= phone;
-	record.Read();
-	If record.Selected() Then		
-		If record.recordDate < AddMonth(universalTime, - 1) Then
-			record.quantity = 1;
-		Else
-			record.quantity = record.quantity + 1;
-		EndIf;
-		record.recordDate	= universalTime;
-	Else
-		record.phone	= phone;
-		record.recordDate	= universalTime;
-		record.quantity		= 1;
-	EndIf;	
-	record.Write();
-	
-EndProcedure
 
 Procedure logRequestBackground(parameters) Export //duration, requestName, request, response, isError, token, account)Экспорт
 	array	= New Array();
@@ -569,31 +508,29 @@ Procedure logRequestBackground(parameters) Export //duration, requestName, reque
 EndProcedure
 	
 Procedure logRequest(parameters) Export
-		
-	record	= Catalogs.logs.CreateItem();
-	record.period			= ToUniversalTime(CurrentDate());
-	record.token			= parameters.token;	
-	record.requestName		= parameters.requestName;
-	record.duration		= parameters.duration;
-	record.isError			= parameters.isError;	
-	
-	requestBody	= """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF + """Body"":" + Chars.LF + parameters.requestBody;
+	record = Catalogs.logs.CreateItem();
+	record.period = ToUniversalTime(CurrentDate());
+	record.token = parameters.tokenСontext.token;
+	record.account = parameters.tokenСontext.account;
+	record.requestName = parameters.requestName;
+	record.duration = parameters.duration;
+	record.isError = parameters.isError;
+
+	requestBody = """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF
+		+ """Body"":" + Chars.LF + parameters.requestBody;
 	If parameters.compressAnswer Then
-		record.request			= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));	
-	Else                   	
-		record.requestBody		= requestBody;
+		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
+	Else
+		record.requestBody = requestBody;
 	EndIf;
-	
 	If Not parameters.notSaveAnswer Or parameters.isError Then
 		If parameters.compressAnswer Then
-			record.response		= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
+			record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
 		Else
-			record.responseBody	= parameters.answerBody;
+			record.responseBody = parameters.answerBody;
 		EndIf;
 	EndIf;
-	
-	record.Write();		
-		
+	record.Write();
 EndProcedure
 
 Procedure addRowInAttributesTable(attributesTable, key, value,
@@ -683,20 +620,20 @@ EndProcedure
 	
 	пЗапрос	= Новый Запрос;
 	пЗапрос.text	= "ВЫБРАТЬ
-	             	  |	ИсторияЗапросов.period КАК period,
-	             	  |	ИсторияЗапросов.requestName КАК requestName,
-	             	  |	ИсторияЗапросов.token КАК token,
-	             	  |	ИсторияЗапросов.token.account КАК account,
-	             	  |	ИсторияЗапросов.token.holding КАК holding,
+	             	  |	Logs.period КАК period,
+	             	  |	Logs.requestName КАК requestName,
+	             	  |	Logs.token КАК token,
+	             	  |	Logs.token.account КАК account,
+	             	  |	Logs.token.holding КАК holding,
 	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
 	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
 	             	  |ИЗ
-	             	  |	Справочник.logs КАК ИсторияЗапросов
+	             	  |	Справочник.logs КАК Logs
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО ИсторияЗапросов.token.appType = АналитикиПриложений.appType
-	             	  |			И ИсторияЗапросов.token.systemType = АналитикиПриложений.systemType
+	             	  |		ПО Logs.token.appType = АналитикиПриложений.appType
+	             	  |			И Logs.token.systemType = АналитикиПриложений.systemType
 	             	  |ГДЕ
-	             	  |	ИсторияЗапросов.period МЕЖДУ &ДатаНачала И &ДатаОкончания
+	             	  |	Logs.period МЕЖДУ &ДатаНачала И &ДатаОкончания
 	             	  |	И НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
 	             	  |;
 	             	  |
@@ -850,20 +787,20 @@ EndProcedure
 	
 	пЗапрос	= Новый Запрос;
 	пЗапрос.text	= "ВЫБРАТЬ
-	             	  |	ИсторияЗапросов.period КАК period,
-	             	  |	ИсторияЗапросов.requestName КАК requestName,
-	             	  |	ИсторияЗапросов.token КАК token,
-	             	  |	ИсторияЗапросов.token.account КАК account,
-	             	  |	ИсторияЗапросов.token.holding КАК holding,
+	             	  |	Logs.period КАК period,
+	             	  |	Logs.requestName КАК requestName,
+	             	  |	Logs.token КАК token,
+	             	  |	Logs.token.account КАК account,
+	             	  |	Logs.token.holding КАК holding,
 	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
 	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
 	             	  |ИЗ
-	             	  |	Справочник.logs КАК ИсторияЗапросов
+	             	  |	Справочник.logs КАК Logs
 	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО ИсторияЗапросов.token.appType = АналитикиПриложений.appType
-	             	  |			И ИсторияЗапросов.token.systemType = АналитикиПриложений.systemType
+	             	  |		ПО Logs.token.appType = АналитикиПриложений.appType
+	             	  |			И Logs.token.systemType = АналитикиПриложений.systemType
 	             	  |ГДЕ
-	             	  |	ИсторияЗапросов.period МЕЖДУ &ДатаНачала И &ДатаОкончания
+	             	  |	Logs.period МЕЖДУ &ДатаНачала И &ДатаОкончания
 	             	  |	И НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
 	             	  |;
 	             	  |
@@ -1033,7 +970,7 @@ EndProcedure
 	Пока Выборка.Следующий() Цикл
 		
 		If Выборка.deviceToken = "" Then
-			Accounts.blockToken(Выборка.Токен);			
+			Token.block(Выборка.Токен);			
 		ElsIf Выборка.deviceToken <> "" Then
 			If Уведомление = Неопределено Then
 				Уведомление	= Новый ДоставляемоеУведомление;	
@@ -1055,7 +992,7 @@ EndProcedure
 				Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 					НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
 					Если НайденаяСтрока <> Неопределено Тогда						
-						Accounts.blockToken(НайденаяСтрока.Токен);
+						Token.block(НайденаяСтрока.Токен);
 						ТаблицаПоиска.Удалить(НайденаяСтрока);
 					EndIf;					
 				КонецЦикла;				
@@ -1078,7 +1015,7 @@ EndProcedure
 			Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
 				НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
 				Если НайденаяСтрока <> Неопределено Тогда					
-					Accounts.blockToken(НайденаяСтрока.Токен);
+					Token.block(НайденаяСтрока.Токен);
 					ТаблицаПоиска.Удалить(НайденаяСтрока);
 				EndIf;					
 			КонецЦикла;				
@@ -1091,7 +1028,7 @@ EndProcedure
 	
 	
 	
-	//Блокируем tokens в МП тренера по уволенным сотрудникам	
+	//Блокируем Token в МП тренера по уволенным сотрудникам	
 	пЗапрос	= Новый Запрос;
 	пЗапрос.text = "ВЫБРАТЬ
 	                |	Токены.Ссылка КАК token
@@ -1104,7 +1041,7 @@ EndProcedure
 	
 	Выборка	= пЗапрос.Выполнить().Выбрать();
 	Пока Выборка.Следующий() Цикл
-		Accounts.blockToken(Выборка.Токен);
+		Token.block(Выборка.Токен);
 	КонецЦикла;		
 	
 КонецПроцедуры

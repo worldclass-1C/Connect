@@ -81,7 +81,7 @@ Function prepareRequestBody(parameters) Export
 	struct.Insert("userId", XMLString(tokenСontext.user));
 	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenСontext.timezone));
 	If tokenСontext.appType = Enums.appTypes.Customer Then
-		struct.Insert("appType", "account");
+		struct.Insert("appType", "Customer");
 	ElsIf tokenСontext.appType = Enums.appTypes.Employee Then
 		struct.Insert("appType", "Employee");
 	ElsIf tokenСontext.appType = Enums.appTypes.Web Then
@@ -107,7 +107,9 @@ Function prepareResponse(parameters) Export
 		response = New HTTPServiceResponse(200);
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+	If parameters.answerBody <> "" Then
+		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+	EndIf;
 	Return response;
 EndFunction
 

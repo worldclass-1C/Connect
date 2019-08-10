@@ -149,6 +149,23 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.logs.Form.ListForm</defaultListForm>
+  <attributes uuid="66c7b7e8-56e7-40f9-9335-10523bca2a71">
+    <name>account</name>
+    <synonym>
+      <key>en</key>
+      <value>Account</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Учетная запись</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.accounts</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+  </attributes>
   <attributes uuid="6224b22a-5106-47ff-8637-8d695160f917">
     <name>duration</name>
     <synonym>
@@ -332,7 +349,11 @@
     <usePurposes>MobileDevice</usePurposes>
   </forms>
   <commands uuid="aa7d7ca7-5b46-4797-84a2-de825693ddc1">
-    <name>ИсторияЗапросов</name>
+    <name>Logs</name>
+    <synonym>
+      <key>en</key>
+      <value>Logs</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>История запросов</value>
@@ -340,6 +361,7 @@
     <group>FormNavigationPanelGoTo</group>
     <commandParameterType>
       <types>CatalogRef.tokens</types>
+      <types>CatalogRef.accounts</types>
     </commandParameterType>
     <representation>Auto</representation>
     <shortcut></shortcut>

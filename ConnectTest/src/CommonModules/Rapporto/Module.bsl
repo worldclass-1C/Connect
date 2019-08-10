@@ -1,6 +1,6 @@
 
 Function sendSMS(parameters, answer) Export
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.account, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	URL = "world_class?msisdn=" + parameters.phone + "&message="
 		+ parameters.text;
 	requestHTTP = New HTTPRequest(URL);
@@ -20,7 +20,7 @@ EndFunction
 
 Function checkSmsStatus(parameters, answer) Export
 	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.account, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
 	
 	URL	= "world_class/delivery_report?mt_num=" + parameters.id + "&show_date=Y";
 	requestHTTP = New HTTPRequest(URL);
