@@ -23,7 +23,7 @@
     <name>missingPersonalData</name>
     <synonym>
       <key>en</key>
-      <value>Missing personal data</value>
+      <value>missingPersonalData</value>
     </synonym>
   </enumValues>
   <enumValues uuid="f56fc53f-00ce-4aa3-8f15-c5f8af50b1b0">

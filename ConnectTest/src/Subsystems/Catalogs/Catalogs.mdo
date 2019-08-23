@@ -23,4 +23,5 @@
   <content>Catalog.cacheValuesTypes</content>
   <content>Catalog.CountryCodes</content>
   <content>Catalog.users</content>
+  <content>Catalog.metro</content>
 </mdclass:Subsystem>

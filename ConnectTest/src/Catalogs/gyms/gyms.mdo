@@ -487,6 +487,41 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
+  <tabularSections uuid="f9a5adc7-2c4d-4d6b-ade3-ca0cdcaf670f">
+    <producedTypes>
+      <objectType typeId="73683f1f-6cd7-493f-ad31-def300674020" valueTypeId="b59be70e-4389-43f7-a1a4-917b62258d75"/>
+      <rowType typeId="c6a944c7-f16a-458c-9122-b6b181ca35bf" valueTypeId="fe3cdeec-6237-4c5b-a8f3-1e397bb2dcee"/>
+    </producedTypes>
+    <name>nearestMetro</name>
+    <synonym>
+      <key>en</key>
+      <value>Nearest metro stations</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ближайшие станции метро</value>
+    </synonym>
+    <attributes uuid="c53f0649-5344-48db-b420-ec3223d5420b">
+      <name>metro</name>
+      <synonym>
+        <key>en</key>
+        <value>Metro</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Метро</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.metro</types>
+      </type>
+      <choiceParameterLinks>
+        <name>Filter.city</name>
+        <field>Catalog.gyms.Attribute.city</field>
+      </choiceParameterLinks>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <forms uuid="2e38cad2-cfaa-41aa-aac8-b2f6529c2fa1">
     <name>ListForm</name>
     <synonym>

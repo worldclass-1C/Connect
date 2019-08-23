@@ -328,7 +328,9 @@ Function runRequest(parameters, body, address = "") Export
 	connection = New HTTPConnection(parameters.server, parameters.port, parameters.account, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.UseOSAuthentication);
 	request = New HTTPRequest(parameters.URL + parameters.requestReceiver
 		+ parameters.parametersFromURL, headers);
-	request.SetBodyFromString(body);
+	If body <> "" Then
+		request.SetBodyFromString(body);
+	EndIf;
 	response	= ?(parameters.HTTPRequestType = Enums.HTTPRequestTypes.GET, connection.Get(request), connection.Post(request));
 	If address = "" Then
 		Return response;

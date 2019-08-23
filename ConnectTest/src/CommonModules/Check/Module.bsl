@@ -20,9 +20,11 @@ Function password(token, password, language) Export
 	Else
 		selection = queryResult.Select();
 		selection.Next();
-		If selection.inputCount > 3 Or ToUniversalTime(CurrentDate())
+		If ToUniversalTime(CurrentDate())
 				- selection.recordDate > 900 Then
 			Account.delPassword(token);
+			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordExpired"));
+		ElsIf selection.inputCount > 2 Then  	
 			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordExpired"));			
 		ElsIf selection.password = password Then			
 			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription());
@@ -102,6 +104,8 @@ Procedure legality(request, parameters) Export
 			requestStruct.Property("hash", hash);
 			If Not ValueIsFilled(timeStamp)	Or Not ValueIsFilled(hash) Then
 				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
+			ElsIf (ToUniversalTime(CurrentDate()) - Date("19700101")) - timeStamp > 300 Then
+				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));	
 			Else
 				parameters.Insert("errorDescription", Crypto.checkHasp(parameters.language, timeStamp, hash));				
 			EndIf;

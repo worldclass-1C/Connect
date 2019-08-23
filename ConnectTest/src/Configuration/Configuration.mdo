@@ -116,15 +116,16 @@
   <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.cities</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
-  <catalogs>Catalog.users</catalogs>
   <catalogs>Catalog.gyms</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
   <catalogs>Catalog.logs</catalogs>
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
+  <catalogs>Catalog.metro</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
+  <catalogs>Catalog.users</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.appTypes</enums>

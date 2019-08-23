@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3c4e7957-c85f-4f33-a8c6-37ba1c5ec34a">
+  <producedTypes>
+    <objectType typeId="f44bcaec-7814-4fff-b666-581af2fff7a0" valueTypeId="224f060d-20ab-4776-a0ff-4d29fa7e7b69"/>
+    <refType typeId="133c5ec8-421a-4a18-8ccb-52282c4e44e9" valueTypeId="a586f5d3-ae75-48e0-8531-765dd80abba2"/>
+    <selectionType typeId="a11e4b7c-c9f4-4672-8c6d-a28f6d17f226" valueTypeId="3fcb09fd-72b3-495b-aba8-ce50ab54f087"/>
+    <listType typeId="b675f912-0521-4000-b5ac-3eda6d93a032" valueTypeId="1ea59448-91c3-4cb0-93e0-f91f969cc531"/>
+    <managerType typeId="5f09b41e-9721-4d04-a627-61689584e958" valueTypeId="e3fa7a7c-c53c-4d77-8a7c-ac34eeb12cdf"/>
+  </producedTypes>
+  <name>metro</name>
+  <synonym>
+    <key>en</key>
+    <value>Metro</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Метро</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.metro.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.metro.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Metro</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Метро</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Metro</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Метро</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Metro</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Метро</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Metro</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Метро</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>30</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="7f464664-6a19-4a9a-9e80-134827b727dc">
+    <name>city</name>
+    <synonym>
+      <key>en</key>
+      <value>City</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Город</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cities</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="12f2d49b-1785-4283-a7b3-b79cafbffac0">
+    <name>lineColor</name>
+    <synonym>
+      <key>en</key>
+      <value>Line color</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Цвет линии</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="aa2c0ee8-c028-46fd-96ac-8a954b1330e3">
+    <name>lineName</name>
+    <synonym>
+      <key>en</key>
+      <value>Line name</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Линия метро</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="5d2e77a5-67f4-4198-918d-c6b6686fddbc">
+    <name>lineNumber</name>
+    <synonym>
+      <key>en</key>
+      <value>Line number</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номер линии метро</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="fcc6f12d-d87d-4b9e-913c-df13a7fb0ccc">
+    <name>order</name>
+    <synonym>
+      <key>en</key>
+      <value>Order</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номер станции</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

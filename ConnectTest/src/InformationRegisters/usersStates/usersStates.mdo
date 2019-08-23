@@ -86,13 +86,12 @@
       <value>Пользователь</value>
     </synonym>
     <type>
-      <types>CatalogRef.accounts</types>
+      <types>CatalogRef.users</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
-    <fillValue xsi:type="core:UndefinedValue"/>
     <mainFilter>true</mainFilter>
   </dimensions>
   <dimensions uuid="1b9d50e5-a6b0-4588-b4fb-5390897983bd">

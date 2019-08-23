@@ -16,12 +16,14 @@ Procedure executeRequestMethod(parameters) Export
 			accountConfirmPhone(parameters);
 		ElsIf parameters.requestName = "addusertotoken" Then 
 			addUserToToken(parameters);
-		ElsIf parameters.requestName = "registerdevice" Then // проверить описание в API
+		ElsIf parameters.requestName = "registerdevice" Then 
 			registerDevice(parameters);
-		ElsIf parameters.requestName = "signout" Then // проверить описание в API
+		ElsIf parameters.requestName = "signout" Then 
 			signOut(parameters);
+		ElsIf parameters.requestName = "accountprofile" Then 
+			getAccountProfile(parameters);	
 		ElsIf parameters.requestName = "userprofile" Then // проверить описание в API
-			ПолучитьПрофильПользователя(parameters);
+			getUserProfile(parameters);
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then // проверить описание в API
 			getGymList(parameters);
@@ -381,84 +383,213 @@ Procedure signOut(parameters)
 	Token.editProperty(tokenСontext.token, changeStruct);
 EndProcedure
 
-Procedure ПолучитьПрофильПользователя(parameters)
+Procedure getAccountProfile(parameters)
 
-//@skip-warning
-	requestStruct = parameters.requestStruct;
-	language = parameters.language;
-	tokenСontext = parameters.tokenСontext;
-
-	ЗаписьJSON = Новый ЗаписьJSON;
-	ЗаписьJSON.УстановитьСтроку();
-	СтруктураJSON = Новый Структура;
-
-	пЗапрос = Новый Запрос;
-	пЗапрос.text = "ВЫБРАТЬ
-		|	Пользователи.Ссылка КАК account,
-		|	Пользователи.login КАК login,
-		|	Пользователи.birthday КАК birthday,
-		|	Пользователи.phone КАК phone,
-		|	Пользователи.email КАК email,
-		|	НЕ Пользователи.notSubscriptionEmail КАК УчаствоватьВРассылкеEmail,
-		|	НЕ Пользователи.notSubscriptionSms КАК УчаствоватьВРассылкеСообщений,
-		|	Пользователи.sex КАК sex,
-		|	Не Пользователи.canUpdatePersonalData КАК РазрешитьОбновлятьПерсональныеДанные,
-		|	Пользователи.barCode КАК barCode,
-		|	Пользователи.userCode КАК userCode,
-		|	Пользователи.lastName КАК lastName,
-		|	Пользователи.firstName КАК firstName,
-		|	Пользователи.secondName КАК secondName
-		|ИЗ
-		|	Справочник.accounts КАК Пользователи
-		|ГДЕ
-		|	Пользователи.Ссылка = &account
-		|;
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	СостояниеПользователя.cacheValuesType.Наименование КАК cacheValuesType,
-		|	СостояниеПользователя.Значение КАК ЗначениеКэша
-		|ИЗ
-		|	РегистрСведений.usersStates КАК СостояниеПользователя
-		|ГДЕ
-		|	СостояниеПользователя.account = &account
-		|	И СостояниеПользователя.appType = &appType";
-
-	пЗапрос.УстановитьПараметр("account", tokenСontext.Пользователь);
-	пЗапрос.УстановитьПараметр("appType", tokenСontext.ВидПриложения);
-
-	РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
-	queryResult = РезультатыЗапроса[0];
-	queryResult1 = РезультатыЗапроса[1];
-
-	If queryResult.Пустой() Then
-		parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "userNotIdentified"));
-	Иначе
-		selection = queryResult.Выбрать();
-		selection.Следующий();
-		СтруктураJSON.Вставить("login", selection.Логин);
-		СтруктураJSON.Вставить("birthdayDate", selection.ДатаРождения);
-		СтруктураJSON.Вставить("phoneNumber", selection.НомерТелефона);
-		СтруктураJSON.Вставить("email", selection.Email);
-		СтруктураJSON.Вставить("subscriptionEmail", selection.УчаствоватьВРассылкеEmail);
-		СтруктураJSON.Вставить("subscriptionSms", selection.УчаствоватьВРассылкеСообщений);
-		СтруктураJSON.Вставить("gender", selection.Пол);
-		СтруктураJSON.Вставить("canUpdatePersonalData", selection.РазрешитьОбновлятьПерсональныеДанные);
-		СтруктураJSON.Вставить("barcode", selection.Штрихкод);
-		СтруктураJSON.Вставить("cid", selection.КодПользователя);
-		СтруктураJSON.Вставить("uid", XMLСтрока(selection.Пользователь));
-		СтруктураJSON.Вставить("lastName", selection.Фамилия);
-		СтруктураJSON.Вставить("firstName", selection.Имя);
-		СтруктураJSON.Вставить("secondName", selection.Отчество);
-
-		selection = queryResult1.Выбрать();
-		Пока selection.Следующий() Цикл
-			СтруктураJSON.Вставить(selection.ТипЗначенияКэша, HTTP.decodeJSON(selection.ЗначениеКэша));
-		КонецЦикла;
+	tokenСontext = parameters.tokenСontext;		
+	
+	struct = New Structure();
+	
+	query	= New Query();
+	query.Text	= "SELECT
+	|	accounts.Code as phone,
+	|	accounts.birthday,
+	|	accounts.canUpdatePersonalData,
+	|	accounts.email,
+	|	accounts.firstName,
+	|	accounts.lastName,
+	|	accounts.registrationDate,
+	|	accounts.secondName,
+	|	accounts.sex,
+	|	REFPRESENTATION(accounts.status) AS status
+	|FROM
+	|	Catalog.accounts AS accounts
+	|WHERE
+	|	accounts.Ref = &account";
+	
+	query.SetParameter("account", tokenСontext.account);
+	
+	queryResult	= query.Execute();
+	
+	If queryResult.IsEmpty() Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));	
+	Else
+		selection = queryResult.Select();
+		While selection.Next() Do
+			struct.Insert("phone", selection.phone);
+			struct.Insert("birthday", selection.birthday);
+			struct.Insert("canUpdatePersonalData", selection.canUpdatePersonalData);
+			struct.Insert("email", selection.email);
+			struct.Insert("firstName", selection.firstName);
+			struct.Insert("lastName", selection.lastName);
+			struct.Insert("registrationDate", selection.registrationDate);
+			struct.Insert("secondName", selection.secondName);
+			struct.Insert("sex", selection.sex);
+			struct.Insert("status", selection.status);
+			struct.Insert("photo", "");
+		EndDo;
 	EndIf;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+		
+EndProcedure
 
-	ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
-
-	parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
+Procedure getUserProfile(parameters)
+	
+	tokenСontext = parameters.tokenСontext;		
+	
+	struct = New Structure();
+	
+	query	= New Query();
+	query.Text	= "SELECT
+	|	users.barCode,
+	|	users.birthday,
+	|	users.canUpdatePersonalData,
+	|	users.email,
+	|	users.firstName,
+	|	users.lastName,
+	|	users.notSubscriptionEmail,
+	|	users.notSubscriptionSms,
+	|	users.phone,
+	|	users.registrationDate,
+	|	users.secondName,
+	|	users.sex
+	|FROM
+	|	Catalog.users AS users
+	|WHERE
+	|	users.Ref = &user
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	cacheValuesTypes.Code AS cacheCode,
+	|	cacheValuesTypes.Ref AS cacheValuesType,
+	|	&user AS user,
+	|	&appType AS appType
+	|INTO TT
+	|FROM
+	|	Catalog.cacheValuesTypes AS cacheValuesTypes
+	|WHERE
+	|	cacheValuesTypes.request = &requestName
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.cacheCode AS cacheCode,
+	|	usersStates.value AS cacheValue
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+	|		ON TT.cacheValuesType = usersStates.cacheValuesType
+	|		AND TT.user = usersStates.user
+	|		AND TT.appType = usersStates.appType
+	|WHERE
+	|	NOT usersStates.value IS NULL";
+	
+	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("requestName", "getUserProfile");
+	
+	queryResults = query.ExecuteBatch();
+	queryResult = queryResults[0]; 
+	If queryResult.IsEmpty() Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));	
+	Else
+		select = queryResult.Select();
+		While select.Next() Do
+			struct.Insert("barCode", select.barCode);
+			struct.Insert("birthday", select.birthday);
+			struct.Insert("canUpdatePersonalData", select.canUpdatePersonalData);
+			struct.Insert("email", select.email);
+			struct.Insert("firstName", select.firstName);
+			struct.Insert("lastName", select.lastName);
+			struct.Insert("notSubscriptionEmail", select.notSubscriptionEmail);
+			struct.Insert("notSubscriptionSms", select.notSubscriptionSms);
+			struct.Insert("phone", select.phone);
+			struct.Insert("registrationDate", select.registrationDate);
+			struct.Insert("secondName", select.secondName);
+			struct.Insert("sex", select.sex);			
+			struct.Insert("status", select.status);
+			struct.Insert("photo", "");
+			
+			cacheSelect = queryResults[1].Select();
+			While cacheSelect.Next() Do
+				struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));	
+			EndDo;			
+		EndDo;
+	EndIf;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
+//	tokenСontext = parameters.tokenСontext;
+//	requestStruct = parameters.requestStruct;
+//	language = parameters.language;
+//
+//	struct = New Structure();
+//
+//	пЗапрос = Новый Запрос;
+//	пЗапрос.text = "ВЫБРАТЬ
+//		|	Пользователи.Ссылка КАК account,
+//		|	Пользователи.login КАК login,
+//		|	Пользователи.birthday КАК birthday,
+//		|	Пользователи.phone КАК phone,
+//		|	Пользователи.email КАК email,
+//		|	НЕ Пользователи.notSubscriptionEmail КАК УчаствоватьВРассылкеEmail,
+//		|	НЕ Пользователи.notSubscriptionSms КАК УчаствоватьВРассылкеСообщений,
+//		|	Пользователи.sex КАК sex,
+//		|	Не Пользователи.canUpdatePersonalData КАК РазрешитьОбновлятьПерсональныеДанные,
+//		|	Пользователи.barCode КАК barCode,
+//		|	Пользователи.userCode КАК userCode,
+//		|	Пользователи.lastName КАК lastName,
+//		|	Пользователи.firstName КАК firstName,
+//		|	Пользователи.secondName КАК secondName
+//		|ИЗ
+//		|	Справочник.accounts КАК Пользователи
+//		|ГДЕ
+//		|	Пользователи.Ссылка = &account
+//		|;
+//		|////////////////////////////////////////////////////////////////////////////////
+//		|ВЫБРАТЬ
+//		|	СостояниеПользователя.cacheValuesType.Наименование КАК cacheValuesType,
+//		|	СостояниеПользователя.Значение КАК ЗначениеКэша
+//		|ИЗ
+//		|	РегистрСведений.usersStates КАК СостояниеПользователя
+//		|ГДЕ
+//		|	СостояниеПользователя.account = &account
+//		|	И СостояниеПользователя.appType = &appType";
+//
+//	пЗапрос.УстановитьПараметр("account", tokenСontext.Пользователь);
+//	пЗапрос.УстановитьПараметр("appType", tokenСontext.ВидПриложения);
+//
+//	РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
+//	queryResult = РезультатыЗапроса[0];
+//	queryResult1 = РезультатыЗапроса[1];
+//
+//	If queryResult.Пустой() Then
+//		parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "userNotIdentified"));
+//	Иначе
+//		selection = queryResult.Выбрать();
+//		selection.Следующий();
+//		СтруктураJSON.Вставить("login", selection.Логин);
+//		СтруктураJSON.Вставить("birthdayDate", selection.ДатаРождения);
+//		СтруктураJSON.Вставить("phoneNumber", selection.НомерТелефона);
+//		СтруктураJSON.Вставить("email", selection.Email);
+//		СтруктураJSON.Вставить("subscriptionEmail", selection.УчаствоватьВРассылкеEmail);
+//		СтруктураJSON.Вставить("subscriptionSms", selection.УчаствоватьВРассылкеСообщений);
+//		СтруктураJSON.Вставить("gender", selection.Пол);
+//		СтруктураJSON.Вставить("canUpdatePersonalData", selection.РазрешитьОбновлятьПерсональныеДанные);
+//		СтруктураJSON.Вставить("barcode", selection.Штрихкод);
+//		СтруктураJSON.Вставить("cid", selection.КодПользователя);
+//		СтруктураJSON.Вставить("uid", XMLСтрока(selection.Пользователь));
+//		СтруктураJSON.Вставить("lastName", selection.Фамилия);
+//		СтруктураJSON.Вставить("firstName", selection.Имя);
+//		СтруктураJSON.Вставить("secondName", selection.Отчество);
+//
+//		selection = queryResult1.Выбрать();
+//		Пока selection.Следующий() Цикл
+//			СтруктураJSON.Вставить(selection.ТипЗначенияКэша, HTTP.decodeJSON(selection.ЗначениеКэша));
+//		КонецЦикла;
+//	EndIf;
+//
+//	ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
+//
+//	parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
 
 EndProcedure
 
@@ -477,48 +608,53 @@ Procedure getGymList(parameters)
 	If errorDescription.result = "" Then
 		query = New Query();
 		query.Text = "SELECT
-			|	gyms.Ref,
-			|	gyms.Description,
-			|	gyms.address,
-			|	gyms.city,
-			|	gyms.latitude,
-			|	gyms.longitude,
-			|	gyms.registrationDate,
-			|	gyms.segment,
-			|	gyms.chain,
-			|	gyms.type,
-			|	gyms.holding,
-			|	gyms.departmentWorkSchedule.(
-			|		department,
-			|		phone,
-			|		weekdaysTime,
-			|		holidaysTime)
-			|FROM
-			|	Catalog.gyms AS gyms
-			|WHERE
-			|	gyms.chain.code = &chainCode
-			|	AND
-			|	NOT gyms.DeletionMark";
+		|	gyms.Ref,
+		|	gyms.Description,
+		|	gyms.address,
+		|	gyms.city,
+		|	gyms.latitude,
+		|	gyms.longitude,
+		|	gyms.registrationDate,
+		|	gyms.segment,
+		|	gyms.chain,
+		|	gyms.type,
+		|	gyms.holding,
+		|	gyms.departmentWorkSchedule.(
+		|		department,
+		|		phone,
+		|		weekdaysTime,
+		|		holidaysTime),
+		|	gyms.nearestMetro.(
+		|		metro.description AS description,
+		|		metro.lineColor AS lineColor,
+		|		metro.lineName AS lineName,
+		|		metro.lineNumber AS lineNumber)
+		|FROM
+		|	Catalog.gyms AS gyms
+		|WHERE
+		|	gyms.chain.code = &chainCode
+		|	AND
+		|	NOT gyms.DeletionMark";
 
 		query.SetParameter("chainCode", requestStruct.chain);
-		selection = query.Execute().Select();
+		select = query.Execute().Select();
 
-		While selection.Next() Do
+		While select.Next() Do
 			gymStruct = New Structure();
-			gymStruct.Insert("gymId", XMLString(selection.Ref));
-			gymStruct.Insert("name", selection.Description);
-			gymStruct.Insert("type", selection.type);
-			gymStruct.Insert("cityId", XMLString(selection.city));
-			gymStruct.Insert("gymAddress", selection.address);
-			gymStruct.Insert("divisionTitle", selection.segment);
+			gymStruct.Insert("gymId", XMLString(select.Ref));
+			gymStruct.Insert("name", select.Description);
+			gymStruct.Insert("type", select.type);
+			gymStruct.Insert("cityId", XMLString(select.city));
+			gymStruct.Insert("gymAddress", select.address);
+			gymStruct.Insert("divisionTitle", select.segment);
 
 			coords = New Structure();
-			coords.Insert("latitude", selection.latitude);
-			coords.Insert("longitude", selection.longitude);
+			coords.Insert("latitude", select.latitude);
+			coords.Insert("longitude", select.longitude);
 			gymStruct.Вставить("coords", coords);
 
 			scheduledArray = New Array();
-			For Each department In selection.departmentWorkSchedule.Unload() Do
+			For Each department In select.departmentWorkSchedule.Unload() Do
 				schedule = New Structure();
 				schedule.Insert("name", department.department);
 				schedule.Insert("phone", department.phone);
@@ -526,7 +662,19 @@ Procedure getGymList(parameters)
 				schedule.Insert("holidaysTime", department.holidaysTime);
 				scheduledArray.add(schedule);
 			EndDo;
+			
+			metroArray = New Array();
+			For Each metro In select.nearestMetro.Unload() Do
+				station = New Structure();
+				station.Insert("name", metro.description);
+				station.Insert("lineColor", metro.lineColor);
+				station.Insert("lineName", metro.lineName);
+				station.Insert("lineNumber", metro.lineNumber);
+				metroArray.add(station);
+			EndDo;
+			
 			gymStruct.Insert("departments", scheduledArray);
+			gymStruct.Insert("metro", metroArray);
 			gymArray.add(gymStruct);
 		EndDo;
 	EndIf;

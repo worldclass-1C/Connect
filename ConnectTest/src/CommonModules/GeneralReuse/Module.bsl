@@ -20,5 +20,5 @@ Function getAuthorizationKey(systemType, certificate) Export
 EndFunction
 
 Function getBaseURL() Export
-	Return  Constants.BaseURL.Get;	
+	Return  Constants.BaseURL.Get();	
 EndFunction

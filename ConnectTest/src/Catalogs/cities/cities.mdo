@@ -132,4 +132,20 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <commands uuid="ab964228-f42d-43e9-be17-c61d773381e0">
+    <name>getMetroFromHH</name>
+    <synonym>
+      <key>en</key>
+      <value>Get metro from hh</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Получить метро</value>
+    </synonym>
+    <group>FormCommandBarImportant</group>
+    <commandParameterType>
+      <types>CatalogRef.cities</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+  </commands>
 </mdclass:Catalog>
