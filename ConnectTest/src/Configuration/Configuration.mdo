@@ -108,6 +108,7 @@
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseURL</constants>
+  <constants>Constant.BaseImgURL</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>

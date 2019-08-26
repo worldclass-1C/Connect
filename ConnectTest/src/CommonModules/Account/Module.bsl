@@ -14,7 +14,7 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 	tokenСontext = parameters.tokenСontext;
 	language = parameters.language;
 	errorDescription = parameters.errorDescription;	
-	userStatus = "unauthorized";
+	userProfile = initProfileStruct();
 	userList = New Array();
 	
 	parametersNew = Service.getStructCopy(parameters);
@@ -27,8 +27,9 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 			If account = Undefined Then
 				accountArray = Service.createCatalogItems("addChangeAccounts", tokenСontext.holding, answerStruct);
 				account = accountArray[0];
-				userStatus = setAccountStatus(account);				
+				setAccountStatus(account);								
 			EndIf;
+			userProfile = profileStruct(account);
 			userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, answerStruct, account);
 			Token.editProperty(tokenСontext.token, New Structure("account, user", account, userArray[0]));			
 		ElsIf answerStruct.Count() > 1 Then			
@@ -46,11 +47,11 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 		errorDescription = parametersNew.errorDescription;
 	EndIf;
 
-	Return New Structure("struct, errorDescription", New Structure("userStatus,userList", TrimAll(userStatus), userList), errorDescription);
+	Return New Structure("response, errorDescription", New Structure("userProfile, userList", TrimAll(userProfile), userList), errorDescription);
 
 EndFunction
 
-Function getAccountStatus(account) Export
+Function getStatus(account)
 	
 	querry = New Query("SELECT
 	|	CASE
@@ -81,7 +82,7 @@ EndFunction
 
 Function setAccountStatus(val account, val status = Undefined) Export
 	If status = Undefined Then
-		status = getAccountStatus(account);	
+		status = getStatus(account);	
 	EndIf;	
 	accountObject = account.GetObject();
 	If accountObject.status <> status Then
@@ -89,6 +90,55 @@ Function setAccountStatus(val account, val status = Undefined) Export
 		accountObject.Write();
 	EndIf;	
 	Return status;
+EndFunction
+
+Function profileStruct(account) Export
+	
+	struct = initProfileStruct();
+
+	query = New Query();
+	query.Text	= "SELECT
+	|	accounts.Code as phone,
+	|	accounts.birthday,
+	|	accounts.canUpdatePersonalData,
+	|	accounts.email,
+	|	accounts.firstName,
+	|	accounts.lastName,
+	|	accounts.registrationDate,
+	|	accounts.secondName,
+	|	accounts.sex,
+	|	REFPRESENTATION(accounts.status) AS status
+	|FROM
+	|	Catalog.accounts AS accounts
+	|WHERE
+	|	accounts.Ref = &account";
+	
+	query.SetParameter("account", account);
+	
+	queryResult	= query.Execute();
+	
+	If Not queryResult.IsEmpty() Then
+		selection = queryResult.Select();
+		selection.Next();
+		struct.Insert("phone", selection.phone);
+		struct.Insert("birthday", selection.birthday);
+		struct.Insert("canUpdatePersonalData", selection.canUpdatePersonalData);
+		struct.Insert("email", selection.email);
+		struct.Insert("firstName", selection.firstName);
+		struct.Insert("lastName", selection.lastName);
+		struct.Insert("registrationDate", selection.registrationDate);
+		struct.Insert("secondName", selection.secondName);
+		struct.Insert("sex", selection.sex);
+		struct.Insert("status", selection.status);
+		struct.Insert("photo", "");
+	EndIf;
+	
+	Return struct;
+	
+EndFunction
+
+Function initProfileStruct()	
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, sex, status, photo", "", Date(1, 1, 1), False, "", "", "", Date(1, 1, 1), "", "", "", "");
 EndFunction
 
 Procedure incPasswordSendCount(token, phone, password) Export

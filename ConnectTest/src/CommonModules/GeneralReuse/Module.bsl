@@ -22,3 +22,7 @@ EndFunction
 Function getBaseURL() Export
 	Return  Constants.BaseURL.Get();	
 EndFunction
+
+Function getBaseImgURL() Export
+	Return  Constants.BaseImgURL.Get();
+EndFunction

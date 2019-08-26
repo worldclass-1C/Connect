@@ -4,9 +4,9 @@ Procedure executeRequestMethod(parameters) Export
 	parameters.Insert("errorDescription", Check.requestParameters(parameters));	
 	
 	If parameters.errorDescription.result = "" Then
-		If parameters.requestName = "chainlist" Then // проверить описание в API
+		If parameters.requestName = "chainlist" Then
 			getChainList(parameters);
-		ElsIf parameters.requestName = "countrycodelist" Then // проверить описание в API 
+		ElsIf parameters.requestName = "countrycodelist" Then 
 			getCountryCodeList(parameters);
 		ElsIf parameters.requestName = "config" Then
 			getConfig(parameters);
@@ -22,7 +22,7 @@ Procedure executeRequestMethod(parameters) Export
 			signOut(parameters);
 		ElsIf parameters.requestName = "accountprofile" Then 
 			getAccountProfile(parameters);	
-		ElsIf parameters.requestName = "userprofile" Then // проверить описание в API
+		ElsIf parameters.requestName = "userprofile" Then 
 			getUserProfile(parameters);
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then // проверить описание в API
@@ -318,8 +318,7 @@ Procedure accountConfirmPhone(parameters)
 	If errorDescription.result = "" Then
 		queryUser = New Query("SELECT
 		|	accounts.Ref AS account,
-		|	ISNULL(users.Ref, VALUE(Catalog.users.EmptyRef)) AS user,
-		|	REFPRESENTATION(accounts.status) AS status
+		|	ISNULL(users.Ref, VALUE(Catalog.users.EmptyRef)) AS user
 		|FROM
 		|	Catalog.accounts AS accounts
 		|		LEFT JOIN Catalog.users AS users
@@ -333,7 +332,7 @@ Procedure accountConfirmPhone(parameters)
 		queryUserResult = queryUser.Execute();
 		If queryUserResult.isEmpty() Then
 			answerStruct = Account.getUserFromExternalSystem(parameters, "phone", answer.phone);
-			struct = answerStruct.struct;
+			struct = answerStruct.response;
 			errorDescription = answerStruct.errorDescription; 
 		Else
 			select = queryUserResult.Select();
@@ -341,11 +340,11 @@ Procedure accountConfirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenСontext.token, changeStruct);
-				struct.Insert("userStatus", select.status);
+				struct.Insert("userProfile", Account.profileStruct(select.account));
 				struct.Insert("userList", New Array());				
 			Else	
 				answerStruct = Account.getUserFromExternalSystem(parameters, "phone", answer.phone, select.account);
-				struct = answerStruct.struct;
+				struct = answerStruct.response;
 				errorDescription = answerStruct.errorDescription;
 			EndIf;		
 		EndIf;
@@ -360,21 +359,15 @@ Procedure accountConfirmPhone(parameters)
 EndProcedure
 
 Procedure addUserToToken(parameters)
-
 	tokenСontext = parameters.tokenСontext;
 	requestStruct = parameters.requestStruct;
-			
 	If tokenСontext.account.IsEmpty() Then
-		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid);	
+		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid);
 	Else
-		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.account);	
+		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.account);
 	EndIf;
-	struct = answerStruct.struct;
-	errorDescription = answerStruct.errorDescription;
-
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
-
+	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response.userProfile));
+	parameters.Insert("errorDescription", answerStruct.errorDescription);
 EndProcedure
 
 Procedure signOut(parameters)
@@ -384,53 +377,11 @@ Procedure signOut(parameters)
 EndProcedure
 
 Procedure getAccountProfile(parameters)
-
-	tokenСontext = parameters.tokenСontext;		
-	
-	struct = New Structure();
-	
-	query	= New Query();
-	query.Text	= "SELECT
-	|	accounts.Code as phone,
-	|	accounts.birthday,
-	|	accounts.canUpdatePersonalData,
-	|	accounts.email,
-	|	accounts.firstName,
-	|	accounts.lastName,
-	|	accounts.registrationDate,
-	|	accounts.secondName,
-	|	accounts.sex,
-	|	REFPRESENTATION(accounts.status) AS status
-	|FROM
-	|	Catalog.accounts AS accounts
-	|WHERE
-	|	accounts.Ref = &account";
-	
-	query.SetParameter("account", tokenСontext.account);
-	
-	queryResult	= query.Execute();
-	
-	If queryResult.IsEmpty() Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));	
-	Else
-		selection = queryResult.Select();
-		While selection.Next() Do
-			struct.Insert("phone", selection.phone);
-			struct.Insert("birthday", selection.birthday);
-			struct.Insert("canUpdatePersonalData", selection.canUpdatePersonalData);
-			struct.Insert("email", selection.email);
-			struct.Insert("firstName", selection.firstName);
-			struct.Insert("lastName", selection.lastName);
-			struct.Insert("registrationDate", selection.registrationDate);
-			struct.Insert("secondName", selection.secondName);
-			struct.Insert("sex", selection.sex);
-			struct.Insert("status", selection.status);
-			struct.Insert("photo", "");
-		EndDo;
-	EndIf;
-	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-		
+	struct = Account.profileStruct(parameters.tokenСontext.account);		
+	If struct.status = "" Then
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));
+	EndIf;	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));		
 EndProcedure
 
 Procedure getUserProfile(parameters)
@@ -484,6 +435,7 @@ Procedure getUserProfile(parameters)
 	|	NOT usersStates.value IS NULL";
 	
 	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("appType", tokenСontext.appType);
 	query.SetParameter("requestName", "getUserProfile");
 	
 	queryResults = query.ExecuteBatch();
@@ -505,10 +457,10 @@ Procedure getUserProfile(parameters)
 			struct.Insert("registrationDate", select.registrationDate);
 			struct.Insert("secondName", select.secondName);
 			struct.Insert("sex", select.sex);			
-			struct.Insert("status", select.status);
+			struct.Insert("rating", "");
 			struct.Insert("photo", "");
 			
-			cacheSelect = queryResults[1].Select();
+			cacheSelect = queryResults[2].Select();
 			While cacheSelect.Next() Do
 				struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));	
 			EndDo;			
@@ -517,80 +469,6 @@ Procedure getUserProfile(parameters)
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
-//	tokenСontext = parameters.tokenСontext;
-//	requestStruct = parameters.requestStruct;
-//	language = parameters.language;
-//
-//	struct = New Structure();
-//
-//	пЗапрос = Новый Запрос;
-//	пЗапрос.text = "ВЫБРАТЬ
-//		|	Пользователи.Ссылка КАК account,
-//		|	Пользователи.login КАК login,
-//		|	Пользователи.birthday КАК birthday,
-//		|	Пользователи.phone КАК phone,
-//		|	Пользователи.email КАК email,
-//		|	НЕ Пользователи.notSubscriptionEmail КАК УчаствоватьВРассылкеEmail,
-//		|	НЕ Пользователи.notSubscriptionSms КАК УчаствоватьВРассылкеСообщений,
-//		|	Пользователи.sex КАК sex,
-//		|	Не Пользователи.canUpdatePersonalData КАК РазрешитьОбновлятьПерсональныеДанные,
-//		|	Пользователи.barCode КАК barCode,
-//		|	Пользователи.userCode КАК userCode,
-//		|	Пользователи.lastName КАК lastName,
-//		|	Пользователи.firstName КАК firstName,
-//		|	Пользователи.secondName КАК secondName
-//		|ИЗ
-//		|	Справочник.accounts КАК Пользователи
-//		|ГДЕ
-//		|	Пользователи.Ссылка = &account
-//		|;
-//		|////////////////////////////////////////////////////////////////////////////////
-//		|ВЫБРАТЬ
-//		|	СостояниеПользователя.cacheValuesType.Наименование КАК cacheValuesType,
-//		|	СостояниеПользователя.Значение КАК ЗначениеКэша
-//		|ИЗ
-//		|	РегистрСведений.usersStates КАК СостояниеПользователя
-//		|ГДЕ
-//		|	СостояниеПользователя.account = &account
-//		|	И СостояниеПользователя.appType = &appType";
-//
-//	пЗапрос.УстановитьПараметр("account", tokenСontext.Пользователь);
-//	пЗапрос.УстановитьПараметр("appType", tokenСontext.ВидПриложения);
-//
-//	РезультатыЗапроса = пЗапрос.ВыполнитьПакет();
-//	queryResult = РезультатыЗапроса[0];
-//	queryResult1 = РезультатыЗапроса[1];
-//
-//	If queryResult.Пустой() Then
-//		parameters.Insert("ОписаниеОшибки", Service.getErrorDescription(language, "userNotIdentified"));
-//	Иначе
-//		selection = queryResult.Выбрать();
-//		selection.Следующий();
-//		СтруктураJSON.Вставить("login", selection.Логин);
-//		СтруктураJSON.Вставить("birthdayDate", selection.ДатаРождения);
-//		СтруктураJSON.Вставить("phoneNumber", selection.НомерТелефона);
-//		СтруктураJSON.Вставить("email", selection.Email);
-//		СтруктураJSON.Вставить("subscriptionEmail", selection.УчаствоватьВРассылкеEmail);
-//		СтруктураJSON.Вставить("subscriptionSms", selection.УчаствоватьВРассылкеСообщений);
-//		СтруктураJSON.Вставить("gender", selection.Пол);
-//		СтруктураJSON.Вставить("canUpdatePersonalData", selection.РазрешитьОбновлятьПерсональныеДанные);
-//		СтруктураJSON.Вставить("barcode", selection.Штрихкод);
-//		СтруктураJSON.Вставить("cid", selection.КодПользователя);
-//		СтруктураJSON.Вставить("uid", XMLСтрока(selection.Пользователь));
-//		СтруктураJSON.Вставить("lastName", selection.Фамилия);
-//		СтруктураJSON.Вставить("firstName", selection.Имя);
-//		СтруктураJSON.Вставить("secondName", selection.Отчество);
-//
-//		selection = queryResult1.Выбрать();
-//		Пока selection.Следующий() Цикл
-//			СтруктураJSON.Вставить(selection.ТипЗначенияКэша, HTTP.decodeJSON(selection.ЗначениеКэша));
-//		КонецЦикла;
-//	EndIf;
-//
-//	ЗаписатьJSON(ЗаписьJSON, СтруктураJSON);
-//
-//	parameters.Insert("ТелоОтвета", ЗаписьJSON.Закрыть());
-
 EndProcedure
 
 Procedure getGymList(parameters)

@@ -44,7 +44,7 @@ Function processRequest(request) Export
 
 EndFunction
 
-Function decodeJSON(body, isArray = False) Export
+Function decodeJSON(val body, val isArray = False) Export
 	body	= TrimAll(body);	
 	If StrLen(Body) > 0 Then			
 		JSONReader = New JSONReader();
