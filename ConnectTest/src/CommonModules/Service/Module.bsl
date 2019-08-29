@@ -311,6 +311,9 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 				If attributesStruct.mdObjectName <> "accounts" Then
 					catalogObject.holding = holding;
 				EndIf;
+				If attributesStruct.mdObjectName = "users" Then
+					catalogObject.description = "" + owner + " (" + holding + ")";	
+				EndIf;	
 				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
 			EndIf;
 			catalogObject.Write();
@@ -391,20 +394,13 @@ Function attributesStructure(requestName) Export
 		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
 		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
 		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
-		addRowInAttributesTable(attributesTable, "sex", "gender", "string");		
+		addRowInAttributesTable(attributesTable, "gender", "gender", "string");		
 		addRowInAttributesTable(attributesTable, "email", "email", "string");
 		
 	elsIf requestName = "addChangeUsers" Then
 
-		mdObjectName = "users";
-		addRowInAttributesTable(attributesTable, "phone", "phoneNumber", "string");
-		addRowInAttributesTable(attributesTable, "email", "email", "string");
-		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
-		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
-		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
+		mdObjectName = "users";		
 		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");		
-		addRowInAttributesTable(attributesTable, "sex", "gender", "string");
 		addRowInAttributesTable(attributesTable, "userType", "userType", "string");
 		addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
 		addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");

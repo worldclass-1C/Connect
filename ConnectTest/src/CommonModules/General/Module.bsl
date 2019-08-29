@@ -270,7 +270,7 @@ Procedure accountSignIn(parameters)
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
 			If tokenСontext.chain <> chain Then
-				tokenСontext.Insert("chain", chain);
+				tokenСontext.chain = chain;
 				changeStruct = New Structure("chain", chain);
 				Token.editProperty(tokenСontext.token, changeStruct);
 			EndIf;
@@ -340,6 +340,8 @@ Procedure accountConfirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenСontext.token, changeStruct);
+				tokenСontext.account = changeStruct.account;
+				tokenСontext.user = changeStruct.user;
 				struct.Insert("userProfile", Account.profileStruct(select.account));
 				struct.Insert("userList", New Array());				
 			Else	
@@ -374,6 +376,8 @@ Procedure signOut(parameters)
 	tokenСontext = parameters.tokenСontext;
 	changeStruct = New Structure("account, user", Catalogs.accounts.EmptyRef(), Catalogs.users.EmptyRef());
 	Token.editProperty(tokenСontext.token, changeStruct);
+	tokenСontext.account = changeStruct.account;
+	tokenСontext.user = changeStruct.user;
 EndProcedure
 
 Procedure getAccountProfile(parameters)
@@ -392,18 +396,18 @@ Procedure getUserProfile(parameters)
 	
 	query	= New Query();
 	query.Text	= "SELECT
-	|	users.barCode,
-	|	users.birthday,
-	|	users.canUpdatePersonalData,
-	|	users.email,
-	|	users.firstName,
-	|	users.lastName,
-	|	users.notSubscriptionEmail,
-	|	users.notSubscriptionSms,
-	|	users.phone,
-	|	users.registrationDate,
-	|	users.secondName,
-	|	users.sex
+	|	users.barCode AS barCode,
+	|	users.owner.birthday AS birthday,
+	|	users.owner.canUpdatePersonalData AS canUpdatePersonalData,
+	|	users.owner.email AS email,
+	|	users.owner.firstName AS firstName,
+	|	users.owner.lastName AS lastName,
+	|	users.notSubscriptionEmail AS notSubscriptionEmail,
+	|	users.notSubscriptionSms AS notSubscriptionSms,
+	|	users.owner.code AS phone,
+	|	users.registrationDate AS registrationDate,
+	|	users.owner.secondName AS secondName,
+	|	users.owner.gender AS gender
 	|FROM
 	|	Catalog.users AS users
 	|WHERE
@@ -456,7 +460,7 @@ Procedure getUserProfile(parameters)
 			struct.Insert("phone", select.phone);
 			struct.Insert("registrationDate", select.registrationDate);
 			struct.Insert("secondName", select.secondName);
-			struct.Insert("sex", select.sex);			
+			struct.Insert("gender", select.gender);			
 			struct.Insert("rating", "");
 			struct.Insert("photo", "");
 			

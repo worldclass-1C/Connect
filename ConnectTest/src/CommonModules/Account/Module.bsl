@@ -31,7 +31,9 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 			EndIf;
 			userProfile = profileStruct(account);
 			userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, answerStruct, account);
-			Token.editProperty(tokenСontext.token, New Structure("account, user", account, userArray[0]));			
+			Token.editProperty(tokenСontext.token, New Structure("account, user", account, userArray[0]));
+			tokenСontext.account = account;
+			tokenСontext.user = userArray[0];						
 		ElsIf answerStruct.Count() > 1 Then			
 			For Each user In answerStruct Do
 				userList.Add(New Structure("name, uid", user.lastName + " "
@@ -39,6 +41,7 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 			EndDo;
 			If account <> Undefined Then
 				Token.editProperty(tokenСontext.token, New Structure("account", account));
+				tokenСontext.account = account;			
 			EndIf;			
 		Else
 			errorDescription = Service.getErrorDescription(language, "passwordNotCorrect"); //Хотя такого быть не должно									
@@ -47,7 +50,7 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 		errorDescription = parametersNew.errorDescription;
 	EndIf;
 
-	Return New Structure("response, errorDescription", New Structure("userProfile, userList", TrimAll(userProfile), userList), errorDescription);
+	Return New Structure("response, errorDescription", New Structure("userProfile, userList", userProfile, userList), errorDescription);
 
 EndFunction
 
@@ -58,7 +61,7 @@ Function getStatus(account)
 	|		WHEN accounts.firstName = """"
 	|		OR accounts.lastName = """"
 	|		OR accounts.email = """"
-	|		OR accounts.sex = """"
+	|		OR accounts.gender = """"
 	|		OR accounts.birthday = DATETIME(1, 1, 1)
 	|			THEN VALUE(Enum.accountStatuses.missingPersonalData)
 	|		ELSE VALUE(Enum.accountStatuses.active)
@@ -99,14 +102,18 @@ Function profileStruct(account) Export
 	query = New Query();
 	query.Text	= "SELECT
 	|	accounts.Code as phone,
-	|	accounts.birthday,
+	|	CASE
+	|		WHEN accounts.birthday = DATETIME(1, 1, 1)
+	|			THEN UNDEFINED
+	|		ELSE accounts.birthday
+	|	END AS birthday,
 	|	accounts.canUpdatePersonalData,
 	|	accounts.email,
 	|	accounts.firstName,
 	|	accounts.lastName,
 	|	accounts.registrationDate,
 	|	accounts.secondName,
-	|	accounts.sex,
+	|	accounts.gender,
 	|	REFPRESENTATION(accounts.status) AS status
 	|FROM
 	|	Catalog.accounts AS accounts
@@ -128,7 +135,7 @@ Function profileStruct(account) Export
 		struct.Insert("lastName", selection.lastName);
 		struct.Insert("registrationDate", selection.registrationDate);
 		struct.Insert("secondName", selection.secondName);
-		struct.Insert("sex", selection.sex);
+		struct.Insert("gender", selection.gender);
 		struct.Insert("status", selection.status);
 		struct.Insert("photo", "");
 	EndIf;
@@ -138,7 +145,7 @@ Function profileStruct(account) Export
 EndFunction
 
 Function initProfileStruct()	
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, sex, status, photo", "", Date(1, 1, 1), False, "", "", "", Date(1, 1, 1), "", "", "", "");
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "", "", "");
 EndFunction
 
 Procedure incPasswordSendCount(token, phone, password) Export

@@ -319,10 +319,10 @@
     <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="b28eb326-1aac-4ee4-8fee-535ae5fba4c2">
-    <name>sex</name>
+    <name>gender</name>
     <synonym>
       <key>en</key>
-      <value>Sex</value>
+      <value>Gender</value>
     </synonym>
     <synonym>
       <key>ru</key>
@@ -331,14 +331,11 @@
     <type>
       <types>String</types>
       <stringQualifiers>
-        <length>1</length>
+        <length>6</length>
       </stringQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

@@ -36,21 +36,14 @@ EndProcedure
 
 Procedure editProperty(token, struct) Export
 	tokenObject = token.GetObject();
-	If tokenObject <> Undefined Then
-		RefreshReusableValues = False;
+	If tokenObject <> Undefined Then		
 		For Each element In struct Do
 			If element.key = "account" Then
 				ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject[element.key]));
-				RefreshReusableValues = True;
-			ElsIf element.key = "user" Then
-				RefreshReusableValues = True; 
 			EndIf;
 			tokenObject[element.key] = element.value;
 		EndDo;
 		tokenObject.changeDate = ToUniversalTime(CurrentDate());
 		tokenObject.Write();
-		If RefreshReusableValues Then
-			RefreshReusableValues();
-		EndIf;
 	EndIf;
 EndProcedure

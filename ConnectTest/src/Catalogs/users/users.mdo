@@ -191,100 +191,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="d34f1242-a838-4bf5-bd0f-a27137557dc5">
-    <name>birthday</name>
-    <synonym>
-      <key>en</key>
-      <value>Birthday</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Дата рождения</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="b45b7365-de82-492c-ad08-3e6cd79600cc">
-    <name>canUpdatePersonalData</name>
-    <synonym>
-      <key>en</key>
-      <value>Can update personal data</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Разрешить обновлять персональные данные</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="3b3f3cbe-132a-4217-b2ea-fe96982a2b43">
-    <name>email</name>
-    <synonym>
-      <key>en</key>
-      <value>email</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
-      <value>E-mail</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Email</value>
-    </synonym>
-    <synonym>
-      <key>fr_FR</key>
-      <value>E-mail</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>100</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="daa75080-5745-4b70-85f7-687bc19ffcbd">
-    <name>firstName</name>
-    <synonym>
-      <key>en</key>
-      <value>First name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Имя</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="867427de-a0a0-4d93-b6de-4d8105033d71">
     <name>holding</name>
     <synonym>
@@ -301,30 +207,6 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="2ce6b748-fa3d-40ee-aadd-b9b569e75e0d">
-    <name>lastName</name>
-    <synonym>
-      <key>en</key>
-      <value>Last name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Фамилия</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -380,31 +262,6 @@
     <fillValue xsi:type="core:UndefinedValue"/>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="bbe7955c-4add-40b6-b893-e91c69be6909">
-    <name>phone</name>
-    <synonym>
-      <key>en</key>
-      <value>Phone</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Номер телефона</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>20</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <indexing>Index</indexing>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="0c81da3b-d1ff-475d-98d4-ad5a7963a9a0">
     <name>registrationDate</name>
     <synonym>
@@ -422,54 +279,6 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="87093e4c-72fa-407e-89bc-fbdacfc06633">
-    <name>secondName</name>
-    <synonym>
-      <key>en</key>
-      <value>Second name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Отчество</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="8491083d-40a6-4501-a31b-4cf65f0d5747">
-    <name>sex</name>
-    <synonym>
-      <key>en</key>
-      <value>Sex</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Пол</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>1</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
