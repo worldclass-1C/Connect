@@ -21,6 +21,26 @@ Function get(token, parameters) Export
 	Return tokenObject.Ref;
 EndFunction	
 
+Function initContext() Export
+	tokenСontext		= New Structure();
+	tokenСontext.Insert("token", Catalogs.tokens.EmptyRef());
+	tokenСontext.Insert("appType", Enums.appTypes.EmptyRef());
+	tokenСontext.Insert("appVersion", 0);
+	tokenСontext.Insert("chain", Catalogs.chains.EmptyRef());
+	tokenСontext.Insert("changeDate", Date(1,1,1));
+	tokenСontext.Insert("createDate", Date(1,1,1));
+	tokenСontext.Insert("deviceModel", "");
+	tokenСontext.Insert("deviceToken", "");
+	tokenСontext.Insert("holding", Catalogs.holdings.EmptyRef());
+	tokenСontext.Insert("lockDate", Date(1,1,1));
+	tokenСontext.Insert("systemType", Enums.systemTypes.EmptyRef());
+	tokenСontext.Insert("systemVersion", "");
+	tokenСontext.Insert("timezone", Catalogs.timeZones.EmptyRef());	
+	tokenСontext.Insert("user", Catalogs.users.EmptyRef());
+	tokenСontext.Insert("userType", "");
+	Return tokenСontext;	
+EndFunction
+
 Procedure block(token) Export
 	tokenObject = token.GetObject();
 	tokenObject.lockDate = ToUniversalTime(CurrentDate());
@@ -39,7 +59,7 @@ Procedure editProperty(token, struct) Export
 	If tokenObject <> Undefined Then		
 		For Each element In struct Do
 			If element.key = "account" Then
-				ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject[element.key]));
+				ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.account));
 			EndIf;
 			tokenObject[element.key] = element.value;
 		EndDo;

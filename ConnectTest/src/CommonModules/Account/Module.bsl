@@ -8,7 +8,7 @@ Function tempPassword(Length = 4) Export
 	Return password;
 EndFunction
 
-Function getUserFromExternalSystem(val parameters, val parametrName,
+Function getFromExternalSystem(val parameters, val parametrName,
 		val parametrValue, val account = Undefined) Export
 
 	tokenСontext = parameters.tokenСontext;
@@ -16,6 +16,7 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 	errorDescription = parameters.errorDescription;	
 	userProfile = initProfileStruct();
 	userList = New Array();
+	authKey = parameters.authKey;
 	
 	parametersNew = Service.getStructCopy(parameters);
 	parametersNew.Insert("requestName", "userProfile");
@@ -27,13 +28,12 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 			If account = Undefined Then
 				accountArray = Service.createCatalogItems("addChangeAccounts", tokenСontext.holding, answerStruct);
 				account = accountArray[0];
-				setAccountStatus(account);								
+				setStatus(account);								
 			EndIf;
-			userProfile = profileStruct(account);
+			userProfile = profile(account);
 			userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, answerStruct, account);
 			Token.editProperty(tokenСontext.token, New Structure("account, user", account, userArray[0]));
-			tokenСontext.account = account;
-			tokenСontext.user = userArray[0];						
+			authKey = Left(authKey, 36);									
 		ElsIf answerStruct.Count() > 1 Then			
 			For Each user In answerStruct Do
 				userList.Add(New Structure("name, uid", user.lastName + " "
@@ -41,7 +41,6 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 			EndDo;
 			If account <> Undefined Then
 				Token.editProperty(tokenСontext.token, New Structure("account", account));
-				tokenСontext.account = account;			
 			EndIf;			
 		Else
 			errorDescription = Service.getErrorDescription(language, "passwordNotCorrect"); //Хотя такого быть не должно									
@@ -50,7 +49,7 @@ Function getUserFromExternalSystem(val parameters, val parametrName,
 		errorDescription = parametersNew.errorDescription;
 	EndIf;
 
-	Return New Structure("response, errorDescription", New Structure("userProfile, userList", userProfile, userList), errorDescription);
+	Return New Structure("response, errorDescription", New Structure("userProfile, userList, token", userProfile, userList, authKey), errorDescription);
 
 EndFunction
 
@@ -83,7 +82,7 @@ Function getStatus(account)
 		
 EndFunction
 
-Function setAccountStatus(val account, val status = Undefined) Export
+Function setStatus(val account, val status = Undefined)
 	If status = Undefined Then
 		status = getStatus(account);	
 	EndIf;	
@@ -95,7 +94,7 @@ Function setAccountStatus(val account, val status = Undefined) Export
 	Return status;
 EndFunction
 
-Function profileStruct(account) Export
+Function profile(account) Export
 	
 	struct = initProfileStruct();
 
@@ -114,7 +113,8 @@ Function profileStruct(account) Export
 	|	accounts.registrationDate,
 	|	accounts.secondName,
 	|	accounts.gender,
-	|	REFPRESENTATION(accounts.status) AS status
+	|	REFPRESENTATION(accounts.status) AS status,
+	|	"""" AS photo
 	|FROM
 	|	Catalog.accounts AS accounts
 	|WHERE
@@ -127,25 +127,15 @@ Function profileStruct(account) Export
 	If Not queryResult.IsEmpty() Then
 		selection = queryResult.Select();
 		selection.Next();
-		struct.Insert("phone", selection.phone);
-		struct.Insert("birthday", selection.birthday);
-		struct.Insert("canUpdatePersonalData", selection.canUpdatePersonalData);
-		struct.Insert("email", selection.email);
-		struct.Insert("firstName", selection.firstName);
-		struct.Insert("lastName", selection.lastName);
-		struct.Insert("registrationDate", selection.registrationDate);
-		struct.Insert("secondName", selection.secondName);
-		struct.Insert("gender", selection.gender);
-		struct.Insert("status", selection.status);
-		struct.Insert("photo", "");
+		FillPropertyValues(struct, selection);		
 	EndIf;
 	
 	Return struct;
 	
 EndFunction
 
-Function initProfileStruct()	
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "", "", "");
+Function initProfileStruct()
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "", "unauthorized", "");
 EndFunction
 
 Procedure incPasswordSendCount(token, phone, password) Export

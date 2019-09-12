@@ -923,7 +923,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.messages.Attribute.account</name>
+		<name>Catalog.messages.Attribute.user</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

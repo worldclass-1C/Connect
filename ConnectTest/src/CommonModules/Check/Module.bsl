@@ -111,7 +111,7 @@ Procedure legality(request, parameters) Export
 			EndIf;
 		EndIf;
 	Else
-		tokenСontext = TokenReuse.getContext(parameters.language, parameters.authKey);		
+		tokenСontext = TokenReuse.getContext(parameters.authKey);
 		If tokenСontext.token.IsEmpty() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
 		Else

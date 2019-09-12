@@ -93,6 +93,7 @@
   <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.gyms.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.gyms.Form.ListForm</defaultListForm>
   <attributes uuid="384d96cc-0f01-4e1f-94ea-80adf581bd1f">
     <name>address</name>
@@ -487,6 +488,55 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
+  <tabularSections uuid="9f29fcd3-1571-4e7e-a4d8-564647782025">
+    <producedTypes>
+      <objectType typeId="3aa7c7b7-aca0-4dad-9163-75960cb3039f" valueTypeId="6f19938a-fcd8-4236-88a1-04cecb8ee6d0"/>
+      <rowType typeId="c78fdfcf-7e7a-4c79-a1c4-5134a48a185e" valueTypeId="6eb723bc-be76-4702-b6e7-6f51e20c37c9"/>
+    </producedTypes>
+    <name>fhoto</name>
+    <synonym>
+      <key>en</key>
+      <value>Fhoto</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фото</value>
+    </synonym>
+    <attributes uuid="70ccf61b-7074-4f17-badf-7688ffb83d31">
+      <name>location</name>
+      <synonym>
+        <key>en</key>
+        <value>Location</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="134e50af-23cd-47f1-b6ca-1521366556b7">
+      <name>URL</name>
+      <synonym>
+        <key>en</key>
+        <value>URL</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>URL</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <tabularSections uuid="f9a5adc7-2c4d-4d6b-ade3-ca0cdcaf670f">
     <producedTypes>
       <objectType typeId="73683f1f-6cd7-493f-ad31-def300674020" valueTypeId="b59be70e-4389-43f7-a1a4-917b62258d75"/>
@@ -522,11 +572,73 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
+  <tabularSections uuid="d1dd7704-8601-47e6-81c3-17b5a2c8416a">
+    <producedTypes>
+      <objectType typeId="e5dded8f-dde2-4180-abb1-0aa614ae9c37" valueTypeId="ae41dbfb-ff39-4b33-aa89-ab893f55a72e"/>
+      <rowType typeId="bd946ee9-a54c-4905-b12a-7891e50c20f5" valueTypeId="a2e23b3f-2f1d-4ae3-8671-028e10854098"/>
+    </producedTypes>
+    <name>translation</name>
+    <synonym>
+      <key>en</key>
+      <value>Translation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Перевод</value>
+    </synonym>
+    <attributes uuid="56cbad08-a297-4498-b396-de9d5ee55406">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>3</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="f35acabb-de97-489b-b41f-a04ed45566b9">
+      <name>description</name>
+      <synonym>
+        <key>en</key>
+        <value>Description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Наименование</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>40</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <forms uuid="2e38cad2-cfaa-41aa-aac8-b2f6529c2fa1">
     <name>ListForm</name>
     <synonym>
       <key>ru</key>
       <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="0df24050-ad5d-4d73-a70a-935448504bee">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

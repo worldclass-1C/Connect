@@ -1,11 +1,15 @@
 
-Процедура ПередЗаписью(Отказ)
-	Если СокрЛП(token) = "" Тогда
-		token	= Новый УникальныйИдентификатор;
-	КонецЕсли;
-КонецПроцедуры
+Procedure BeforeWrite(Cancel)
+	If TrimAll(token) = "" Then
+		token	= New UUID();
+	EndIf;
+EndProcedure
 
-Процедура ПриКопировании(ОбъектКопирования)
+Procedure OnWrite(Cancel)
+	Files.createHoldingDirectory(Code);
+EndProcedure
+
+Procedure OnCopy(CopiedObject)
 	token	= "";
-КонецПроцедуры
+EndProcedure
 

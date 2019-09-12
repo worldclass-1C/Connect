@@ -16,7 +16,7 @@
     <name>active</name>
     <synonym>
       <key>en</key>
-      <value>Active</value>
+      <value>active</value>
     </synonym>
   </enumValues>
   <enumValues uuid="9d7cc0c3-3bc1-4137-971b-672124996bc6">
@@ -30,7 +30,7 @@
     <name>unauthorized</name>
     <synonym>
       <key>en</key>
-      <value>Unauthorized</value>
+      <value>unauthorized</value>
     </synonym>
   </enumValues>
 </mdclass:Enum>

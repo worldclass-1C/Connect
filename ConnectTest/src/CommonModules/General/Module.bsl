@@ -215,7 +215,8 @@ Procedure registerDevice(parameters)
 	
 	tokenСontext = parameters.tokenСontext;
 	requestStruct = parameters.requestStruct;
-
+	struct = New Structure();
+	
 	query = New Query("SELECT
 	|	chains.Ref AS chain,
 	|	chains.holding AS holding,
@@ -241,9 +242,8 @@ Procedure registerDevice(parameters)
 		tokenStruct.Insert("holding", select.holding);
 		tokenStruct.Insert("systemType", Enums.systemTypes[requestStruct.systemType]);
 		tokenStruct.Insert("systemVersion", requestStruct.systemVersion);
-		tokenStruct.Insert("timeZone", select.timeZone);
-		struct = New Structure();
-		struct.Insert("token", XMLString(Token.get(tokenСontext.token, tokenStruct)));
+		tokenStruct.Insert("timeZone", select.timeZone);		
+		struct.Insert("token", XMLString(Token.get(tokenСontext.token, tokenStruct)) + "0");
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
@@ -269,8 +269,7 @@ Procedure accountSignIn(parameters)
 	Else
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
-			If tokenСontext.chain <> chain Then
-				tokenСontext.chain = chain;
+			If tokenСontext.chain <> chain Then				
 				changeStruct = New Structure("chain", chain);
 				Token.editProperty(tokenСontext.token, changeStruct);
 			EndIf;
@@ -331,7 +330,7 @@ Procedure accountConfirmPhone(parameters)
 		queryUser.SetParameter("phone", answer.phone);
 		queryUserResult = queryUser.Execute();
 		If queryUserResult.isEmpty() Then
-			answerStruct = Account.getUserFromExternalSystem(parameters, "phone", answer.phone);
+			answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone);
 			struct = answerStruct.response;
 			errorDescription = answerStruct.errorDescription; 
 		Else
@@ -340,12 +339,11 @@ Procedure accountConfirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenСontext.token, changeStruct);
-				tokenСontext.account = changeStruct.account;
-				tokenСontext.user = changeStruct.user;
-				struct.Insert("userProfile", Account.profileStruct(select.account));
-				struct.Insert("userList", New Array());				
+				struct.Insert("userProfile", Account.profile(select.account));
+				struct.Insert("userList", New Array());
+				struct.Insert("token", XMLString(tokenСontext.token));				
 			Else	
-				answerStruct = Account.getUserFromExternalSystem(parameters, "phone", answer.phone, select.account);
+				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;
 				errorDescription = answerStruct.errorDescription;
 			EndIf;		
@@ -364,10 +362,11 @@ Procedure addUserToToken(parameters)
 	tokenСontext = parameters.tokenСontext;
 	requestStruct = parameters.requestStruct;
 	If tokenСontext.account.IsEmpty() Then
-		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid);
+		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid);
 	Else
-		answerStruct = Account.getUserFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.account);
+		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.account);
 	EndIf;
+	answerStruct.response.Delete("userList");
 	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response.userProfile));
 	parameters.Insert("errorDescription", answerStruct.errorDescription);
 EndProcedure
@@ -376,103 +375,15 @@ Procedure signOut(parameters)
 	tokenСontext = parameters.tokenСontext;
 	changeStruct = New Structure("account, user", Catalogs.accounts.EmptyRef(), Catalogs.users.EmptyRef());
 	Token.editProperty(tokenСontext.token, changeStruct);
-	tokenСontext.account = changeStruct.account;
-	tokenСontext.user = changeStruct.user;
+	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenСontext.token) + "0")));	
 EndProcedure
 
 Procedure getAccountProfile(parameters)
-	struct = Account.profileStruct(parameters.tokenСontext.account);		
-	If struct.status = "" Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));
-	EndIf;	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));		
+	parameters.Insert("answerBody", HTTP.encodeJSON(Account.profile(parameters.tokenСontext.account)));		
 EndProcedure
 
 Procedure getUserProfile(parameters)
-	
-	tokenСontext = parameters.tokenСontext;		
-	
-	struct = New Structure();
-	
-	query	= New Query();
-	query.Text	= "SELECT
-	|	users.barCode AS barCode,
-	|	users.owner.birthday AS birthday,
-	|	users.owner.canUpdatePersonalData AS canUpdatePersonalData,
-	|	users.owner.email AS email,
-	|	users.owner.firstName AS firstName,
-	|	users.owner.lastName AS lastName,
-	|	users.notSubscriptionEmail AS notSubscriptionEmail,
-	|	users.notSubscriptionSms AS notSubscriptionSms,
-	|	users.owner.code AS phone,
-	|	users.registrationDate AS registrationDate,
-	|	users.owner.secondName AS secondName,
-	|	users.owner.gender AS gender
-	|FROM
-	|	Catalog.users AS users
-	|WHERE
-	|	users.Ref = &user
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	cacheValuesTypes.Code AS cacheCode,
-	|	cacheValuesTypes.Ref AS cacheValuesType,
-	|	&user AS user,
-	|	&appType AS appType
-	|INTO TT
-	|FROM
-	|	Catalog.cacheValuesTypes AS cacheValuesTypes
-	|WHERE
-	|	cacheValuesTypes.request = &requestName
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	TT.cacheCode AS cacheCode,
-	|	usersStates.value AS cacheValue
-	|FROM
-	|	TT AS TT
-	|		LEFT JOIN InformationRegister.usersStates AS usersStates
-	|		ON TT.cacheValuesType = usersStates.cacheValuesType
-	|		AND TT.user = usersStates.user
-	|		AND TT.appType = usersStates.appType
-	|WHERE
-	|	NOT usersStates.value IS NULL";
-	
-	query.SetParameter("user", tokenСontext.user);
-	query.SetParameter("appType", tokenСontext.appType);
-	query.SetParameter("requestName", "getUserProfile");
-	
-	queryResults = query.ExecuteBatch();
-	queryResult = queryResults[0]; 
-	If queryResult.IsEmpty() Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "userNotfound"));	
-	Else
-		select = queryResult.Select();
-		While select.Next() Do
-			struct.Insert("barCode", select.barCode);
-			struct.Insert("birthday", select.birthday);
-			struct.Insert("canUpdatePersonalData", select.canUpdatePersonalData);
-			struct.Insert("email", select.email);
-			struct.Insert("firstName", select.firstName);
-			struct.Insert("lastName", select.lastName);
-			struct.Insert("notSubscriptionEmail", select.notSubscriptionEmail);
-			struct.Insert("notSubscriptionSms", select.notSubscriptionSms);
-			struct.Insert("phone", select.phone);
-			struct.Insert("registrationDate", select.registrationDate);
-			struct.Insert("secondName", select.secondName);
-			struct.Insert("gender", select.gender);			
-			struct.Insert("rating", "");
-			struct.Insert("photo", "");
-			
-			cacheSelect = queryResults[2].Select();
-			While cacheSelect.Next() Do
-				struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));	
-			EndDo;			
-		EndDo;
-	EndIf;
-	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	
+	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenСontext.user, parameters.tokenСontext.appType)));	
 EndProcedure
 
 Procedure getGymList(parameters)

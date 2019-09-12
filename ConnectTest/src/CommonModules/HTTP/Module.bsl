@@ -9,6 +9,7 @@ Function processRequest(request) Export
 	parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
 	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
+	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
 	parameters.Insert("answerBody", "");
@@ -176,7 +177,7 @@ Function getRequestStructure(request, holding) Export
 EndFunction
 
 Function getRequestHeader(request, key) Export
-	value	= request.Headers.Получить(Title(key));
+	value	= request.Headers.Get(Title(key));
 	If value = Undefined Then
 		value	= request.Headers.Get(Lower(key));
 	EndIf;

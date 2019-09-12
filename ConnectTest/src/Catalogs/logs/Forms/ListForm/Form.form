@@ -152,19 +152,19 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>account</name>
-      <id>39</id>
+      <name>user</name>
+      <id>42</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>List.account</segments>
+        <segments>List.user</segments>
       </dataPath>
       <extendedTooltip>
-        <name>accountExtendedTooltip</name>
-        <id>41</id>
+        <name>userExtendedTooltip</name>
+        <id>44</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -178,8 +178,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>accountContextMenu</name>
-        <id>40</id>
+        <name>userContextMenu</name>
+        <id>43</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>

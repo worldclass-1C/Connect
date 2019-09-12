@@ -150,17 +150,17 @@
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.logs.Form.ListForm</defaultListForm>
   <attributes uuid="66c7b7e8-56e7-40f9-9335-10523bca2a71">
-    <name>account</name>
+    <name>user</name>
     <synonym>
       <key>en</key>
-      <value>Account</value>
+      <value>User</value>
     </synonym>
     <synonym>
       <key>ru</key>
       <value>Учетная запись</value>
     </synonym>
     <type>
-      <types>CatalogRef.accounts</types>
+      <types>CatalogRef.users</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

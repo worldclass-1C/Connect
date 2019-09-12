@@ -81,9 +81,11 @@
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
+  <commonModules>CommonModule.Files</commonModules>
   <commonModules>CommonModule.General</commonModules>
   <commonModules>CommonModule.GeneralCallServer</commonModules>
   <commonModules>CommonModule.GeneralReuse</commonModules>
+  <commonModules>CommonModule.HTML</commonModules>
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
@@ -94,6 +96,7 @@
   <commonModules>CommonModule.Stramedia</commonModules>
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
+  <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.СIDMkg</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
@@ -107,8 +110,9 @@
   <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
-  <constants>Constant.BaseURL</constants>
   <constants>Constant.BaseImgURL</constants>
+  <constants>Constant.BaseURL</constants>
+  <constants>Constant.ImgStorage</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>

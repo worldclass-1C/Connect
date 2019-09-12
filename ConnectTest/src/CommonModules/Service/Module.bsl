@@ -509,7 +509,7 @@ Procedure logRequest(parameters) Export
 	record = Catalogs.logs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
 	record.token = parameters.tokenСontext.token;
-	record.account = parameters.tokenСontext.account;
+	record.user = parameters.tokenСontext.user;
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
 	record.isError = parameters.isError;

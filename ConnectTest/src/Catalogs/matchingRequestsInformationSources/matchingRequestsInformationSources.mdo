@@ -131,6 +131,23 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="47accdaf-01e0-463e-ae59-b0cef2660679">
+    <name>defaultResponse</name>
+    <synonym>
+      <key>en</key>
+      <value>Default response</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ответ по умолчанию</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="9dce9309-24f2-48e1-8907-aa19f3dd7eec">
     <name>notSaveAnswer</name>
     <synonym>

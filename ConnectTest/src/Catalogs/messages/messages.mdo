@@ -134,45 +134,6 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.messages.Form.ListForm</defaultListForm>
-  <attributes uuid="e50a1ec7-b40a-4873-a2f3-a651593938b3">
-    <name>appType</name>
-    <synonym>
-      <key>en</key>
-      <value>App type</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Вид приложения</value>
-    </synonym>
-    <type>
-      <types>EnumRef.appTypes</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="28567863-6822-4410-a524-a8f7e77a1d8e">
-    <name>registrationDate</name>
-    <synonym>
-      <key>en</key>
-      <value>Registration date</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Дата регистрации</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers/>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="4991c709-8d34-47ec-9aa4-f44290e31145">
     <name>action</name>
     <synonym>
@@ -197,27 +158,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="0e208b15-40c7-469c-b4fa-fa27443823ae">
-    <name>title</name>
+  <attributes uuid="e50a1ec7-b40a-4873-a2f3-a651593938b3">
+    <name>appType</name>
     <synonym>
       <key>en</key>
-      <value>Title</value>
+      <value>App type</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Заголовок</value>
+      <value>Вид приложения</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>30</length>
-      </stringQualifiers>
+      <types>EnumRef.appTypes</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -240,27 +196,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="410034aa-2541-4680-81e0-5e116a5b7531">
-    <name>phone</name>
+  <attributes uuid="4b42b7bb-6906-4a3d-a20d-463ccba24edf">
+    <name>holding</name>
     <synonym>
       <key>en</key>
-      <value>Phone</value>
+      <value>Holding</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>НомерТелефона</value>
+      <value>Холдинг</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>20</length>
-      </stringQualifiers>
+      <types>CatalogRef.holdings</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -314,24 +265,27 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="264ea937-3dcb-4291-961c-0e6a7ef84a30">
-    <name>account</name>
+  <attributes uuid="410034aa-2541-4680-81e0-5e116a5b7531">
+    <name>phone</name>
     <synonym>
       <key>en</key>
-      <value>Account</value>
+      <value>Phone</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Учетная запись</value>
+      <value>НомерТелефона</value>
     </synonym>
-    <comment>Определяется если пользователь зарегистирован в МП</comment>
     <type>
-      <types>CatalogRef.accounts</types>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <indexing>Index</indexing>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -351,6 +305,26 @@
         <precision>2</precision>
         <nonNegative>true</nonNegative>
       </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="28567863-6822-4410-a524-a8f7e77a1d8e">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -382,6 +356,30 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="0e208b15-40c7-469c-b4fa-fa27443823ae">
+    <name>title</name>
+    <synonym>
+      <key>en</key>
+      <value>Title</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Заголовок</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="bce2e6e3-d006-458a-99ef-b569431ba7c3">
     <name>token</name>
     <synonym>
@@ -401,22 +399,23 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="4b42b7bb-6906-4a3d-a20d-463ccba24edf">
-    <name>holding</name>
+  <attributes uuid="264ea937-3dcb-4291-961c-0e6a7ef84a30">
+    <name>user</name>
     <synonym>
       <key>en</key>
-      <value>Holding</value>
+      <value>User</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Холдинг</value>
+      <value>Пользователь</value>
     </synonym>
+    <comment>Определяется если пользователь зарегистирован в МП</comment>
     <type>
-      <types>CatalogRef.holdings</types>
+      <types>CatalogRef.users</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
