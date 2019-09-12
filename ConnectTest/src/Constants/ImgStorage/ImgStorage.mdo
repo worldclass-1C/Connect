@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="acc071e6-6bfc-40dc-a4bb-c03bc53bf5ad">
+  <producedTypes>
+    <managerType typeId="b9fb966a-c2de-4533-b845-4d20d7ca3408" valueTypeId="ec78607b-6c1b-4b28-b338-dece8adcccce"/>
+    <valueManagerType typeId="611b8529-db1c-4e16-98d0-ef919c6eb744" valueTypeId="2d65a01e-3127-48f8-bd6b-7eb71dd53789"/>
+    <valueKeyType typeId="c77f4f50-7250-4567-9113-a8aac8d0f20d" valueTypeId="48cbc092-c510-4fac-889a-15dbfe80984a"/>
+  </producedTypes>
+  <name>ImgStorage</name>
+  <synonym>
+    <key>en</key>
+    <value>Image storage</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Хранилище изображений</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>200</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>
