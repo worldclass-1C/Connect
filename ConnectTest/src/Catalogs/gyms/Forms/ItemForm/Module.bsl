@@ -23,11 +23,10 @@ EndFunction
 
 &AtClient
 Procedure docHTMLOnClick(Item, EventData, StandardProcessing)	
-	If EventData.Property("Anchor")
-			And EventData.Anchor.id <> Undefined 
-			And EventData.Anchor.id <> "" Then
+	If EventData.Property("Anchor") And EventData.Anchor <> Undefined
+			And EventData.Anchor.id <> Undefined And EventData.Anchor.id <> "" Then
 		If EventData.Anchor.id = "addPhoto" Then
-			StandardProcessing = False;			
+			StandardProcessing = False;
 			ExecuteAction("addFile");
 		EndIf;
 	EndIf;	

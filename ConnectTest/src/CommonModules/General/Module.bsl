@@ -36,6 +36,8 @@ Procedure executeRequestMethod(parameters) Export
 			readNotification(parameters);
 		ElsIf parameters.requestName = "unreadnotificationcount" Then // проверить описание в API
 			unReadNotificationCount(parameters);
+		ElsIf parameters.requestName = "sendMessage" Then 
+			sendMessage(parameters);	
 		ElsIf parameters.requestName = "addchangeusers"
 				Or parameters.requestName = "addgyms"
 				Or parameters.requestName = "addrequest"
@@ -513,15 +515,7 @@ Procedure getNotificationList(parameters)
 	array = New Array();
 
 	registrationDate = ToUniversalTime(?(requestStruct.date = "", CurrentDate(), XMLValue(Type("Date"), requestStruct.date)));
-
-	If tokenСontext.appType = Enums.appTypes.Employee Then
-		informationChannel = Enums.informationChannels.pushEmployee;
-	ElsIf tokenСontext.appType = Enums.appTypes.Customer Then
-		informationChannel = Enums.informationChannels.pushCustomer;
-	Else
-		informationChannel = Enums.informationChannels.EmptyRef()
-	EndIf;
-
+	
 	query = New Query();
 	query.text	= "SELECT TOP 20
 	|	messages.Ref AS message,
@@ -533,12 +527,10 @@ Procedure getNotificationList(parameters)
 	|INTO TT_messages
 	|FROM
 	|	Catalog.messages AS messages
-	|		LEFT JOIN Catalog.messages.channelPriorities AS messageschannelPriorities
-	|		ON messageschannelPriorities.Ref = messages.Ref
 	|WHERE
-	|	messages.account = &account
+	|	messages.user = &user
 	|	AND messages.registrationDate < &registrationDate
-	|	AND messageschannelPriorities.channel = &informationChannel
+	|	AND messages.appType = &appType
 	|ORDER BY
 	|	registrationDate DESC
 	|;
@@ -570,19 +562,19 @@ Procedure getNotificationList(parameters)
 	|	registrationDate DESC";
 
 	query.SetParameter("registrationDate", registrationDate);
-	query.SetParameter("account", tokenСontext.user);
-	query.SetParameter("informationChannel", informationChannel);
+	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("appType", tokenСontext.appType);
 
-	selection = query.Execute().Select();
-	While selection.Next() Do
+	select = query.Execute().Select();
+	While select.Next() Do
 		messageStruct = New Structure();
-		messageStruct.Insert("noteId", XMLString(selection.message));
-		messageStruct.Insert("date", XMLString(ToLocalTime(selection.registrationDate, tokenСontext.timeZone)));
-		messageStruct.Insert("title", selection.title);
-		messageStruct.Insert("text", selection.text);
-		messageStruct.Insert("read", selection.read);
-		messageStruct.Insert("objectId", selection.objectId);
-		messageStruct.Insert("objectType", selection.objectType);
+		messageStruct.Insert("noteId", XMLString(select.message));
+		messageStruct.Insert("date", XMLString(ToLocalTime(select.registrationDate, tokenСontext.timeZone)));
+		messageStruct.Insert("title", select.title);
+		messageStruct.Insert("text", select.text);
+		messageStruct.Insert("read", select.read);
+		messageStruct.Insert("objectId", select.objectId);
+		messageStruct.Insert("objectType", select.objectType);
 		array.add(messageStruct);
 	EndDo;
 	
@@ -616,29 +608,25 @@ Procedure readNotification(parameters)
 	|	messages.Ref AS message
 	|FROM
 	|	Catalog.messages AS messages
-	|		LEFT JOIN Catalog.messages.channelPriorities AS messagesChannelPriorities
-	|		ON messages.Ref = messagesChannelPriorities.Ref
 	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
 	|		ON messages.Ref = messagesLogsSliceLast.message
 	|WHERE
-	|	messagesChannelPriorities.channel = &informationChannel
-	|	И ISNULL(messagesLogsSliceLast.messageStatus,
-	|		VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	И Messages.account = &account";
+	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
+	|	AND Messages.user = &user
+	|	AND Messages.appType = &appType";
 
-	query.SetParameter("account", tokenСontext.Пользователь);
-	query.SetParameter("informationChannel", informationChannel);
+	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("appType", tokenСontext.appType);
 
 	queryResult = query.Execute();
 	If Not queryResult.IsEmpty() Then
-		selection = queryResult.Select();
-		unReadMessagesCount = selection.Count();
-		
+		select = queryResult.Select();
+		unReadMessagesCount = select.Count();		
 		If message.IsEmpty() Then
-			While selection.Next() Do
+			While select.Next() Do
 				record = InformationRegisters.messagesLogs.CreateRecordManager();
 				record.period				= ToUniversalTime(CurrentDate());
-				record.message				= selection.message;
+				record.message				= select.message;
 				record.token				= tokenСontext.token;
 				record.recordDate			= record.period;
 				record.messageStatus		= Enums.messageStatuses.read;
@@ -647,7 +635,7 @@ Procedure readNotification(parameters)
 			EndDo;;
 			unReadMessagesCount = 0;
 		Else
-			If selection.FindNext(New Structure("message", message)) Then
+			If select.FindNext(New Structure("message", message)) Then
 				record = InformationRegisters.messagesLogs.CreateRecordManager();
 				record.period				= ToUniversalTime(CurrentDate());
 				record.message 				= message;
@@ -672,39 +660,27 @@ EndProcedure
 
 Procedure unReadNotificationCount(parameters)
 
-	tokenСontext		= parameters.tokenСontext;
-
+	tokenСontext = parameters.tokenСontext;
 	struct = New Structure();
-
-	If tokenСontext.appType = Enums.appTypes.Employee Then
-		informationChannel = Enums.informationChannels.pushEmployee;
-	ElsIf tokenСontext.appType = Enums.appTypes.Customer Then
-		informationChannel = Enums.informationChannels.pushCustomer;
-	Else
-		informationChannel = Enums.informationChannels.EmptyRef();
-	EndIf;
 
 	query = New Query();
 	query.text = "SELECT
 	|	COUNT(messages.Ref) AS count
 	|FROM
 	|	Catalog.messages AS messages
-	|		LEFT JOIN Catalog.messages.channelPriorities AS messagesChannelPriorities
-	|		ON messages.Ref = messagesChannelPriorities.Ref
 	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
 	|		ON messages.Ref = messagesLogsSliceLast.message
 	|WHERE
-	|	messagesChannelPriorities.channel = &informationChannel
-	|	И ISNULL(messagesLogsSliceLast.messageStatus,
-	|		VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	И Messages.account = &account";
+	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
+	|	AND Messages.user = &user
+	|	AND Messages.appType = &appType";
 
-	query.SetParameter("account", tokenСontext.Пользователь);
-	query.SetParameter("informationChannel", informationChannel);
+	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("appType", tokenСontext.appType);
 
-	selection = query.Execute().Select();
-	selection.Next();
-	struct.Insert("quantity", selection.count);
+	select = query.Execute().Select();
+	select.Next();
+	struct.Insert("quantity", select.count);
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 
@@ -833,12 +809,12 @@ EndProcedure
 
 Procedure sendMessage(parameters)
 	
-	requestStruct		= parameters.requestStruct;
-	tokenСontext			= parameters.tokenСontext;
-	language			= parameters.language;	
-	struct				= New Structure();	
-	errorDescription	= Service.getErrorDescription();
-	
+	requestStruct = parameters.requestStruct;
+	tokenСontext = parameters.tokenСontext;
+	language = parameters.language;
+	struct = New Structure();
+	errorDescription = Service.getErrorDescription();
+
 	If Not requestStruct.Property("messages") Then
 		errorDescription = Service.getErrorDescription(language, "noMessages");
 	Else
@@ -858,9 +834,9 @@ Procedure sendMessage(parameters)
 				messageStruct.Insert("gym", Catalogs.gyms.EmptyRef());
 			EndIf;
 			If message.Property("uid") And message.uid <> "" Then
-				messageStruct.Insert("account", XMLValue(Type("CatalogRef.accounts"), message.uid));
+				messageStruct.Insert("user", XMLValue(Type("CatalogRef.users"), message.uid));
 			Else
-				messageStruct.Insert("account", Catalogs.accounts.EmptyRef());
+				messageStruct.Insert("user", Catalogs.users.EmptyRef());
 			EndIf;
 			If message.Property("token") And message.token <> "" Then
 				messageStruct.Insert("token", XMLValue(Type("CatalogRef.tokens"), message.token));
@@ -875,10 +851,10 @@ Procedure sendMessage(parameters)
 			EndIf;
 			messageStruct.Insert("informationChannels", channelsArray);
 			If messageStruct.phone = ""
-					And messageStruct.account.GetObject() = Undefined Then
-			ElsIf messageStruct.account = messageStruct.token.account Then
+					And messageStruct.user.GetObject() = Undefined Then
+			ElsIf messageStruct.user = messageStruct.token.user Then
 			Else
-				Messages.НовоеСообщение(messageStruct);
+				Messages.newMessage(messageStruct);
 			EndIf;
 		EndDo;
 	EndIf;
@@ -889,19 +865,3 @@ Procedure sendMessage(parameters)
 	
 EndProcedure
 
-Procedure ОбновитьКэшПользователей(parameters, Холдинг,
-		МассивПользователей) Экспорт
-
-	СтруктураЗапроса = HTTP.GetRequestStructure("userProfileCache", Холдинг);
-	If СтруктураЗапроса.Количество() > 0 Then
-		Для Каждого Пользователь Из МассивПользователей Цикл
-		КонецЦикла;		
-		Заголовки = Новый Соответствие;
-		Заголовки.Вставить("Content-Type", "application/json");
-		HTTPСоединение = Новый HTTPСоединение(СтруктураЗапроса.server, , СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.password, , СтруктураЗапроса.timeout, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.UseOSAuthentication);
-		ЗапросHTTP = Новый HTTPЗапрос(СтруктураЗапроса.URL
-			+ СтруктураЗапроса.Приемник, Заголовки);
-		ЗапросHTTP.УстановитьТелоИзСтроки(parameters.requestBody);
-		ОтветHTTP = HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
-	EndIf;
-EndProcedure

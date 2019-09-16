@@ -1,12 +1,16 @@
 
-Function processRequest(request) Export
+Function processRequest(request, requestName = "") Export
 
 	dateInMilliseconds = CurrentUniversalDateInMilliseconds();
 
 	parameters = New Structure();
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
-	parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
+	If requestName <> "" then
+		parameters.Insert("requestName", requestName);
+	Else
+		parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
+	EndIf;
 	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));

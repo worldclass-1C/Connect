@@ -4,5 +4,5 @@ Function changeDataPOST(request)
 EndFunction
 
 Function sendMessagePOST(request)
-	Return HTTP.processRequest(request);
+	Return HTTP.processRequest(request, "sendMessage");
 EndFunction
