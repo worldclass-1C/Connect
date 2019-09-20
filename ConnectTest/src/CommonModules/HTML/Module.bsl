@@ -25,7 +25,8 @@ Function getPhoto(gym) Export
 	down = "</body></html>";
 	
 	query = New Query("SELECT
-	|	gymsfoto.URL
+	|	gymsfoto.URL,
+	|	gymsfoto.LineNumber
 	|FROM
 	|	Catalog.gyms.fhoto AS gymsfoto
 	|WHERE
@@ -35,8 +36,9 @@ Function getPhoto(gym) Export
 	
 	select = query.Execute().Select();
 	bodyArray = New Array();
+	
 	While select.Next() Do
-		bodyArray.Add("<a href = ""#"">");
+		bodyArray.Add("<a href = ""#"" id = """ + select.LineNumber + """>");
 		bodyArray.Add("<img class=""square"" src=""" + select.url + """ alt=""fhoto"">");
 		bodyArray.Add("</a>");
 	EndDo;

@@ -28,22 +28,29 @@ Procedure docHTMLOnClick(Item, EventData, StandardProcessing)
 		If EventData.Anchor.id = "addPhoto" Then
 			StandardProcessing = False;
 			ExecuteAction("addFile");
+		Else
+			Message("Hello");
 		EndIf;
 	EndIf;	
 EndProcedure
 
 &AtClient
 Procedure executeAction(action)	
-	BeginAttachingFileSystemExtension(New NotifyDescription("attachingFileSystemExtension", ThisForm, action));
+	BeginAttachingFileSystemExtension(New NotifyDescription("afterAttachingFileSystemExtension", ThisForm, action));
 EndProcedure
 
 &AtClient
-Procedure attachingFileSystemExtension(connected, additionalParameters) Export
+Procedure afterAttachingFileSystemExtension(connected, additionalParameters) Export
 	If connected Then
 		executeActionWithFile(AdditionalParameters);
 	Else		
-		BeginInstallFileSystemExtension(New NotifyDescription("installFileSystemExtension", ThisForm, additionalParameters));
+		BeginInstallFileSystemExtension(New NotifyDescription("afterInstallFileSystemExtension", ThisForm, additionalParameters));
 	EndIf;	
+EndProcedure
+
+&AtClient
+Procedure afterInstallFileSystemExtension(additionalParameters) Export
+	executeActionWithFile(AdditionalParameters);
 EndProcedure
 
 &AtClient
@@ -60,3 +67,6 @@ Procedure putFileAtClient(result, address, selectedFileName, additionalParameter
 		putFileAtServer(address, selectedFileName);		
 	EndIf;	
 EndProcedure
+
+
+

@@ -16,7 +16,11 @@ Function profile(user, appType) Export
 	|	users.owner.lastName AS lastName,
 	|	users.owner.secondName AS secondName,
 	|	users.owner.code AS phone,
-	|	users.owner.gender AS gender,
+	|	CASE
+	|		WHEN users.owner.gender = """"
+	|			THEN ""none""
+	|		ELSE users.owner.gender
+	|	END AS gender,
 	|	REFPRESENTATION(users.owner.status) AS status,
 	|	users.barCode AS barCode,
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
@@ -78,5 +82,5 @@ Function profile(user, appType) Export
 EndFunction
 
 Function initProfileStruct()
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barCode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "", "unauthorized", "", "", False, False, "");
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barCode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction

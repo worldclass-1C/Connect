@@ -42,4 +42,22 @@
       <handler>sendMessagePOST</handler>
     </methods>
   </urlTemplates>
+  <urlTemplates uuid="3e356557-006e-4ffe-bded-36b52ef84cc8">
+    <name>image</name>
+    <synonym>
+      <key>en</key>
+      <value>Image</value>
+    </synonym>
+    <template>/img</template>
+    <methods uuid="eef4480b-3c93-4775-b24a-ec96e09ec801">
+      <name>PUT</name>
+      <httpMethod>PUT</httpMethod>
+      <handler>imagePUT</handler>
+    </methods>
+    <methods uuid="c262799b-61e1-4e46-b5e6-d8dacb7c44a9">
+      <name>DELETE</name>
+      <httpMethod>DELETE</httpMethod>
+      <handler>imageDELETE</handler>
+    </methods>
+  </urlTemplates>
 </mdclass:HTTPService>

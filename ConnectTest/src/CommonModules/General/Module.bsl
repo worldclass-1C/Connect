@@ -143,7 +143,8 @@ Procedure getChainList(parameters)
 	|	chain.currencySymbol AS currencySymbol,
 	|	REFPRESENTATION(chain.brand) AS brand,
 	|	chain.phoneMask.CountryCode AS phoneMaskCountryCode,
-	|	chain.phoneMask.Description AS phoneMaskDescription
+	|	chain.phoneMask.Description AS phoneMaskDescription,
+	|	chain.holding.Code AS holdingCode
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
@@ -165,19 +166,19 @@ Procedure getChainList(parameters)
 		nameTogetherChain = False;
 	EndIf;
 
-	selection = query.Execute().Select();
+	select = query.Execute().Select();
 
-	While selection.Next() Do
+	While select.Next() Do
 		chainStruct = New Structure();
-		chainStruct.Insert("brand", selection.brand);
-		chainStruct.Insert("code", selection.code);
-		chainStruct.Insert("loyaltyProgram", selection.loyaltyProgram);
-		chainStruct.Insert("currencySymbol", selection.currencySymbol);
-		chainName = ?(nameTogetherChain, selection.brand + " "
-			+ selection.description, selection.description);
+		chainStruct.Insert("brand", select.brand);
+		chainStruct.Insert("code", select.code);
+		chainStruct.Insert("holdingCode", select.holdingCode);
+		chainStruct.Insert("loyaltyProgram", select.loyaltyProgram);
+		chainStruct.Insert("currencySymbol", select.currencySymbol);
+		chainName = ?(nameTogetherChain, select.brand + " "
+			+ select.description, select.description);
 		chainStruct.Insert("name", chainName);
-		chainStruct.Insert("countryCode", New Structure("code, mask", selection.phoneMaskCountryCode, selection.phoneMaskDescription));
-
+		chainStruct.Insert("countryCode", New Structure("code, mask", select.phoneMaskCountryCode, select.phoneMaskDescription));
 		array.add(chainStruct);
 	EndDo;
 

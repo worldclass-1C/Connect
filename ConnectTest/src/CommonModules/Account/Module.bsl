@@ -112,7 +112,11 @@ Function profile(account) Export
 	|	accounts.lastName,
 	|	accounts.registrationDate,
 	|	accounts.secondName,
-	|	accounts.gender,
+	|	CASE
+	|		WHEN accounts.gender = """"
+	|			THEN ""none""
+	|		ELSE accounts.gender = """"
+	|	END AS gender,
 	|	REFPRESENTATION(accounts.status) AS status,
 	|	"""" AS photo
 	|FROM
@@ -135,7 +139,7 @@ Function profile(account) Export
 EndFunction
 
 Function initProfileStruct()
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "", "unauthorized", "");
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "");
 EndFunction
 
 Procedure incPasswordSendCount(token, phone, password) Export

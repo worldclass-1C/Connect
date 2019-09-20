@@ -6,14 +6,10 @@ Function processRequest(request, requestName = "") Export
 	parameters = New Structure();
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
-	If requestName <> "" then
-		parameters.Insert("requestName", requestName);
-	Else
-		parameters.Insert("requestName", HTTP.getRequestHeader(request, "request"));
-	EndIf;
+	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
 	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
-	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
+	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));	
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
 	parameters.Insert("answerBody", "");
@@ -29,8 +25,12 @@ Function processRequest(request, requestName = "") Export
 	If parameters.errorDescription.result = "" Then		
 		Check.legality(request, parameters);
 	EndIf;
-	If parameters.errorDescription.result = "" Then
-		parameters.Insert("requestBody", request.GetBodyAsString());
+	If parameters.errorDescription.result = "" Then		
+		If HTTP.getRequestHeader(request, "Content-Type") = "application/octet-stream" Then
+			parameters.Insert("requestBody", request.GetBodyAsBinaryData());
+		Else
+			parameters.Insert("requestBody", request.GetBodyAsString());
+		EndIf;		
 		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));		
 		Try
 			General.executeRequestMethod(parameters);
