@@ -115,7 +115,7 @@ Function profile(account) Export
 	|	CASE
 	|		WHEN accounts.gender = """"
 	|			THEN ""none""
-	|		ELSE accounts.gender = """"
+	|		ELSE accounts.gender
 	|	END AS gender,
 	|	REFPRESENTATION(accounts.status) AS status,
 	|	"""" AS photo

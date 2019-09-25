@@ -148,6 +148,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="2f6e9487-fd49-4d84-b64e-572cb3ac615c">
+    <name>mockServerMode</name>
+    <synonym>
+      <key>en</key>
+      <value>Mock server mode</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Режим фиктивного сервера</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="9dce9309-24f2-48e1-8907-aa19f3dd7eec">
     <name>notSaveAnswer</name>
     <synonym>
@@ -290,6 +306,22 @@
       <minValue xsi:type="core:UndefinedValue"/>
       <maxValue xsi:type="core:UndefinedValue"/>
       <fillChecking>ShowError</fillChecking>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e139e703-248d-43d9-8dc9-9538652b0dda">
+      <name>mockServerMode</name>
+      <synonym>
+        <key>en</key>
+        <value>Mock server mode</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Режим фиктивного сервера</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>

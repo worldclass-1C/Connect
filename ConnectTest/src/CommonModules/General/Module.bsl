@@ -703,6 +703,7 @@ Procedure executeExternalRequest(parameters)
 	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
 	|	matchingRequestsInformationSources.notSaveAnswer AS notSaveAnswer,
 	|	matchingRequestsInformationSources.compressAnswer AS compressAnswer,
+	|	matchingRequestsInformationSources.mockServerMode AS mockServerMode,
 	|	holdingsConnectionsInformationSources.URL AS URL,
 	|	holdingsConnectionsInformationSources.server AS server,
 	|	CASE
@@ -714,7 +715,12 @@ Procedure executeExternalRequest(parameters)
 	|	holdingsConnectionsInformationSources.password AS password,
 	|	holdingsConnectionsInformationSources.timeout AS timeout,
 	|	holdingsConnectionsInformationSources.secureConnection AS secureConnection,
-	|	holdingsConnectionsInformationSources.UseOSAuthentication AS UseOSAuthentication
+	|	holdingsConnectionsInformationSources.UseOSAuthentication AS UseOSAuthentication,
+	|	CASE
+	|		WHEN matchingRequestsInformationSources.mockServerMode
+	|			THEN matchingRequestsInformationSources.Ref.defaultResponse
+	|		ELSE """"
+	|	END AS defaultResponse
 	|FROM
 	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
 	|		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
@@ -733,64 +739,68 @@ Procedure executeExternalRequest(parameters)
 	If queryResult.IsEmpty() Then
 		errorDescription	= Service.getErrorDescription(language, "noUrl");
 	Else		
-		selection = queryResult.Select();
-		selection.Next();
-		parameters.Insert("notSaveAnswer", selection.notSaveAnswer);
-		parameters.Insert("compressAnswer", selection.compressAnswer);
-		If selection.staffOnly
+		select = queryResult.Select();
+		select.Next();
+		parameters.Insert("notSaveAnswer", select.notSaveAnswer);
+		parameters.Insert("compressAnswer", select.compressAnswer);
+		If select.staffOnly
 				And tokenСontext.userType <> "employee" Then
 			errorDescription = Service.getErrorDescription(language, "staffOnly");
 		Else
-			performBackground = selection.performBackground;
-			arrayBJ = New Array(); 
-			statusCode = 200;
-			If selection.HTTPRequestType = Enums.HTTPRequestTypes.GET Then
-				requestBody = "";
-				parametersFromURL = StrReplace(parameters.URL, GeneralReuse.getBaseURL(), "");
+			If select.mockServerMode Then
+				answerBody = select.defaultResponse;	
 			Else
-				requestBody = HTTP.PrepareRequestBody(parameters);
-				parametersFromURL = "";
-			EndIf;
-			selection.Reset();
-			While selection.Next() Do
-				connectStruct = New Structure();
-				connectStruct.Insert("server", selection.server);
-				connectStruct.Insert("port", selection.port);
-				connectStruct.Insert("account", selection.user);
-				connectStruct.Insert("password", selection.password);
-				connectStruct.Insert("timeout", selection.timeout);
-				connectStruct.Insert("secureConnection", selection.secureConnection);
-				connectStruct.Insert("UseOSAuthentication", selection.UseOSAuthentication);
-				connectStruct.Insert("URL", selection.URL);
-				connectStruct.Insert("requestReceiver", selection.requestReceiver);
-				connectStruct.Insert("HTTPRequestType", selection.HTTPRequestType);
-				connectStruct.Insert("parametersFromURL", parametersFromURL);		
-				If performBackground Then
-					response = Service.runRequestBackground(connectStruct, requestBody);
-					BJStruct = New Structure();
-					BJStruct.Insert("address", response.address);
-					BJStruct.Insert("BJ", response.BJ);
-					BJStruct.Insert("attribute", selection.attribute);
-					arrayBJ.Add(BJStruct);
+				performBackground = select.performBackground;
+				arrayBJ = New Array();
+				statusCode = 200;
+				If select.HTTPRequestType = Enums.HTTPRequestTypes.GET Then
+					requestBody = "";
+					parametersFromURL = StrReplace(parameters.URL, GeneralReuse.getBaseURL(), "");
 				Else
-					response = Service.runRequest(connectStruct, requestBody);
-					statusCode = response.statusCode;
-					answerBody = response.GetBodyAsString();
+					requestBody = HTTP.PrepareRequestBody(parameters);
+					parametersFromURL = "";
 				EndIf;
-			EndDo;
-			If performBackground Then
-				response = Service.checkBackgroundJobs(arrayBJ);
-				statusCode = response.statusCode;
-				answerBody = response.answerBody;
-			EndIf;
-			If statusCode <> 200 Then
-				If statusCode = 403 Then
-					HTTPResponseStruct = HTTP.decodeJSON(answerBody);
-					If HTTPResponseStruct.Property("result") Then
-						errorDescription = Service.getErrorDescription(language, HTTPResponseStruct.result, HTTPResponseStruct.description);
+				select.Reset();
+				While select.Next() Do
+					connectStruct = New Structure();
+					connectStruct.Insert("server", select.server);
+					connectStruct.Insert("port", select.port);
+					connectStruct.Insert("account", select.user);
+					connectStruct.Insert("password", select.password);
+					connectStruct.Insert("timeout", select.timeout);
+					connectStruct.Insert("secureConnection", select.secureConnection);
+					connectStruct.Insert("UseOSAuthentication", select.UseOSAuthentication);
+					connectStruct.Insert("URL", select.URL);
+					connectStruct.Insert("requestReceiver", select.requestReceiver);
+					connectStruct.Insert("HTTPRequestType", select.HTTPRequestType);
+					connectStruct.Insert("parametersFromURL", parametersFromURL);
+					If performBackground Then
+						response = Service.runRequestBackground(connectStruct, requestBody);
+						BJStruct = New Structure();
+						BJStruct.Insert("address", response.address);
+						BJStruct.Insert("BJ", response.BJ);
+						BJStruct.Insert("attribute", select.attribute);
+						arrayBJ.Add(BJStruct);
+					Else
+						response = Service.runRequest(connectStruct, requestBody);
+						statusCode = response.statusCode;
+						answerBody = response.GetBodyAsString();
 					EndIf;
-				Else
-					errorDescription = Service.getErrorDescription(language, "system", answerBody);
+				EndDo;
+				If performBackground Then
+					response = Service.checkBackgroundJobs(arrayBJ);
+					statusCode = response.statusCode;
+					answerBody = response.answerBody;
+				EndIf;
+				If statusCode <> 200 Then
+					If statusCode = 403 Then
+						HTTPResponseStruct = HTTP.decodeJSON(answerBody);
+						If HTTPResponseStruct.Property("result") Then
+							errorDescription = Service.getErrorDescription(language, HTTPResponseStruct.result, HTTPResponseStruct.description);
+						EndIf;
+					Else
+						errorDescription = Service.getErrorDescription(language, "system", answerBody);
+					EndIf;
 				EndIf;
 			EndIf;
 		EndIf;		
