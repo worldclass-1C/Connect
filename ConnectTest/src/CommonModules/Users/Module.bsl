@@ -48,7 +48,7 @@ Function profile(user, appType) Export
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.cacheCode AS cacheCode,
-	|	usersStates.value AS cacheValue
+	|	usersStates.stateValue AS cacheValue
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.usersStates AS usersStates
@@ -56,7 +56,7 @@ Function profile(user, appType) Export
 	|		AND TT.user = usersStates.user
 	|		AND TT.appType = usersStates.appType
 	|WHERE
-	|	NOT usersStates.value IS NULL";
+	|	NOT usersStates.stateValue IS NULL";
 	
 	query.SetParameter("user", user);
 	query.SetParameter("appType", appType);

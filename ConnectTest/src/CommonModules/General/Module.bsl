@@ -24,6 +24,8 @@ Procedure executeRequestMethod(parameters) Export
 			getAccountProfile(parameters);	
 		ElsIf parameters.requestName = "userprofile" Then 
 			getUserProfile(parameters);
+		ElsIf parameters.requestName = "usersummary" Then 
+			getUserSummary(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then // проверить описание в API
 			getGymList(parameters);
@@ -364,13 +366,13 @@ EndProcedure
 Procedure addUserToToken(parameters)
 	tokenСontext = parameters.tokenСontext;
 	requestStruct = parameters.requestStruct;
-	If tokenСontext.account.IsEmpty() Then
+	If tokenСontext.user.IsEmpty() Then
 		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid);
 	Else
-		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.account);
+		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.user.owner);
 	EndIf;
 	answerStruct.response.Delete("userList");
-	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response.userProfile));
+	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response));
 	parameters.Insert("errorDescription", answerStruct.errorDescription);
 EndProcedure
 
@@ -387,6 +389,36 @@ EndProcedure
 
 Procedure getUserProfile(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenСontext.user, parameters.tokenСontext.appType)));	
+EndProcedure
+
+Procedure getUserSummary(parameters)
+	tokenСontext = parameters.tokenСontext;
+	
+	query = New Query("SELECT
+	|	chainscacheValues.cacheValuesType.Code AS cacheCode,
+	|	usersStates.stateValue AS cacheValue,
+	|	chainscacheValues.cacheValuesType.defaultValue AS defaultValue
+	|FROM
+	|	Catalog.chains.cacheValuesTypes AS chainscacheValues
+	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+	|		ON chainscacheValues.cacheValuesType = usersStates.cacheValuesType
+	|		AND usersStates.user = &user
+	|		AND usersStates.appType = &appType
+	|WHERE
+	|	chainscacheValues.Ref = &chain");
+	
+	query.SetParameter("chain", tokenСontext.chain);
+	query.SetParameter("user", tokenСontext.user);
+	query.SetParameter("appType", tokenСontext.appType);
+	
+	struct = new Structure();
+	select = query.Execute().Select();
+	While select.Next() Do
+		struct.Insert(select.cacheCode, HTTP.decodeJSON(?(select.cacheValue = null, select.defaultValue, select.cacheValue)));
+	EndDo;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
 EndProcedure
 
 Procedure getGymList(parameters)

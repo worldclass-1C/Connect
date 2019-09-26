@@ -54,14 +54,14 @@
     <value>Состояния пользователей</value>
   </extendedListPresentation>
   <resources uuid="5dc4a8ee-e5c7-4680-8242-e2ff4793f286">
-    <name>value</name>
+    <name>stateValue</name>
     <synonym>
       <key>en</key>
-      <value>Value</value>
+      <value>State value</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Значение</value>
+      <value>Значение состояния</value>
     </synonym>
     <type>
       <types>String</types>

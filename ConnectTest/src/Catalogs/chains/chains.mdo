@@ -159,6 +159,22 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.chains.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.chains.Form.ListForm</defaultListForm>
+  <attributes uuid="44b7b374-2db9-41af-a470-c43e465293ec">
+    <name>brand</name>
+    <synonym>
+      <key>en</key>
+      <value>Brand</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Бренд</value>
+    </synonym>
+    <type>
+      <types>EnumRef.brandTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="6a9ecc13-8430-48cd-8f4d-31c3008077be">
     <name>currencySymbol</name>
     <synonym>
@@ -184,38 +200,23 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="44b7b374-2db9-41af-a470-c43e465293ec">
-    <name>brand</name>
+  <attributes uuid="710505af-da16-485e-96ad-6760e7773ab9">
+    <name>holding</name>
     <synonym>
       <key>en</key>
-      <value>Brand</value>
+      <value>Holding</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Бренд</value>
+      <value>Холдинг</value>
     </synonym>
     <type>
-      <types>EnumRef.brandTypes</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="1703821b-1be1-4c58-a981-1b39e1dacb71">
-    <name>phoneMask</name>
-    <synonym>
-      <key>en</key>
-      <value>Phone mask</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Маска номера телефона</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.CountryCodes</types>
+      <types>CatalogRef.holdings</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -238,23 +239,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="710505af-da16-485e-96ad-6760e7773ab9">
-    <name>holding</name>
+  <attributes uuid="1703821b-1be1-4c58-a981-1b39e1dacb71">
+    <name>phoneMask</name>
     <synonym>
       <key>en</key>
-      <value>Holding</value>
+      <value>Phone mask</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Холдинг</value>
+      <value>Маска номера телефона</value>
     </synonym>
     <type>
-      <types>CatalogRef.holdings</types>
+      <types>CatalogRef.CountryCodes</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillChecking>ShowError</fillChecking>
-    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -326,6 +326,37 @@
         <stringQualifiers>
           <length>40</length>
         </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="431cada3-040c-4b7f-98e0-d16f5c8a5ca8">
+    <producedTypes>
+      <objectType typeId="260d6329-bca4-4ad3-8ca0-9de2f7799fb7" valueTypeId="6ba9677c-7d3b-4bee-9ddc-0f486ad390f5"/>
+      <rowType typeId="9897209f-f50b-4a61-a9bf-ac0973e73408" valueTypeId="3acfdecc-ad4c-4813-a565-7306892b923d"/>
+    </producedTypes>
+    <name>cacheValuesTypes</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache values types</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Значения кэша</value>
+    </synonym>
+    <attributes uuid="b66f497f-3c1d-4dab-bd6f-44183aad37ec">
+      <name>cacheValuesType</name>
+      <synonym>
+        <key>en</key>
+        <value>Cache values type</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Значение кеша</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.cacheValuesTypes</types>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
