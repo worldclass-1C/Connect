@@ -22,35 +22,29 @@ Function get(token, parameters) Export
 EndFunction	
 
 Function initContext() Export
-	tokenСontext		= New Structure();
-	tokenСontext.Insert("token", Catalogs.tokens.EmptyRef());
-	tokenСontext.Insert("appType", Enums.appTypes.EmptyRef());
-	tokenСontext.Insert("appVersion", 0);
-	tokenСontext.Insert("chain", Catalogs.chains.EmptyRef());
-	tokenСontext.Insert("changeDate", Date(1,1,1));
-	tokenСontext.Insert("createDate", Date(1,1,1));
-	tokenСontext.Insert("deviceModel", "");
-	tokenСontext.Insert("deviceToken", "");
-	tokenСontext.Insert("holding", Catalogs.holdings.EmptyRef());
-	tokenСontext.Insert("lockDate", Date(1,1,1));
-	tokenСontext.Insert("systemType", Enums.systemTypes.EmptyRef());
-	tokenСontext.Insert("systemVersion", "");
-	tokenСontext.Insert("timezone", Catalogs.timeZones.EmptyRef());	
-	tokenСontext.Insert("user", Catalogs.users.EmptyRef());
-	tokenСontext.Insert("userType", "");
-	Return tokenСontext;	
+	tokenContext		= New Structure();
+	tokenContext.Insert("token", Catalogs.tokens.EmptyRef());
+	tokenContext.Insert("appType", Enums.appTypes.EmptyRef());
+	tokenContext.Insert("appVersion", 0);
+	tokenContext.Insert("chain", Catalogs.chains.EmptyRef());
+	tokenContext.Insert("changeDate", Date(1,1,1));
+	tokenContext.Insert("createDate", Date(1,1,1));
+	tokenContext.Insert("deviceModel", "");
+	tokenContext.Insert("deviceToken", "");
+	tokenContext.Insert("holding", Catalogs.holdings.EmptyRef());
+	tokenContext.Insert("lockDate", Date(1,1,1));
+	tokenContext.Insert("systemType", Enums.systemTypes.EmptyRef());
+	tokenContext.Insert("systemVersion", "");
+	tokenContext.Insert("timezone", Catalogs.timeZones.EmptyRef());	
+	tokenContext.Insert("user", Catalogs.users.EmptyRef());
+	tokenContext.Insert("userType", "");
+	Return tokenContext;	
 EndFunction
 
 Procedure block(token) Export
 	tokenObject = token.GetObject();
 	tokenObject.lockDate = ToUniversalTime(CurrentDate());
-	tokenObject.Write();
-	record = InformationRegisters.registeredDevices.CreateRecordManager();
-	record.token = token;
-	record.Read();
-	If record.Selected() Then
-		record.Delete();
-	EndIf;
+	tokenObject.Write();	
 	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), tokenObject.user);
 EndProcedure
 
@@ -58,8 +52,8 @@ Procedure editProperty(token, struct) Export
 	tokenObject = token.GetObject();
 	If tokenObject <> Undefined Then		
 		For Each element In struct Do
-			If element.key = "account" Then
-				ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.account));
+			If element.key = "user" Then
+				ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.user));
 			EndIf;
 			tokenObject[element.key] = element.value;
 		EndDo;

@@ -7,7 +7,7 @@
   </synonym>
   <methodName>CommonModule.Jobs.checkSmsStatus</methodName>
   <description>checkSmsStatus</description>
-  <key>ПроверкаСтатcheckSmsStatusусаSms</key>
+  <key>checkSmsStatus</key>
   <use>true</use>
   <predefined>true</predefined>
   <restartCountOnFailure>3</restartCountOnFailure>

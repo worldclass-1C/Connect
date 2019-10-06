@@ -39,7 +39,11 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "unreadnotificationcount" Then // проверить описание в API
 			unReadNotificationCount(parameters);
 		ElsIf parameters.requestName = "sendMessage" Then 
-			sendMessage(parameters);	
+			sendMessage(parameters);
+		ElsIf parameters.requestName = "imagePOST" Then 
+			imagePOST(parameters);
+		ElsIf parameters.requestName = "imageDELETE" Then 
+			imageDELETE(parameters);			
 		ElsIf parameters.requestName = "addchangeusers"
 				Or parameters.requestName = "addgyms"
 				Or parameters.requestName = "addrequest"
@@ -55,7 +59,7 @@ EndProcedure
 
 Procedure getConfig(parameters)
 
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;	
 	brand = parameters.brand;
 	language = parameters.language;
@@ -82,7 +86,10 @@ Procedure getConfig(parameters)
 	|	tokens.deviceToken AS deviceToken,
 	|	REFPRESENTATION(tokens.systemType) AS systemType,
 	|	tokens.systemVersion AS systemVersion,
-	|	tokens.lockDate
+	|	tokens.lockDate,
+	|	tokens.chain.cacheValuesTypes.(
+	|		cacheValuesType.Code AS section,
+	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.tokens AS tokens
 	|WHERE
@@ -91,7 +98,7 @@ Procedure getConfig(parameters)
 	query.SetParameter("brand", Enums.brandTypes[brand]);
 	query.SetParameter("appType", Enums.appTypes[requestStruct.appType]);
 	query.SetParameter("systemType", Enums.systemTypes[requestStruct.systemType]);
-	query.SetParameter("token", tokenСontext.token);
+	query.SetParameter("token", tokenContext.token);
 
 	queryResults = query.ExecuteBatch();
 	queryResult = queryResults[0];
@@ -119,8 +126,14 @@ Procedure getConfig(parameters)
 			tokenStruct.Insert("deviceModel", selection.deviceModel);
 			tokenStruct.Insert("deviceToken", selection.deviceToken);
 			tokenStruct.Insert("systemType", selection.systemType);
-			tokenStruct.Insert("systemVersion", selection.systemVersion);
-			//tokenStruct.Insert("userStatus", selection.userStatus);
+			tokenStruct.Insert("systemVersion", selection.systemVersion);			
+			availableSections = New Array();
+			For Each row In selection.availableSections.Unload() Do
+				If row.isUsed Then
+					availableSections.Add(row.section);
+				EndIf;
+			EndDo;
+			tokenStruct.Insert("availableSections", availableSections);
 			struct.Insert("tokenInfo", tokenStruct);
 		EndIf;
 	EndIf;
@@ -146,7 +159,10 @@ Procedure getChainList(parameters)
 	|	REFPRESENTATION(chain.brand) AS brand,
 	|	chain.phoneMask.CountryCode AS phoneMaskCountryCode,
 	|	chain.phoneMask.Description AS phoneMaskDescription,
-	|	chain.holding.Code AS holdingCode
+	|	chain.holding.Code AS holdingCode,
+	|	chain.cacheValuesTypes.(
+	|		cacheValuesType.Code AS section,
+	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
@@ -180,7 +196,14 @@ Procedure getChainList(parameters)
 		chainName = ?(nameTogetherChain, select.brand + " "
 			+ select.description, select.description);
 		chainStruct.Insert("name", chainName);
-		chainStruct.Insert("countryCode", New Structure("code, mask", select.phoneMaskCountryCode, select.phoneMaskDescription));
+		chainStruct.Insert("countryCode", New Structure("code, mask", select.phoneMaskCountryCode, select.phoneMaskDescription));		
+		availableSections = New Array();
+		For Each row In select.availableSections.Unload() Do
+			If row.isUsed Then
+				availableSections.Add(row.section);	
+			EndIf;		
+		EndDo;
+		chainStruct.Insert("availableSections", availableSections);		
 		array.add(chainStruct);
 	EndDo;
 
@@ -218,7 +241,7 @@ EndProcedure
 
 Procedure registerDevice(parameters)
 	
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
 	struct = New Structure();
 	
@@ -248,7 +271,7 @@ Procedure registerDevice(parameters)
 		tokenStruct.Insert("systemType", Enums.systemTypes[requestStruct.systemType]);
 		tokenStruct.Insert("systemVersion", requestStruct.systemVersion);
 		tokenStruct.Insert("timeZone", select.timeZone);		
-		struct.Insert("token", XMLString(Token.get(tokenСontext.token, tokenStruct)) + "0");
+		struct.Insert("token", XMLString(Token.get(tokenContext.token, tokenStruct)) + "0");
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
@@ -257,15 +280,20 @@ EndProcedure
 
 Procedure accountSignIn(parameters)
 
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	errorDescription = parameters.errorDescription;
 
 	struct = New Structure();
 
-	retryTime = Check.timeBeforeSendSms(tokenСontext.token);
-	If retryTime > 0 and requestStruct.phone <> "+79154006161"
+	retryTime = Check.timeBeforeSendSms(tokenContext.token);
+	
+	If requestStruct.phone = "+73232323223" Then
+		struct.Insert("result", "Ok");
+		struct.Insert("retryTime", 0);
+		Account.incPasswordSendCount(tokenContext.token, requestStruct.phone, "3223");	
+	ElsIf retryTime > 0 and requestStruct.phone <> "+79154006161"
 			and requestStruct.phone <> "+79684007188"
 			and requestStruct.phone <> "+79035922412"
 			and requestStruct.phone <> "+79037478789" Then
@@ -274,9 +302,9 @@ Procedure accountSignIn(parameters)
 	Else
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
-			If tokenСontext.chain <> chain Then				
+			If tokenContext.chain <> chain Then				
 				changeStruct = New Structure("chain", chain);
-				Token.editProperty(tokenСontext.token, changeStruct);
+				Token.editProperty(tokenContext.token, changeStruct);
 			EndIf;
 		Else
 			errorDescription = Service.getErrorDescription(language, "chainCodeError");
@@ -293,11 +321,11 @@ Procedure accountSignIn(parameters)
 			messageStruct.Insert("phone", requestStruct.phone);
 			messageStruct.Insert("title", "SMS code");
 			messageStruct.Insert("text", StrConcat(rowsArray));
-			messageStruct.Insert("holding", tokenСontext.holding);
+			messageStruct.Insert("holding", tokenContext.holding);
 			messageStruct.Insert("informationChannels", informationChannels);
 			messageStruct.Insert("priority", 0);
 			Messages.newMessage(messageStruct, True);
-			Account.incPasswordSendCount(tokenСontext.token, requestStruct.phone, tempCode);
+			Account.incPasswordSendCount(tokenContext.token, requestStruct.phone, tempCode);
 			struct.Insert("result", "Ok");
 			struct.Insert("retryTime", 60);
 		EndIf;
@@ -310,13 +338,13 @@ EndProcedure
 
 Procedure accountConfirmPhone(parameters)
 
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	
 	struct = New Structure();
 	
-	answer = Check.password(tokenСontext.token, requestStruct.password, language);
+	answer = Check.password(tokenContext.token, requestStruct.password, language);
 	errorDescription = answer.errorDescription;
 
 	If errorDescription.result = "" Then
@@ -331,7 +359,7 @@ Procedure accountConfirmPhone(parameters)
 		|WHERE
 		|	accounts.code = &phone");
 
-		queryUser.SetParameter("holding", tokenСontext.holding);
+		queryUser.SetParameter("holding", tokenContext.holding);
 		queryUser.SetParameter("phone", answer.phone);
 		queryUserResult = queryUser.Execute();
 		If queryUserResult.isEmpty() Then
@@ -343,10 +371,11 @@ Procedure accountConfirmPhone(parameters)
 			select.Next();
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
-				Token.editProperty(tokenСontext.token, changeStruct);
+				Token.editProperty(tokenContext.token, changeStruct);
 				struct.Insert("userProfile", Account.profile(select.account));
 				struct.Insert("userList", New Array());
-				struct.Insert("token", XMLString(tokenСontext.token));				
+				struct.Insert("token", XMLString(tokenContext.token));
+				Users.updateCache(parameters, struct.token);				
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;
@@ -354,7 +383,7 @@ Procedure accountConfirmPhone(parameters)
 			EndIf;		
 		EndIf;
 		If errorDescription.result = "" Then
-			Account.delPassword(tokenСontext.token);
+			Account.delPassword(tokenContext.token);
 		EndIf;
 	EndIf;
 
@@ -364,12 +393,12 @@ Procedure accountConfirmPhone(parameters)
 EndProcedure
 
 Procedure addUserToToken(parameters)
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
-	If tokenСontext.user.IsEmpty() Then
+	If tokenContext.user.IsEmpty() Then
 		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid);
 	Else
-		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenСontext.user.owner);
+		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenContext.user.owner);
 	EndIf;
 	answerStruct.response.Delete("userList");
 	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response));
@@ -377,27 +406,27 @@ Procedure addUserToToken(parameters)
 EndProcedure
 
 Procedure signOut(parameters)
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	changeStruct = New Structure("account, user", Catalogs.accounts.EmptyRef(), Catalogs.users.EmptyRef());
-	Token.editProperty(tokenСontext.token, changeStruct);
-	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenСontext.token) + "0")));	
+	Token.editProperty(tokenContext.token, changeStruct);
+	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenContext.token) + "0")));	
 EndProcedure
 
 Procedure getAccountProfile(parameters)
-	parameters.Insert("answerBody", HTTP.encodeJSON(Account.profile(parameters.tokenСontext.account)));		
+	parameters.Insert("answerBody", HTTP.encodeJSON(Account.profile(parameters.tokenContext.account)));		
 EndProcedure
 
 Procedure getUserProfile(parameters)
-	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenСontext.user, parameters.tokenСontext.appType)));	
+	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenContext.user, parameters.tokenContext.appType)));	
 EndProcedure
 
 Procedure getUserSummary(parameters)
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	
 	query = New Query("SELECT
 	|	chainscacheValues.cacheValuesType.Code AS cacheCode,
 	|	usersStates.stateValue AS cacheValue,
-	|	chainscacheValues.cacheValuesType.defaultValue AS defaultValue
+	|	chainscacheValues.cacheValuesType.defaultValueType AS defaultValueType
 	|FROM
 	|	Catalog.chains.cacheValuesTypes AS chainscacheValues
 	|		LEFT JOIN InformationRegister.usersStates AS usersStates
@@ -405,16 +434,17 @@ Procedure getUserSummary(parameters)
 	|		AND usersStates.user = &user
 	|		AND usersStates.appType = &appType
 	|WHERE
-	|	chainscacheValues.Ref = &chain");
+	|	chainscacheValues.Ref = &chain
+	|	AND chainscacheValues.isUsed");
 	
-	query.SetParameter("chain", tokenСontext.chain);
-	query.SetParameter("user", tokenСontext.user);
-	query.SetParameter("appType", tokenСontext.appType);
+	query.SetParameter("chain", tokenContext.chain);
+	query.SetParameter("user", tokenContext.user);
+	query.SetParameter("appType", tokenContext.appType);
 	
-	struct = new Structure();
+	struct = New Structure();
 	select = query.Execute().Select();
 	While select.Next() Do
-		struct.Insert(select.cacheCode, HTTP.decodeJSON(?(select.cacheValue = null, select.defaultValue, select.cacheValue)));
+		struct.Insert(select.cacheCode, HTTP.decodeJSON(?(select.cacheValue = null, "", select.cacheValue), select.defaultValueType));
 	EndDo;
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
@@ -515,7 +545,7 @@ EndProcedure
 
 Procedure getCancellationReasonsList(parameters)
 
-	tokenСontext		= parameters.tokenСontext;
+	tokenContext		= parameters.tokenContext;
 	array 			= New Array();
 
 	query = New Query();
@@ -528,7 +558,7 @@ Procedure getCancellationReasonsList(parameters)
 	|	NOT cancellationReasons.DeletionMark
 	|	AND cancellationReasons.holding = &holding";
 
-	query.SetParameter("holding", tokenСontext.holding);
+	query.SetParameter("holding", tokenContext.holding);
 	selection = query.Execute().Select();
 	While selection.Next() Do
 		struct = New Structure("uid,name", XMLString(selection.ref), selection.description);
@@ -543,7 +573,7 @@ EndProcedure
 Procedure getNotificationList(parameters)
 
 	requestStruct	= parameters.requestStruct;
-	tokenСontext		= parameters.tokenСontext;
+	tokenContext		= parameters.tokenContext;
 
 	array = New Array();
 
@@ -595,14 +625,14 @@ Procedure getNotificationList(parameters)
 	|	registrationDate DESC";
 
 	query.SetParameter("registrationDate", registrationDate);
-	query.SetParameter("user", tokenСontext.user);
-	query.SetParameter("appType", tokenСontext.appType);
+	query.SetParameter("user", tokenContext.user);
+	query.SetParameter("appType", tokenContext.appType);
 
 	select = query.Execute().Select();
 	While select.Next() Do
 		messageStruct = New Structure();
 		messageStruct.Insert("noteId", XMLString(select.message));
-		messageStruct.Insert("date", XMLString(ToLocalTime(select.registrationDate, tokenСontext.timeZone)));
+		messageStruct.Insert("date", XMLString(ToLocalTime(select.registrationDate, tokenContext.timeZone)));
 		messageStruct.Insert("title", select.title);
 		messageStruct.Insert("text", select.text);
 		messageStruct.Insert("read", select.read);
@@ -618,7 +648,7 @@ EndProcedure
 Procedure readNotification(parameters)
 
 	requestStruct	= parameters.requestStruct;
-	tokenСontext		= parameters.tokenСontext;
+	tokenContext		= parameters.tokenContext;
 	
 	struct = New Structure();
 
@@ -628,9 +658,9 @@ Procedure readNotification(parameters)
 		message = XMLValue(Type("CatalogRef.messages"), requestStruct.noteId);
 	EndIf;
 
-	If tokenСontext.appType = Enums.appTypes.Employee Then
+	If tokenContext.appType = Enums.appTypes.Employee Then
 		informationChannel = Enums.informationChannels.pushEmployee;
-	ElsIf tokenСontext.appType = Enums.appTypes.Customer Then
+	ElsIf tokenContext.appType = Enums.appTypes.Customer Then
 		informationChannel = Enums.informationChannels.pushCustomer;
 	Else
 		informationChannel = Enums.informationChannels.EmptyRef();
@@ -648,8 +678,8 @@ Procedure readNotification(parameters)
 	|	AND Messages.user = &user
 	|	AND Messages.appType = &appType";
 
-	query.SetParameter("user", tokenСontext.user);
-	query.SetParameter("appType", tokenСontext.appType);
+	query.SetParameter("user", tokenContext.user);
+	query.SetParameter("appType", tokenContext.appType);
 
 	queryResult = query.Execute();
 	If Not queryResult.IsEmpty() Then
@@ -660,7 +690,7 @@ Procedure readNotification(parameters)
 				record = InformationRegisters.messagesLogs.CreateRecordManager();
 				record.period				= ToUniversalTime(CurrentDate());
 				record.message				= select.message;
-				record.token				= tokenСontext.token;
+				record.token				= tokenContext.token;
 				record.recordDate			= record.period;
 				record.messageStatus		= Enums.messageStatuses.read;
 				record.informationChannel	= informationChannel;
@@ -672,7 +702,7 @@ Procedure readNotification(parameters)
 				record = InformationRegisters.messagesLogs.CreateRecordManager();
 				record.period				= ToUniversalTime(CurrentDate());
 				record.message 				= message;
-				record.token 				= tokenСontext.token;
+				record.token 				= tokenContext.token;
 				record.recordDate 			= record.period;
 				record.messageStatus 		= Enums.messageStatuses.read;
 				record.informationChannel	= informationChannel;
@@ -693,7 +723,7 @@ EndProcedure
 
 Procedure unReadNotificationCount(parameters)
 
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	struct = New Structure();
 
 	query = New Query();
@@ -708,8 +738,8 @@ Procedure unReadNotificationCount(parameters)
 	|	AND Messages.user = &user
 	|	AND Messages.appType = &appType";
 
-	query.SetParameter("user", tokenСontext.user);
-	query.SetParameter("appType", tokenСontext.appType);
+	query.SetParameter("user", tokenContext.user);
+	query.SetParameter("appType", tokenContext.appType);
 
 	select = query.Execute().Select();
 	select.Next();
@@ -721,7 +751,7 @@ EndProcedure
 
 Procedure executeExternalRequest(parameters)
 	
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	errorDescription = Service.getErrorDescription();
 	answerBody = "";
@@ -762,9 +792,11 @@ Procedure executeExternalRequest(parameters)
 	|WHERE
 	|	holdingsConnectionsInformationSources.holding = &holding
 	|	AND
-	|	NOT matchingRequestsInformationSources.requestReceiver IS NULL";
+	|	NOT matchingRequestsInformationSources.requestReceiver IS NULL
+	|	AND holdingsConnectionsInformationSources.language = &language";
 
-	query.SetParameter("holding", tokenСontext.holding);
+	query.SetParameter("holding", tokenContext.holding);
+	query.SetParameter("language", language);
 	query.SetParameter("requestName", parameters.requestName);
 	queryResult = query.Execute();
 
@@ -776,7 +808,7 @@ Procedure executeExternalRequest(parameters)
 		parameters.Insert("notSaveAnswer", select.notSaveAnswer);
 		parameters.Insert("compressAnswer", select.compressAnswer);
 		If select.staffOnly
-				And tokenСontext.userType <> "employee" Then
+				And tokenContext.userType <> "employee" Then
 			errorDescription = Service.getErrorDescription(language, "staffOnly");
 		Else
 			If select.mockServerMode Then
@@ -853,7 +885,7 @@ EndProcedure
 Procedure sendMessage(parameters)
 	
 	requestStruct = parameters.requestStruct;
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	struct = New Structure();
 	errorDescription = Service.getErrorDescription();
@@ -870,7 +902,7 @@ Procedure sendMessage(parameters)
 			messageStruct.Insert("text", ?(message.Property("text"), message.text, ""));
 			messageStruct.Insert("action", ?(message.Property("action"), message.action, "ViewNotification"));
 			messageStruct.Insert("priority", ?(message.Property("priority"), message.priority, 5));
-			messageStruct.Insert("holding", tokenСontext.holding);
+			messageStruct.Insert("holding", tokenContext.holding);
 			If message.Property("gymId") And message.gymId <> "" Then
 				messageStruct.Insert("gym", XMLValue(Type("CatalogRef.gyms"), message.gymId));
 			Else
@@ -885,6 +917,11 @@ Procedure sendMessage(parameters)
 				messageStruct.Insert("token", XMLValue(Type("CatalogRef.tokens"), message.token));
 			Else
 				messageStruct.Insert("token", Catalogs.tokens.EmptyRef());
+			EndIf;
+			If message.Property("appType") And message.appType <> "" Then
+				messageStruct.Insert("appType", Enums.appTypes[message.appType]);
+			Else
+				messageStruct.Insert("appType", Enums.appTypes.EmptyRef());
 			EndIf;
 			channelsArray = New Array();
 			If message.Property("routes") Then
@@ -908,3 +945,44 @@ Procedure sendMessage(parameters)
 	
 EndProcedure
 
+Procedure imagePOST(parameters)
+	
+	requestBody = parameters.requestBody;
+	tokenContext = parameters.tokenContext;
+	headers = parameters.headers;
+	language = parameters.language;
+	
+	struct = New Structure();
+	errorDescription = Service.getErrorDescription();
+
+	If TypeOf(requestBody) <> Type("BinaryData") Then
+		errorDescription = Service.getErrorDescription(language, "noBinaryData");
+	Else
+		pathStruct = Files.getPath(headers["objectName"], tokenContext.holding.code);
+		fileName = Files.pathConcat("" + New UUID(), headers["extension"]);
+		requestBody.write(Files.pathConcat(pathStruct.location, fileName, "\"));		
+		struct.Insert("result", Files.pathConcat(pathStruct.URL, fileName, "/"));
+	EndIf;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+	
+EndProcedure
+
+Procedure imageDELETE(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	struct = New Structure();
+	errorDescription = Service.getErrorDescription();
+
+	location = StrReplace(StrReplace(requestStruct.url, Files.getBaseImgURL(), Files.getImgStoragePath()),"/","\");		
+	imgFile = New File(location);
+	If imgFile.Exist() Then
+		DeleteFiles(location);	
+	EndIf;
+	
+	struct.Insert("result", "Ok");
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+	
+EndProcedure

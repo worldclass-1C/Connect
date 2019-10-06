@@ -26,12 +26,13 @@ Function processRequest(request, requestName = "") Export
 		Check.legality(request, parameters);
 	EndIf;
 	If parameters.errorDescription.result = "" Then		
-		If HTTP.getRequestHeader(request, "Content-Type") = "application/octet-stream" Then
+		If requestName = "imagePOST" Then
 			parameters.Insert("requestBody", request.GetBodyAsBinaryData());
+			parameters.Insert("headers", request.Headers);
 		Else
 			parameters.Insert("requestBody", request.GetBodyAsString());
-		EndIf;		
-		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));		
+			parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
+		EndIf;
 		Try
 			General.executeRequestMethod(parameters);
 		Except
@@ -49,8 +50,11 @@ Function processRequest(request, requestName = "") Export
 
 EndFunction
 
-Function decodeJSON(val body, val isArray = False) Export
-	body	= TrimAll(body);	
+Function decodeJSON(val body, val JSONValueType = "") Export	
+	body = TrimAll(body);
+	If JSONValueType = "" Then
+		JSONValueType = Enums.JSONValueTypes.string;
+	EndIf;
 	If StrLen(Body) > 0 Then			
 		JSONReader = New JSONReader();
 		JSONReader.SetString(body);
@@ -58,7 +62,21 @@ Function decodeJSON(val body, val isArray = False) Export
 		JSONReader.Close();
 		Return RequestStruct;
 	Else
-		Return ?(isArray, New Array(), New Structure());
+		If JSONValueType = Enums.JSONValueTypes.structure Then
+			Return New Structure();	
+		ElsIf JSONValueType = Enums.JSONValueTypes.array Then
+			Return New Array();
+		ElsIf JSONValueType = Enums.JSONValueTypes.string Then
+			Return "";
+		ElsIf JSONValueType = Enums.JSONValueTypes.number Then
+			Return 0;
+		ElsIf JSONValueType = Enums.JSONValueTypes.date Then
+			Return Date(1,1,1);
+		ElsIf JSONValueType = Enums.JSONValueTypes.boolean Then
+			Return False;					
+		Else
+			Return body;
+		EndIf;
 	EndIf;	
 EndFunction
 
@@ -72,7 +90,7 @@ EndFunction
 Function prepareRequestBody(parameters) Export
 	
 	requestStruct = parameters.requestStruct;
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	
 	If TypeOf(requestStruct) = Type("Structure") Then
 		struct = requestStruct;
@@ -83,16 +101,16 @@ Function prepareRequestBody(parameters) Export
 
 	struct.Insert("token", parameters.authKey);
 	struct.Insert("language", parameters.language);
-	struct.Insert("userId", XMLString(tokenСontext.user));
-	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenСontext.timezone));
-	If tokenСontext.appType = Enums.appTypes.Customer Then
+	struct.Insert("userId", XMLString(tokenContext.user));
+	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenContext.timezone));
+	If tokenContext.appType = Enums.appTypes.Customer Then
 		struct.Insert("appType", "Customer");
-	ElsIf tokenСontext.appType = Enums.appTypes.Employee Then
+	ElsIf tokenContext.appType = Enums.appTypes.Employee Then
 		struct.Insert("appType", "Employee");
-	ElsIf tokenСontext.appType = Enums.appTypes.Web Then
+	ElsIf tokenContext.appType = Enums.appTypes.Web Then
 		struct.Insert("appType", "Web");
 	Else
-		struct.Insert("appType", TrimAll(tokenСontext.appType));
+		struct.Insert("appType", TrimAll(tokenContext.appType));
 	EndIf;
 
 	Return HTTP.encodeJSON(struct);
@@ -123,39 +141,39 @@ Function getRequestStructure(request, holding) Export
 	requestStruct = New Structure;
 	
 	query = New Query();
-	query.Text = "ВЫБРАТЬ
-	|	ПодключенияХолдинговКИсточникамИнформации.holding КАК holding,
-	|	ПодключенияХолдинговКИсточникамИнформации.informationSource КАК informationSource,
-	|	ПодключенияХолдинговКИсточникамИнформации.server КАК server,
-	|	ПодключенияХолдинговКИсточникамИнформации.port КАК port,
-	|	ПодключенияХолдинговКИсточникамИнформации.account КАК account,
-	|	ПодключенияХолдинговКИсточникамИнформации.password КАК password,
-	|	ПодключенияХолдинговКИсточникамИнформации.URL КАК URL,
-	|	ПодключенияХолдинговКИсточникамИнформации.timeout КАК timeout,
-	|	ПодключенияХолдинговКИсточникамИнформации.secureConnection КАК secureConnection,
-	|	ПодключенияХолдинговКИсточникамИнформации.UseOSAuthentication КАК UseOSAuthentication
-	|ПОМЕСТИТЬ ВТ
-	|ИЗ
-	|	РегистрСведений.holdingsConnectionsInformationSources КАК ПодключенияХолдинговКИсточникамИнформации
-	|ГДЕ
-	|	ПодключенияХолдинговКИсточникамИнформации.holding = &holding
+	query.Text = "SELECT
+	|	holdingsConnectionsInformationSources.holding AS holding,
+	|	holdingsConnectionsInformationSources.informationSource AS informationSource,
+	|	holdingsConnectionsInformationSources.server AS server,
+	|	holdingsConnectionsInformationSources.port AS port,
+	|	holdingsConnectionsInformationSources.user AS user,
+	|	holdingsConnectionsInformationSources.password AS password,
+	|	holdingsConnectionsInformationSources.URL AS URL,
+	|	holdingsConnectionsInformationSources.timeout AS timeout,
+	|	holdingsConnectionsInformationSources.secureConnection AS secureConnection,
+	|	holdingsConnectionsInformationSources.UseOSAuthentication AS UseOSAuthentication
+	|INTO TT
+	|FROM
+	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
+	|WHERE
+	|	holdingsConnectionsInformationSources.holding = &holding
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|ВЫБРАТЬ
-	|	ВТ.server КАК server,
-	|	ВТ.port КАК port,
-	|	ВТ.account КАК УчетнаяЗапись,
-	|	ВТ.password КАК password,
-	|	ВТ.timeout КАК timeout,
-	|	ВТ.secureConnection КАК secureConnection,
-	|	ВТ.UseOSAuthentication КАК UseOSAuthentication,
-	|	ВТ.URL КАК URL,
-	|	informationSources.requestReceiver КАК Приемник
-	|ИЗ
-	|	Справочник.matchingRequestsInformationSources.informationSources КАК informationSources
-	|		INNER СОЕДИНЕНИЕ ВТ КАК ВТ
-	|		ПО informationSources.informationSource = ВТ.informationSource
-	|ГДЕ
+	|SELECT
+	|	TT.server AS server,
+	|	TT.port AS port,
+	|	TT.user AS user,
+	|	TT.password AS password,
+	|	TT.timeout AS timeout,
+	|	TT.secureConnection AS secureConnection,
+	|	TT.UseOSAuthentication AS UseOSAuthentication,
+	|	TT.URL AS URL,
+	|	informationSources.requestReceiver AS requestReceiver
+	|FROM
+	|	Catalog.matchingRequestsInformationSources.informationSources AS informationSources
+	|		INNER JOIN TT AS TT
+	|		ON informationSources.informationSource = TT.informationSource
+	|WHERE
 	|	informationSources.requestSource = &request";
 
 	query.SetParameter("holding", holding);
@@ -165,15 +183,15 @@ Function getRequestStructure(request, holding) Export
 	If Not resultQuery.IsEmpty() Then
 		selection = resultQuery.Select();
 		selection.Next();
-		requestStruct.Insert("server", selection.Сервер);
-		requestStruct.Insert("port", selection.Порт);
-		requestStruct.Insert("УчетнаяЗапись", selection.УчетнаяЗапись);
-		requestStruct.Insert("password", selection.Пароль);
-		requestStruct.Insert("timeout", selection.Таймаут);
-		requestStruct.Insert("secureConnection", selection.ЗащищенноеСоединение);
-		requestStruct.Insert("UseOSAuthentication", selection.ИспользоватьАутентификациюОС);
+		requestStruct.Insert("server", selection.server);
+		requestStruct.Insert("port", selection.port);
+		requestStruct.Insert("user", selection.user);
+		requestStruct.Insert("password", selection.password);
+		requestStruct.Insert("timeout", selection.timeout);
+		requestStruct.Insert("secureConnection", selection.secureConnection);
+		requestStruct.Insert("UseOSAuthentication", selection.UseOSAuthentication);
 		requestStruct.Insert("URL", selection.URL);
-		requestStruct.Insert("Приемник", selection.Приемник);
+		requestStruct.Insert("requestReceiver", selection.requestReceiver);
 	EndIf;
 
 	Return requestStruct;

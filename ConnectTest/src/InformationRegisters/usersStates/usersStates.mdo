@@ -75,6 +75,22 @@
       <value></value>
     </fillValue>
   </resources>
+  <resources uuid="d8983860-c74e-4b0f-aceb-741305002695">
+    <name>outdated</name>
+    <synonym>
+      <key>en</key>
+      <value>Outdated</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Устаревший</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
   <dimensions uuid="df3128ce-9d42-444c-93f7-e9357795a4e4">
     <name>user</name>
     <synonym>

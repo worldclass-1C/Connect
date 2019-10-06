@@ -84,3 +84,51 @@ EndFunction
 Function initProfileStruct()
 	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barCode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
+
+Procedure updateCache(val parameters, val token) Export	
+	
+	tokenContext = TokenReuse.getContext(token);
+	parameters.Insert("tokenContext", tokenContext);
+	
+	query = New Query("SELECT
+	|	chainscacheValuesTypes.cacheValuesType As cacheValuesType,
+	|	chainscacheValuesTypes.cacheValuesType.code AS cacheValuesTypeCode,
+	|	chainscacheValuesTypes.cacheValuesType.defaultValueType AS cacheDefaultValueType,
+	|	ISNULL(usersStates.outdated, TRUE) AS outdated
+	|FROM
+	|	Catalog.chains.cacheValuesTypes AS chainscacheValuesTypes
+	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+	|		ON chainscacheValuesTypes.cacheValuesType = usersStates.cacheValuesType
+	|		AND usersStates.user = &user
+	|		AND usersStates.appType = &appType
+	|WHERE
+	|	chainscacheValuesTypes.Ref = &chain
+	|	and ISNULL(usersStates.outdated, TRUE) = TRUE
+	|	AND chainscacheValuesTypes.isUsed
+	|	AND chainscacheValuesTypes.isUpdated");
+	
+	query.SetParameter("user", tokenContext.user);
+	query.SetParameter("appType", tokenContext.appType);
+	query.SetParameter("chain", tokenContext.chain);
+
+	result = query.Execute();
+
+	If Not result.IsEmpty() Then
+		select = result.Select();		
+		While select.Next() Do
+			parameters.Insert("requestName", "update" + select.cacheValuesTypeCode);
+			General.executeRequestMethod(parameters);
+			record = InformationRegisters.usersStates.CreateRecordManager();
+			record.user = tokenContext.user;
+			record.appType = tokenContext.appType;
+			record.cacheValuesType = select.cacheValuesType;
+			If parameters.errorDescription.result = "" Then
+				record.stateValue = StrReplace(parameters.answerBody, Chars.NBSp, "");
+			Else				
+				record.stateValue = HTTP.encodeJSON(HTTP.decodeJSON("", select.cacheDefaultValueType))
+			EndIf;
+			record.Write();
+		EndDo;		
+	EndIf;
+	
+EndProcedure

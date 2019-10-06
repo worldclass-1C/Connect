@@ -207,10 +207,6 @@
 	<object>
 		<name>Catalog.logs</name>
 		<right>
-			<name>Delete</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>InteractiveInsert</name>
 			<value>false</value>
 		</right>

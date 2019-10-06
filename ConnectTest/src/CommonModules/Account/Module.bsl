@@ -11,7 +11,7 @@ EndFunction
 Function getFromExternalSystem(val parameters, val parametrName,
 		val parametrValue, val account = Undefined) Export
 
-	tokenСontext = parameters.tokenСontext;
+	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	errorDescription = parameters.errorDescription;	
 	userProfile = initProfileStruct();
@@ -26,21 +26,22 @@ Function getFromExternalSystem(val parameters, val parametrName,
 		answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
 		If answerStruct.Count() = 1 Then
 			If account = Undefined Then
-				accountArray = Service.createCatalogItems("addChangeAccounts", tokenСontext.holding, answerStruct);
+				accountArray = Service.createCatalogItems("addChangeAccounts", tokenContext.holding, answerStruct);
 				account = accountArray[0];
 				setStatus(account);								
 			EndIf;
 			userProfile = profile(account);
-			userArray = Service.createCatalogItems("addChangeUsers", tokenСontext.holding, answerStruct, account);
-			Token.editProperty(tokenСontext.token, New Structure("account, user", account, userArray[0]));
-			authKey = Left(authKey, 36);									
+			userArray = Service.createCatalogItems("addChangeUsers", tokenContext.holding, answerStruct, account);
+			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
+			authKey = Left(authKey, 36);
+			Users.updateCache(parameters, authKey);									
 		ElsIf answerStruct.Count() > 1 Then			
 			For Each user In answerStruct Do
 				userList.Add(New Structure("name, uid", user.lastName + " "
 					+ user.firstName + " " + user.secondName, user.uid));
 			EndDo;
 			If account <> Undefined Then
-				Token.editProperty(tokenСontext.token, New Structure("account", account));
+				Token.editProperty(tokenContext.token, New Structure("account", account));
 			EndIf;			
 		Else
 			errorDescription = Service.getErrorDescription(language, "passwordNotCorrect"); //Хотя такого быть не должно									

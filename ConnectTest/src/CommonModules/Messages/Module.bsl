@@ -17,9 +17,10 @@ Function newMessage(messageData, sendImmediately = False) Export
 	messageObject.title = ?(messageData.Property("title"), messageData.title, "");
 	messageObject.gym = ?(messageData.Property("gym"), messageData.gym, Catalogs.gyms.EmptyRef());
 	messageObject.phone = StrReplace(?(messageData.Property("phone"), messageData.phone, ""), "+", "");
-	messageObject.user = ?(messageData.Property("user"), messageData.account, Catalogs.accounts.EmptyRef());
+	messageObject.user = ?(messageData.Property("user"), messageData.user, Catalogs.users.EmptyRef());
 	messageObject.priority = ?(messageData.Property("priority"), messageData.priority, 10000);
 	messageObject.text = ?(messageData.Property("text"), messageData.text, "");
+	messageObject.appType = ?(messageData.Property("appType"), messageData.appType, Enums.appTypes.EmptyRef());
 	messageObject.holding = messageData.holding;
 
 	For Each informationChannel In messageData.informationChannels Do
@@ -41,12 +42,12 @@ Function newMessage(messageData, sendImmediately = False) Export
 EndFunction
 
 Function pushData(action = "", objectId = "", objectType = "",
-		noteId = "") Export
+		message = "") Export
 	struct = New Structure();
 	struct.Insert("action", action);
 	struct.Insert("objectId", objectId);
 	struct.Insert("objectType", objectType);
-	struct.Insert("noteId", XMLString(noteId));
+	struct.Insert("noteId", XMLString(message));
 	Return HTTP.encodeJSON(struct);
 EndFunction
 
@@ -58,13 +59,7 @@ Procedure sendPush(parameters) Export
 		notification.Text = parameters.text;
 		notification.Badge = parameters.badge;
 		notification.Recipients.Add(pushSubscriber(parameters.deviceToken, parameters.subscriberType));
-
-		data = New Structure();
-		data.Insert("action", parameters.action);
-		data.Insert("objectId", parameters.objectId);
-		data.Insert("objectType", parameters.objectType);
-		data.Insert("noteId", XMLString(parameters.noteId));
-		notification.Data = HTTP.encodeJSON(data);
+		notification.Data = pushData(parameters.action, parameters.objectId, parameters.objectType, parameters.message);		
 
 		DeliverableNotificationSend.Send(notification, GeneralReuse.getAuthorizationKey(parameters.systemType, parameters.certificate));
 		If Not parameters.message.isEmpty() Then
@@ -163,7 +158,7 @@ Procedure checkSmsStatus(parameters) Export
 	EndIf;
 
 	Если answer.messageStatus = Enums.messageStatuses.delivered
-			Or parameters.ВозрастСообщения > 2 Then
+			Or parameters.messageAge > 2 Then
 		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToCheckStatus, parameters.message);
 	ElsIf answer.messageStatus = Enums.messageStatuses.notDelivered Then
 		useNextInformationChannel(parameters.message, Enums.informationChannels.sms);
@@ -173,8 +168,8 @@ Procedure checkSmsStatus(parameters) Export
 
 EndProcedure
 
-Procedure useNextInformationChannel(message, currentChannel)
-	currentChannel = message.channelPriorities.Find(currentChannel, "channel");
+Procedure useNextInformationChannel(message, channel)
+	currentChannel = message.channelPriorities.Find(channel, "channel");
 	If currentChannel <> Undefined Then
 		count = message.channelPriorities.Count();
 		currentChannelIndex = currentChannel.LineNumber - 1;
@@ -351,6 +346,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	messages.Ref.objectType AS objectType,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
 	|	ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef)) AS token,
+	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
 	|	tokens.chain AS chain,
 	|	tokens.appType AS appType,
 	|	tokens.systemType AS systemType,
@@ -402,48 +398,25 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT.objectId AS objectId,
 	|	TT.objectType AS objectType,
 	|	TT.nodeMessagesToSend AS nodeMessagesToSend,
-	|	TT.chain AS chain,
-	|	TT.appType AS appType,
 	|	TT.systemType AS systemType,
 	|	TT.subscriberType AS subscriberType,
-	|	ISNULL(registeredDevices.deviceToken, """") AS deviceToken,
+	|	TT.deviceToken AS deviceToken,
 	|	TT.token AS token,
-	|	TT.user AS user,
-	|	&informationChannel AS informationChannel
-	|INTO TT_devices
-	|FROM
-	|	TT AS TT
-	|		LEFT JOIN InformationRegister.registeredDevices AS registeredDevices
-	|		ON TT.token = registeredDevices.token
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	TT_devices.message AS message,
-	|	TT_devices.title AS title,
-	|	TT_devices.text AS text,
-	|	TT_devices.action AS action,
-	|	TT_devices.objectId AS objectId,
-	|	TT_devices.objectType AS objectType,
-	|	TT_devices.nodeMessagesToSend AS nodeMessagesToSend,
-	|	TT_devices.systemType AS systemType,
-	|	TT_devices.subscriberType AS subscriberType,
-	|	TT_devices.deviceToken AS deviceToken,
-	|	TT_devices.token AS token,
-	|	TT_devices.informationChannel AS informationChannel,
+	|	&informationChannel AS informationChannel,
 	|	ISNULL(chainAppCertificates.certificate, appCertificates.certificate) AS certificate,
 	|	ISNULL(unreadMessages.count, 0) AS badge
 	|FROM
-	|	TT_devices AS TT_devices
+	|	TT AS TT
 	|		LEFT JOIN InformationRegister.appCertificates AS chainAppCertificates
-	|		ON TT_devices.chain = chainAppCertificates.chain
-	|		AND TT_devices.appType = chainAppCertificates.appType
-	|		AND TT_devices.systemType = chainAppCertificates.systemType
+	|		ON TT.chain = chainAppCertificates.chain
+	|		AND TT.appType = chainAppCertificates.appType
+	|		AND TT.systemType = chainAppCertificates.systemType
 	|		LEFT JOIN InformationRegister.appCertificates AS appCertificates
 	|		ON appCertificates.chain = VALUE(Catalog.chains.EmptyRef)
-	|		AND TT_devices.appType = appCertificates.appType
-	|		AND TT_devices.systemType = appCertificates.systemType
+	|		AND TT.appType = appCertificates.appType
+	|		AND TT.systemType = appCertificates.systemType
 	|		LEFT JOIN TT_unreadMessages AS unreadMessages
-	|		ON TT_devices.user = unreadMessages.user";
+	|		ON TT.user = unreadMessages.user";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
 	query.SetParameter("holding", holding);

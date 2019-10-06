@@ -106,7 +106,7 @@
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ОповещениеИсточникаИнформации</scheduledJobs>
+  <scheduledJobs>ScheduledJob.alertSourceInformation</scheduledJobs>
   <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
@@ -121,6 +121,7 @@
   <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.cities</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
+  <catalogs>Catalog.employees</catalogs>
   <catalogs>Catalog.gyms</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
@@ -135,6 +136,7 @@
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
+  <enums>Enum.JSONValueTypes</enums>
   <enums>Enum.HTTPRequestTypes</enums>
   <enums>Enum.informationChannels</enums>
   <enums>Enum.loyaltyTypes</enums>

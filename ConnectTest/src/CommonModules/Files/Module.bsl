@@ -17,11 +17,11 @@ Function pathConcat(path1, path2, separator = "") Export
 	Return StrConcat(pathArray, separator);
 EndFunction
 
-Function getImgStoragePath()
+Function getImgStoragePath() Export
 	Return Constants.ImgStorage.Get();
 EndFunction
 
-Function getBaseImgURL()
+Function getBaseImgURL() Export
 	Return Constants.BaseImgURL.Get();
 EndFunction
 
@@ -29,7 +29,7 @@ Function getHoldingPath(holdingCode, url = False)
 	Return pathConcat(?(url, getBaseImgURL(), getImgStoragePath()), holdingCode, ?(url, "/", "\"));
 EndFunction
 
-Function getPath(object) Export	
+Function _getPath(object) Export	
 	objectMetadata = object.Metadata();
 	If objectMetadata.Attributes.Find("holding") = Undefined Then
 		Return New Structure("location, URL", getImgStoragePath() + "\service", getBaseImgURL() + "/service");	
@@ -38,6 +38,16 @@ Function getPath(object) Export
 		holdingURL = getHoldingPath(object.holding.code, True);
 		metadataName = objectMetadata.Name;		
 		Return New Structure("location, URL", pathConcat(holdingPath, metadataName, "\"), pathConcat(holdingURL, metadataName, "/"));		
+	EndIf;	
+EndFunction
+
+Function getPath(object, holdingCode = "") Export	
+	If holdingCode = "" Then
+		Return New Structure("location, URL", getImgStoragePath() + "\service", getBaseImgURL() + "/service");	
+	Else
+		holdingPath = getHoldingPath(holdingCode);
+		holdingURL = getHoldingPath(holdingCode, True);				
+		Return New Structure("location, URL", pathConcat(holdingPath, object, "\"), pathConcat(holdingURL, object, "/"));		
 	EndIf;	
 EndFunction
 

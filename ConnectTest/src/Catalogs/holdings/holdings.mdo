@@ -184,6 +184,26 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="90f4a164-064f-40e5-b05e-3b640badb720">
+    <name>languageDefault</name>
+    <synonym>
+      <key>en</key>
+      <value>Language default</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Язык по умолчанию</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>3</length>
+      </stringQualifiers>
+    </type>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="16a0eff5-8bfe-4c13-a7e0-9af411bed515">
     <name>ListForm</name>
     <synonym>

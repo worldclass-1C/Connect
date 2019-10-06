@@ -361,6 +361,38 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <attributes uuid="5c585ec8-bb72-409e-8fc4-e7c9b654590c">
+      <name>isUsed</name>
+      <synonym>
+        <key>en</key>
+        <value>Used</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Используется</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="c870a78c-67a1-4ac8-800e-bfa48539aac5">
+      <name>isUpdated</name>
+      <synonym>
+        <key>en</key>
+        <value>Updated</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Обновляется</value>
+      </synonym>
+      <type>
+        <types>Boolean</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
   </tabularSections>
   <forms uuid="78483e22-e9d9-465c-8c4c-6b45a9ed4e3b">
     <name>ListForm</name>

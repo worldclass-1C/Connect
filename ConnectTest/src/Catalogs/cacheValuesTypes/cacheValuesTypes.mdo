@@ -158,31 +158,16 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="90ee5e74-74fe-4043-a82a-e560ca892739">
-    <name>defaultValue</name>
+  <attributes uuid="55023a93-993d-430c-ad5a-964cbf4a5765">
+    <name>defaultValueType</name>
     <synonym>
       <key>en</key>
-      <value>Default value</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Занчение по умолчанию</value>
+      <value>Default value type</value>
     </synonym>
     <type>
-      <types>String</types>
-      <types>Number</types>
-      <types>Date</types>
-      <types>Boolean</types>
-      <numberQualifiers>
-        <precision>10</precision>
-      </numberQualifiers>
-      <stringQualifiers>
-        <length>10</length>
-      </stringQualifiers>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
+      <types>EnumRef.JSONValueTypes</types>
     </type>
+    <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

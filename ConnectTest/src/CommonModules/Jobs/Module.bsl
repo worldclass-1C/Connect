@@ -28,10 +28,12 @@ Procedure РассчитатьПоказатели() Export
 	Service.РассчитатьПоказатели();
 EndProcedure
 
-Procedure ОповеститьИсточникИнформации() Export
-	Service.ОповеститьИсточникИнформации();
+Procedure alertSourceInformation() Export
+	Service.alertSourceInformation();
 EndProcedure
 
 Procedure ПроверитьАктуальностьТокенов() Export
 	Service.ПроверитьАктуальностьТокенов();
 EndProcedure
+
+

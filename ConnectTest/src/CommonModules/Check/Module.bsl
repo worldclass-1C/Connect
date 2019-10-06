@@ -59,7 +59,9 @@ Function getRequiredParameters(requestName)
 	ElsIF requestName = "registerdevice" Then
 		Return "appType,appVersion,deviceModel,systemType,systemVersion";
 	ElsIF requestName = "addusertotoken" Then
-		Return "uid";	
+		Return "uid";
+	ElsIF requestName = "imagePUT" Then
+		Return "object,extension";		
 	Else
 		Return "";		
 	EndIf;
@@ -91,7 +93,7 @@ EndFunction
 
 Procedure legality(request, parameters) Export
 	parameters.Insert("authKey", HTTP.GetRequestHeader(request, "auth-key"));
-	parameters.Insert("tokenСontext", New Structure("token", Catalogs.tokens.EmptyRef()));
+	parameters.Insert("tokenContext", New Structure("token, user", Catalogs.tokens.EmptyRef(),Catalogs.users.EmptyRef()));
 	If Not ValueIsFilled(parameters.authKey) Then
 		If parameters.requestName <> "config"
 				And parameters.requestName <> "chainlist"
@@ -111,11 +113,11 @@ Procedure legality(request, parameters) Export
 			EndIf;
 		EndIf;
 	Else
-		tokenСontext = TokenReuse.getContext(parameters.authKey);
-		If tokenСontext.token.IsEmpty() Then
+		tokenContext = TokenReuse.getContext(parameters.authKey);
+		If tokenContext.token.IsEmpty() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
 		Else
-			parameters.Insert("tokenСontext", tokenСontext);
+			parameters.Insert("tokenContext", tokenContext);
 		EndIf;
 	EndIf;
 EndProcedure

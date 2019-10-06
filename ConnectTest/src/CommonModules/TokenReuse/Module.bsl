@@ -26,14 +26,14 @@ Function getContext(authKey) Export
 
 	query.SetParameter("token", XMLValue(Type("CatalogRef.tokens"), Left(authKey, 36)));
 	queryResult = query.Execute();
-	tokenСontext = Token.initContext();
+	tokenContext = Token.initContext();
 	If Not queryResult.IsEmpty() Then		
 		selection = queryResult.Select();
 		selection.Next();
-		FillPropertyValues(tokenСontext, selection);				
+		FillPropertyValues(tokenContext, selection);				
 	EndIf;
 		
-	Return New FixedStructure(tokenСontext);
+	Return New FixedStructure(tokenContext);
 	
 EndFunction
 

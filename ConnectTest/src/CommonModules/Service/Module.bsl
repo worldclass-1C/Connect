@@ -178,6 +178,24 @@ Function getErrorDescription(language = "", result = "",
 			Else
 				errorDescription.Insert("description", "Message can be sent in 15 minutes");
 			EndIf;
+		ElsIf result = "objectError" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Не указан объект метаданных");
+			Else
+				errorDescription.Insert("description", "No metadata object specified");
+			EndIf;
+		ElsIf result = "extensionError" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Не указано расширение файла");
+			Else
+				errorDescription.Insert("description", "File extension not specified");
+			EndIf;
+		ElsIf result = "noBinaryData" Then
+			Если language = "ru" Then
+				errorDescription.Insert("description", "Переданны не бинарные данные");
+			Else
+				errorDescription.Insert("description", "Non binary data transmitted");
+			EndIf;			
 		EndIf;
 	EndIf;
 
@@ -499,17 +517,17 @@ Function getStructCopy(struct) Export
 	Return structNew;
 EndFunction
 
-Procedure logRequestBackground(parameters) Export //duration, requestName, request, response, isError, token, account)Экспорт
+Procedure logRequestBackground(parameters) Export
 	array	= New Array();
-	array.Add(Parameters);
+	array.Add(parameters);
 	BackgroundJobs.Execute("Service.logRequest", array, New UUID());
 EndProcedure
 	
 Procedure logRequest(parameters) Export
 	record = Catalogs.logs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
-	record.token = parameters.tokenСontext.token;
-	record.user = parameters.tokenСontext.user;
+	record.token = parameters.tokenContext.token;
+	record.user = parameters.tokenContext.user;	
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
 	record.isError = parameters.isError;
@@ -537,6 +555,49 @@ Procedure addRowInAttributesTable(attributesTable, key, value,
 	newRow.key		= key;
 	newRow.value	= value;
 	newRow.type		= type;
+EndProcedure
+
+Procedure alertSourceInformation() Export
+	
+	headers	= New Map();
+	headers.Insert("Content-Type", "application/json");
+		
+	query	= New Query("SELECT TOP 100
+	|	usersChanges.Ref AS user,
+	|	tokens.appType AS appType,
+	|	MIN(tokens.lockDate) AS lockDate,
+	|	tokens.holding AS holding
+	|FROM
+	|	Catalog.users.Changes AS usersChanges
+	|		LEFT JOIN Catalog.tokens AS tokens
+	|		ON usersChanges.Ref = tokens.user
+	|GROUP BY
+	|	usersChanges.Ref,
+	|	tokens.appType,
+	|	tokens.holding");
+	
+	core	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
+	select	= query.Execute().Select();
+	
+	While select.next() Do	
+		queryStruct = HTTP.GetRequestStructure(?(select.lockDate = Date(1,1,1), "registerAccount", "unregisterAccount"), select.holding);
+		If queryStruct.count() > 0 Then			
+			structHTTPRequest	= New Structure();
+			structHTTPRequest.Insert("userId", XMLString(select.user));
+			structHTTPRequest.Insert("language", "en");
+			structHTTPRequest.Insert("appType", XMLString(select.appType));			
+			HTTPConnection	= New HTTPConnection(queryStruct.server,, queryStruct.user, queryStruct.password,, queryStruct.timeout, ?(queryStruct.secureConnection, New OpenSSLSecureConnection(), Undefined), queryStruct.UseOSAuthentication);
+			HTTPRequest = New HTTPRequest(queryStruct.URL + queryStruct.requestReceiver, headers);
+			HTTPRequest.SetBodyFromString(HTTP.encodeJSON(structHTTPRequest));			
+			response	= HTTPConnection.Post(HTTPRequest);
+			If response.StatusCode = 200 Then
+				ExchangePlans.DeleteChangeRecords(core, select.user);
+			EndIf;
+		Else
+			ExchangePlans.DeleteChangeRecords(core, select.user);
+		EndIf;	
+	EndDo;
+	
 EndProcedure
 
 Процедура РассчитатьПоказатели() Экспорт
@@ -865,53 +926,6 @@ EndProcedure
 	Набор.Загрузить(пЗапрос.Выполнить().Выгрузить());
 	Набор.Записать();
 		
-КонецПроцедуры
-
-Процедура ОповеститьИсточникИнформации() Экспорт
-	
-	Заголовки	= Новый Соответствие;
-	Заголовки.Вставить("Content-Type", "application/json");
-		
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ ПЕРВЫЕ 100
-	             	  |	ПользователиИзменения.Ссылка КАК account,
-	             	  |	Токены.appType КАК appType,
-	             	  |	МИНИМУМ(Токены.lockDate) КАК lockDate,
-	             	  |	Токены.holding КАК holding
-	             	  |ИЗ
-	             	  |	Справочник.accounts.Изменения КАК ПользователиИзменения
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.tokens КАК Токены
-	             	  |		ПО ПользователиИзменения.Ссылка = Токены.account
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ПользователиИзменения.Ссылка,
-	             	  |	Токены.chain,
-	             	  |	Токены.appType,
-	             	  |	Токены.holding";
-	
-	Выборка	= пЗапрос.Выполнить().Выбрать();
-	
-	Узел	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
-	
-	Пока Выборка.Следующий() Цикл	
-		СтруктураЗапроса = HTTP.GetRequestStructure(?(Выборка.lockDate = Дата(1,1,1), "registerAccount", "unregisterAccount"), Выборка.Холдинг);
-		Если СтруктураЗапроса.Количество() > 0 Тогда			
-			СтруктураHTTPЗапроса	= Новый Структура;
-			СтруктураHTTPЗапроса.Вставить("userId", XMLСтрока(Выборка.Пользователь));
-			СтруктураHTTPЗапроса.Вставить("language", "en");
-			СтруктураHTTPЗапроса.Вставить("appType", XMLСтрока(Выборка.ВидПриложения));			
-			HTTPСоединение	= Новый HTTPСоединение(СтруктураЗапроса.server,, СтруктураЗапроса.УчетнаяЗапись, СтруктураЗапроса.password,, СтруктураЗапроса.timeout, ?(СтруктураЗапроса.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), СтруктураЗапроса.UseOSAuthentication);
-			ЗапросHTTP = Новый HTTPЗапрос(СтруктураЗапроса.URL + СтруктураЗапроса.Приемник, Заголовки);
-			ЗапросHTTP.УстановитьТелоИзСтроки(HTTP.encodeJSON(СтруктураHTTPЗапроса));			
-			ОтветHTTP	= HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
-			Если ОтветHTTP.КодСостояния = 200 Тогда
-				ПланыОбмена.УдалитьРегистрациюИзменений(Узел, Выборка.Пользователь);
-			EndIf;
-		Else
-			ПланыОбмена.УдалитьРегистрациюИзменений(Узел, Выборка.Пользователь);
-		EndIf;	
-	КонецЦикла;
-	
 КонецПроцедуры
 
 Процедура ПроверитьАктуальностьТокенов() Экспорт

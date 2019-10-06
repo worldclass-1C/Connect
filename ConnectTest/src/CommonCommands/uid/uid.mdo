@@ -13,6 +13,7 @@
     <types>CatalogRef.gyms</types>
     <types>CatalogRef.cities</types>
     <types>CatalogRef.accounts</types>
+    <types>CatalogRef.users</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

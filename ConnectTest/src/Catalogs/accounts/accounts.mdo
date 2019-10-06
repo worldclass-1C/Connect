@@ -156,6 +156,7 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.accounts.Form.ListForm</defaultListForm>
+  <defaultChoiceForm>Catalog.accounts.Form.ChoiceForm</defaultChoiceForm>
   <attributes uuid="16d224e9-10ab-47d4-b16a-63822187ceda">
     <name>birthday</name>
     <synonym>
@@ -369,6 +370,15 @@
     <synonym>
       <key>en</key>
       <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="9de73937-c537-4667-a61c-530f5b810418">
+    <name>ChoiceForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Choice form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

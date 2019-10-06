@@ -8,7 +8,7 @@ EndProcedure
 Function putFileAtServer(address, selectedFileName) Export
 	gymObject = FormAttributeToValue("Object");
 	transferredFile = New File(selectedFileName);
-	pathStruct = Files.getPath(gymObject);
+	pathStruct = Files._getPath(gymObject);
 	fileName = Files.pathConcat("" + New UUID(), transferredFile.Extension);
 	BinaryData = GetFromTempStorage(address);
 	BinaryData.write(Files.pathConcat(pathStruct.location, fileName, "\"));

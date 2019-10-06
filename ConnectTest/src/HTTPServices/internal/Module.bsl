@@ -7,12 +7,10 @@ Function sendMessagePOST(request)
 	Return HTTP.processRequest(request, "sendMessage");
 EndFunction
 
-Function imagePUT(Request)
-	Response = New HTTPServiceResponse(200);
-	Return Response;
+Function imagePOST(Request)
+	Return HTTP.processRequest(request, "imagePOST");
 EndFunction
 
 Function imageDELETE(Request)
-	Response = New HTTPServiceResponse(200);
-	Return Response;
+	Return HTTP.processRequest(request, "imageDELETE");
 EndFunction
