@@ -23,5 +23,6 @@
   <content>Catalog.cacheValuesTypes</content>
   <content>Catalog.CountryCodes</content>
   <content>Catalog.users</content>
-  <content>Catalog.metro</content>
+  <content>Catalog.languages</content>
+  <content>Catalog.errorDescriptions</content>
 </mdclass:Subsystem>

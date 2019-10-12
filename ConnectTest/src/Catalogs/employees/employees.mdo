@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e01d62a8-416f-4838-b100-589b921cf871">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e01d62a8-416f-4838-b100-589b921cf871">
   <producedTypes>
     <objectType typeId="9c611a6f-5da6-4c6b-b414-633bb5087cff" valueTypeId="826b196b-5468-49a7-9d85-7c56e964e387"/>
     <refType typeId="485321e4-f10a-4d34-a76c-2034fd126f2c" valueTypeId="80f95138-0fc4-436d-a959-e36eeea2ed36"/>
@@ -34,4 +34,172 @@
   <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
+  <attributes uuid="1244b4ae-7170-4ade-a070-3c56526a2969">
+    <name>photo</name>
+    <synonym>
+      <key>en</key>
+      <value>Photo</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фотография</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="344e7172-8d5c-4320-970f-1b4a18063cab">
+    <name>firstName</name>
+    <synonym>
+      <key>en</key>
+      <value>First name</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Имя</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a71d98d7-f20f-4fe9-9e2f-5ca2d571e760">
+    <name>lastName</name>
+    <synonym>
+      <key>en</key>
+      <value>Last name</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фамилия</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="07f23d83-7473-4f05-a783-3f1195cfba51">
+    <producedTypes>
+      <objectType typeId="ef59671c-5239-4dbb-a34a-5d929a014f32" valueTypeId="32a7c322-d659-4975-b53d-b5a32bbb7dcc"/>
+      <rowType typeId="79732fbb-63a4-449b-aa8e-47ab0b0a9376" valueTypeId="83e0083c-c268-4a66-ac50-0eed39c4954d"/>
+    </producedTypes>
+    <name>translation</name>
+    <synonym>
+      <key>en</key>
+      <value>Translation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Перевод</value>
+    </synonym>
+    <attributes uuid="b96f7608-3da9-484e-a8aa-c65df86333d1">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.languages</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="077d2451-55e7-45ad-b955-3a387a9d262f">
+      <name>firstName</name>
+      <synonym>
+        <key>en</key>
+        <value>First name</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Имя</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="3eb4ca3b-2ec5-4aac-8e1f-213fb7338073">
+      <name>lastName</name>
+      <synonym>
+        <key>en</key>
+        <value>Last name</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Фамилия</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="8ba566ef-610b-4033-a50e-b524b2904b01">
+    <producedTypes>
+      <objectType typeId="8306fa29-383f-437b-b84a-9bd41960c65c" valueTypeId="9250e56c-8d68-433d-aac0-d46fd6ea837b"/>
+      <rowType typeId="3c858da2-bef3-4d4f-aa86-d72043b2c89f" valueTypeId="81a73a06-119b-4c18-bd0e-ec11c19d2af2"/>
+    </producedTypes>
+    <name>fhoto</name>
+    <synonym>
+      <key>en</key>
+      <value>Fhoto</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фото</value>
+    </synonym>
+    <attributes uuid="d3aa0eed-4dcf-4f27-9340-9b9afb7fca58">
+      <name>URL</name>
+      <synonym>
+        <key>en</key>
+        <value>URL</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>URL</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
 </mdclass:Catalog>

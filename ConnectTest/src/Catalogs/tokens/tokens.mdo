@@ -209,22 +209,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="ef02965c-872e-4780-8734-88e1a896da13">
-    <name>user</name>
-    <synonym>
-      <key>en</key>
-      <value>User</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Пользователь</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.users</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="d05b8c76-497a-4de6-8710-ef6c4faded36">
     <name>deviceModel</name>
     <synonym>
@@ -372,6 +356,38 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="92181561-be05-45fa-b9bd-809a569d1931">
+    <name>underControl</name>
+    <synonym>
+      <key>en</key>
+      <value>Under control</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>На контроле</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ef02965c-872e-4780-8734-88e1a896da13">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

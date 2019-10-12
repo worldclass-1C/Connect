@@ -1,100 +1,78 @@
 
-Функция sendSMS(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
-	
-	URL	= "SmsService.svc/SendSms?login=" + Параметры.user + "&password=" + Параметры.password + "&phone=" + Параметры.phone + "&body=" + Параметры.text + "&senderName=" + Параметры.senderName;
-	ЗапросHTTP	= Новый HTTPЗапрос(URL);
-	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
-	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
-	
-	ЧтениеXML = Новый ЧтениеXML;
-	ЧтениеXML.УстановитьСтроку(ТелоЗапроса);
-	ТекущийПуть = "";
-	
-	Пока ЧтениеXML.Прочитать() Цикл
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.НачалоЭлемента Тогда
-			Если ЧтениеXML.firstName = "string" Тогда
-				ТекущийПуть = "string";
-			КонецЕсли;
-		КонецЕсли;
-		
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.Текст Тогда
-			Если ТекущийПуть = "string" Тогда
-				sms_id = ЧтениеXML.Значение;
-				ТекущийПуть = "";
-			КонецЕсли;
-		КонецЕсли;
-	КонецЦикла;	
-	
-	Если sms_id <> "" Тогда
-		Ответ.Вставить("id", sms_id);
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.sent);		
-	Иначе
-		Ответ.Вставить("error", "Сбой при отрправке Messages");		
-	КонецЕсли;
-	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
-	
-	Возврат Ответ;	
-	
-КонецФункции
+Function sendSMS(parameters, answer) Export
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
+	URL	= "SmsService.svc/SendSms?login=" + parameters.user + "&password=" + parameters.password + "&phone=" + parameters.phone + "&body=" + parameters.text + "&senderName=" + parameters.senderName;
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());
+	XMLReader = New XMLReader();;
+	XMLReader.SetString(answerBody);
+	currentPath = "";
+	While XMLReader.Read() Do
+		If XMLReader.NodeType = XMLNodeType.StartElement Then
+			If XMLReader.Name = "string" Then
+				currentPath = "string";
+			EndIf;
+		ElsIf XMLReader.NodeType = XMLNodeType.Text Then
+			If currentPath = "string" Then
+				sms_id = XMLReader.Value;
+				currentPath = "";
+			EndIf;
+		EndIf;
+	EndDo;
+	If sms_id <> "" Then
+		answer.Insert("id", sms_id);
+		answer.Insert("messageStatus", Enums.messageStatuses.sent);
+	Else
+		answer.Insert("error", "Сбой при отрправке Messages");
+	EndIf;
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	Return answer;
+EndFunction
 
-Функция checkSmsStatus(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
-	
-	URL	= "SmsService.svc/GetMessageState?login=" + Параметры.user + "&password=" + Параметры.password + "&messageid=" + Параметры.id;
-	ЗапросHTTP	= Новый HTTPЗапрос(URL);
-	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
-	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
+Function checkSmsStatus(parameters, answer) Export	
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
+	URL	= "SmsService.svc/GetMessageState?login=" + parameters.user + "&password=" + parameters.password + "&messageid=" + parameters.id;
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());
+	XMLReader = New XMLReader();;
+	XMLReader.SetString(answerBody);
+	currentPath = "";	
+	While XMLReader.Read() Do
+		If XMLReader.NodeType = XMLNodeType.StartElement Then
+			If XMLReader.Name = "Comment" Then
+				currentPath = "Comment";
+			EndIf;
+		ElsIf XMLReader.NodeType = XMLNodeType.Text Then
+			If currentPath = "Comment" Then
+				answerstatus = XMLReader.Value;
+				currentPath = "";
+			EndIf;
+		EndIf;
+	EndDo;
+	status	= messageStatus(answerstatus);
+	If TypeOf(status) = Type("EnumRef.messageStatuses") Then
+		answer.Insert("messageStatus", status);
+	Else
+		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
+		answer.Insert("error","Неизвестный status");
+	EndIf;
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	Return answer;
+EndFunction
 
-	ЧтениеXML = Новый ЧтениеXML;
-	ЧтениеXML.УстановитьСтроку(ТелоЗапроса);
-	ТекущийПуть = "";
-	
-	Пока ЧтениеXML.Прочитать() Цикл
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.НачалоЭлемента Тогда
-			Если ЧтениеXML.firstName = "Comment" Тогда
-				ТекущийПуть = "Comment";
-			КонецЕсли;
-		КонецЕсли;
-		
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.Текст Тогда
-			Если ТекущийПуть = "Comment" Тогда
-				ОтветСтатус = ЧтениеXML.Значение;
-				ТекущийПуть = "";
-			КонецЕсли;
-		КонецЕсли;
-	КонецЦикла;
-	
-	Статус	= СтатусСообщения(ОтветСтатус);
-	Если ТипЗнч(Статус) = Тип("ПеречислениеСсылка.messageStatuses") Тогда
-		Ответ.Вставить("messageStatus", Статус);
-	Иначе
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.notDelivered);
-		Ответ.Вставить("error","Неизвестный статус");
-	КонецЕсли;
-	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
-	
-	Возврат Ответ;
-	
-КонецФункции
-
-Функция СтатусСообщения(Статус)
-	
-	Если Статус = "В очереди" Или Статус = "sent" Или Статус = "Подготовлено" Или Статус = "Создано" Тогда
-		Возврат Перечисления.messageStatuses.sent;
-	ИначеЕсли Статус = "Отклонено" Тогда
-		Возврат Перечисления.messageStatuses.notSent;
-	ИначеЕсли Статус = "delivered" Тогда
-		Возврат Перечисления.messageStatuses.delivered;
-	ИначеЕсли Статус = "Не delivered" Или Статус = "Просрочено" Тогда
-		Возврат Перечисления.messageStatuses.notDelivered;
-	Иначе
-		Возврат Статус;
-	КонецЕсли;
-	
-КонецФункции
+Function messageStatus(status)	
+	If status = "В очереди" Or status = "sent" Or status = "Подготовлено" Or status = "Создано" Then
+		Return Enums.messageStatuses.sent;
+	ElsIf status = "Отклонено" Then
+		Return Enums.messageStatuses.notSent;
+	ElsIf status = "delivered" Then
+		Return Enums.messageStatuses.delivered;
+	ElsIf status = "Не delivered" Or status = "Просрочено" Then
+		Return Enums.messageStatuses.notDelivered;
+	Else
+		Return status;
+	EndIf;	
+EndFunction
 

@@ -12,8 +12,8 @@ Function putFileAtServer(address, selectedFileName) Export
 	fileName = Files.pathConcat("" + New UUID(), transferredFile.Extension);
 	BinaryData = GetFromTempStorage(address);
 	BinaryData.write(Files.pathConcat(pathStruct.location, fileName, "\"));
-	newRow = gymObject.fhoto.add();
-	newRow.location = Files.pathConcat(pathStruct.location, fileName, "\");
+	newRow = gymObject.photos.add();
+	//newRow.location = Files.pathConcat(pathStruct.location, fileName, "\");
 	newRow.URL = Files.pathConcat(pathStruct.URL, fileName, "/");
 	gymObject.Write();
 	ValueToFormAttribute(gymObject, "Object");

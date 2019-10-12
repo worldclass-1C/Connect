@@ -11,9 +11,9 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "config" Then
 			getConfig(parameters);
 		ElsIf parameters.requestName = "signin" Then
-			accountSignIn(parameters);
+			signIn(parameters);
 		ElsIf parameters.requestName = "confirmphone" Then
-			accountConfirmPhone(parameters);
+			confirmPhone(parameters);
 		ElsIf parameters.requestName = "addusertotoken" Then 
 			addUserToToken(parameters);
 		ElsIf parameters.requestName = "registerdevice" Then 
@@ -47,6 +47,7 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "addchangeusers"
 				Or parameters.requestName = "addgyms"
 				Or parameters.requestName = "addrequest"
+				Or parameters.requestName = "adderrordescription"
 				Or parameters.requestName = "addcancelcauses"
 				Or parameters.requestName = "addcities" Then // проверить описание в API
 			changeCreateCatalogItems(parameters);
@@ -260,7 +261,12 @@ Procedure registerDevice(parameters)
 		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noChainCode"));
 	Else		
 		select = queryResult.Select();
-		select.Next();		
+		select.Next();
+		If tokenContext.Property("holding") Then
+			isHoldingChanged = tokenContext.holding <> select.holding;
+		Else
+			isHoldingChanged = False;
+		EndIf;
 		tokenStruct = New Structure();
 		tokenStruct.Insert("appType", Enums.appTypes[requestStruct.appType]);
 		tokenStruct.Insert("appVersion", requestStruct.appVersion);
@@ -271,14 +277,23 @@ Procedure registerDevice(parameters)
 		tokenStruct.Insert("systemType", Enums.systemTypes[requestStruct.systemType]);
 		tokenStruct.Insert("systemVersion", requestStruct.systemVersion);
 		tokenStruct.Insert("timeZone", select.timeZone);		
-		struct.Insert("token", XMLString(Token.get(tokenContext.token, tokenStruct)) + "0");
+		
+		strToken = XMLString(Token.get(tokenContext.token, tokenStruct)); 
+		If isHoldingChanged Then
+			struct.Insert("token",  strToken + requestStruct.chainCode);
+		ElsIf tokenContext.user.IsEmpty() Then
+			 struct.Insert("token",  strToken + "0");
+		Else
+			struct.Insert("token",  strToken);
+		EndIf;
+		
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 
 EndProcedure
 
-Procedure accountSignIn(parameters)
+Procedure signIn(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
@@ -291,19 +306,19 @@ Procedure accountSignIn(parameters)
 	
 	If requestStruct.phone = "+73232323223" Then
 		struct.Insert("result", "Ok");
-		struct.Insert("retryTime", 0);
+		struct.Insert("retryTime", 0);		
 		Account.incPasswordSendCount(tokenContext.token, requestStruct.phone, "3223");	
 	ElsIf retryTime > 0 and requestStruct.phone <> "+79154006161"
 			and requestStruct.phone <> "+79684007188"
 			and requestStruct.phone <> "+79035922412"
 			and requestStruct.phone <> "+79037478789" Then
 		struct.Insert("result", "Fail");
-		struct.Insert("retryTime", retryTime);
+		struct.Insert("retryTime", retryTime);		
 	Else
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
 			If tokenContext.chain <> chain Then				
-				changeStruct = New Structure("chain", chain);
+				changeStruct = New Structure("chain, holding", chain, chain.holding);
 				Token.editProperty(tokenContext.token, changeStruct);
 			EndIf;
 		Else
@@ -327,7 +342,7 @@ Procedure accountSignIn(parameters)
 			Messages.newMessage(messageStruct, True);
 			Account.incPasswordSendCount(tokenContext.token, requestStruct.phone, tempCode);
 			struct.Insert("result", "Ok");
-			struct.Insert("retryTime", 60);
+			struct.Insert("retryTime", 60);			
 		EndIf;
 	EndIf;
 
@@ -336,7 +351,7 @@ Procedure accountSignIn(parameters)
 
 EndProcedure
 
-Procedure accountConfirmPhone(parameters)
+Procedure confirmPhone(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
@@ -457,7 +472,7 @@ Procedure getGymList(parameters)
 	language		= parameters.language;
 	gymArray 		= New Array();
 	
-	errorDescription = Service.getErrorDescription();
+	errorDescription = Service.getErrorDescription(language);
 	
 	If Not requestStruct.Property("chain") Then
 		errorDescription = Service.getErrorDescription(language, "noChain");
@@ -477,16 +492,8 @@ Procedure getGymList(parameters)
 		|	gyms.chain,
 		|	gyms.type,
 		|	gyms.holding,
-		|	gyms.departmentWorkSchedule.(
-		|		department,
-		|		phone,
-		|		weekdaysTime,
-		|		holidaysTime),
-		|	gyms.nearestMetro.(
-		|		metro.description AS description,
-		|		metro.lineColor AS lineColor,
-		|		metro.lineName AS lineName,
-		|		metro.lineNumber AS lineNumber)
+		|	gyms.departmentWorkSchedule,
+		|	gyms.nearestMetro
 		|FROM
 		|	Catalog.gyms AS gyms
 		|WHERE
@@ -502,43 +509,24 @@ Procedure getGymList(parameters)
 			gymStruct.Insert("gymId", XMLString(select.Ref));
 			gymStruct.Insert("name", select.Description);
 			gymStruct.Insert("type", select.type);
-			gymStruct.Insert("cityId", XMLString(select.city));
+//			gymStruct.Insert("cityId", XMLString(select.city));
+			gymStruct.Insert("cityId", "");
 			gymStruct.Insert("gymAddress", select.address);
 			gymStruct.Insert("divisionTitle", select.segment);
 
 			coords = New Structure();
 			coords.Insert("latitude", select.latitude);
 			coords.Insert("longitude", select.longitude);
-			gymStruct.Вставить("coords", coords);
-
-			scheduledArray = New Array();
-			For Each department In select.departmentWorkSchedule.Unload() Do
-				schedule = New Structure();
-				schedule.Insert("name", department.department);
-				schedule.Insert("phone", department.phone);
-				schedule.Insert("weekdaysTime", department.weekdaysTime);
-				schedule.Insert("holidaysTime", department.holidaysTime);
-				scheduledArray.add(schedule);
-			EndDo;
-			
-			metroArray = New Array();
-			For Each metro In select.nearestMetro.Unload() Do
-				station = New Structure();
-				station.Insert("name", metro.description);
-				station.Insert("lineColor", metro.lineColor);
-				station.Insert("lineName", metro.lineName);
-				station.Insert("lineNumber", metro.lineNumber);
-				metroArray.add(station);
-			EndDo;
-			
-			gymStruct.Insert("departments", scheduledArray);
-			gymStruct.Insert("metro", metroArray);
+			gymStruct.Insert("coords", coords);
+			gymStruct.Insert("departments", HTTP.decodeJSON(select.departmentWorkSchedule, Enums.JSONValueTypes.array));
+			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			gymArray.add(gymStruct);
 		EndDo;
 	EndIf;
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));
 	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);
 	parameters.Insert("errorDescription", errorDescription);
 	
 EndProcedure
@@ -714,8 +702,8 @@ Procedure readNotification(parameters)
 		unReadMessagesCount = 0;
 	EndIf;
 
-	struct.Вставить("result", "Ok");
-	struct.Вставить("quantity", unReadMessagesCount);
+	struct.Insert("result", "Ok");
+	struct.Insert("quantity", unReadMessagesCount);
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 
@@ -753,7 +741,7 @@ Procedure executeExternalRequest(parameters)
 	
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
-	errorDescription = Service.getErrorDescription();
+	errorDescription = Service.getErrorDescription(language);
 	answerBody = "";
 
 	query = New Query();
@@ -876,10 +864,11 @@ Procedure executeExternalRequest(parameters)
 EndProcedure
 
 Procedure changeCreateCatalogItems(parameters)
+	tokenContext = parameters.tokenContext;
 	struct	= New Structure();
 	struct.Insert("result", "Ok");		
-//	Service.createCatalogItems(parameters);	
-//	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	publicData.createCatalogItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 
 Procedure sendMessage(parameters)
@@ -888,7 +877,7 @@ Procedure sendMessage(parameters)
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	struct = New Structure();
-	errorDescription = Service.getErrorDescription();
+	errorDescription = Service.getErrorDescription(language);
 
 	If Not requestStruct.Property("messages") Then
 		errorDescription = Service.getErrorDescription(language, "noMessages");
@@ -953,7 +942,7 @@ Procedure imagePOST(parameters)
 	language = parameters.language;
 	
 	struct = New Structure();
-	errorDescription = Service.getErrorDescription();
+	errorDescription = Service.getErrorDescription(language);
 
 	If TypeOf(requestBody) <> Type("BinaryData") Then
 		errorDescription = Service.getErrorDescription(language, "noBinaryData");
@@ -972,8 +961,7 @@ EndProcedure
 Procedure imageDELETE(parameters)
 	
 	requestStruct = parameters.requestStruct;
-	struct = New Structure();
-	errorDescription = Service.getErrorDescription();
+	struct = New Structure();	
 
 	location = StrReplace(StrReplace(requestStruct.url, Files.getBaseImgURL(), Files.getImgStoragePath()),"/","\");		
 	imgFile = New File(location);
@@ -982,7 +970,6 @@ Procedure imageDELETE(parameters)
 	EndIf;
 	
 	struct.Insert("result", "Ok");
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	
 EndProcedure

@@ -119,6 +119,26 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="acaca55a-4ff5-4c28-9c42-fe03e5f845d2">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="7f600935-4a6f-43b1-ae16-2d75832af6ee">
     <name>city</name>
     <synonym>
@@ -131,6 +151,44 @@
     </synonym>
     <type>
       <types>CatalogRef.cities</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2710a54f-9d99-4b4e-a8ea-18a96960d56f">
+    <name>departmentWorkSchedule</name>
+    <synonym>
+      <key>en</key>
+      <value>Department work schedule</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>График работы отделов</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>1024</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="dc75009f-8309-4b37-b4d0-0c9614c1e80e">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -274,6 +332,40 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="d7dc852e-ed1b-4b33-8c3e-b82f4f9320a1">
+    <name>nearestMetro</name>
+    <synonym>
+      <key>en</key>
+      <value>Nearest metro</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>1024</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="678c1004-22c6-4132-886e-008c5555a886">
+    <name>photo</name>
+    <synonym>
+      <key>en</key>
+      <value>Photo</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Photo</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="f53117e3-e0a5-47b3-9929-08e2f42d0133">
     <name>registrationDate</name>
     <synonym>
@@ -318,26 +410,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="acaca55a-4ff5-4c28-9c42-fe03e5f845d2">
-    <name>chain</name>
-    <synonym>
-      <key>en</key>
-      <value>Chain</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Сеть</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.chains</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="d94aa14c-9aff-4fe7-b3b2-4ecebd725be1">
     <name>type</name>
     <synonym>
@@ -362,161 +434,20 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="dc75009f-8309-4b37-b4d0-0c9614c1e80e">
-    <name>holding</name>
-    <synonym>
-      <key>en</key>
-      <value>Holding</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Холдинг</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.holdings</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <tabularSections uuid="d3e41726-82d4-4cc8-91a4-df2ea6b1111b">
-    <producedTypes>
-      <objectType typeId="1b4a67da-ddb2-4483-a08e-60b0a5331450" valueTypeId="d5b27080-dbfa-46d3-b777-6ead029b71e6"/>
-      <rowType typeId="bd373c4d-ec19-4e54-b4e3-9f7425be6947" valueTypeId="b8f53277-4356-47e6-82cc-1fd3b3dc8bb9"/>
-    </producedTypes>
-    <name>departmentWorkSchedule</name>
-    <synonym>
-      <key>en</key>
-      <value>Department work schedule</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>График работы отделов</value>
-    </synonym>
-    <standardAttributes>
-      <dataHistory>Use</dataHistory>
-      <name>LineNumber</name>
-      <fillValue xsi:type="core:UndefinedValue"/>
-      <fullTextSearch>Use</fullTextSearch>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-    </standardAttributes>
-    <attributes uuid="6b2677e5-bf3d-4e2c-88be-6371f25bd014">
-      <name>department</name>
-      <synonym>
-        <key>en</key>
-        <value>Department</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Отдел</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>100</length>
-        </stringQualifiers>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="ed8a3d02-0136-47ef-bcfb-05ef7ff4fc4a">
-      <name>phone</name>
-      <synonym>
-        <key>en</key>
-        <value>Phone</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Телефон</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>30</length>
-        </stringQualifiers>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="0a1b867c-41a2-4e58-843d-1111690d53c6">
-      <name>weekdaysTime</name>
-      <synonym>
-        <key>en</key>
-        <value>Weekdays time</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>График работы в будни</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>100</length>
-        </stringQualifiers>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="fb7c5982-e9a2-4716-b2e1-ba3b7cd9439b">
-      <name>holidaysTime</name>
-      <synonym>
-        <key>en</key>
-        <value>Holidays time</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>График работы в выходные</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>100</length>
-        </stringQualifiers>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-  </tabularSections>
   <tabularSections uuid="9f29fcd3-1571-4e7e-a4d8-564647782025">
     <producedTypes>
       <objectType typeId="3aa7c7b7-aca0-4dad-9163-75960cb3039f" valueTypeId="6f19938a-fcd8-4236-88a1-04cecb8ee6d0"/>
       <rowType typeId="c78fdfcf-7e7a-4c79-a1c4-5134a48a185e" valueTypeId="6eb723bc-be76-4702-b6e7-6f51e20c37c9"/>
     </producedTypes>
-    <name>fhoto</name>
+    <name>photos</name>
     <synonym>
       <key>en</key>
-      <value>Fhoto</value>
+      <value>Photos</value>
     </synonym>
     <synonym>
       <key>ru</key>
       <value>Фото</value>
     </synonym>
-    <attributes uuid="70ccf61b-7074-4f17-badf-7688ffb83d31">
-      <name>location</name>
-      <synonym>
-        <key>en</key>
-        <value>Location</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>200</length>
-        </stringQualifiers>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
     <attributes uuid="134e50af-23cd-47f1-b6ca-1521366556b7">
       <name>URL</name>
       <synonym>
@@ -533,41 +464,6 @@
           <length>200</length>
         </stringQualifiers>
       </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-  </tabularSections>
-  <tabularSections uuid="f9a5adc7-2c4d-4d6b-ade3-ca0cdcaf670f">
-    <producedTypes>
-      <objectType typeId="73683f1f-6cd7-493f-ad31-def300674020" valueTypeId="b59be70e-4389-43f7-a1a4-917b62258d75"/>
-      <rowType typeId="c6a944c7-f16a-458c-9122-b6b181ca35bf" valueTypeId="fe3cdeec-6237-4c5b-a8f3-1e397bb2dcee"/>
-    </producedTypes>
-    <name>nearestMetro</name>
-    <synonym>
-      <key>en</key>
-      <value>Nearest metro stations</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Ближайшие станции метро</value>
-    </synonym>
-    <attributes uuid="c53f0649-5344-48db-b420-ec3223d5420b">
-      <name>metro</name>
-      <synonym>
-        <key>en</key>
-        <value>Metro</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Метро</value>
-      </synonym>
-      <type>
-        <types>CatalogRef.metro</types>
-      </type>
-      <choiceParameterLinks>
-        <name>Filter.city</name>
-        <field>Catalog.gyms.Attribute.city</field>
-      </choiceParameterLinks>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -597,10 +493,7 @@
         <value>Язык</value>
       </synonym>
       <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>3</length>
-        </stringQualifiers>
+        <types>CatalogRef.languages</types>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
@@ -619,6 +512,61 @@
         <types>String</types>
         <stringQualifiers>
           <length>40</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="cb366201-fc31-4376-a4d0-f7347ef3ded1">
+      <name>address</name>
+      <synonym>
+        <key>en</key>
+        <value>Address</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Адрес</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="4c7d9a80-4678-476c-b678-c58b57eace06">
+      <name>departmentWorkSchedule</name>
+      <synonym>
+        <key>en</key>
+        <value>Department work schedule</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>График работы отделов</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>1024</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="14313a0a-818b-485e-9b13-6d7646ce5479">
+      <name>nearestMetro</name>
+      <synonym>
+        <key>en</key>
+        <value>Nearest metro</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>1024</length>
         </stringQualifiers>
       </type>
       <dataHistory>Use</dataHistory>

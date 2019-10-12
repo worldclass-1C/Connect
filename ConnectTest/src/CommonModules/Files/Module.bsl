@@ -6,7 +6,8 @@ Procedure createHoldingDirectory(holdingCode) Export
 		CreateDirectory(holdingPath);
 		CreateDirectory(holdingPath + "\gyms");
 		CreateDirectory(holdingPath + "\services");
-		CreateDirectory(holdingPath + "\users");			
+		CreateDirectory(holdingPath + "\users");
+		CreateDirectory(holdingPath + "\employees");			
 	EndIf;	
 EndProcedure
 

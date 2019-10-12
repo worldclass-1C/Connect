@@ -1,112 +1,115 @@
 
-Функция sendSMS(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
-	
-	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.user + "&password=" + Параметры.password + "&phones=" + Параметры.phone + "&message=" + Параметры.text + "&originator=" + Параметры.senderName + "&want_sms_ids=1";
-	ЗапросHTTP	= Новый HTTPЗапрос(URL);
-	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
-	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
-	
-	ЧтениеXML = Новый ЧтениеXML;
-	ЧтениеXML.УстановитьСтроку(ТелоЗапроса);
-	ТекущийПуть = "";
-	
-	Пока ЧтениеXML.Прочитать() Цикл
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.НачалоЭлемента Тогда
-			Если ЧтениеXML.firstName = "code" Тогда
-				ТекущийПуть = "code";
-			ИначеЕсли ЧтениеXML.firstName = "description" Тогда
-				ТекущийПуть = "description";
-			ИначеЕсли ЧтениеXML.firstName = "result" Тогда
-				ТекущийПуть = "result";
-			ИначеЕсли ЧтениеXML.firstName = "sms_id" Тогда
-				ТекущийПуть = "sms_id";
-			КонецЕсли;
-		КонецЕсли;
+Function sendSMS(parameters, answer) Export
 		
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.Текст Тогда
-			Если ТекущийПуть = "code" Тогда
-				Код = ЧтениеXML.Значение;
-			ИначеЕсли ТекущийПуть = "description" Тогда
-				РасшифровкаОшибки = ЧтениеXML.Значение;
-			ИначеЕсли ТекущийПуть = "result" Тогда
-				Результат = ЧтениеXML.Значение;
-			ИначеЕсли ТекущийПуть = "sms_id" Тогда
-				sms_id = ЧтениеXML.Значение;
-			КонецЕсли;
-		КонецЕсли;
-	КонецЦикла;
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
 	
-	Если Код = "0" И Результат = "OK" Тогда
-		Ответ.Вставить("id", sms_id);
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.sent);		
-	Иначе
-		Ответ.Вставить("error", РасшифровкаОшибки);		
-	КонецЕсли;
+	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&phones=" + parameters.phone + "&message=" + parameters.text + "&originator=" + parameters.senderName + "&want_sms_ids=1";
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());
 	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
+	XMLReader = Новый XMLReader();;
+	XMLReader.SetString(answerBody);
+	currentPath = "";
+	code = "";
+	result = "";
+	description = "";
 	
-	Возврат Ответ;	
-	
-КонецФункции
-
-Функция checkSmsStatus(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение	= Новый HTTPСоединение(Параметры.server, Параметры.port,,,, Параметры.timeout, ?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);	
-	
-	URL	= "smartdelivery-in/multi.php/?login=" + Параметры.user + "&password=" + Параметры.password + "&operation=status&sd=false" + "&sms_id=" + Параметры.id + "&sd=false&route=viber(60)-sms";
-	ЗапросHTTP	= Новый HTTPЗапрос(URL);
-	ОтветHTTP	= HTTPСоединение.Получить(ЗапросHTTP);
-	ТелоЗапроса	= СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
-	
-	ЧтениеXML = Новый ЧтениеXML;
-	ЧтениеXML.УстановитьСтроку(ТелоЗапроса);
-	ТекущийПуть = "";
-	
-	Пока ЧтениеXML.Прочитать() Цикл
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.НачалоЭлемента Тогда
-			Если ЧтениеXML.firstName = "status" Тогда
-				ТекущийПуть = "status";
-			КонецЕсли;
-		КонецЕсли;
+	While XMLReader.Read() Do
+		If XMLReader.NodeType = XMLNodeType.StartElement Then
+			If XMLReader.Name = "code" Then
+				currentPath = "code";
+			ElsIf XMLReader.Name = "description" Then
+				currentPath = "description";
+			ElsIf XMLReader.Name = "result" Then
+				currentPath = "result";
+			ElsIf XMLReader.Name = "sms_id" Then
+				currentPath = "sms_id";
+			EndIf;
+		EndIf;
 		
-		Если ЧтениеXML.ТипУзла = ТипУзлаXML.Текст Тогда
-			Если ТекущийПуть = "status" Тогда
-				ОтветСтатус = ЧтениеXML.Значение;
-				ТекущийПуть = "";
-			КонецЕсли;
-		КонецЕсли;
-	КонецЦикла;
+		If XMLReader.NodeType = XMLNodeType.Text Then
+			If currentPath = "code" Then
+				code = XMLReader.Value;
+			ElsIf currentPath = "description" Then
+				description = XMLReader.Value;
+			ElsIf currentPath = "result" Then
+				result = XMLReader.Value;
+			ElsIf currentPath = "sms_id" Then
+				sms_id = XMLReader.Value;
+			EndIf;
+		EndIf;
+	EndDo;
 	
-	Статус	= СтатусСообщения(Врег(ОтветСтатус));
-	Если ТипЗнч(Статус) = Тип("ПеречислениеСсылка.messageStatuses") Тогда
-		Ответ.Вставить("messageStatus", Статус);
-	Иначе
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.notDelivered);
-		Ответ.Вставить("error","Неизвестный статус");
-	КонецЕсли;
+	If code = "0" And result = "OK" Then
+		answer.Insert("id", sms_id);
+		answer.Insert("messageStatus", Enums.messageStatuses.sent);		
+	Else
+		answer.Insert("error", description);		
+	EndIf;
 	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
 	
-	Возврат Ответ;
+	Return answer;	
 	
-КонецФункции
+EndFunction
 
-Функция СтатусСообщения(Статус)
+Function checkSmsStatus(parameters, answer) Export
 	
-	Если Статус = "SENT" Или Статус = "NOT_ROUTED" Или Статус = "ACCEPTD" Или Статус = "UNDELIVERED" Тогда
-		Возврат Перечисления.messageStatuses.sent;
-	ИначеЕсли Статус = "DOUBLED" Или Статус = "error" Тогда
-		Возврат Перечисления.messageStatuses.notSent;
-	ИначеЕсли Статус = "DELIVERED" Тогда
-		Возврат Перечисления.messageStatuses.delivered;
-	ИначеЕсли Статус = "TIMEOUT" Или Статус = "EXPIRED" Тогда
-		Возврат Перечисления.messageStatuses.notDelivered;
-	ИначеЕсли Статус = "READ" Тогда
-		Возврат Перечисления.messageStatuses.read;
-	Иначе
-		Возврат Статус;
-	КонецЕсли;
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
 	
-КонецФункции
+	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&operation=status&sd=false" + "&sms_id=" + parameters.id + "&sd=false&route=viber(60)-sms";
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());
+	
+	XMLReader = New XMLReader;
+	XMLReader.SetString(answerBody);
+	currentPath = "";
+	
+	While XMLReader.Read() Do
+		If XMLReader.NodeType = XMLNodeType.StartElement Then
+			If XMLReader.Name = "status" Then
+				currentPath = "status";
+			EndIf;
+		EndIf;
+		
+		If XMLReader.NodeType = XMLNodeType.Text Then
+			If currentPath = "status" Then
+				statusAnswer = XMLReader.Value;
+				currentPath = "";
+			EndIf;
+		EndIf;
+	EndDo;
+	
+	status	= messageStatus(Upper(statusAnswer));
+	If TypeOf(status) = Type("EnumRef.messageStatuses") Then
+		answer.Insert("messageStatus", status);
+	Else
+		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
+		answer.Insert("error","Неизвестный status");
+	EndIf;
+	
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	
+	Return answer;
+	
+EndFunction
+
+Function messageStatus(status)
+	
+	If status = "SENT" Or status = "NOT_ROUTED" Or status = "ACCEPTD" Or status = "UNDELIVERED" Then
+		Return Enums.messageStatuses.sent;
+	ElsIf status = "DOUBLED" Or status = "error" Then
+		Return Enums.messageStatuses.notSent;
+	ElsIf status = "DELIVERED" Then
+		Return Enums.messageStatuses.delivered;
+	ElsIf status = "TIMEOUT" Or status = "EXPIRED" Then
+		Return Enums.messageStatuses.notDelivered;
+	ElsIf status = "READ" Then
+		Return Enums.messageStatuses.read;
+	Else
+		Return status;
+	EndIf;
+	
+EndFunction

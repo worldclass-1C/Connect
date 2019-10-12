@@ -6,7 +6,7 @@ Function checkHasp(language, timeStamp, hash) Export
 		timeKey = StrReplace(Service.getAmountOfNumbers(timeStamp), Chars.NBSp, "");		
 		hmac = hmac(word + timeKey, word, HashFunction.SHA256);
 		If hmac = hash Then
-			Return Service.getErrorDescription();									
+			Return Service.getErrorDescription(language);									
 		EndIf;
 	EndIf;
 	Return Service.getErrorDescription(language, "noValidRequest");

@@ -288,7 +288,7 @@
     <fillValue xsi:type="core:UndefinedValue"/>
     <mainFilter>true</mainFilter>
   </dimensions>
-  <dimensions uuid="c63fa183-618c-4fe9-a047-bc637168717b">
+  <dimensions uuid="9d2d93af-b3d4-4b08-bcb6-01c118893b19">
     <name>language</name>
     <synonym>
       <key>en</key>
@@ -299,10 +299,7 @@
       <value>Язык</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>3</length>
-      </stringQualifiers>
+      <types>CatalogRef.languages</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

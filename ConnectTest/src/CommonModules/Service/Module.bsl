@@ -1,202 +1,37 @@
-Function getErrorDescription(language = "", result = "",
+Function getErrorDescription(language, erroeCode = "",
 		description = "") Export
 
-	errorDescription = New Structure("result, description", result, description);
+	errorDescription = New Structure("result, description", erroeCode, description);
 
 	If description = "" Then
-		If result = "requestError" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Не определен запрос");
-			Else
-				errorDescription.Insert("description", "No request");
-			EndIf;
-		ElsIf result = "brandError" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Не определен бренд");
-			Else
-				errorDescription.Insert("description", "No brand");
-			EndIf;	
-		ElsIf result = "userNotIdentified" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Пользователь не идентифицирован");
-			Else
-				errorDescription.Insert("description", "account is not identified");
-			EndIf;
-		ElsIf result = "userNotfound" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Пользователь не найден");
-			Else
-				errorDescription.Insert("description", "account is not found");
-			EndIf;
-		ElsIf result = "tokenExpired" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "токен просрочен");
-			Else
-				errorDescription.Insert("description", "Token expired");
-			EndIf;
-		ElsIf result = "passwordError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан пароль");
-			Else
-				errorDescription.Insert("description", "No account password");
-			EndIf;
-		ElsIf result = "passwordNotCorrect" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Неверный пароль");
-			Else
-				errorDescription.Insert("description", "Password is not correct");
-			EndIf;		
-		ElsIf result = "passwordExpired" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Пароль просрочен");
-			Else
-				errorDescription.Insert("description", "Password expired");
-			EndIf;
-		ElsIf result = "passwordRequired" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "Необходимо получить пароль");
-			Else
-				errorDescription.Insert("description", "Password is required");
-			EndIf;	
-		ElsIf result = "appTokenExpired" Then
-			If language = "ru" Then
-				errorDescription.Insert("description", "срок действия токена приложения истек");
-			Else
-				errorDescription.Insert("description", "application token expired");
-			EndIf;
-		ElsIf result = "chainCodeError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан код сети");
-			Else
-				errorDescription.Insert("description", "No chain code");
-			EndIf;
-		ElsIf result = "authkeyError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан код авторизации");
-			Else
-				errorDescription.Insert("description", "No auth-key");
-			EndIf;
-		ElsIf result = "appTypeError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан тип приложения");
-			Else
-				errorDescription.Insert("description", "No app type");
-			EndIf;
-		ElsIf result = "deviceTokenError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан токен устройства");
-			Else
-				errorDescription.Insert("description", "No device token");
-			EndIf;
-		ElsIf result = "deviceModelError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указана модель устройства");
-			Else
-				errorDescription.Insert("description", "No device model");
-			EndIf;	
-		ElsIf result = "tokenError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан токен");
-			Else
-				errorDescription.Insert("description", "No token");
-			EndIf;
-		ElsIf result = "systemTypeError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан тип ОС");
-			Else
-				errorDescription.Insert("description", "No system type");
-			EndIf;
-		ElsIf result = "systemVersionError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указана версия ОС");
-			Else
-				errorDescription.Insert("description", "No system version");
-			EndIf;
-		ElsIf result = "appVersionError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указана версия приложения");
-			Else
-				errorDescription.Insert("description", "No app version");
-			EndIf;
-		ElsIf result = "causesError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не заполнены причины отмены");
-			Else
-				errorDescription.Insert("description", "No causes");
-			EndIf;
-		ElsIf result = "staffOnly" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Только для сотрудников");
-			Else
-				errorDescription.Insert("description", "staff only");
-			EndIf;
-		ElsIf result = "urlError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан url");
-			Else
-				errorDescription.Insert("description", "No url");
-			EndIf;
-		ElsIf result = "routesError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указаны каналы информирования");
-			Else
-				errorDescription.Insert("description", "No information routes");
-			EndIf;
-		ElsIf result = "messagesError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Нет сообщений");
-			Else
-				errorDescription.Insert("description", "No messages");
-			EndIf;
-		ElsIf result = "phoneError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан телефон");
-			Else
-				errorDescription.Insert("description", "no account phone");
-			EndIf;
-		ElsIf result = "noteIdError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указано уведомление");
-			Else
-				errorDescription.Insert("description", "no notification");
-			EndIf;
-		ElsIf result = "limitExceeded" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Превышен лимит сообщений");
-			Else
-				errorDescription.Insert("description", "Message limit exceeded");
-			EndIf;
-		ElsIf result = "noValidRequest" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "недействительный запрос");
-			Else
-				errorDescription.Insert("description", "not valid request");
-			EndIf;
-		ElsIf result = "messageCanNotSent" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Повторное сообщение можно отправить через 15 минут");
-			Else
-				errorDescription.Insert("description", "Message can be sent in 15 minutes");
-			EndIf;
-		ElsIf result = "objectError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указан объект метаданных");
-			Else
-				errorDescription.Insert("description", "No metadata object specified");
-			EndIf;
-		ElsIf result = "extensionError" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Не указано расширение файла");
-			Else
-				errorDescription.Insert("description", "File extension not specified");
-			EndIf;
-		ElsIf result = "noBinaryData" Then
-			Если language = "ru" Then
-				errorDescription.Insert("description", "Переданны не бинарные данные");
-			Else
-				errorDescription.Insert("description", "Non binary data transmitted");
-			EndIf;			
-		EndIf;
+		query = New Query("SELECT
+		|	errorDescriptionstranslation.description
+		|FROM
+		|	Catalog.errorDescriptions AS errorDescriptions
+		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
+		|		ON errorDescriptions.Ref = errorDescriptionstranslation.Ref
+		|		AND errorDescriptionstranslation.language = &language
+		|WHERE
+		|	errorDescriptions.Code = &erroeCode
+		|
+		|UNION ALL
+		|
+		|SELECT
+		|	errorDescriptionstranslation.description
+		|FROM
+		|	Catalog.errorDescriptions AS errorDescriptions
+		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
+		|		ON errorDescriptions.Ref = errorDescriptionstranslation.Ref
+		|		AND errorDescriptionstranslation.language = &language
+		|WHERE
+		|	errorDescriptions.Code = ""System""");
+		
+		query.SetParameter("erroeCode", erroeCode);
+		query.SetParameter("language", language);
+		select = query.Execute().Select();
+		select.Next();
+		errorDescription.Insert("description", select.description);		
+
 	EndIf;
 
 	Return errorDescription;
@@ -236,7 +71,7 @@ EndFunction
 
 Function canSendSms(language, phone) Export
 
-	errorDescription	= Service.getErrorDescription();
+	errorDescription	= Service.getErrorDescription(language);
 	universalTime		= ToUniversalTime(CurrentDate());
 	
 	query	= New Query();
@@ -281,67 +116,6 @@ Function canSendSms(language, phone) Export
 
 EndFunction 
 
-Function createCatalogItems(requestName, holding, requestStruct, owner = Undefined) Export
-
-	attributesStruct	= Service.attributesStructure(requestName);
-	requestStruct		= requestStruct;
-	items 				= New Array();
-		
-	If TypeOf(requestStruct) = Type("Array") Then
-		For Each requestParameter In requestStruct Do		
-			catalogRef		= Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
-			catalogObject	= catalogRef.GetObject();			
-			If catalogObject = Undefined Then
-				catalogObject = Catalogs[attributesStruct.mdObjectName].CreateItem();
-				catalogObject.SetNewObjectRef(catalogRef);
-				catalogObject.SetNewCode();
-				For Each attribute In attributesStruct.attributesTableForNewItem Do
-					catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);					
-				EndDo;
-			EndIf;
-			For Each attribute In attributesStruct.attributesTable Do			
-				If attribute.type = "valueTable" Then
-					catalogObject[attribute.key].Clear();
-					For Each item In requestParameter[attribute.value] Do
-						newRow = catalogObject[attribute.key].Add();
-						For Each tableProperty In attributesStruct.mdStruct[attribute.key] Do
-							If tableProperty.type = "ref" Then
-								For Each refProperty In attributesStruct.mdStruct[tableProperty.key] Do
-									newRow[tableProperty.key] = Catalogs[refProperty.key].GetRef(New UUID(item[tableProperty.Значение][refProperty.value]));
-								EndDo;
-							Else
-								newRow[tableProperty.key] = item[tableProperty.value];
-							EndIf;
-						EndDo;
-					EndDo;
-				ElsIf attribute.type = "ref" Then
-					For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
-						catalogObject[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
-					EndDo;
-				Else
-					catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
-				EndIf;
-			EndDo;
-			If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
-				If owner <> Undefined Then
-					catalogObject.owner = owner;
-				EndIf;
-				If attributesStruct.mdObjectName <> "accounts" Then
-					catalogObject.holding = holding;
-				EndIf;
-				If attributesStruct.mdObjectName = "users" Then
-					catalogObject.description = "" + owner + " (" + holding + ")";	
-				EndIf;	
-				catalogObject.registrationDate = ToUniversalTime(CurrentDate());
-			EndIf;
-			catalogObject.Write();
-			items.Add(catalogObject.Ref);			
-		EndDo;
-	EndIf;
-
-	Return items;
-
-EndFunction
 
 Function runRequest(parameters, body, address = "") Export
 	headers = New Map();
@@ -389,117 +163,6 @@ Function checkBackgroundJobs(array) Export
 	Return New Structure("statusCode, answerBody", minStatusCode, HTTP.encodeJSON(answer));
 EndFunction
 
-Function attributesStructure(requestName) Export
-
-	attributesTable = New ValueTable;
-	attributesTable.Columns.Add("key");
-	attributesTable.Columns.Add("value");
-	attributesTable.Columns.Add("type");
-
-	attributesTableForNewItem = New ValueTable;
-	attributesTableForNewItem.Columns.Add("key");
-	attributesTableForNewItem.Columns.Add("value");
-	attributesTableForNewItem.Columns.Add("type");
-
-	mdStruct = New Structure();
-	mdObjectName = "";
-
-	If requestName = "addChangeAccounts" Then
-
-		mdObjectName = "accounts";
-		addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
-		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
-		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
-		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
-		addRowInAttributesTable(attributesTable, "gender", "gender", "string");		
-		addRowInAttributesTable(attributesTable, "email", "email", "string");
-		
-	elsIf requestName = "addChangeUsers" Then
-
-		mdObjectName = "users";		
-		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");		
-		addRowInAttributesTable(attributesTable, "userType", "userType", "string");
-		addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
-		addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
-		addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
-				
-	ElsIf requestName = "addGyms" Then
-
-		mdObjectName = "gyms";
-		addRowInAttributesTable(attributesTable, "Наименование", "name", "string");
-		addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
-		addRowInAttributesTable(attributesTable, "segment", "division", "string");
-		addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
-		addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
-		addRowInAttributesTable(attributesTable, "type", "type", "string");
-		addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "valueTable");
-		addRowInAttributesTable(attributesTable, "city", "city", "ref");
-
-		attributesTableDepartmentWorkSchedule = New ValueTable();;
-		attributesTableDepartmentWorkSchedule.Columns.Add("key");
-		attributesTableDepartmentWorkSchedule.Columns.Add("value");
-		attributesTableDepartmentWorkSchedule.Columns.Add("type");
-
-		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "department", "name", "string");
-		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "phone", "phone", "string");
-		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "weekdaysTime", "weekdaysTime", "string");
-		addRowInAttributesTable(attributesTableDepartmentWorkSchedule, "holidaysTime", "holidaysTime", "string");
-
-		cityStruct = New Structure();
-		cityStruct.Insert("cities", "id");
-
-		mdStruct.Insert("departmentWorkSchedule", attributesTableDepartmentWorkSchedule);
-		mdStruct.Insert("city", cityStruct);
-
-	ElsIf requestName = "addCities" Then
-
-		mdObjectName = "cities";
-		addRowInAttributesTable(attributesTable, "description", "name", "string");
-
-	ElsIf requestName = "addCancelcauses" Then
-
-		mdObjectName = "cancellationReasons";
-		addRowInAttributesTable(attributesTable, "description", "name", "string");
-
-	ElsIf requestName = "addRequest" Then
-
-		mdObjectName = "matchingRequestsInformationSources";
-		addRowInAttributesTable(attributesTable, "code", "code", "string");
-		addRowInAttributesTable(attributesTable, "performBackground", "performBackground", "boolean");
-		addRowInAttributesTable(attributesTable, "notSaveAnswer", "notSaveAnswer", "boolean");
-		addRowInAttributesTable(attributesTable, "compressAnswer", "compressAnswer", "boolean");
-		addRowInAttributesTable(attributesTable, "staffOnly", "staffOnly", "boolean");
-
-		addRowInAttributesTable(attributesTable, "informationSources", "informationSources", "valueTable");
-
-		attributesTableInformationSources = New ТаблицаЗначений;
-		attributesTableInformationSources.Columns.Add("key");
-		attributesTableInformationSources.Columns.Add("value");
-		attributesTableInformationSources.Columns.Add("type");
-
-		addRowInAttributesTable(attributesTableInformationSources, "atribute", "atribute", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "performBackground", "performBackground", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "notSaveAnswer", "notSaveAnswer", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "compressAnswer", "compressAnswer", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "staffOnly", "staffOnly", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "notUse", "notUse", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "requestSource", "requestSource", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "requestReceiver", "requestReceiver", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "informationSource", "informationSource", "ref");
-
-		informationSourceStruct = New Structure();
-		informationSourceStruct.Insert("informationSources", "uid");
-
-		mdStruct.Insert("informationSources", attributesTableInformationSources);
-		mdStruct.Insert("informationSource", informationSourceStruct);
-
-	EndIf;
-
-	Return New Structure("mdObjectName, attributesTable, attributesTableForNewItem, mdStruct", mdObjectName, attributesTable, attributesTableForNewItem, mdStruct);
-
-EndFunction
-
 Function getAmountOfNumbers(number) Export	
 	str	= StrReplace(number, Chars.NBSp, "");
 	res	= 0;	
@@ -526,35 +189,31 @@ EndProcedure
 Procedure logRequest(parameters) Export
 	record = Catalogs.logs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
-	record.token = parameters.tokenContext.token;
-	record.user = parameters.tokenContext.user;	
+	If parameters.Property("tokenContext") Then
+		record.token = parameters.tokenContext.token;
+		record.user = parameters.tokenContext.user;	
+	EndIf;
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
 	record.isError = parameters.isError;
 
 	requestBody = """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF
-		+ """Body"":" + Chars.LF + parameters.requestBody;
+		+ """Body"":" + Chars.LF
+		+ ?(parameters.requestName = "imagePOST", "", parameters.requestBody);
+
 	If parameters.compressAnswer Then
 		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
 	Else
 		record.requestBody = requestBody;
 	EndIf;
-	If Not parameters.notSaveAnswer Or parameters.isError Then
+	If Not parameters.notSaveAnswer Or parameters.isError Or parameters.underControl Then
 		If parameters.compressAnswer Then
 			record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
 		Else
-			record.responseBody = parameters.answerBody;
+			record.responseBody = ?(parameters.isError, parameters.errorDescription.description, parameters.answerBody);
 		EndIf;
 	EndIf;
 	record.Write();
-EndProcedure
-
-Procedure addRowInAttributesTable(attributesTable, key, value,
-		type)
-	newRow			= attributesTable.Add();
-	newRow.key		= key;
-	newRow.value	= value;
-	newRow.type		= type;
 EndProcedure
 
 Procedure alertSourceInformation() Export

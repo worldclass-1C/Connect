@@ -35,7 +35,8 @@ Function initContext() Export
 	tokenContext.Insert("lockDate", Date(1,1,1));
 	tokenContext.Insert("systemType", Enums.systemTypes.EmptyRef());
 	tokenContext.Insert("systemVersion", "");
-	tokenContext.Insert("timezone", Catalogs.timeZones.EmptyRef());	
+	tokenContext.Insert("timezone", Catalogs.timeZones.EmptyRef());
+	tokenContext.Insert("underControl", False);	
 	tokenContext.Insert("user", Catalogs.users.EmptyRef());
 	tokenContext.Insert("userType", "");
 	Return tokenContext;	

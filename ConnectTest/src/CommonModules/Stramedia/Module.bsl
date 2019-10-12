@@ -1,171 +1,131 @@
-//SC-067295
-Функция sendSMS(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение = Новый HTTPСоединение(Параметры.server,Параметры.port,,,,Параметры.timeout,?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);
 
-	Заголовки = Новый Соответствие;
-	Заголовки.Вставить("Content-Type", "application/x-www-form-urlencoded");
-	
-	ЗапросHTTP = Новый HTTPЗапрос("/modules/send_sms.php", Заголовки);
-	СтрокаПараметров = "username=" + Параметры.user + 
-						"&password=" + Параметры.password +
-						"&to=" + Параметры.phone +
-						"&from=" + Параметры.senderName +
-						"&coding=2" +
-						"&text=" + Параметры.text;
-	
-	ЗапросHTTP.УстановитьТелоИзСтроки(СтрокаПараметров,,ИспользованиеByteOrderMark.НеИспользовать);
-	ОтветHTTP = HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
-	ТелоОтвета = СокрЛП(ОтветHTTP.ПолучитьТелоКакСтроку());
-	
-	ЧтениеHTML = Новый ЧтениеHTML;
-	ЧтениеHTML.УстановитьСтроку(ТелоОтвета);
-	
-	ПостроительDOM = Новый ПостроительDOM;
-	ДокументHTML = ПостроительDOM.Прочитать(ЧтениеHTML);
-	
-	Узлы = ДокументHTML.ПолучитьЭлементыПоИмени("body")[0].ДочерниеУзлы;
-	
-	СтрукутраРасшифровкаОтвета = РасшифроватьУзлы(Узлы);
+Function sendSMS(parameters, answer) Export	
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	headers = New Map;
+	headers.Insert("Content-Type", "application/x-www-form-urlencoded");
+	URL = "/modules/send_sms.php";
+	requestHTTP = New HTTPRequest(URL, headers);	
+	parametersStr = "username=" + parameters.user +	"&password=" + parameters.password + "&to=" + parameters.phone + "&from=" + parameters.senderName + "&coding=2" + "&text=" + parameters.text;	
+	requestHTTP.SetBodyFromString(parametersStr,,ByteOrderMarkUsage.DontUse);
+	answerHTTP = ConnectionHTTP.Post(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());	
+	ReaderHTML = New HTMLReader;
+	ReaderHTML.SetString(answerBody);	
+	DOMBuilder = New DOMBuilder;
+	docHTML = DOMBuilder.Read(ReaderHTML);	
+	decodeStruct = decodeNodes(docHTML.GetElementByTagName("body")[0].ChildNodes);
+	If decodeStruct.Property("error") Then 
+		descriptionError = descriptionError(decodeStruct.Error);
+		answer.Insert("error", descriptionError);
+	ElsIf  decodeStruct.Property("Success") Then
+		answer.Insert("id", decodeStruct.ID);
+		answer.Insert("messageStatus", Enums.messageStatuses.sent);
+	EndIf;	
+	answer.Insert("period", ToUniversalTime(CurrentDate()));	
+	Return answer;	
+EndFunction
 
-	Если СтрукутраРасшифровкаОтвета.Свойство("error") Тогда 
-		РасшифровкаОшибки = ПолучитьРасшифровкуОшибки(СтрукутраРасшифровкаОтвета.Error);
-		Ответ.Вставить("error", РасшифровкаОшибки);
-	ИначеЕсли  СтрукутраРасшифровкаОтвета.Свойство("Success") Тогда
-		Ответ.Вставить("id", СтрукутраРасшифровкаОтвета.ID);
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.sent);
-	КонецЕсли;
-	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
-	
-	Возврат Ответ;
-	
-КонецФункции
+Function checkSmsStatus(parameters, answer) Export
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	headers = New Map;
+	headers.Insert("Content-Type", "application/x-www-form-urlencoded");
+	URL = "/modules/sms_status.php";	
+	requestHTTP = New HTTPRequest(URL, headers);	
+	parametersStr = "username=" + parameters.user +	"&password=" + parameters.password + "&id=" + parameters.id;	
+	requestHTTP.SetBodyFromString(parametersStr,,ByteOrderMarkUsage.DontUse);
+	answerHTTP = ConnectionHTTP.Post(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());	
+	ReaderHTML = New HTMLReader;
+	ReaderHTML.SetString(answerBody);	
+	DOMBuilder = New DOMBuilder;
+	docHTML = DOMBuilder.Read(ReaderHTML);	
+	decodeStruct = decodeNodes(docHTML.GetElementByTagName("body")[0].ChildNodes);		
+	If decodeStruct.Property("error") Then 
+		descriptionError = descriptionError(decodeStruct.Error);
+		answer.Insert("error", descriptionError);
+		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
+	ElsIf  decodeStruct.Property("Status") Then
+		Статус = getMessageStatus(decodeStruct.Status);
+		answer.Insert("messageStatus", Статус);
+	EndIf;
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	Return answer;
+EndFunction
 
-Функция checkSmsStatus(Параметры, Ответ) Экспорт
-	
-	HTTPСоединение = Новый HTTPСоединение(Параметры.server,Параметры.port,,,,Параметры.timeout,?(Параметры.ЗащищенноеСоединение, Новый ЗащищенноеСоединениеOpenSSL(), Неопределено), Параметры.UseOSAuthentication);
+Function descriptionError(error)	
+	description = "";
+	If error = "Invalid request" Then 
+		description = "проверьте наличие всех неоходимых параметров в запросе";
+	ElsIf error = "Invalid username username or password password or user is blocked" Then 
+		description = "Проверьте login и password и то, что ваш аккаунт не заблокирован";
+	ElsIf error = "Invalid or missing 'from' address" Then 
+		description = "Проверьте наличие и формат номера получателя";
+	ElsIf error = "Invalid or missing 'to' address" Then 
+		description = "Проверьте наличие и длину адреса отправителя";
+	ElsIf error = "Invalid or missing coding" Then 
+		description = "Проверьте наличие и значение параметра coding";
+	ElsIf error = "Missing text" Then 
+		description = "Проверьте наличие параметра text";
+	ElsIf error = "Text too long" Then 
+		description = "Проверьте длину параметра text";
+	ElsIf error = "Invalid or missing mclass" Then 
+		description = "Проверьте наличие и значение параметра mclass";
+	ElsIf error = "Invalid or missing priority" Then 
+		description = "Проверьте наличие и значение параметра priority";
+	ElsIf error = "Invalid or missing dlrmask" Then 
+		description = "Проверьте наличие и значение параметра dlrmask";
+	ElsIf error = "IP not allowed" Then 
+		description = "Ваш IP заблокирован";
+	ElsIf error = "Max limit exceeded" Then 
+		description = "Вы достили максимального количества СМС";
+	ElsIf error = "Insufficient balance" Then 
+		description = "У вас недостаточно средств на балансе";
+	ElsIf error = "Invalid or missing missing message message ID" Then 
+		description = "Проверьте наличие идентификатора Messages";
+	ElsIf error = "Unknown message ID" Then 
+		description = "Проверьте идентификатор Messages";
+	EndIf;	
+	Return description;	
+EndFunction
 
-	Заголовки = Новый Соответствие;
-	Заголовки.Вставить("Content-Type", "application/x-www-form-urlencoded");
-	
-	ЗапросHTTP = Новый HTTPЗапрос("/modules/sms_status.php", Заголовки);
-	СтрокаПараметров =  "username=" + Параметры.user + 
-						"&password=" + Параметры.password +
-						"&id=" + Параметры.id;
-	
-	ЗапросHTTP.УстановитьТелоИзСтроки(СтрокаПараметров,,ИспользованиеByteOrderMark.НеИспользовать);
-	ОтветHTTP = HTTPСоединение.ОтправитьДляОбработки(ЗапросHTTP);
-	ТелоОтвета = ОтветHTTP.ПолучитьТелоКакСтроку();
-	
-	ЧтениеHTML = Новый ЧтениеHTML;
-	ЧтениеHTML.УстановитьСтроку(ТелоОтвета);
-	
-	ПостроительDOM = Новый ПостроительDOM;
-	ДокументHTML = ПостроительDOM.Прочитать(ЧтениеHTML);
-	
-	Узлы = ДокументHTML.ПолучитьЭлементыПоИмени("body")[0].ДочерниеУзлы;
-	
-	СтрукутраРасшифровкаОтвета = РасшифроватьУзлы(Узлы);
-		
-	Если СтрукутраРасшифровкаОтвета.Свойство("error") Тогда 
-		РасшифровкаОшибки = ПолучитьРасшифровкуОшибки(СтрукутраРасшифровкаОтвета.Error);
-		Ответ.Вставить("error", РасшифровкаОшибки);
-		Ответ.Вставить("messageStatus", Перечисления.messageStatuses.notDelivered);
-	ИначеЕсли  СтрукутраРасшифровкаОтвета.Свойство("Status") Тогда
-		Статус = ПолучитьСтатусСообщения(СтрукутраРасшифровкаОтвета.Status);
-		Ответ.Вставить("messageStatus", Статус);
-	КонецЕсли;
-	
-	Ответ.Вставить("period", УниверсальноеВремя(ТекущаяДата()));
-	
-	Возврат Ответ;
-
-КонецФункции
-
-Функция ПолучитьРасшифровкуОшибки(ТекстОшибки)
-	
-	РасшифрокаОшибки = "";
-	Если ТекстОшибки = "Invalid request" Тогда 
-		РасшифрокаОшибки = "проверьте наличие всех неоходимых параметров в запросе";
-	ИначеЕсли ТекстОшибки = "Invalid username username or password password or user is blocked" Тогда 
-		РасшифрокаОшибки = "Проверьте login и password и то, что ваш аккаунт не заблокирован";
-	ИначеЕсли ТекстОшибки = "Invalid or missing 'from' address" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и формат номера получателя";
-	ИначеЕсли ТекстОшибки = "Invalid or missing 'to' address" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и длину адреса отправителя";
-	ИначеЕсли ТекстОшибки = "Invalid or missing coding" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и значение параметра coding";
-	ИначеЕсли ТекстОшибки = "Missing text" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие параметра text";
-	ИначеЕсли ТекстОшибки = "Text too long" Тогда 
-		РасшифрокаОшибки = "Проверьте длину параметра text";
-	ИначеЕсли ТекстОшибки = "Invalid or missing mclass" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и значение параметра mclass";
-	ИначеЕсли ТекстОшибки = "Invalid or missing priority" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и значение параметра priority";
-	ИначеЕсли ТекстОшибки = "Invalid or missing dlrmask" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие и значение параметра dlrmask";
-	ИначеЕсли ТекстОшибки = "IP not allowed" Тогда 
-		РасшифрокаОшибки = "Ваш IP заблокирован";
-	ИначеЕсли ТекстОшибки = "Max limit exceeded" Тогда 
-		РасшифрокаОшибки = "Вы достили максимального количества СМС";
-	ИначеЕсли ТекстОшибки = "Insufficient balance" Тогда 
-		РасшифрокаОшибки = "У вас недостаточно средств на балансе";
-	ИначеЕсли ТекстОшибки = "Invalid or missing missing message message ID" Тогда 
-		РасшифрокаОшибки = "Проверьте наличие идентификатора Messages";
-	ИначеЕсли ТекстОшибки = "Unknown message ID" Тогда 
-		РасшифрокаОшибки = "Проверьте идентификатор Messages";
-	КонецЕсли;
-	
-	Возврат РасшифрокаОшибки;
-	
-КонецФункции
-
-Функция ПолучитьСтатусСообщения(КодСтатуса)
-	
-	Если КодСтатуса = "16" Тогда
-		Возврат Перечисления.messageStatuses.notSent;
-	ИначеЕсли КодСтатуса = "32" Тогда
-		Возврат Перечисления.messageStatuses.notSent;
-	ИначеЕсли КодСтатуса = "2" Тогда
-		Возврат Перечисления.messageStatuses.notDelivered;
-	ИначеЕсли КодСтатуса = "0" Тогда
-		Возврат Перечисления.messageStatuses.sent;
-	ИначеЕсли КодСтатуса = "4" Тогда
-		Возврат Перечисления.messageStatuses.sent;
-	ИначеЕсли КодСтатуса = "8" Тогда
-		Возврат Перечисления.messageStatuses.sent;
-	ИначеЕсли КодСтатуса = "1" Тогда
-		Возврат Перечисления.messageStatuses.delivered;
+Function getMessageStatus(status)	
+	If status = "16" Then
+		Return Enums.messageStatuses.notSent;
+	ElsIf status = "32" Then
+		Return Enums.messageStatuses.notSent;
+	ElsIf status = "2" Then
+		Return Enums.messageStatuses.notDelivered;
+	ElsIf status = "0" Then
+		Return Enums.messageStatuses.sent;
+	ElsIf status = "4" Then
+		Return Enums.messageStatuses.sent;
+	ElsIf status = "8" Then
+		Return Enums.messageStatuses.sent;
+	ElsIf status = "1" Then
+		Return Enums.messageStatuses.delivered;
 	Иначе
-		Возврат КодСтатуса;
-	КонецЕсли;
-	
-КонецФункции
+		Return status;
+	EndIf;	
+EndFunction
 
-Функция РасшифроватьУзлы(Узлы)
-	
-	СтрукутраРасшифровки = Новый Структура;
-	
-	Для Каждого Узел Из Узлы Цикл
-		Если Узел.ТипУзла = ТипУзлаDOM.Текст Тогда 
-			Если СтрНайти(Узел.ТекстовоеСодержимое, "ID:") > 0 Тогда
-				СтрукутраРасшифровки.Вставить("ID",СокрЛП(СтрЗаменить(Узел.ТекстовоеСодержимое,"ID:","")));
-			ИначеЕсли СтрНайти(Узел.ТекстовоеСодержимое, "Status:") > 0 Тогда
-				СтрукутраРасшифровки.Вставить("Status",СокрЛП(СтрЗаменить(Узел.ТекстовоеСодержимое,"Status:","")));
-			ИначеЕсли СтрНайти(Узел.ТекстовоеСодержимое, "Status update time:") > 0 Тогда
-				СтрукутраРасшифровки.Вставить("StatusUpdateTime",СокрЛП(СтрЗаменить(Узел.ТекстовоеСодержимое,"Status update time:","")));
-			ИначеЕсли СтрНайти(Узел.ТекстовоеСодержимое, "error:") > 0 Тогда
-				СтрукутраРасшифровки.Вставить("error",СокрЛП(СтрЗаменить(Узел.ТекстовоеСодержимое,"error:","")));
-			ИначеЕсли СтрНайти(Узел.ТекстовоеСодержимое, "Success") > 0 Тогда
-				СтрукутраРасшифровки.Вставить("Success",СокрЛП(СтрЗаменить(Узел.ТекстовоеСодержимое,"Success:","")));
-			КонецЕсли;
-		КонецЕсли;
-	КонецЦикла;
-
-	Возврат  СтрукутраРасшифровки;
-	
-КонецФункции
+Function decodeNodes(nodes)	
+	Struct = New Structure();	
+	For Each node Из nodes Do
+		If node.NodeType = DOMNodeType.Text Then 
+			If StrFind(node.TextContent, "ID:") > 0 Then
+				Struct.Insert("ID",TrimAll(StrReplace(node.TextContent,"ID:","")));
+			ElsIf StrFind(node.TextContent, "Status:") > 0 Then
+				Struct.Insert("Status",TrimAll(StrReplace(node.TextContent,"Status:","")));
+			ElsIf StrFind(node.TextContent, "Status update time:") > 0 Then
+				Struct.Insert("StatusUpdateTime",TrimAll(StrReplace(node.TextContent,"Status update time:","")));
+			ElsIf StrFind(node.TextContent, "error:") > 0 Then
+				Struct.Insert("error",TrimAll(StrReplace(node.TextContent,"error:","")));
+			ElsIf StrFind(node.TextContent, "Success") > 0 Then
+				Struct.Insert("Success",TrimAll(StrReplace(node.TextContent,"Success:","")));
+			EndIf;
+		EndIf;
+	EndDo;
+	Return Struct;	
+EndFunction
 
 

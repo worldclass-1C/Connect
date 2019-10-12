@@ -28,7 +28,7 @@ Function getPhoto(gym) Export
 	|	gymsfoto.URL,
 	|	gymsfoto.LineNumber
 	|FROM
-	|	Catalog.gyms.fhoto AS gymsfoto
+	|	Catalog.gyms.photos AS gymsfoto
 	|WHERE
 	|	gymsfoto.Ref = &gym");
 	
@@ -39,12 +39,12 @@ Function getPhoto(gym) Export
 	
 	While select.Next() Do
 		bodyArray.Add("<a href = ""#"" id = """ + select.LineNumber + """>");
-		bodyArray.Add("<img class=""square"" src=""" + select.url + """ alt=""fhoto"">");
+		bodyArray.Add("<img class=""square"" src=""" + select.url + """ alt=""photos"">");
 		bodyArray.Add("</a>");
 	EndDo;
 	
 	bodyArray.Add("<a href = ""#"" id = ""addPhoto"">");
-	bodyArray.Add("<img class=""square"" src=""https://tsolutions.worldclass.ru/img/service/addPhoto.jpg"" alt=""fhoto"">");
+	bodyArray.Add("<img class=""square"" src=""https://tsolutions.worldclass.ru/img/service/addPhoto.jpg"" alt=""photos"">");
 	bodyArray.Add("</a>");
 		
 	strArray.Add(head);

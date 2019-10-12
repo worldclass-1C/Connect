@@ -7,32 +7,37 @@ Function processRequest(request, requestName = "") Export
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
-	parameters.Insert("language", HTTP.getRequestHeader(request, "language"));
+	parameters.Insert("languageCode", HTTP.getRequestHeader(request, "language"));
+	parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));	
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
+	parameters.Insert("underControl", False);
 	parameters.Insert("answerBody", "");
-	parameters.Insert("errorDescription", Service.getErrorDescription());
+	
+	If Not ValueIsFilled(parameters.language) Then
+		parameters.Insert("languageCode", "en");
+		parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
+	EndIf;
+	parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language));
 
 	If Not ValueIsFilled(parameters.requestName) Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noRequest"));	
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "requestError"));	
 	ElsIf Not ValueIsFilled(parameters.brand) Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noBrand"));
-	ElsIf Not ValueIsFilled(parameters.language) Then
-		parameters.Insert("language", "en");
+		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "brandError"));
 	EndIf;
 	If parameters.errorDescription.result = "" Then		
 		Check.legality(request, parameters);
+	EndIf;			
+	If requestName = "imagePOST" Then
+		parameters.Insert("requestBody", request.GetBodyAsBinaryData());
+		parameters.Insert("headers", request.Headers);
+	Else
+		parameters.Insert("requestBody", request.GetBodyAsString());
+		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
 	EndIf;
-	If parameters.errorDescription.result = "" Then		
-		If requestName = "imagePOST" Then
-			parameters.Insert("requestBody", request.GetBodyAsBinaryData());
-			parameters.Insert("headers", request.Headers);
-		Else
-			parameters.Insert("requestBody", request.GetBodyAsString());
-			parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
-		EndIf;
+	If parameters.errorDescription.result = "" Then	
 		Try
 			General.executeRequestMethod(parameters);
 		Except
@@ -100,7 +105,7 @@ Function prepareRequestBody(parameters) Export
 	EndIf;
 
 	struct.Insert("token", parameters.authKey);
-	struct.Insert("language", parameters.language);
+	struct.Insert("language", parameters.languageCode);
 	struct.Insert("userId", XMLString(tokenContext.user));
 	struct.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenContext.timezone));
 	If tokenContext.appType = Enums.appTypes.Customer Then

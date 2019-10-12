@@ -176,13 +176,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.gyms.TabularSection.departmentWorkSchedule.Attribute.weekdaysTime</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.cancellationReasons</name>
 		<right>
 			<name>Insert</name>
@@ -1541,13 +1534,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.gyms.TabularSection.departmentWorkSchedule.Attribute.department</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.matchingRequestsInformationSources.TabularSection.informationSources.Attribute.notUse</name>
 		<right>
 			<name>Edit</name>
@@ -2573,13 +2559,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.gyms.TabularSection.departmentWorkSchedule</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.messages.Attribute.gym</name>
 		<right>
 			<name>Edit</name>
@@ -2740,13 +2719,6 @@
 	</object>
 	<object>
 		<name>Catalog.gyms.StandardAttribute.Code</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.gyms.TabularSection.departmentWorkSchedule.Attribute.phone</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2988,13 +2960,6 @@
 	</object>
 	<object>
 		<name>Catalog.analytics.StandardAttribute.Code</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.gyms.TabularSection.departmentWorkSchedule.Attribute.holidaysTime</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

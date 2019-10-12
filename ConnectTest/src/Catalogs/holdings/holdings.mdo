@@ -195,10 +195,7 @@
       <value>Язык по умолчанию</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>3</length>
-      </stringQualifiers>
+      <types>CatalogRef.languages</types>
     </type>
     <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>

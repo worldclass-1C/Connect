@@ -89,6 +89,7 @@
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
+  <commonModules>CommonModule.publicData</commonModules>
   <commonModules>CommonModule.Rapporto</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
@@ -122,13 +123,14 @@
   <catalogs>Catalog.cities</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
   <catalogs>Catalog.employees</catalogs>
+  <catalogs>Catalog.errorDescriptions</catalogs>
   <catalogs>Catalog.gyms</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
+  <catalogs>Catalog.languages</catalogs>
   <catalogs>Catalog.logs</catalogs>
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
-  <catalogs>Catalog.metro</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>

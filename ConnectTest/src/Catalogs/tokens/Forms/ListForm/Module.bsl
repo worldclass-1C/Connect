@@ -8,7 +8,7 @@ EndProcedure
 &AtClient
 Procedure afterInputCityCode(ref, city) Export
 	If ref <> Undefined And ref <> "" then
-		OpenValue(getRef(ref));
+		ShowValue(, getRef(ref));
 	EndIf;	
 EndProcedure
 

@@ -26,12 +26,12 @@ Function getFromExternalSystem(val parameters, val parametrName,
 		answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
 		If answerStruct.Count() = 1 Then
 			If account = Undefined Then
-				accountArray = Service.createCatalogItems("addChangeAccounts", tokenContext.holding, answerStruct);
+				accountArray = publicData.createCatalogItems("addChangeAccounts", tokenContext.holding, answerStruct);
 				account = accountArray[0];
 				setStatus(account);								
 			EndIf;
 			userProfile = profile(account);
-			userArray = Service.createCatalogItems("addChangeUsers", tokenContext.holding, answerStruct, account);
+			userArray = publicData.createCatalogItems("addChangeUsers", tokenContext.holding, answerStruct, account);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
 			authKey = Left(authKey, 36);
 			Users.updateCache(parameters, authKey);									

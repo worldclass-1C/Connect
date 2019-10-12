@@ -26,3 +26,11 @@ EndFunction
 Function getBaseImgURL() Export
 	Return  Constants.BaseImgURL.Get();
 EndFunction
+
+Function getLanguage(code = Undefined) Export
+	If code = Undefined Or code = "" Then
+		Return Catalogs.languages.EmptyRef();
+	Else
+		Return Catalogs.languages.FindByCode(code);
+	EndIf;	
+EndFunction

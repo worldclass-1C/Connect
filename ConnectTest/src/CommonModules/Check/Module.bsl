@@ -3,14 +3,14 @@ Function password(token, password, language) Export
 
 	query = New Query();
 	query.Text = "SELECT
-		|	usersAuthorizationCodes.password,
-		|	usersAuthorizationCodes.phone,
-		|	usersAuthorizationCodes.inputCount,
-		|	usersAuthorizationCodes.recordDate
-		|FROM
-		|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
-		|WHERE
-		|	usersAuthorizationCodes.token = &token";
+	|	usersAuthorizationCodes.password,
+	|	usersAuthorizationCodes.phone,
+	|	usersAuthorizationCodes.inputCount,
+	|	usersAuthorizationCodes.recordDate
+	|FROM
+	|	InformationRegister.usersAuthorizationCodes AS usersAuthorizationCodes
+	|WHERE
+	|	usersAuthorizationCodes.token = &token";
 
 	query.SetParameter("token", token);
 
@@ -18,19 +18,19 @@ Function password(token, password, language) Export
 	If queryResult.isEmpty() Then
 		Return New Structure("phone, errorDescription", "", Service.getErrorDescription(language, "passwordRequired"));
 	Else
-		selection = queryResult.Select();
-		selection.Next();
+		select = queryResult.Select();
+		select.Next();
 		If ToUniversalTime(CurrentDate())
-				- selection.recordDate > 900 Then
+				- select.recordDate > 900 Then
 			Account.delPassword(token);
-			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordExpired"));
-		ElsIf selection.inputCount > 2 Then  	
-			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordExpired"));			
-		ElsIf selection.password = password Then			
-			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription());
+			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordExpired"));
+		ElsIf select.inputCount > 2 Then  	
+			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordExpired"));			
+		ElsIf select.password = password Then			
+			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language));
 		Else
 			Account.incPasswordInputCount(token);
-			Return New Structure("phone, errorDescription", selection.phone, Service.getErrorDescription(language, "passwordNotCorrect"));			
+			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordNotCorrect"));			
 		EndIf;
 	EndIf;
 
@@ -46,7 +46,7 @@ Function requestParameters(parameters) Export
 			EndIf;
 		EndIf;
 	EndDo;
-	Return Service.getErrorDescription();
+	Return Service.getErrorDescription(parameters.language);
 EndFunction
 
 Function getRequiredParameters(requestName)
@@ -118,6 +118,7 @@ Procedure legality(request, parameters) Export
 			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
 		Else
 			parameters.Insert("tokenContext", tokenContext);
+			parameters.Insert("underControl", tokenContext.underControl);
 		EndIf;
 	EndIf;
 EndProcedure
