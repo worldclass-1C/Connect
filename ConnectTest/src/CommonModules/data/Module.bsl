@@ -27,6 +27,7 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 
 EndFunction
 
+//service
 Function attributesStructure(requestName)
 
 	attributesTable = getValueTable();

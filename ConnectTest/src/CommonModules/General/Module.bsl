@@ -867,7 +867,7 @@ Procedure changeCreateCatalogItems(parameters)
 	tokenContext = parameters.tokenContext;
 	struct	= New Structure();
 	struct.Insert("result", "Ok");		
-	publicData.createCatalogItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
+	data.createCatalogItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 

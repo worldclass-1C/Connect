@@ -81,6 +81,7 @@
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
+  <commonModules>CommonModule.data</commonModules>
   <commonModules>CommonModule.Files</commonModules>
   <commonModules>CommonModule.General</commonModules>
   <commonModules>CommonModule.GeneralCallServer</commonModules>
@@ -89,7 +90,6 @@
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
-  <commonModules>CommonModule.publicData</commonModules>
   <commonModules>CommonModule.Rapporto</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
