@@ -11,12 +11,9 @@
   </synonym>
   <includeHelpInContents>true</includeHelpInContents>
   <includeInCommandInterface>true</includeInCommandInterface>
-  <content>Catalog.cities</content>
-  <content>Catalog.gyms</content>
   <content>Catalog.accounts</content>
   <content>Catalog.chains</content>
   <content>Catalog.holdings</content>
-  <content>Catalog.cancellationReasons</content>
   <content>Catalog.timeZones</content>
   <content>Catalog.logs</content>
   <content>Catalog.tokens</content>
@@ -25,4 +22,5 @@
   <content>Catalog.users</content>
   <content>Catalog.languages</content>
   <content>Catalog.errorDescriptions</content>
+  <subsystems>publishedData</subsystems>
 </mdclass:Subsystem>

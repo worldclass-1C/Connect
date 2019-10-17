@@ -64,9 +64,7 @@ Function profile(user, appType) Export
 	
 	queryResults = query.ExecuteBatch();
 	queryResult = queryResults[0];
-	
-	select = queryResult.Select();
-	
+		
 	If Not queryResult.IsEmpty() Then
 		select = queryResult.Select();
 		select.Next();
@@ -85,11 +83,10 @@ Function initProfileStruct()
 	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barCode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
 
-Procedure updateCache(val parameters, val token) Export	
-	
-	tokenContext = TokenReuse.getContext(token);
-	parameters.Insert("tokenContext", tokenContext);
-	
+Procedure updateCache(val parameters) Export	
+		
+	tokenContext = parameters.tokenContext;
+		
 	query = New Query("SELECT
 	|	chainscacheValuesTypes.cacheValuesType As cacheValuesType,
 	|	chainscacheValuesTypes.cacheValuesType.code AS cacheValuesTypeCode,

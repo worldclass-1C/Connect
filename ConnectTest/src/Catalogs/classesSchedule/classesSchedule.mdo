@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d5aabae7-aeab-49ed-a617-7d3614740998">
+  <producedTypes>
+    <objectType typeId="d5bf3567-84b8-49ba-862e-c25addc65d45" valueTypeId="edb8bc9a-0643-4bb9-bf30-2ef1967d5599"/>
+    <refType typeId="23f4aa3b-e8a4-49e6-a48d-8c608d3c8500" valueTypeId="47788fd1-a8a6-477c-ba8c-4e4fa3b03ba7"/>
+    <selectionType typeId="f98c9269-8b0f-44c7-ae71-efc2748eb45a" valueTypeId="41c0d29f-a185-48c9-9b81-1538264c97ad"/>
+    <listType typeId="bea5ea67-42c3-4be2-a6e8-d976c463e315" valueTypeId="2c270466-fdfa-4bae-910f-71f7beb9584a"/>
+    <managerType typeId="de83d652-1ae8-4637-abb7-a21d0bbcc0d6" valueTypeId="51857563-e739-4281-9829-db5b7e1aafa3"/>
+  </producedTypes>
+  <name>classesSchedule</name>
+  <synonym>
+    <key>en</key>
+    <value>Classes schedule</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Расписания уроков</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="7764e7a5-e0cc-408f-9dee-4862ab466bec">
+    <name>period</name>
+    <synonym>
+      <key>en</key>
+      <value>Period</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Период</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="80c1246e-dedb-4114-ada5-31ba026d30af">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="29ace9af-58b2-4723-a497-db25ac084d0b">
+    <name>fullDescription</name>
+    <synonym>
+      <key>en</key>
+      <value>Full description</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Полное описание</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="62af4626-3f1a-45eb-8d29-c1a6d0cff7b4">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

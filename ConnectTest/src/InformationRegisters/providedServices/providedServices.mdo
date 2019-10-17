@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="aaed59d8-b03d-48a2-bd35-13572bf63760">
+  <producedTypes>
+    <selectionType typeId="df159727-acf2-44ed-903a-38fd2bd4e9d3" valueTypeId="c263238e-2d15-4a1f-b7cc-50233f325b26"/>
+    <listType typeId="763576a3-8002-451d-8534-e3f9ba43a064" valueTypeId="ea1f6297-81b0-4240-ae21-398a07993af0"/>
+    <managerType typeId="ffbbf210-1a7a-496d-883a-81b86e95f223" valueTypeId="677a0890-ebe5-41ae-88fe-6dbc85c86e39"/>
+    <recordSetType typeId="ec990a42-83be-4da9-b124-1d8ee73d1bb2" valueTypeId="82750e09-2a49-49b1-a0ce-3f705029a3c1"/>
+    <recordKeyType typeId="3109360f-ff30-4455-bfae-f0aeeb167ee3" valueTypeId="ae585d77-9716-47e7-b1dc-ddf000d027e1"/>
+    <recordType typeId="a2909524-9c74-4b82-83c4-43bdc0c21462" valueTypeId="5ed79c57-e37b-4bf5-98e9-971d943af057"/>
+    <recordManagerType typeId="fb9eefe2-fdb4-47ac-869e-2365ce2ed315" valueTypeId="fdcb44cb-266d-490c-91e3-57295859b1c9"/>
+  </producedTypes>
+  <name>providedServices</name>
+  <synonym>
+    <key>en</key>
+    <value>Provided services</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Оказываемые сотрудниками услуги</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="45c4a45f-feda-4808-a6e2-4ccf14259759">
+    <name>services</name>
+    <synonym>
+      <key>en</key>
+      <value>Services</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Услуги</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="eb893a24-ffb2-4a92-b5e7-f44001411e70">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="8787f756-8d67-4cc2-bc09-a97d0abf3887">
+    <name>employe</name>
+    <synonym>
+      <key>en</key>
+      <value>Employe</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сотрудник</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.employees</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

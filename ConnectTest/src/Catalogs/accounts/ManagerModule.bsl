@@ -1,4 +1,21 @@
 
+Function attributesStructure() Export	
+	
+	attributesTable = data.getValueTable();
+	attributesTableForNewItem = data.getValueTable();
+	
+	data.addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
+	data.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
+	data.addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
+	data.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+	data.addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
+	data.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
+	data.addRowInAttributesTable(attributesTable, "email", "email", "string");
+	
+	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "accounts", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
+		
+EndFunction
+
 Procedure PresentationFieldsGetProcessing(fields, standardProcessing)
 	standardProcessing = False;	
 	array = New Array();	

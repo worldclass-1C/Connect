@@ -49,7 +49,7 @@ Procedure block(token) Export
 	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), tokenObject.user);
 EndProcedure
 
-Procedure editProperty(token, struct) Export
+Procedure editProperty(val token, struct) Export
 	tokenObject = token.GetObject();
 	If tokenObject <> Undefined Then		
 		For Each element In struct Do

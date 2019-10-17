@@ -10,17 +10,18 @@ EndFunction
 
 Function getFromExternalSystem(val parameters, val parametrName,
 		val parametrValue, val account = Undefined) Export
-
-	tokenContext = parameters.tokenContext;
-	language = parameters.language;
-	errorDescription = parameters.errorDescription;	
-	userProfile = initProfileStruct();
-	userList = New Array();
-	authKey = parameters.authKey;
 	
 	parametersNew = Service.getStructCopy(parameters);
 	parametersNew.Insert("requestName", "userProfile");
 	parametersNew.requestStruct.Insert(parametrName, parametrValue);
+	
+	tokenContext = parametersNew.tokenContext;
+	language = parametersNew.language;
+	errorDescription = parametersNew.errorDescription;	
+	authKey = parametersNew.authKey;
+	userProfile = initProfileStruct();
+	userList = New Array();		
+	
 	General.executeRequestMethod(parametersNew);
 	If parametersNew.errorDescription.result = "" Then
 		answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
@@ -33,8 +34,9 @@ Function getFromExternalSystem(val parameters, val parametrName,
 			userProfile = profile(account);
 			userArray = data.createCatalogItems("addChangeUsers", tokenContext.holding, answerStruct, account);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
-			authKey = Left(authKey, 36);
-			Users.updateCache(parameters, authKey);									
+			authKey = XMLString(tokenContext.token);			
+			parametersNew.tokenContext.Insert("user", userArray[0]);			
+			Users.updateCache(parametersNew);									
 		ElsIf answerStruct.Count() > 1 Then			
 			For Each user In answerStruct Do
 				userList.Add(New Structure("name, uid", user.lastName + " "

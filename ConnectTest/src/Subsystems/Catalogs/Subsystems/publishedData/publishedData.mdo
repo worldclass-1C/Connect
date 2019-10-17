@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4135721f-4d89-4201-a3b9-14082819be4b">
+  <name>publishedData</name>
+  <synonym>
+    <key>en</key>
+    <value>Published data</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Опубликованные данные</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>Catalog.employees</content>
+  <content>Catalog.cancellationReasons</content>
+  <content>Catalog.gyms</content>
+  <content>Catalog.cities</content>
+  <parentSubsystem>Subsystem.Catalogs</parentSubsystem>
+</mdclass:Subsystem>

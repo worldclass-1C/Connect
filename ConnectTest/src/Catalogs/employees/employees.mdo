@@ -18,7 +18,6 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.employees.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.employees.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
@@ -26,12 +25,10 @@
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
   <codeLength>9</codeLength>
-  <descriptionLength>25</descriptionLength>
   <codeType>String</codeType>
   <codeAllowedLength>Variable</codeAllowedLength>
   <checkUnique>true</checkUnique>
   <autonumbering>true</autonumbering>
-  <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <attributes uuid="1244b4ae-7170-4ade-a070-3c56526a2969">
@@ -92,6 +89,113 @@
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="0e515723-2ece-49bf-b62b-3133d9fe9f61">
+    <name>tagList</name>
+    <synonym>
+      <key>en</key>
+      <value>Tag list</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Список тегов</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="095b7ea8-32e7-461c-acbb-9c86b8c3de31">
+    <name>education</name>
+    <synonym>
+      <key>en</key>
+      <value>Education</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Образование</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2afa7d4b-4eb2-4f79-84b7-6c99d85eaa2b">
+    <name>progress</name>
+    <synonym>
+      <key>en</key>
+      <value>Progress</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Достижения</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="5c38ace0-dd7c-47f1-9268-92ac8c6d8ea8">
+    <name>categoryList</name>
+    <synonym>
+      <key>en</key>
+      <value>Category list</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Список категорий</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="5737d439-740d-4d67-baa3-81a759ace286">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="f9a15c30-bb85-4586-b04e-77813f23edc5">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -167,16 +271,84 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <attributes uuid="2a40fd11-dd06-43ec-9a07-3f4085000b85">
+      <name>tagList</name>
+      <synonym>
+        <key>en</key>
+        <value>Tag list</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Список тегов</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="9d4b25cf-37f2-4c31-b87c-f5e20f165d95">
+      <name>education</name>
+      <synonym>
+        <key>en</key>
+        <value>Education</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Образование</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="a394e52a-f548-42fa-959d-7aaa9f675cbc">
+      <name>progress</name>
+      <synonym>
+        <key>en</key>
+        <value>Progress</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Достижения</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="f310a9c5-d7db-405f-8a62-550a29b7f65a">
+      <name>categoryList</name>
+      <synonym>
+        <key>en</key>
+        <value>Category list</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Список категорий</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
   </tabularSections>
   <tabularSections uuid="8ba566ef-610b-4033-a50e-b524b2904b01">
     <producedTypes>
       <objectType typeId="8306fa29-383f-437b-b84a-9bd41960c65c" valueTypeId="9250e56c-8d68-433d-aac0-d46fd6ea837b"/>
       <rowType typeId="3c858da2-bef3-4d4f-aa86-d72043b2c89f" valueTypeId="81a73a06-119b-4c18-bd0e-ec11c19d2af2"/>
     </producedTypes>
-    <name>fhoto</name>
+    <name>photos</name>
     <synonym>
       <key>en</key>
-      <value>Fhoto</value>
+      <value>Photos</value>
     </synonym>
     <synonym>
       <key>ru</key>

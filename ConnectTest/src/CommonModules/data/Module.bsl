@@ -6,20 +6,22 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 	items = New Array();
 		
 	If TypeOf(requestStruct) = Type("Array") Then
-		For Each requestParameter In requestStruct Do		
-			catalogObject = initCatalogItem(attributesStruct, requestParameter);			
-			For Each attribute In attributesStruct.attributesTable Do			
+		For Each requestParameter In requestStruct Do
+			object = initObjectItem(attributesStruct, requestParameter);
+			For Each attribute In attributesStruct.attributesTable Do
 				If attribute.type = "valueTable" Then
-					fillValueTable(catalogObject, attribute, attributesStruct, requestParameter);					
+					fillValueTable(object, attribute, attributesStruct, requestParameter);
 				ElsIf attribute.type = "ref" Then
-					fillRef(catalogObject, attribute, attributesStruct, requestParameter);					
+					fillRef(object, attribute, attributesStruct, requestParameter);
 				Else
-					fillField(catalogObject, attribute, attributesStruct, requestParameter)	
+					fillField(object, attribute, attributesStruct, requestParameter)
 				EndIf;
 			EndDo;
-			fillPredefinedField(catalogObject, attributesStruct, holding, owner);
-			catalogObject.Write();
-			items.Add(catalogObject.Ref);			
+			fillPredefinedField(object, attributesStruct, holding, owner);
+			object.Write();
+			If attributesStruct.mdType <> "informationRegister" Then
+				items.Add(object.Ref);
+			EndIf;
 		EndDo;
 	EndIf;
 
@@ -28,136 +30,7 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 EndFunction
 
 //service
-Function attributesStructure(requestName)
-
-	attributesTable = getValueTable();
-
-	attributesTableForNewItem = getValueTable();
-
-	mdStruct = New Structure();
-	mdObjectName = "";
-
-	If requestName = "addChangeAccounts" Then
-
-		mdObjectName = "accounts";
-		addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
-		addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
-		addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
-		addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-		addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
-		addRowInAttributesTable(attributesTable, "gender", "gender", "string");		
-		addRowInAttributesTable(attributesTable, "email", "email", "string");
-		
-	elsIf requestName = "addChangeUsers" Then
-
-		mdObjectName = "users";		
-		addRowInAttributesTable(attributesTable, "userCode", "cid", "string");		
-		addRowInAttributesTable(attributesTable, "userType", "userType", "string");
-		addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
-		addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
-		addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
-				
-	ElsIf requestName = "addgyms" Then
-
-		mdObjectName = "gyms";
-		addRowInAttributesTable(attributesTable, "description", "name", "string");
-		addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
-		addRowInAttributesTable(attributesTable, "segment", "division", "string");
-		addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
-		addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
-		addRowInAttributesTable(attributesTable, "type", "type", "string");
-		addRowInAttributesTable(attributesTable, "photo", "photo", "string");		
-		addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
-		addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");
-		addRowInAttributesTable(attributesTable, "city", "city", "ref");
-		addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
-		addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
-		
-		attributesTranslation = getValueTable();
-		
-		addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-		addRowInAttributesTable(attributesTranslation, "description", "description", "string");
-		addRowInAttributesTable(attributesTranslation, "address", "gymAddress", "string");		
-		addRowInAttributesTable(attributesTranslation, "departmentWorkSchedule", "departments", "JSON");
-		addRowInAttributesTable(attributesTranslation, "nearestMetro", "metro", "JSON");
-
-		attributesPhotos = getValueTable();
-		addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
-		
-		cityStruct = New Structure();
-		cityStruct.Insert("cities", "uid");
-		
-		languageStruct = New Structure();
-		languageStruct.Insert("languages", "code");
-
-		mdStruct.Insert("translation", attributesTranslation);
-		mdStruct.Insert("photos", attributesPhotos);
-		mdStruct.Insert("city", cityStruct);
-		mdStruct.Insert("language", languageStruct);
-
-	ElsIf requestName = "addcities" Then
-
-		mdObjectName = "cities";
-		addRowInAttributesTable(attributesTable, "description", "name", "string");
-
-	ElsIf requestName = "addcancelcauses" Then
-
-		mdObjectName = "cancellationReasons";
-		addRowInAttributesTable(attributesTable, "description", "name", "string");
-
-	ElsIf requestName = "addrequest" Then
-
-		mdObjectName = "matchingRequestsInformationSources";
-		addRowInAttributesTable(attributesTable, "code", "code", "string");
-		addRowInAttributesTable(attributesTable, "performBackground", "performBackground", "boolean");
-		addRowInAttributesTable(attributesTable, "notSaveAnswer", "notSaveAnswer", "boolean");
-		addRowInAttributesTable(attributesTable, "compressAnswer", "compressAnswer", "boolean");
-		addRowInAttributesTable(attributesTable, "staffOnly", "staffOnly", "boolean");
-
-		addRowInAttributesTable(attributesTable, "informationSources", "informationSources", "valueTable");
-
-		attributesTableInformationSources = getValueTable();
-
-		addRowInAttributesTable(attributesTableInformationSources, "atribute", "atribute", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "performBackground", "performBackground", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "notSaveAnswer", "notSaveAnswer", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "compressAnswer", "compressAnswer", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "staffOnly", "staffOnly", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "notUse", "notUse", "boolean");
-		addRowInAttributesTable(attributesTableInformationSources, "requestSource", "requestSource", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "requestReceiver", "requestReceiver", "string");
-		addRowInAttributesTable(attributesTableInformationSources, "informationSource", "informationSource", "ref");
-
-		informationSourceStruct = New Structure();
-		informationSourceStruct.Insert("informationSources", "uid");
-
-		mdStruct.Insert("informationSources", attributesTableInformationSources);
-		mdStruct.Insert("informationSource", informationSourceStruct);
-	
-	ElsIf requestName = "adderrordescription" Then
-
-		mdObjectName = "errorDescriptions";
-		addRowInAttributesTable(attributesTable, "code", "code", "string");
-		addRowInAttributesTable(attributesTable, "parent", "parent", "ref");
-
-		parentStruct = New Structure();
-		parentStruct.Insert("parent", "uid");
-
-		attributesTranslation = getValueTable();
-		
-		addRowInAttributesTable(attributesTranslation, "language", "language", "string");
-		addRowInAttributesTable(attributesTranslation, "description", "description", "string");
-		
-		mdStruct.Insert("translation", attributesTranslation);		
-		mdStruct.Insert("parent", parentStruct);
-		
-	EndIf;
-
-	Return New Structure("mdObjectName, attributesTable, attributesTableForNewItem, mdStruct", mdObjectName, attributesTable, attributesTableForNewItem, mdStruct);
-
-EndFunction
-
-Function getValueTable()
+Function getValueTable() Export
 	ValueTable = New ValueTable;
 	valueTable.Columns.Add("key");
 	valueTable.Columns.Add("value");
@@ -165,28 +38,63 @@ Function getValueTable()
 	Return ValueTable;	
 EndFunction
 
-Function initCatalogItem(attributesStruct, requestParameter)
-	If attributesStruct.mdObjectName = "languages" Then
-		catalogRef = Catalogs[attributesStruct.mdObjectName].FindByCode(requestParameter.code)
+Function attributesStructure(val requestName)
+
+	If requestName = "addChangeAccounts" Then
+		Return Catalogs.accounts.attributesStructure();
+	ElsIf requestName = "addChangeUsers" Then
+		Return Catalogs.users.attributesStructure();
+	ElsIf requestName = "addgyms" Then
+		Return Catalogs.gyms.attributesStructure();
+	ElsIf requestName = "addemployees" Then
+		Return Catalogs.employees.attributesStructure();
+	ElsIf requestName = "addprovidedservices" Then
+		Return InformationRegisters.providedServices.attributesStructure();
+	ElsIf requestName = "addgymsschedule" Then
+		Return Catalogs.classesSchedule.attributesStructure();
+	ElsIf requestName = "addclassmember" Then
+		Return InformationRegisters.classMembers.attributesStructure();
+	ElsIf requestName = "addcancelcauses" Then
+		Return Catalogs.cancellationReasons.attributesStructure();
+	ElsIf requestName = "addrequest" Then
+		Return Catalogs.matchingRequestsInformationSources.attributesStructure();
+	ElsIf requestName = "adderrordescription" Then
+		Return Catalogs.errorDescriptions.attributesStructure();
 	Else
-		catalogRef = Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
-	EndIf;
-	catalogObject = catalogRef.GetObject();
-	If catalogObject = Undefined Then
-		catalogObject = Catalogs[attributesStruct.mdObjectName].CreateItem();
-		catalogObject.SetNewObjectRef(catalogRef);
-		catalogObject.SetNewCode();
-		For Each attribute In attributesStruct.attributesTableForNewItem Do
-			catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
-		EndDo;
-	EndIf;
-	Return catalogObject;
+		Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "", "", "", getValueTable(), getValueTable(), New Structure());
+	EndIf;	 
+
 EndFunction
 
-Procedure fillValueTable(catalogObject, attribute, attributesStruct, requestParameter)
-	catalogObject[attribute.key].Clear();
+Function initObjectItem(attributesStruct, requestParameter)
+	
+	If attributesStruct.mdType = "catalog" Then
+		If attributesStruct.mdObjectName = "languages" Then
+			catalogRef = Catalogs[attributesStruct.mdObjectName].FindByCode(requestParameter.code)
+		Else
+			catalogRef = Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
+		EndIf;
+		object = catalogRef.GetObject();
+		If object = Undefined Then
+			object = Catalogs[attributesStruct.mdObjectName].CreateItem();
+			object.SetNewObjectRef(catalogRef);
+			object.SetNewCode();
+			For Each attribute In attributesStruct.attributesTableForNewItem Do
+				object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+			EndDo;
+		EndIf;
+	ElsIf attributesStruct.mdType = "informationRegister" Then
+		object = InformationRegisters[attributesStruct.mdObjectName].CreateRecordManager();	
+	EndIf;
+	
+	Return object;
+	
+EndFunction
+
+Procedure fillValueTable(object, attribute, attributesStruct, requestParameter)
+	object[attribute.key].Clear();
 	For Each item In requestParameter[attribute.value] Do
-		newRow = catalogObject[attribute.key].Add();
+		newRow = object[attribute.key].Add();
 		For Each tableProperty In attributesStruct.mdStruct[attribute.key] Do
 			If tableProperty.type = "ref" Then
 				For Each refProperty In attributesStruct.mdStruct[tableProperty.key] Do
@@ -205,41 +113,43 @@ Procedure fillValueTable(catalogObject, attribute, attributesStruct, requestPara
 	EndDo;	
 EndProcedure
 
-Procedure fillRef(catalogObject, attribute, attributesStruct, requestParameter)
+Procedure fillRef(object, attribute, attributesStruct, requestParameter)
 	For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
 		If refProperty.key = "languages" Then
-			catalogObject[attribute.key] = Catalogs[refProperty.key].FindByCode(requestParameter[attribute.value][refProperty.value]);
+			object[attribute.key] = Catalogs[refProperty.key].FindByCode(requestParameter[attribute.value][refProperty.value]);
 		Else
-			catalogObject[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
+			object[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
 		EndIf;
 	EndDo;	
 EndProcedure
 
-Procedure fillField(catalogObject, attribute, attributesStruct, requestParameter)
+Procedure fillField(object, attribute, attributesStruct, requestParameter)
 	If attribute.type = "JSON" Then
-		catalogObject[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
+		object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
 	Else
-		catalogObject[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+		object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
 	EndIf;		
 EndProcedure
 
-Procedure fillPredefinedField(catalogObject, attributesStruct, holding, owner)
+Procedure fillPredefinedField(object, attributesStruct, holding, owner)
 	If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
-		If owner <> Undefined Then
-			catalogObject.owner = owner;
+		If attributesStruct.mdType = "catalog" Then
+			If owner <> Undefined Then
+				object.owner = owner;
+			EndIf;
+			If attributesStruct.mdObjectName <> "accounts" Then
+				object.holding = holding;
+			EndIf;
+			If attributesStruct.mdObjectName = "users" Then
+				object.description = "" + owner + " (" + holding + ")";
+			EndIf;
 		EndIf;
-		If attributesStruct.mdObjectName <> "accounts" Then
-			catalogObject.holding = holding;
-		EndIf;
-		If attributesStruct.mdObjectName = "users" Then
-			catalogObject.description = "" + owner + " (" + holding + ")";
-		EndIf;
-		catalogObject.registrationDate = ToUniversalTime(CurrentDate());
+		object.registrationDate = ToUniversalTime(CurrentDate());
 	EndIf;		
 EndProcedure
 
 Procedure addRowInAttributesTable(attributesTable, key, value,
-		type)
+		type) Export
 	newRow			= attributesTable.Add();
 	newRow.key		= key;
 	newRow.value	= value;

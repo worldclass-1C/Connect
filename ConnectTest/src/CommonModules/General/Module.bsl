@@ -46,6 +46,9 @@ Procedure executeRequestMethod(parameters) Export
 			imageDELETE(parameters);			
 		ElsIf parameters.requestName = "addchangeusers"
 				Or parameters.requestName = "addgyms"
+				Or parameters.requestName = "addemployees"
+				Or parameters.requestName = "addprovidedservices"
+				Or parameters.requestName = "addgymsschedule"
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
 				Or parameters.requestName = "addcancelcauses"
@@ -390,7 +393,9 @@ Procedure confirmPhone(parameters)
 				struct.Insert("userProfile", Account.profile(select.account));
 				struct.Insert("userList", New Array());
 				struct.Insert("token", XMLString(tokenContext.token));
-				Users.updateCache(parameters, struct.token);				
+				parametersNew = Service.getStructCopy(parameters);
+				parametersNew.tokenContext.Insert("user", select.user);
+				Users.updateCache(parametersNew);				
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;

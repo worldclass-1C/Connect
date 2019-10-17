@@ -172,10 +172,17 @@ Function getAmountOfNumbers(number) Export
 	Return res;
 EndFunction
 
-Function getStructCopy(struct) Export
+Function getStructCopy(val struct) Export
 	structNew	= New Structure();	
-	For Each element In struct Do
-		structNew.Insert(element.key, element.value);	
+	For Each item In struct Do
+		If TypeOf(item.value) = Type("Structure") Then
+			value = getStructCopy(item.value);
+		ElsIf TypeOf(item.value) = Type("FixedStructure") Then
+			value = getStructCopy(item.value);	
+		Else
+			value = item.value;
+		EndIf;
+		structNew.Insert(item.key, value);	
 	EndDo;
 	Return structNew;
 EndFunction

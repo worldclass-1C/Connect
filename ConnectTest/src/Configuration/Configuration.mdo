@@ -125,6 +125,7 @@
   <catalogs>Catalog.employees</catalogs>
   <catalogs>Catalog.errorDescriptions</catalogs>
   <catalogs>Catalog.gyms</catalogs>
+  <catalogs>Catalog.classesSchedule</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
   <catalogs>Catalog.languages</catalogs>
@@ -156,11 +157,13 @@
   <reports>Report.statisticsByMonth</reports>
   <dataProcessors>DataProcessor.ОтправитьПуш</dataProcessors>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
+  <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
   <informationRegisters>InformationRegister.messagesId</informationRegisters>
   <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
+  <informationRegisters>InformationRegister.providedServices</informationRegisters>
   <informationRegisters>InformationRegister.registeredDevices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>

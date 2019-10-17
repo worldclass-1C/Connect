@@ -95,6 +95,23 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.gyms.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.gyms.Form.ListForm</defaultListForm>
+  <attributes uuid="86c48736-c859-4e51-b9b4-37cd8b9c9d58">
+    <name>additional</name>
+    <synonym>
+      <key>en</key>
+      <value>Additional</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дополнительно</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="384d96cc-0f01-4e1f-94ea-80adf581bd1f">
     <name>address</name>
     <synonym>
@@ -568,6 +585,23 @@
         <stringQualifiers>
           <length>1024</length>
         </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e39211af-5442-4b14-a823-0c62367f7055">
+      <name>additional</name>
+      <synonym>
+        <key>en</key>
+        <value>Additional</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Дополнительно</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
