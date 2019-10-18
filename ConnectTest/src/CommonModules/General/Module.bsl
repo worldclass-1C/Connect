@@ -475,9 +475,10 @@ EndProcedure
 
 Procedure gymList(parameters)
 
-	requestStruct	= parameters.requestStruct;
-	language		= parameters.language;
-	gymArray 		= New Array();
+	requestStruct = parameters.requestStruct;	
+	authorized = ValueIsFilled(parameters.tokenContext.user);
+	language = parameters.language;
+	gymArray = New Array();
 	
 	errorDescription = Service.getErrorDescription(language);
 
@@ -528,6 +529,7 @@ Procedure gymList(parameters)
 			gymStruct.Insert("phone", select.phone);
 			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
 			gymStruct.Insert("holidaysTime", select.holidaysTime);
+			gymStruct.Insert("hasAccess", ?(authorized, false, Undefined));
 			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
 			coords = New Structure();
