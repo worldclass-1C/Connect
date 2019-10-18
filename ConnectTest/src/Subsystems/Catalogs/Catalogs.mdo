@@ -11,16 +11,15 @@
   </synonym>
   <includeHelpInContents>true</includeHelpInContents>
   <includeInCommandInterface>true</includeInCommandInterface>
-  <content>Catalog.accounts</content>
   <content>Catalog.chains</content>
   <content>Catalog.holdings</content>
   <content>Catalog.timeZones</content>
   <content>Catalog.logs</content>
-  <content>Catalog.tokens</content>
   <content>Catalog.cacheValuesTypes</content>
   <content>Catalog.CountryCodes</content>
-  <content>Catalog.users</content>
   <content>Catalog.languages</content>
   <content>Catalog.errorDescriptions</content>
+  <content>Catalog.segments</content>
   <subsystems>publishedData</subsystems>
+  <subsystems>accounts</subsystems>
 </mdclass:Subsystem>

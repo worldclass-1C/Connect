@@ -1,5 +1,25 @@
 
 Function sendSMS(parameters, answer) Export
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	URL = "" + parameters.user + "?serviceId=" + parameters.user + "&pass="
+		+ parameters.password + "&clientId=" + parameters.phone + "&message="
+		+ parameters.text + "&source=" + parameters.senderName;
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerBody = TrimAll(answerHTTP.GetBodyAsString());
+	try
+	//@skip-warning
+		test = Number(answerBody);
+		answer.Insert("id", answerBody);
+		answer.Insert("messageStatus", Enums.messageStatuses.sent);
+	Except
+		answer.Insert("error", answerBody);
+	EndTry;
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	Return answer;
+EndFunction
+
+Function _sendSMS(parameters, answer) Export
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	URL = "world_class?msisdn=" + parameters.phone + "&message="
 		+ parameters.text;
@@ -19,32 +39,32 @@ Function sendSMS(parameters, answer) Export
 EndFunction
 
 Function checkSmsStatus(parameters, answer) Export
-	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
-	
-	URL	= "world_class/delivery_report?mt_num=" + parameters.id + "&show_date=Y";
+
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	URL = "dlr?id=" + parameters.id + "&serviceId=" + parameters.user + "&pass="
+		+ parameters.password;
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
-	
-	rowsArray	= StrSplit(answerBody, " ");	
+
+	rowsArray = StrSplit(answerBody, " ");
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
-	
+
 	If rowsArray.Count() > 0 Then
-		status	= getMessageStatus(rowsArray[0]);
+		status = getMessageStatus(rowsArray[0]);
 		If TypeOf(status) = Type("EnumRef.messageStatuses") Then
 			answer.Insert("messageStatus", status);
 		Else
 			answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
-			answer.Insert("error",answerBody);
-		EndIf;	
+			answer.Insert("error", answerBody);
+		EndIf;
 	Else
-		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);		
-		answer.Insert("error",answerBody);
-	EndIf;	
-	
-	Return answer;	
-	
+		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
+		answer.Insert("error", answerBody);
+	EndIf;
+
+	Return answer;
+
 EndFunction
 
 Function getMessageStatus(status)

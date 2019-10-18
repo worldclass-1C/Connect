@@ -116,7 +116,6 @@ Function canSendSms(language, phone) Export
 
 EndFunction 
 
-
 Function runRequest(parameters, body, address = "") Export
 	headers = New Map();
 	headers.Insert("Content-Type", "application/json");	

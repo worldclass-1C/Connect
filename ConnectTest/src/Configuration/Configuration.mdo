@@ -39,6 +39,7 @@
   <dataLockControlMode>Managed</dataLockControlMode>
   <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
   <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousExtensionAndAddInCallUseMode>DontUse</synchronousExtensionAndAddInCallUseMode>
   <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
   <compatibilityMode>8.3.14</compatibilityMode>
   <languages uuid="48aa1e92-8835-4160-a104-8e36ee823c57">
@@ -121,17 +122,18 @@
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.cities</catalogs>
+  <catalogs>Catalog.classesSchedule</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
   <catalogs>Catalog.employees</catalogs>
   <catalogs>Catalog.errorDescriptions</catalogs>
   <catalogs>Catalog.gyms</catalogs>
-  <catalogs>Catalog.classesSchedule</catalogs>
   <catalogs>Catalog.holdings</catalogs>
   <catalogs>Catalog.informationSources</catalogs>
   <catalogs>Catalog.languages</catalogs>
   <catalogs>Catalog.logs</catalogs>
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
+  <catalogs>Catalog.segments</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
@@ -139,9 +141,10 @@
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
-  <enums>Enum.JSONValueTypes</enums>
+  <enums>Enum.gymStates</enums>
   <enums>Enum.HTTPRequestTypes</enums>
   <enums>Enum.informationChannels</enums>
+  <enums>Enum.JSONValueTypes</enums>
   <enums>Enum.loyaltyTypes</enums>
   <enums>Enum.messageStatuses</enums>
   <enums>Enum.registrationTypes</enums>

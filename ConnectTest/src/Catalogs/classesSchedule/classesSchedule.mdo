@@ -104,4 +104,20 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="7fe628b9-ad8b-44ff-88d8-78218905e3ee">
+    <name>active</name>
+    <synonym>
+      <key>en</key>
+      <value>Active</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Активный</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
 </mdclass:Catalog>

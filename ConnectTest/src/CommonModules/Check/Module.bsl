@@ -109,9 +109,9 @@ Procedure legality(request, parameters) Export
 				requestStruct.Property("hash", hash);
 				If Not ValueIsFilled(timeStamp) Or Not ValueIsFilled(hash) Then
 					parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
-				ElsIf (ToUniversalTime(CurrentDate()) - Date("19700101"))
-						- timeStamp > 300 Then
-					parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
+//				ElsIf (ToUniversalTime(CurrentDate()) - Date("19700101"))
+//						- timeStamp > 300 Then
+//					parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
 				Else
 					parameters.Insert("errorDescription", Crypto.checkHasp(parameters.language, timeStamp, hash));
 				EndIf;

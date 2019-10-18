@@ -95,6 +95,25 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.gyms.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.gyms.Form.ListForm</defaultListForm>
+  <attributes uuid="d36be525-0811-48e9-aec0-1cb6a2a6a63d">
+    <name>activationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Activation date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Активный</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="86c48736-c859-4e51-b9b4-37cd8b9c9d58">
     <name>additional</name>
     <synonym>
@@ -194,6 +213,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="61ef7f9f-37d0-45fd-adb4-a0bd9e575f6d">
+    <name>state</name>
+    <synonym>
+      <key>en</key>
+      <value>State</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Состояние клуба</value>
+    </synonym>
+    <type>
+      <types>EnumRef.gymStates</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="dc75009f-8309-4b37-b4d0-0c9614c1e80e">
     <name>holding</name>
     <synonym>
@@ -210,6 +245,25 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="4ffd62f3-56b2-42c4-933c-fc24a6d9bdee">
+    <name>holidaysTime</name>
+    <synonym>
+      <key>en</key>
+      <value>Holidays time</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Время работы в выходные</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>15</length>
+      </stringQualifiers>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -364,6 +418,30 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="5d45e08e-04b0-4f0f-b62f-18f112fe0eb9">
+    <name>phone</name>
+    <synonym>
+      <key>en</key>
+      <value>Phone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>НомерТелефона</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="678c1004-22c6-4132-886e-008c5555a886">
     <name>photo</name>
     <synonym>
@@ -414,16 +492,14 @@
       <value>Сегмент</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>30</length>
-      </stringQualifiers>
+      <types>CatalogRef.segments</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
+    <choiceParameterLinks>
+      <name>Filter.holding</name>
+      <field>Catalog.gyms.Attribute.holding</field>
+    </choiceParameterLinks>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -448,6 +524,25 @@
     <fillValue xsi:type="core:StringValue">
       <value></value>
     </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="8044b8bf-5666-4156-a1dc-a3c10497e6bc">
+    <name>weekdaysTime</name>
+    <synonym>
+      <key>en</key>
+      <value>Weekdays time</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Время работы в будни</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>15</length>
+      </stringQualifiers>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

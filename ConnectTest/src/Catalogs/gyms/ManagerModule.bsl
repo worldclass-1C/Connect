@@ -6,10 +6,10 @@ Function attributesStructure() Export
 
 	data.addRowInAttributesTable(attributesTable, "description", "name", "string");
 	data.addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
-	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
+//	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
 	data.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
 	data.addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
-	data.addRowInAttributesTable(attributesTable, "type", "type", "string");
+//	data.addRowInAttributesTable(attributesTable, "type", "type", "string");
 	data.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
 	data.addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
 	data.addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");

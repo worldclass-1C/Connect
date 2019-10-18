@@ -27,8 +27,10 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "usersummary" Then 
 			getUserSummary(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"
-				Or parameters.requestName = "gymlist" Then // проверить описание в API
-			getGymList(parameters);
+				Or parameters.requestName = "gymlist" Then
+			gymList(parameters);
+		ElsIf parameters.requestName = "gyminfo" Then
+			gymInfo(parameters);	
 		ElsIf parameters.requestName = "catalogcancelcauses"
 				Or parameters.requestName = "cancelcauseslist" Then // проверить описание в API
 			getCancellationReasonsList(parameters);
@@ -471,7 +473,85 @@ Procedure getUserSummary(parameters)
 	
 EndProcedure
 
-Procedure getGymList(parameters)
+Procedure gymList(parameters)
+
+	requestStruct	= parameters.requestStruct;
+	language		= parameters.language;
+	gymArray 		= New Array();
+	
+	errorDescription = Service.getErrorDescription(language);
+
+	If Not requestStruct.Property("chain") Then
+		errorDescription = Service.getErrorDescription(language, "chainCodeError");
+	EndIf;
+
+	If errorDescription.result = "" Then
+		query = New Query("SELECT
+		|	gyms.Ref,
+		|	gyms.latitude,
+		|	gyms.longitude,
+		|	ISNULL(gyms.segment.Description, """") AS segment,
+		|	ISNULL(gyms.segment.color, """") AS segmentColor,
+		|	gyms.phone,
+		|	gyms.photo,
+		|	gyms.weekdaysTime,
+		|	gyms.holidaysTime,
+		|	ISNULL(gymstranslation.description, gyms.Description) AS Description,
+		|	ISNULL(gymstranslation.address, gyms.address) AS address,
+		|	ISNULL(gymstranslation.nearestMetro, gyms.nearestMetro) AS nearestMetro,
+		|	REFPRESENTATION(gyms.state) AS state
+		|FROM
+		|	Catalog.gyms AS gyms
+		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+		|		ON gymstranslation.Ref = gyms.Ref
+		|		AND gymstranslation.language = &language
+		|WHERE
+		|	NOT gyms.DeletionMark
+		|	AND gyms.chain.code = &chainCode
+		|	AND gyms.activationDate <= &currentTime");
+
+		query.SetParameter("chainCode", requestStruct.chain);
+		query.SetParameter("language", language);
+		query.SetParameter("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), parameters.tokenContext.timezone));		
+		
+		select = query.Execute().Select();
+
+		While select.Next() Do
+			gymStruct = New Structure();
+			gymStruct.Insert("uid", XMLString(select.Ref));
+			gymStruct.Insert("gymId", gymStruct.uid);
+			gymStruct.Insert("name", select.description);
+			gymStruct.Insert("type", "");
+			gymStruct.Insert("state", select.state);			
+			gymStruct.Insert("address", select.address);
+			gymStruct.Insert("photo", select.photo);
+			gymStruct.Insert("phone", select.phone);
+			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
+			gymStruct.Insert("holidaysTime", select.holidaysTime);
+			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
+			
+			coords = New Structure();
+			coords.Insert("latitude", select.latitude);
+			coords.Insert("longitude", select.longitude);
+			gymStruct.Insert("coords", coords);
+			
+			segment = New Structure();
+			segment.Insert("name", select.segment);
+			segment.Insert("color", select.segmentColor);
+			gymStruct.Insert("segment", segment);			
+			
+			gymArray.add(gymStruct);
+		EndDo;
+	EndIf;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);
+	parameters.Insert("errorDescription", errorDescription);
+	
+EndProcedure
+
+Procedure gymInfo(parameters)
 
 	requestStruct	= parameters.requestStruct;
 	language		= parameters.language;
@@ -479,52 +559,67 @@ Procedure getGymList(parameters)
 	
 	errorDescription = Service.getErrorDescription(language);
 	
-	If Not requestStruct.Property("chain") Then
-		errorDescription = Service.getErrorDescription(language, "noChain");
+	If Not requestStruct.Property("uid") Then
+		errorDescription = Service.getErrorDescription(language, "gymError");
 	EndIf;
 
 	If errorDescription.result = "" Then
 		query = New Query();
 		query.Text = "SELECT
 		|	gyms.Ref,
-		|	gyms.Description,
-		|	gyms.address,
-		|	gyms.city,
 		|	gyms.latitude,
 		|	gyms.longitude,
-		|	gyms.registrationDate,
-		|	gyms.segment,
-		|	gyms.chain,
-		|	gyms.type,
-		|	gyms.holding,
-		|	gyms.departmentWorkSchedule,
-		|	gyms.nearestMetro
+		|	ISNULL(gyms.segment.Description, """") AS segment,
+		|	ISNULL(gyms.segment.color, """") AS segmentColor,
+		|	ISNULL(gymstranslation.description, gyms.Description) AS Description,
+		|	ISNULL(gymstranslation.address, gyms.address) AS address,
+		|	ISNULL(gymstranslation.departmentWorkSchedule, gyms.departmentWorkSchedule) AS departments,
+		|	ISNULL(gymstranslation.nearestMetro, gyms.nearestMetro) AS nearestMetro,
+		|	ISNULL(gymstranslation.additional, gyms.additional) AS additional,
+		|	REFPRESENTATION(gyms.state) AS state,
+		|	gyms.photos.(
+		|		URL)
 		|FROM
 		|	Catalog.gyms AS gyms
+		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+		|		ON gymstranslation.Ref = gyms.Ref
+		|		AND gymstranslation.language = &language
 		|WHERE
-		|	gyms.chain.code = &chainCode
-		|	AND
-		|	NOT gyms.DeletionMark";
+		|	NOT gyms.DeletionMark
+		|	AND gyms.Ref = &gym
+		|	AND gyms.activationDate <= &currentTime";
 
-		query.SetParameter("chainCode", requestStruct.chain);
+		query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.uid));
+		query.SetParameter("language", language);
+		query.SetParameter("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), parameters.tokenContext.timezone));		
+
 		select = query.Execute().Select();
 
 		While select.Next() Do
 			gymStruct = New Structure();
-			gymStruct.Insert("gymId", XMLString(select.Ref));
+			gymStruct.Insert("uid", XMLString(select.Ref));
+			gymStruct.Insert("gymId", gymStruct.uid);
 			gymStruct.Insert("name", select.Description);
-			gymStruct.Insert("type", select.type);
-//			gymStruct.Insert("cityId", XMLString(select.city));
-			gymStruct.Insert("cityId", "");
-			gymStruct.Insert("gymAddress", select.address);
-			gymStruct.Insert("divisionTitle", select.segment);
-
+			gymStruct.Insert("type", "");
+			gymStruct.Insert("state", select.state);			
+			gymStruct.Insert("address", select.address);
+			
 			coords = New Structure();
 			coords.Insert("latitude", select.latitude);
 			coords.Insert("longitude", select.longitude);
 			gymStruct.Insert("coords", coords);
-			gymStruct.Insert("departments", HTTP.decodeJSON(select.departmentWorkSchedule, Enums.JSONValueTypes.array));
+			
+			segment = New Structure();
+			segment.Insert("name", select.segment);
+			segment.Insert("color", select.segmentColor);
+			gymStruct.Insert("segment", segment);			
+			
+			gymStruct.Insert("departments", HTTP.decodeJSON(select.departments, Enums.JSONValueTypes.array));
 			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
+			gymStruct.Insert("additional", HTTP.decodeJSON(select.additional, Enums.JSONValueTypes.array));
+						 
+			gymStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));			
+			
 			gymArray.add(gymStruct);
 		EndDo;
 	EndIf;
