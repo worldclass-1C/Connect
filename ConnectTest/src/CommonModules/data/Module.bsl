@@ -9,16 +9,17 @@ Function createCatalogItems(requestName, holding, requestStruct, owner = Undefin
 		For Each requestParameter In requestStruct Do
 			object = initObjectItem(attributesStruct, requestParameter);
 			For Each attribute In attributesStruct.attributesTable Do
-				If attribute.type = "valueTable" Then
-					fillValueTable(object, attribute, attributesStruct, requestParameter);
-				ElsIf attribute.type = "ref" Then
-					fillRef(object, attribute, attributesStruct, requestParameter);
-				Else
-					fillField(object, attribute, attributesStruct, requestParameter)
-				EndIf;
+				fillField(object, attribute, attributesStruct, requestParameter);
 			EndDo;
 			fillPredefinedField(object, attributesStruct, holding, owner);
-			object.Write();
+			If attributesStruct.actType = "write" Then
+				object.Write();
+			ElsIf attributesStruct.actType = "delete" Then
+				object.Read();
+				If object.Selected() Then
+					object.Delete();
+				EndIf;				
+			EndIf;
 			If attributesStruct.mdType <> "informationRegister" Then
 				items.Add(object.Ref);
 			EndIf;
@@ -52,8 +53,8 @@ Function attributesStructure(val requestName)
 		Return InformationRegisters.providedServices.attributesStructure();
 	ElsIf requestName = "addgymsschedule" Then
 		Return Catalogs.classesSchedule.attributesStructure();
-	ElsIf requestName = "addclassmember" Then
-		Return InformationRegisters.classMembers.attributesStructure();
+	ElsIf requestName = "addclassmember" or requestName = "deleteclassmember" Then
+		Return InformationRegisters.classMembers.attributesStructure(requestName);
 	ElsIf requestName = "addcancelcauses" Then
 		Return Catalogs.cancellationReasons.attributesStructure();
 	ElsIf requestName = "addrequest" Then
@@ -76,7 +77,11 @@ Function initObjectItem(attributesStruct, requestParameter)
 		EndIf;
 		object = catalogRef.GetObject();
 		If object = Undefined Then
-			object = Catalogs[attributesStruct.mdObjectName].CreateItem();
+			If requestParameter.Property("isfolder") And requestParameter.isfolder Then
+				object = Catalogs[attributesStruct.mdObjectName].CreateFolder();
+			Else
+				object = Catalogs[attributesStruct.mdObjectName].CreateItem();
+			EndIf;
 			object.SetNewObjectRef(catalogRef);
 			object.SetNewCode();
 			For Each attribute In attributesStruct.attributesTableForNewItem Do
@@ -91,24 +96,22 @@ Function initObjectItem(attributesStruct, requestParameter)
 	
 EndFunction
 
+Procedure fillField(object, attribute, attributesStruct, requestParameter)
+	If attribute.type = "valueTable" Then
+		fillValueTable(object, attribute, attributesStruct, requestParameter);
+	ElsIf attribute.type = "ref" Then
+		fillRef(object, attribute, attributesStruct, requestParameter);
+	Else
+		fillValue(object, attribute, attributesStruct, requestParameter)
+	EndIf;
+EndProcedure
+
 Procedure fillValueTable(object, attribute, attributesStruct, requestParameter)
 	object[attribute.key].Clear();
 	For Each item In requestParameter[attribute.value] Do
 		newRow = object[attribute.key].Add();
 		For Each tableProperty In attributesStruct.mdStruct[attribute.key] Do
-			If tableProperty.type = "ref" Then
-				For Each refProperty In attributesStruct.mdStruct[tableProperty.key] Do
-					If refProperty.key = "languages" Then
-						newRow[tableProperty.key] = Catalogs[refProperty.key].FindByCode(item[tableProperty.value][refProperty.value]);
-					Else
-						newRow[tableProperty.key] = Catalogs[refProperty.key].GetRef(New UUID(item[tableProperty.value][refProperty.value]));
-					EndIf;
-				EndDo;
-			ElsIf tableProperty.type = "JSON" Then
-				newRow[tableProperty.key] = HTTP.encodeJSON(item[tableProperty.value]);	
-			Else
-				newRow[tableProperty.key] = item[tableProperty.value];
-			EndIf;
+			fillField(newRow, tableProperty, attributesStruct, item);			
 		EndDo;
 	EndDo;	
 EndProcedure
@@ -123,9 +126,11 @@ Procedure fillRef(object, attribute, attributesStruct, requestParameter)
 	EndDo;	
 EndProcedure
 
-Procedure fillField(object, attribute, attributesStruct, requestParameter)
+Procedure fillValue(object, attribute, attributesStruct, requestParameter)
 	If attribute.type = "JSON" Then
 		object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
+	ElsIf attribute.type = "boolean" Then
+		object[attribute.key] = requestParameter[attribute.value];
 	Else
 		object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
 	EndIf;		
@@ -137,15 +142,15 @@ Procedure fillPredefinedField(object, attributesStruct, holding, owner)
 			If owner <> Undefined Then
 				object.owner = owner;
 			EndIf;
-			If attributesStruct.mdObjectName <> "accounts" Then
+			If attributesStruct.fillHolding Then
 				object.holding = holding;
 			EndIf;
 			If attributesStruct.mdObjectName = "users" Then
 				object.description = "" + owner + " (" + holding + ")";
 			EndIf;
 		EndIf;
-		object.registrationDate = ToUniversalTime(CurrentDate());
-	EndIf;		
+	EndIf;
+	object.registrationDate = ToUniversalTime(CurrentDate());			
 EndProcedure
 
 Procedure addRowInAttributesTable(attributesTable, key, value,

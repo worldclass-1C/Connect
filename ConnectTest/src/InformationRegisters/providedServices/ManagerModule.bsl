@@ -7,12 +7,9 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTable, "employe", "employe", "ref");
 	data.addRowInAttributesTable(attributesTable, "services", "services", "JSON");
 
-	employeStruct = New Structure();
-	employeStruct.Insert("employees", "uid");
-
 	mdStruct = New Structure();
-	mdStruct.Insert("employe", employeStruct);
+	mdStruct.Insert("employe", New Structure("employees", "uid"));
 
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "providedServices", "informationRegister", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "providedServices", False, "informationRegister", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

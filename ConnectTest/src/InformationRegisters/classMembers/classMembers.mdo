@@ -53,27 +53,29 @@
     <type>
       <types>CatalogRef.classesSchedule</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <master>true</master>
     <mainFilter>true</mainFilter>
   </dimensions>
   <dimensions uuid="c42605d8-af24-415c-8908-7697c58417e5">
-    <name>uid</name>
+    <name>user</name>
     <synonym>
       <key>en</key>
-      <value>Uid</value>
+      <value>User</value>
     </synonym>
     <synonym>
       <key>ru</key>
       <value>ГУИД</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>36</length>
-      </stringQualifiers>
+      <types>CatalogRef.users</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
     <mainFilter>true</mainFilter>

@@ -22,16 +22,62 @@
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
-    <name>Code</name>
-    <synonym>
-      <key>en</key>
-      <value>Code</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Код</value>
-    </synonym>
+    <name>PredefinedDataName</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Predefined</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Ref</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>DeletionMark</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>IsFolder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Owner</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
   </standardAttributes>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
@@ -44,8 +90,27 @@
       <key>ru</key>
       <value>Наименование</value>
     </synonym>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <synonym>
+      <key>en</key>
+      <value>Code</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Код</value>
+    </synonym>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
   </standardAttributes>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
@@ -111,6 +176,9 @@
         <dateFractions>Date</dateFractions>
       </dateQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -128,6 +196,11 @@
       <types>String</types>
       <stringQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -210,6 +283,11 @@
         <length>1024</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -226,6 +304,9 @@
     <type>
       <types>EnumRef.gymStates</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -264,6 +345,11 @@
         <length>15</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -274,16 +360,16 @@
       <value>Latitude</value>
     </synonym>
     <synonym>
-      <key>ru</key>
-      <value>Широта</value>
+      <key>fr_FR</key>
+      <value>largeur</value>
     </synonym>
     <synonym>
       <key>es_ES</key>
       <value>amplitud</value>
     </synonym>
     <synonym>
-      <key>fr_FR</key>
-      <value>largeur</value>
+      <key>ru</key>
+      <value>Широта</value>
     </synonym>
     <type>
       <types>Number</types>
@@ -293,10 +379,6 @@
       </numberQualifiers>
     </type>
     <format>
-      <key>ru</key>
-      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
-    </format>
-    <format>
       <key>en</key>
       <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
     </format>
@@ -308,10 +390,10 @@
       <key>es_ES</key>
       <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
     </format>
-    <editFormat>
+    <format>
       <key>ru</key>
       <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
-    </editFormat>
+    </format>
     <editFormat>
       <key>en</key>
       <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
@@ -323,6 +405,10 @@
     <editFormat>
       <key>es_ES</key>
       <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
     </editFormat>
     <minValue xsi:type="core:StringValue">
       <value>-90</value>
@@ -343,16 +429,16 @@
       <value>Longitude</value>
     </synonym>
     <synonym>
-      <key>ru</key>
-      <value>Долгота</value>
+      <key>fr_FR</key>
+      <value>longitude</value>
     </synonym>
     <synonym>
       <key>es_ES</key>
       <value>longitud</value>
     </synonym>
     <synonym>
-      <key>fr_FR</key>
-      <value>longitude</value>
+      <key>ru</key>
+      <value>Долгота</value>
     </synonym>
     <type>
       <types>Number</types>
@@ -362,10 +448,6 @@
       </numberQualifiers>
     </type>
     <format>
-      <key>ru</key>
-      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
-    </format>
-    <format>
       <key>en</key>
       <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
     </format>
@@ -377,10 +459,10 @@
       <key>es_ES</key>
       <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
     </format>
-    <editFormat>
+    <format>
       <key>ru</key>
       <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
-    </editFormat>
+    </format>
     <editFormat>
       <key>en</key>
       <value>CC = 8; CHDTS = 6; = CHRD .; CHN = 00.000000; CVN =</value>
@@ -392,6 +474,10 @@
     <editFormat>
       <key>es_ES</key>
       <value>CC = 8; CHDTS = 6; = CHRD.; CHN = 00.000000; CVN =</value>
+    </editFormat>
+    <editFormat>
+      <key>ru</key>
+      <value>ЧЦ=8; ЧДЦ=6; ЧРД=.; ЧН=00.000000; ЧВН=</value>
     </editFormat>
     <minValue xsi:type="core:StringValue">
       <value>-90</value>
@@ -415,6 +501,11 @@
         <length>1024</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -458,6 +549,11 @@
         <length>200</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -500,6 +596,7 @@
       <name>Filter.holding</name>
       <field>Catalog.gyms.Attribute.holding</field>
     </choiceParameterLinks>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -543,6 +640,11 @@
         <length>15</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -576,6 +678,8 @@
           <length>200</length>
         </stringQualifiers>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -607,6 +711,8 @@
       <type>
         <types>CatalogRef.languages</types>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -626,6 +732,8 @@
           <length>40</length>
         </stringQualifiers>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -666,6 +774,8 @@
           <length>1024</length>
         </stringQualifiers>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -681,6 +791,8 @@
           <length>1024</length>
         </stringQualifiers>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -698,6 +810,8 @@
         <types>String</types>
         <stringQualifiers/>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>

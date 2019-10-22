@@ -17,6 +17,7 @@
     <value>Расписания уроков</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.classesSchedule.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
@@ -24,46 +25,66 @@
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
   <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
   <codeType>String</codeType>
   <codeAllowedLength>Variable</codeAllowedLength>
   <checkUnique>true</checkUnique>
   <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
-  <attributes uuid="7764e7a5-e0cc-408f-9dee-4862ab466bec">
-    <name>period</name>
+  <defaultListForm>Catalog.classesSchedule.Form.ListForm</defaultListForm>
+  <attributes uuid="7fe628b9-ad8b-44ff-88d8-78218905e3ee">
+    <name>active</name>
     <synonym>
       <key>en</key>
-      <value>Period</value>
+      <value>Active</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Период</value>
+      <value>Активный</value>
     </synonym>
     <type>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
+      <types>Boolean</types>
     </type>
-    <indexing>Index</indexing>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="80c1246e-dedb-4114-ada5-31ba026d30af">
-    <name>gym</name>
+  <attributes uuid="92190ada-e350-41d3-be7c-b84eeab5c5f4">
+    <name>employee</name>
     <synonym>
       <key>en</key>
-      <value>Gym</value>
+      <value>Employee</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Клуб</value>
+      <value>Сотрудник</value>
     </synonym>
     <type>
-      <types>CatalogRef.gyms</types>
+      <types>CatalogRef.employees</types>
     </type>
-    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="cc70178e-5620-4ade-97c1-95063504ee01">
+    <name>endRegistration</name>
+    <synonym>
+      <key>en</key>
+      <value>End registration</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Окончание регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -81,6 +102,73 @@
       <types>String</types>
       <stringQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="80c1246e-dedb-4114-ada5-31ba026d30af">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e00d667c-38b3-4f93-a76e-1ffe94c42f7b">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7764e7a5-e0cc-408f-9dee-4862ab466bec">
+    <name>period</name>
+    <synonym>
+      <key>en</key>
+      <value>Period</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Период</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -104,20 +192,104 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="7fe628b9-ad8b-44ff-88d8-78218905e3ee">
-    <name>active</name>
+  <attributes uuid="cb025a27-236e-498e-9a11-af5cf1764e15">
+    <name>serviceid</name>
     <synonym>
       <key>en</key>
-      <value>Active</value>
+      <value>Serviceid</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Активный</value>
+      <value>идентификатор описания услуги</value>
     </synonym>
     <type>
-      <types>Boolean</types>
+      <types>String</types>
+      <stringQualifiers>
+        <length>36</length>
+      </stringQualifiers>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="f26b9168-b0d4-4501-82cb-fb04aeb547ac">
+    <name>startRegistration</name>
+    <synonym>
+      <key>en</key>
+      <value>Start registration</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Начало регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="f11b0337-a9ec-4c1a-93b7-72517e0c0240">
+    <producedTypes>
+      <objectType typeId="b3d9e171-f63d-4317-b89a-d4021f704001" valueTypeId="ff2496bf-790a-4a6c-8e3c-cb66ed5fbf78"/>
+      <rowType typeId="38971ed3-8274-426a-ad73-7210d6b24954" valueTypeId="f4647dc8-4c04-4ca1-8778-5c039cf4ea7d"/>
+    </producedTypes>
+    <name>translation</name>
+    <synonym>
+      <key>en</key>
+      <value>Translation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Перевод</value>
+    </synonym>
+    <attributes uuid="13938715-bb91-45cb-9ec6-4ae1b7348fac">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.languages</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="02f2906c-d649-4ead-9edc-f69224c29f01">
+      <name>fullDescription</name>
+      <synonym>
+        <key>en</key>
+        <value>Full description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Полное описание</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <forms uuid="5d500f05-77af-4dd9-b864-b2129eab7a56">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

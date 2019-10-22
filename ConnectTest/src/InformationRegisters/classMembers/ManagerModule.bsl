@@ -1,18 +1,18 @@
 
-Function attributesStructure() Export
+Function attributesStructure(requestName) Export
 	
 	attributesTable = data.getValueTable();
 	attributesTableForNewItem = data.getValueTable();
 	
-	data.addRowInAttributesTable(attributesTable, "uid", "uid", "string");
+	data.addRowInAttributesTable(attributesTable, "user", "user", "ref");
 	data.addRowInAttributesTable(attributesTable, "class", "class", "ref");
 
-	classStruct = New Structure();
-	classStruct.Insert("classesSchedule", "uid");
-
 	mdStruct = New Structure();
-	mdStruct.Insert("class", classStruct);
-
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "classMembers", "informationRegister", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	mdStruct.Insert("class", New Structure("classesSchedule", "uid"));
+	mdStruct.Insert("user", New Structure("users", "uid"));
+	
+	actType = ?(requestName = "deleteclassmember", "delete", "write"); 
+	
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "classMembers", "informationRegister", actType, attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

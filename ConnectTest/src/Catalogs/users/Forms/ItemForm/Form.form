@@ -8,8 +8,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.Code</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.Code</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>CodeExtendedTooltip</name>
@@ -58,8 +60,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.Description</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.Description</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>DescriptionExtendedTooltip</name>
@@ -108,8 +112,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.registrationDate</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.registrationDate</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>registrationDateExtendedTooltip</name>
@@ -158,8 +164,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.userCode</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.userCode</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>userCodeExtendedTooltip</name>
@@ -208,8 +216,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.notSubscriptionEmail</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.notSubscriptionEmail</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>notSubscriptionEmailExtendedTooltip</name>
@@ -251,8 +261,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.notSubscriptionSms</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.notSubscriptionSms</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>notSubscriptionSmsExtendedTooltip</name>
@@ -294,8 +306,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.userType</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.userType</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>userTypeExtendedTooltip</name>
@@ -344,8 +358,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.holding</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.holding</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>holdingExtendedTooltip</name>
@@ -394,8 +410,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.barCode</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.barCode</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>barCodeExtendedTooltip</name>

@@ -159,6 +159,7 @@
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
   <dataProcessors>DataProcessor.ОтправитьПуш</dataProcessors>
+  <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>

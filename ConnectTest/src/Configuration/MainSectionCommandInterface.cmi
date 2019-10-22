@@ -31,6 +31,12 @@
         <common>true</common>
       </visible>
     </visibilityFragments>
+    <visibilityFragments>
+      <command>DataProcessor.DataSync_tConnect_Connect.StandardCommand.Open</command>
+      <visible>
+        <common>true</common>
+      </visible>
+    </visibilityFragments>
   </commandsVisibility>
   <commandsPlacement>
     <placementFragments>
@@ -42,6 +48,7 @@
     </placementFragments>
     <placementFragments>
       <group>ActionsPanelTools</group>
+      <commands>DataProcessor.DataSync_tConnect_Connect.StandardCommand.Open</commands>
       <commands>DataProcessor.ОтправитьПуш.StandardCommand.Open</commands>
     </placementFragments>
   </commandsPlacement>

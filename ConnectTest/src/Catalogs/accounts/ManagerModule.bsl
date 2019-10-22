@@ -12,7 +12,7 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	data.addRowInAttributesTable(attributesTable, "email", "email", "string");
 	
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "accounts", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "accounts", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
 		
 EndFunction
 

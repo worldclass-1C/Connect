@@ -23,14 +23,11 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTableInformationSources, "requestSource", "requestSource", "string");
 	data.addRowInAttributesTable(attributesTableInformationSources, "requestReceiver", "requestReceiver", "string");
 	data.addRowInAttributesTable(attributesTableInformationSources, "informationSource", "informationSource", "ref");
-
-	informationSourceStruct = New Structure();
-	informationSourceStruct.Insert("informationSources", "uid");
-
+	
 	mdStruct = New Structure();
 	mdStruct.Insert("informationSources", attributesTableInformationSources);
-	mdStruct.Insert("informationSource", informationSourceStruct);
+	mdStruct.Insert("informationSource", New Structure("informationSources", "uid"));
 
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "matchingRequestsInformationSources", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "matchingRequestsInformationSources", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

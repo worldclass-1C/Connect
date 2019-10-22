@@ -166,16 +166,16 @@
       <value>Barcode</value>
     </synonym>
     <synonym>
-      <key>ru</key>
-      <value>Штрихкод</value>
+      <key>fr_FR</key>
+      <value>code а barres</value>
     </synonym>
     <synonym>
       <key>es_ES</key>
       <value>cуdigo de barras</value>
     </synonym>
     <synonym>
-      <key>fr_FR</key>
-      <value>code а barres</value>
+      <key>ru</key>
+      <value>Штрихкод</value>
     </synonym>
     <type>
       <types>String</types>
@@ -213,20 +213,20 @@
   <attributes uuid="ea5ea5c0-40f0-4109-8e7e-e42ea03757ab">
     <name>notSubscriptionEmail</name>
     <synonym>
-      <key>ru</key>
-      <value>Не участвовать в email-рассылке</value>
-    </synonym>
-    <synonym>
       <key>en</key>
       <value>Do not participate in an email-newsletter</value>
+    </synonym>
+    <synonym>
+      <key>fr_FR</key>
+      <value>Ne pas participer à un e-mail bulletin</value>
     </synonym>
     <synonym>
       <key>es_ES</key>
       <value>No se debe participar en un correo electrónico boletín</value>
     </synonym>
     <synonym>
-      <key>fr_FR</key>
-      <value>Ne pas participer à un e-mail bulletin</value>
+      <key>ru</key>
+      <value>Не участвовать в email-рассылке</value>
     </synonym>
     <type>
       <types>Boolean</types>
@@ -239,20 +239,20 @@
   <attributes uuid="c08738b0-9f05-4459-8141-f2acf421d1c1">
     <name>notSubscriptionSms</name>
     <synonym>
-      <key>ru</key>
-      <value>Не участвовать в sms-рассылке</value>
-    </synonym>
-    <synonym>
       <key>en</key>
       <value>Do not participate in the sms-mailing</value>
+    </synonym>
+    <synonym>
+      <key>fr_FR</key>
+      <value>Ne pas participer à la sms-mailing</value>
     </synonym>
     <synonym>
       <key>es_ES</key>
       <value>No participar en el sms-mailing</value>
     </synonym>
     <synonym>
-      <key>fr_FR</key>
-      <value>Ne pas participer à la sms-mailing</value>
+      <key>ru</key>
+      <value>Не участвовать в sms-рассылке</value>
     </synonym>
     <type>
       <types>Boolean</types>

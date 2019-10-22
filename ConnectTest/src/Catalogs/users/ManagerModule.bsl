@@ -10,6 +10,6 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
 	data.addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
 	
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "users", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "users", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
 		
 EndFunction

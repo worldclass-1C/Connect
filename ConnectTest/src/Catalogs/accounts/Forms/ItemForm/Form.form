@@ -8,8 +8,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.Code</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.Code</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>CodeExtendedTooltip</name>
@@ -58,8 +60,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.birthday</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.birthday</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>birthdayExtendedTooltip</name>
@@ -108,8 +112,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.lastName</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.lastName</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>lastNameExtendedTooltip</name>
@@ -158,8 +164,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.firstName</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.firstName</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>firstNameExtendedTooltip</name>
@@ -208,8 +216,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.secondName</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.secondName</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>secondNameExtendedTooltip</name>
@@ -258,8 +268,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.gender</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.gender</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>sexExtendedTooltip</name>
@@ -308,8 +320,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.canUpdatePersonalData</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.canUpdatePersonalData</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>canUpdatePersonalDataExtendedTooltip</name>
@@ -351,8 +365,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.email</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.email</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>EmailExtendedTooltip</name>
@@ -401,8 +417,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.status</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.status</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>statusExtendedTooltip</name>
@@ -451,8 +469,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <dataPath xsi:type="form:DataPath">
-      <segments>Object.registrationDate</segments>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Object.registrationDate</segments>
+      </paths>
     </dataPath>
     <extendedTooltip>
       <name>registrationDateExtendedTooltip</name>

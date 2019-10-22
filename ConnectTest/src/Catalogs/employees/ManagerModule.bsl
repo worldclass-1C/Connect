@@ -27,15 +27,12 @@ Function attributesStructure() Export
 	attributesPhotos = data.getValueTable();
 	data.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
 
-	languageStruct = New Structure();
-	languageStruct.Insert("languages", "code");
-
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
-	mdStruct.Insert("language", languageStruct);
+	mdStruct.Insert("language", New Structure("languages", "code"));
 
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "employees", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "employees", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction
 

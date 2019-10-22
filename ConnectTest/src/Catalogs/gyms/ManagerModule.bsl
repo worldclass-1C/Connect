@@ -6,10 +6,8 @@ Function attributesStructure() Export
 
 	data.addRowInAttributesTable(attributesTable, "description", "name", "string");
 	data.addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
-//	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
 	data.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
 	data.addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
-//	data.addRowInAttributesTable(attributesTable, "type", "type", "string");
 	data.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
 	data.addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
 	data.addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");
@@ -17,6 +15,8 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTable, "city", "city", "ref");
 	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	data.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
+//	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
+//	data.addRowInAttributesTable(attributesTable, "type", "type", "string");
 
 	attributesTranslation = data.getValueTable();
 
@@ -30,18 +30,12 @@ Function attributesStructure() Export
 	attributesPhotos = data.getValueTable();
 	data.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
 
-	cityStruct = New Structure();
-	cityStruct.Insert("cities", "uid");
-
-	languageStruct = New Structure();
-	languageStruct.Insert("languages", "code");
-	
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
-	mdStruct.Insert("language", languageStruct);
-	mdStruct.Insert("city", cityStruct);
+	mdStruct.Insert("language", New Structure("languages", "code"));
+	mdStruct.Insert("city", New Structure("cities", "uid"));
 
-	Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

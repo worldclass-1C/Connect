@@ -5,11 +5,11 @@ Procedure executeRequestMethod(parameters) Export
 	
 	If parameters.errorDescription.result = "" Then
 		If parameters.requestName = "chainlist" Then
-			getChainList(parameters);
+			chainList(parameters);
 		ElsIf parameters.requestName = "countrycodelist" Then 
-			getCountryCodeList(parameters);
+			countryCodeList(parameters);
 		ElsIf parameters.requestName = "config" Then
-			getConfig(parameters);
+			config(parameters);
 		ElsIf parameters.requestName = "signin" Then
 			signIn(parameters);
 		ElsIf parameters.requestName = "confirmphone" Then
@@ -21,21 +21,23 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "signout" Then 
 			signOut(parameters);
 		ElsIf parameters.requestName = "accountprofile" Then 
-			getAccountProfile(parameters);	
+			accountProfile(parameters);	
 		ElsIf parameters.requestName = "userprofile" Then 
-			getUserProfile(parameters);
+			userProfile(parameters);
 		ElsIf parameters.requestName = "usersummary" Then 
-			getUserSummary(parameters);	
+			userSummary(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then
 			gymList(parameters);
 		ElsIf parameters.requestName = "gyminfo" Then
 			gymInfo(parameters);	
+		ElsIf parameters.requestName = "gymschedule" Then
+			gymSchedule(parameters);			
 		ElsIf parameters.requestName = "catalogcancelcauses"
 				Or parameters.requestName = "cancelcauseslist" Then // проверить описание в API
-			getCancellationReasonsList(parameters);
+			cancellationReasonsList(parameters);
 		ElsIf parameters.requestName = "notificationlist" Then // проверить описание в API
-			getNotificationList(parameters);
+			notificationList(parameters);
 		ElsIf parameters.requestName = "readnotification" Then // проверить описание в API
 			readNotification(parameters);
 		ElsIf parameters.requestName = "unreadnotificationcount" Then // проверить описание в API
@@ -47,14 +49,15 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);			
 		ElsIf parameters.requestName = "addchangeusers"
-				Or parameters.requestName = "addgyms"
 				Or parameters.requestName = "addemployees"
 				Or parameters.requestName = "addprovidedservices"
+				Or parameters.requestName = "addclassmember"
+				Or parameters.requestName = "deleteclassmember"
 				Or parameters.requestName = "addgymsschedule"
+				Or parameters.requestName = "addgyms"				
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
-				Or parameters.requestName = "addcancelcauses"
-				Or parameters.requestName = "addcities" Then // проверить описание в API
+				Or parameters.requestName = "addcancelcauses" Then 
 			changeCreateCatalogItems(parameters);
 		Else
 			executeExternalRequest(parameters);
@@ -63,7 +66,7 @@ Procedure executeRequestMethod(parameters) Export
 			
 EndProcedure
 
-Procedure getConfig(parameters)
+Procedure config(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;	
@@ -149,7 +152,7 @@ Procedure getConfig(parameters)
 
 EndProcedure
 
-Procedure getChainList(parameters)
+Procedure chainList(parameters)
 
 	language = parameters.language;
 	brand = parameters.brand;
@@ -218,7 +221,7 @@ Procedure getChainList(parameters)
 
 EndProcedure
 
-Procedure getCountryCodeList(parameters)
+Procedure countryCodeList(parameters)
 	
 	array	= New Array();		
 	query	= New Query();
@@ -434,15 +437,15 @@ Procedure signOut(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenContext.token) + "0")));	
 EndProcedure
 
-Procedure getAccountProfile(parameters)
+Procedure accountProfile(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(Account.profile(parameters.tokenContext.account)));		
 EndProcedure
 
-Procedure getUserProfile(parameters)
+Procedure userProfile(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenContext.user, parameters.tokenContext.appType)));	
 EndProcedure
 
-Procedure getUserSummary(parameters)
+Procedure userSummary(parameters)
 	tokenContext = parameters.tokenContext;
 	
 	query = New Query("SELECT
@@ -522,7 +525,7 @@ Procedure gymList(parameters)
 			gymStruct.Insert("uid", XMLString(select.Ref));
 			gymStruct.Insert("gymId", gymStruct.uid);
 			gymStruct.Insert("name", select.description);
-			gymStruct.Insert("type", "");
+			gymStruct.Insert("type", "Club");
 			gymStruct.Insert("state", select.state);			
 			gymStruct.Insert("address", select.address);
 			gymStruct.Insert("photo", select.photo);
@@ -555,9 +558,9 @@ EndProcedure
 
 Procedure gymInfo(parameters)
 
-	requestStruct	= parameters.requestStruct;
-	language		= parameters.language;
-	gymArray 		= New Array();
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	gymStruct = New Structure();
 	
 	errorDescription = Service.getErrorDescription(language);
 	
@@ -567,7 +570,7 @@ Procedure gymInfo(parameters)
 
 	If errorDescription.result = "" Then
 		query = New Query();
-		query.Text = "SELECT
+		query.Text = "SELECT TOP 1
 		|	gyms.Ref,
 		|	gyms.latitude,
 		|	gyms.longitude,
@@ -597,8 +600,8 @@ Procedure gymInfo(parameters)
 
 		select = query.Execute().Select();
 
-		While select.Next() Do
-			gymStruct = New Structure();
+		If select.Next() Then
+			
 			gymStruct.Insert("uid", XMLString(select.Ref));
 			gymStruct.Insert("gymId", gymStruct.uid);
 			gymStruct.Insert("name", select.Description);
@@ -620,20 +623,85 @@ Procedure gymInfo(parameters)
 			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			gymStruct.Insert("additional", HTTP.decodeJSON(select.additional, Enums.JSONValueTypes.array));
 						 
-			gymStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));			
-			
-			gymArray.add(gymStruct);
-		EndDo;
+			gymStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));
+						
+		EndIf;
+		
 	EndIf;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymStruct));
 	parameters.Insert("notSaveAnswer", True);
 	parameters.Insert("compressAnswer", True);
 	parameters.Insert("errorDescription", errorDescription);
 	
 EndProcedure
 
-Procedure getCancellationReasonsList(parameters)
+Procedure gymSchedule(parameters)
+
+	requestStruct = parameters.requestStruct;
+	tokenContext = parameters.tokenContext;
+	language = parameters.language;
+	classesScheduleArray = New Array();
+	
+	errorDescription = Service.getErrorDescription(language);
+	
+	If Not requestStruct.Property("gymList") Then
+		errorDescription = Service.getErrorDescription(language, "gymError");
+	ElsIf Not requestStruct.Property("startDate") Then
+		errorDescription = Service.getErrorDescription(language, "startDateError");
+	ElsIf Not requestStruct.Property("endDate") Then
+		errorDescription = Service.getErrorDescription(language, "endDateError");
+	EndIf;
+
+	If errorDescription.result = "" Then
+		query = New Query("SELECT
+		|	classesSchedule.Ref AS Doc,
+		|	classesSchedule.period AS period,
+		|	classesSchedule.fullDescription AS fullDescription,
+		|	CASE
+		|		WHEN classMembers.user IS NULL
+		|			THEN FALSE
+		|		ELSE TRUE
+		|	END AS recorded
+		|FROM
+		|	Catalog.classesSchedule AS classesSchedule
+		|		LEFT JOIN InformationRegister.classMembers AS classMembers
+		|		ON classesSchedule.Ref = classMembers.class
+		|		AND classMembers.user = &user
+		|WHERE
+		|	classesSchedule.gym IN (&gymList)
+		|	AND classesSchedule.period BETWEEN &startDate AND &endDate
+		|	AND classesSchedule.active");
+				
+		gymList = New Array();
+		For Each gymUid In requestStruct.gymList Do
+			gymList.Add(XMLValue(Type("CatalogRef.gyms"), gymUid));	
+		EndDo; 
+		
+		query.SetParameter("gymList", gymList);
+		query.SetParameter("user", XMLString(tokenContext.user));
+		query.SetParameter("startDate", BegOfDay(XMLValue(Type("Date"), requestStruct.startDate)));
+		query.SetParameter("endDate", EndOfDay(XMLValue(Type("Date"), requestStruct.endDate)));				
+
+		select = query.Execute().Select();
+
+		While select.Next() Do
+			classesScheduleStruct = HTTP.decodeJSON(select.fullDescription, Enums.JSONValueTypes.structure);
+			classesScheduleStruct.Insert("doc", select.doc);
+			classesScheduleStruct.Insert("period", select.period);
+			classesScheduleStruct.Insert("recorded", select.recorded);
+			classesScheduleArray.add(classesScheduleStruct);
+		EndDo;
+	EndIf;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(classesScheduleArray));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);
+	parameters.Insert("errorDescription", errorDescription);
+	
+EndProcedure
+
+Procedure cancellationReasonsList(parameters)
 
 	tokenContext		= parameters.tokenContext;
 	array 			= New Array();
@@ -660,7 +728,7 @@ Procedure getCancellationReasonsList(parameters)
 
 EndProcedure
 
-Procedure getNotificationList(parameters)
+Procedure notificationList(parameters)
 
 	requestStruct	= parameters.requestStruct;
 	tokenContext		= parameters.tokenContext;

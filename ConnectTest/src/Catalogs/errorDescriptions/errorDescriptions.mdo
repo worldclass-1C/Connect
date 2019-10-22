@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7a4b0cf7-c837-40a8-bd16-0bbeda9954fe">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7a4b0cf7-c837-40a8-bd16-0bbeda9954fe">
   <producedTypes>
     <objectType typeId="dfa218ca-5777-4f4e-8d50-adcee7ebebe8" valueTypeId="647f36cf-6a33-478b-bd11-b228f2891f01"/>
     <refType typeId="3dcb5b7e-cbbc-4a52-aa03-ecb2d69f2923" valueTypeId="ab4ae56f-2e15-494d-a9d4-58ec77e953ac"/>
@@ -32,6 +32,27 @@
   <autonumbering>true</autonumbering>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
+  <attributes uuid="574f78bb-50af-4000-a807-d03cfc1eb9b3">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <use>ForFolderAndItem</use>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="1aab5cf1-b42a-4fba-b2da-8a80cdf51c26">
     <producedTypes>
       <objectType typeId="d52f9ad9-ae5c-42b8-b662-18edc40e4d06" valueTypeId="c9534629-542a-4738-a767-ca93f0df8b02"/>
@@ -59,6 +80,8 @@
       <type>
         <types>CatalogRef.languages</types>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
@@ -78,8 +101,11 @@
           <length>100</length>
         </stringQualifiers>
       </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <use>ForFolderAndItem</use>
   </tabularSections>
 </mdclass:Catalog>

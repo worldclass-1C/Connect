@@ -13,16 +13,16 @@
     <value>Cancellation reasons</value>
   </synonym>
   <synonym>
-    <key>ru</key>
-    <value>Причины отмены записи</value>
+    <key>fr_FR</key>
+    <value>Raisons d'annuler l'enregistrement</value>
   </synonym>
   <synonym>
     <key>es_ES</key>
     <value>Razones cancelar la grabaciуn</value>
   </synonym>
   <synonym>
-    <key>fr_FR</key>
-    <value>Raisons d'annuler l'enregistrement</value>
+    <key>ru</key>
+    <value>Причины отмены записи</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.cancellationReasons.StandardAttribute.Description</inputByString>
@@ -118,16 +118,16 @@
     <value>Cancellation reason</value>
   </objectPresentation>
   <objectPresentation>
-    <key>ru</key>
-    <value>Причина отмены записи</value>
+    <key>fr_FR</key>
+    <value>Raisons d'annuler l'enregistrement</value>
   </objectPresentation>
   <objectPresentation>
     <key>es_ES</key>
     <value>Razones cancelar la grabaciуn</value>
   </objectPresentation>
   <objectPresentation>
-    <key>fr_FR</key>
-    <value>Raisons d'annuler l'enregistrement</value>
+    <key>ru</key>
+    <value>Причина отмены записи</value>
   </objectPresentation>
   <extendedObjectPresentation>
     <key>en</key>
