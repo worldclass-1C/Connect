@@ -516,7 +516,7 @@ Procedure gymList(parameters)
 
 		query.SetParameter("chainCode", requestStruct.chain);
 		query.SetParameter("language", language);
-		query.SetParameter("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), parameters.tokenContext.timezone));		
+		query.SetParameter("currentTime", parameters.currentTime);		
 		
 		select = query.Execute().Select();
 
@@ -596,7 +596,7 @@ Procedure gymInfo(parameters)
 
 		query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.uid));
 		query.SetParameter("language", language);
-		query.SetParameter("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), parameters.tokenContext.timezone));		
+		query.SetParameter("currentTime", parameters.currentTime);		
 
 		select = query.Execute().Select();
 
@@ -657,17 +657,31 @@ Procedure gymSchedule(parameters)
 		query = New Query("SELECT
 		|	classesSchedule.Ref AS Doc,
 		|	classesSchedule.period AS period,
-		|	classesSchedule.fullDescription AS fullDescription,
+		|	ISNULL(classesScheduletranslation.fullDescription, classesSchedule.fullDescription) AS fullDescription,
 		|	CASE
 		|		WHEN classMembers.user IS NULL
 		|			THEN FALSE
 		|		ELSE TRUE
-		|	END AS recorded
+		|	END AS recorded,
+		|	CASE
+		|		WHEN &currentTime >= classesSchedule.startRegistration
+		|		AND &currentTime <= classesSchedule.endRegistration
+		|			THEN TRUE
+		|		ELSE FALSE
+		|	END AS canRecord,
+		|	CASE
+		|		WHEN DATEDIFF(&currentTime, classesSchedule.period, hour) > 8
+		|			THEN TRUE
+		|		ELSE FALSE
+		|	END AS canCancel
 		|FROM
 		|	Catalog.classesSchedule AS classesSchedule
 		|		LEFT JOIN InformationRegister.classMembers AS classMembers
 		|		ON classesSchedule.Ref = classMembers.class
 		|		AND classMembers.user = &user
+		|		LEFT JOIN Catalog.classesSchedule.translation AS classesScheduletranslation
+		|		ON classesSchedule.Ref = classesScheduletranslation.Ref
+		|		AND classesScheduletranslation.language = &language
 		|WHERE
 		|	classesSchedule.gym IN (&gymList)
 		|	AND classesSchedule.period BETWEEN &startDate AND &endDate
@@ -680,6 +694,8 @@ Procedure gymSchedule(parameters)
 		
 		query.SetParameter("gymList", gymList);
 		query.SetParameter("user", XMLString(tokenContext.user));
+		query.SetParameter("language", language);
+		query.SetParameter("currentTime", parameters.currentTime);
 		query.SetParameter("startDate", BegOfDay(XMLValue(Type("Date"), requestStruct.startDate)));
 		query.SetParameter("endDate", EndOfDay(XMLValue(Type("Date"), requestStruct.endDate)));				
 
@@ -687,9 +703,11 @@ Procedure gymSchedule(parameters)
 
 		While select.Next() Do
 			classesScheduleStruct = HTTP.decodeJSON(select.fullDescription, Enums.JSONValueTypes.structure);
-			classesScheduleStruct.Insert("doc", select.doc);
-			classesScheduleStruct.Insert("period", select.period);
+			classesScheduleStruct.Insert("doc", XMLString(select.doc));
+			classesScheduleStruct.Insert("period", XMLString(select.period));
 			classesScheduleStruct.Insert("recorded", select.recorded);
+			classesScheduleStruct.Insert("canRecord", select.canRecord and Not select.recorded);
+			classesScheduleStruct.Insert("canCancel", select.canCancel);
 			classesScheduleArray.add(classesScheduleStruct);
 		EndDo;
 	EndIf;

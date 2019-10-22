@@ -123,6 +123,7 @@ Procedure legality(request, parameters) Export
 			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
 		Else
 			parameters.Insert("tokenContext", tokenContext);
+			parameters.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenContext.timezone));
 			parameters.Insert("underControl", tokenContext.underControl);
 		EndIf;
 	EndIf;

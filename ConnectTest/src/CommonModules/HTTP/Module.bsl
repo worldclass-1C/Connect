@@ -14,7 +14,7 @@ Function processRequest(request, requestName = "") Export
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
 	parameters.Insert("underControl", False);
-	parameters.Insert("answerBody", "");
+	parameters.Insert("answerBody", "");	
 	
 	If Not ValueIsFilled(parameters.language) Then
 		parameters.Insert("languageCode", "en");

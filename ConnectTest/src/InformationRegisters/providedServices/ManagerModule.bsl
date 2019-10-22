@@ -10,6 +10,6 @@ Function attributesStructure() Export
 	mdStruct = New Structure();
 	mdStruct.Insert("employe", New Structure("employees", "uid"));
 
-	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "providedServices", False, "informationRegister", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "providedServices", "informationRegister", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction
