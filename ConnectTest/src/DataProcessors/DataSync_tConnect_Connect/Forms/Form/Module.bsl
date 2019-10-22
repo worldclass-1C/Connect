@@ -1,7 +1,25 @@
 
 &AtServer
+Procedure fillErrors()
+	query = New Query("SELECT
+	|	errorDescriptions.Ref AS Error
+	|FROM
+	|	Catalog.errorDescriptions AS errorDescriptions");
+	
+	select = query.Execute().Select();	
+	While select.Next() Do
+		newRow = Errors.Add();
+		newRow.Error = select.Error;
+	EndDo;	
+EndProcedure
+
+&AtServer
 Procedure fillAtServer()
-	// Insert handler content.
+	If Items.GroupPages.CurrentPage = Items.Page1 Then
+			
+	ElsIf Items.GroupPages.CurrentPage = Items.Page2 Then
+		fillErrors();
+	EndIf;
 EndProcedure
 
 &AtServer
