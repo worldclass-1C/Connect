@@ -654,7 +654,9 @@ Procedure gymSchedule(parameters)
 	EndIf;
 
 	If errorDescription.result = "" Then
-		query = New Query("SELECT
+		query = New Query();
+		querryTextArray = New Array();
+		querryTextArray.Add("SELECT
 		|	classesSchedule.Ref AS Doc,
 		|	classesSchedule.period AS period,
 		|	ISNULL(classesScheduletranslation.fullDescription, classesSchedule.fullDescription) AS fullDescription,
@@ -693,20 +695,35 @@ Procedure gymSchedule(parameters)
 		EndDo; 
 		
 		query.SetParameter("gymList", gymList);
-		query.SetParameter("user", XMLString(tokenContext.user));
+		query.SetParameter("user", tokenContext.user);
 		query.SetParameter("language", language);
 		query.SetParameter("currentTime", parameters.currentTime);
 		query.SetParameter("startDate", BegOfDay(XMLValue(Type("Date"), requestStruct.startDate)));
 		query.SetParameter("endDate", EndOfDay(XMLValue(Type("Date"), requestStruct.endDate)));				
-
+		
+		If requestStruct.Property("employeeId") And ValueIsFilled(requestStruct.employeeId) Then
+			querryTextArray.Add("AND classesSchedule.employee = &employee");
+			query.SetParameter("employee", XMLValue(Type("CatalogRef.employees"), requestStruct.employeeId));	
+		EndIf;		 
+		If requestStruct.Property("serviceid") And ValueIsFilled(requestStruct.serviceid) Then
+			querryTextArray.Add("AND classesSchedule.serviceid = &serviceid");
+			query.SetParameter("serviceid", requestStruct.serviceid);	
+		EndIf; 
+		query.Text = StrConcat(querryTextArray, " ");
+		
 		select = query.Execute().Select();
 
 		While select.Next() Do
 			classesScheduleStruct = HTTP.decodeJSON(select.fullDescription, Enums.JSONValueTypes.structure);
+			//@skip-warning
 			classesScheduleStruct.Insert("doc", XMLString(select.doc));
-			classesScheduleStruct.Insert("period", XMLString(select.period));
+			//@skip-warning
+			classesScheduleStruct.Insert("date", XMLString(select.period));
+			//@skip-warning
 			classesScheduleStruct.Insert("recorded", select.recorded);
+			//@skip-warning
 			classesScheduleStruct.Insert("canRecord", select.canRecord and Not select.recorded);
+			//@skip-warning
 			classesScheduleStruct.Insert("canCancel", select.canCancel);
 			classesScheduleArray.add(classesScheduleStruct);
 		EndDo;
