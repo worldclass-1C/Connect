@@ -108,7 +108,7 @@
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
-  <scheduledJobs>ScheduledJob.alertSourceInformation</scheduledJobs>
+  <scheduledJobs>ScheduledJob.informationSourceAlert</scheduledJobs>
   <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>

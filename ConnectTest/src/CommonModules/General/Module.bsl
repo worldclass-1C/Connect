@@ -659,35 +659,57 @@ Procedure gymSchedule(parameters)
 		querryTextArray.Add("SELECT
 		|	classesSchedule.Ref AS Doc,
 		|	classesSchedule.period AS period,
-		|	ISNULL(classesScheduletranslation.fullDescription, classesSchedule.fullDescription) AS fullDescription,
-		|	CASE
-		|		WHEN classMembers.user IS NULL
-		|			THEN FALSE
-		|		ELSE TRUE
-		|	END AS recorded,
-		|	CASE
+		|	MAX(CASE
+		|		WHEN classMembers.user = &user
+		|			THEN TRUE
+		|		ELSE FALSE
+		|	END) AS recorded,
+		|	MAX(CASE
 		|		WHEN &currentTime >= classesSchedule.startRegistration
 		|		AND &currentTime <= classesSchedule.endRegistration
 		|			THEN TRUE
 		|		ELSE FALSE
-		|	END AS canRecord,
-		|	CASE
+		|	END) AS canRecord,
+		|	MAX(CASE
 		|		WHEN DATEDIFF(&currentTime, classesSchedule.period, hour) > 8
 		|			THEN TRUE
 		|		ELSE FALSE
-		|	END AS canCancel
+		|	END) AS canCancel,
+		|	COUNT(classMembers.user) AS userPlaces,
+		|	MAX(classesSchedule.availablePlaces) AS availablePlaces
+		|INTO TT
 		|FROM
 		|	Catalog.classesSchedule AS classesSchedule
 		|		LEFT JOIN InformationRegister.classMembers AS classMembers
 		|		ON classesSchedule.Ref = classMembers.class
-		|		AND classMembers.user = &user
-		|		LEFT JOIN Catalog.classesSchedule.translation AS classesScheduletranslation
-		|		ON classesSchedule.Ref = classesScheduletranslation.Ref
-		|		AND classesScheduletranslation.language = &language
 		|WHERE
 		|	classesSchedule.gym IN (&gymList)
 		|	AND classesSchedule.period BETWEEN &startDate AND &endDate
-		|	AND classesSchedule.active");
+		|	AND classesSchedule.active
+		|GROUP BY
+		|	classesSchedule.Ref,
+		|	classesSchedule.period
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	TT.Doc,
+		|	TT.period,
+		|	TT.recorded,
+		|	TT.canRecord,
+		|	TT.canCancel,
+		|	CASE
+		|		WHEN TT.availablePlaces = 0
+		|			THEN -1
+		|		ELSE TT.availablePlaces - TT.userPlaces
+		|	END AS availablePlaces,
+		|	IsNull(classesScheduletranslation.fullDescription, classesSchedule.fullDescription) AS fullDescription
+		|FROM
+		|	TT AS TT
+		|		LEFT JOIN Catalog.classesSchedule AS classesSchedule
+		|		ON TT.Doc = classesSchedule.Ref
+		|		LEFT JOIN Catalog.classesSchedule.translation AS classesScheduletranslation
+		|		ON TT.Doc = classesScheduletranslation.Ref
+		|		AND classesScheduletranslation.language = &language");
 				
 		gymList = New Array();
 		For Each gymUid In requestStruct.gymList Do
@@ -716,7 +738,7 @@ Procedure gymSchedule(parameters)
 		While select.Next() Do
 			classesScheduleStruct = HTTP.decodeJSON(select.fullDescription, Enums.JSONValueTypes.structure);
 			//@skip-warning
-			classesScheduleStruct.Insert("doc", XMLString(select.doc));
+			classesScheduleStruct.Insert("docId", XMLString(select.doc));
 			//@skip-warning
 			classesScheduleStruct.Insert("date", XMLString(select.period));
 			//@skip-warning
@@ -725,6 +747,8 @@ Procedure gymSchedule(parameters)
 			classesScheduleStruct.Insert("canRecord", select.canRecord and Not select.recorded);
 			//@skip-warning
 			classesScheduleStruct.Insert("canCancel", select.canCancel);
+			//@skip-warning
+			classesScheduleStruct.Insert("availablePlaces", select.availablePlaces);			
 			classesScheduleArray.add(classesScheduleStruct);
 		EndDo;
 	EndIf;

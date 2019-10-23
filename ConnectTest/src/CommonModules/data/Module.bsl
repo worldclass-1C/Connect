@@ -131,6 +131,8 @@ Procedure fillValue(object, attribute, attributesStruct, requestParameter)
 		object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
 	ElsIf attribute.type = "boolean" Then
 		object[attribute.key] = requestParameter[attribute.value];
+	ElsIf attribute.type = "number" Then
+		object[attribute.key] = requestParameter[attribute.value];	
 	Else
 		object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
 	EndIf;		

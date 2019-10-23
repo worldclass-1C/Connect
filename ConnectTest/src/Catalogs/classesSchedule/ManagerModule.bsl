@@ -10,6 +10,8 @@ Function attributesStructure() Export
 	data.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
 	data.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
 	data.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
+	data.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
+	data.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 
 	data.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
 	data.addRowInAttributesTable(attributesTable, "employee", "employee", "ref");
 	data.addRowInAttributesTable(attributesTable, "fullDescription", "fullDescription", "JSON");

@@ -222,7 +222,7 @@ Procedure logRequest(parameters) Export
 	record.Write();
 EndProcedure
 
-Procedure alertSourceInformation() Export
+Procedure informationSourceAlert() Export
 	
 	headers	= New Map();
 	headers.Insert("Content-Type", "application/json");

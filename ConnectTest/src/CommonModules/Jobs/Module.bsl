@@ -29,7 +29,7 @@ Procedure РассчитатьПоказатели() Export
 EndProcedure
 
 Procedure alertSourceInformation() Export
-	Service.alertSourceInformation();
+	Service.informationSourceAlert();
 EndProcedure
 
 Procedure ПроверитьАктуальностьТокенов() Export

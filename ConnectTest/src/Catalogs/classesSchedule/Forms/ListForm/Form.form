@@ -54,6 +54,14 @@
     <items xsi:type="form:FormField">
       <name>period</name>
       <id>19</id>
+      <title>
+        <key>en</key>
+        <value>Period</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Период</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -104,6 +112,14 @@
     <items xsi:type="form:FormField">
       <name>active</name>
       <id>28</id>
+      <title>
+        <key>en</key>
+        <value>Active</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Активен</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -147,6 +163,14 @@
     <items xsi:type="form:FormField">
       <name>Description</name>
       <id>37</id>
+      <title>
+        <key>en</key>
+        <value>Description</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Описание</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -197,6 +221,14 @@
     <items xsi:type="form:FormField">
       <name>holding</name>
       <id>25</id>
+      <title>
+        <key>en</key>
+        <value>Holding</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Холдинг</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -247,6 +279,14 @@
     <items xsi:type="form:FormField">
       <name>gym</name>
       <id>22</id>
+      <title>
+        <key>en</key>
+        <value>Gym</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Клуб</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -297,6 +337,14 @@
     <items xsi:type="form:FormField">
       <name>registrationDate</name>
       <id>34</id>
+      <title>
+        <key>en</key>
+        <value>Registration date</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Дата изменения</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
