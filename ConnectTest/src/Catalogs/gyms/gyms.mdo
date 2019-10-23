@@ -160,28 +160,6 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.gyms.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.gyms.Form.ListForm</defaultListForm>
-  <attributes uuid="d36be525-0811-48e9-aec0-1cb6a2a6a63d">
-    <name>activationDate</name>
-    <synonym>
-      <key>en</key>
-      <value>Activation date</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Активный</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="86c48736-c859-4e51-b9b4-37cd8b9c9d58">
     <name>additional</name>
     <synonym>
@@ -248,25 +226,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="7f600935-4a6f-43b1-ae16-2d75832af6ee">
-    <name>city</name>
-    <synonym>
-      <key>en</key>
-      <value>City</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Город</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.cities</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="2710a54f-9d99-4b4e-a8ea-18a96960d56f">
     <name>departmentWorkSchedule</name>
     <synonym>
@@ -291,18 +250,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="61ef7f9f-37d0-45fd-adb4-a0bd9e575f6d">
-    <name>state</name>
+  <attributes uuid="ba8a1807-a141-403f-b993-27d7ff6c4cf7">
+    <name>endDate</name>
     <synonym>
       <key>en</key>
-      <value>State</value>
+      <value>End date</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Состояние клуба</value>
+      <value>Дата окончания</value>
     </synonym>
     <type>
-      <types>EnumRef.gymStates</types>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -600,6 +562,47 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="d36be525-0811-48e9-aec0-1cb6a2a6a63d">
+    <name>startDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Start date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата начала</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="61ef7f9f-37d0-45fd-adb4-a0bd9e575f6d">
+    <name>state</name>
+    <synonym>
+      <key>en</key>
+      <value>State</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Состояние клуба</value>
+    </synonym>
+    <type>
+      <types>EnumRef.gymStates</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="d94aa14c-9aff-4fe7-b3b2-4ecebd725be1">
     <name>type</name>
     <synonym>
@@ -611,16 +614,10 @@
       <value>Тип</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>10</length>
-      </stringQualifiers>
+      <types>EnumRef.gymTypes</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -816,20 +813,20 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
-  <forms uuid="2e38cad2-cfaa-41aa-aac8-b2f6529c2fa1">
-    <name>ListForm</name>
-    <synonym>
-      <key>ru</key>
-      <value>List form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
   <forms uuid="0df24050-ad5d-4d73-a70a-935448504bee">
     <name>ItemForm</name>
     <synonym>
       <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="b8ed0b6f-1a46-4dd9-b479-873e45138f22">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

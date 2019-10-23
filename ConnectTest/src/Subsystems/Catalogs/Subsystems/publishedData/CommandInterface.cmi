@@ -6,7 +6,6 @@
       <commands>Catalog.employees.StandardCommand.OpenList</commands>
       <commands>Catalog.gyms.StandardCommand.OpenList</commands>
       <commands>Catalog.cancellationReasons.StandardCommand.OpenList</commands>
-      <commands>Catalog.cities.StandardCommand.OpenList</commands>
     </orderFragments>
   </commandsOrder>
 </cmi:CommandInterface>

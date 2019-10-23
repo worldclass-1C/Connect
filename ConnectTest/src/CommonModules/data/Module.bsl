@@ -101,6 +101,8 @@ Procedure fillField(object, attribute, attributesStruct, requestParameter)
 		fillValueTable(object, attribute, attributesStruct, requestParameter);
 	ElsIf attribute.type = "ref" Then
 		fillRef(object, attribute, attributesStruct, requestParameter);
+	ElsIf attribute.type = "enum" Then
+		fillEnum(object, attribute, attributesStruct, requestParameter);	
 	Else
 		fillValue(object, attribute, attributesStruct, requestParameter)
 	EndIf;
@@ -126,13 +128,19 @@ Procedure fillRef(object, attribute, attributesStruct, requestParameter)
 	EndDo;	
 EndProcedure
 
+Procedure fillEnum(object, attribute, attributesStruct, requestParameter)
+	For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
+		object[attribute.key] = Enums[refProperty.key][attribute.value];		
+	EndDo;	
+EndProcedure
+
 Procedure fillValue(object, attribute, attributesStruct, requestParameter)
 	If attribute.type = "JSON" Then
 		object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
 	ElsIf attribute.type = "boolean" Then
 		object[attribute.key] = requestParameter[attribute.value];
 	ElsIf attribute.type = "number" Then
-		object[attribute.key] = requestParameter[attribute.value];	
+		object[attribute.key] = requestParameter[attribute.value];
 	Else
 		object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
 	EndIf;		

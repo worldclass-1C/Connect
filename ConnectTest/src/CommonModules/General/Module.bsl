@@ -512,7 +512,8 @@ Procedure gymList(parameters)
 		|WHERE
 		|	NOT gyms.DeletionMark
 		|	AND gyms.chain.code = &chainCode
-		|	AND gyms.activationDate <= &currentTime");
+		|	AND gyms.startDate <= &currentTime
+		|	AND gyms.endDate >= &currentTime");
 
 		query.SetParameter("chainCode", requestStruct.chain);
 		query.SetParameter("language", language);
@@ -592,7 +593,8 @@ Procedure gymInfo(parameters)
 		|WHERE
 		|	NOT gyms.DeletionMark
 		|	AND gyms.Ref = &gym
-		|	AND gyms.activationDate <= &currentTime";
+		|	AND gyms.startDate <= &currentTime
+		|	AND gyms.endDate >= &currentTime";
 
 		query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.uid));
 		query.SetParameter("language", language);

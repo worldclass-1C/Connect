@@ -6,17 +6,20 @@ Function attributesStructure() Export
 
 	data.addRowInAttributesTable(attributesTable, "description", "name", "string");
 	data.addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
+	data.addRowInAttributesTable(attributesTable, "startDate", "startDate", "date");
+	data.addRowInAttributesTable(attributesTable, "endDate", "endDate", "date");
 	data.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
 	data.addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
 	data.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
 	data.addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
 	data.addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");
 	data.addRowInAttributesTable(attributesTable, "additional", "additional", "JSON");
-	data.addRowInAttributesTable(attributesTable, "city", "city", "ref");
 	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	data.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
+	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
+	data.addRowInAttributesTable(attributesTable, "type", "type", "enum");	
 //	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
-//	data.addRowInAttributesTable(attributesTable, "type", "type", "string");
+	
 
 	attributesTranslation = data.getValueTable();
 
@@ -34,7 +37,7 @@ Function attributesStructure() Export
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
 	mdStruct.Insert("language", New Structure("languages", "code"));
-	mdStruct.Insert("city", New Structure("cities", "uid"));
+	mdStruct.Insert("type", New Structure("gymTypes", ""));	
 
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 

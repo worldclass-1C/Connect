@@ -1,10 +1,12 @@
 
-&НаКлиенте
-Процедура ОбработкаКоманды(ПараметрКоманды, ПараметрыВыполненияКоманды)
-	Сообщить(uid(ПараметрКоманды));
-КонецПроцедуры
+&AtClient
+Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
+	Message(uid(CommandParameter));
+EndProcedure
 
-&НаСервере
-Функция uid(Объект)
-	Возврат XMLСтрока(Объект);
-КонецФункции
+&AtServer
+Function uid(object)
+	Return XMLString(object);
+EndFunction
+
+

@@ -14,7 +14,6 @@
   <content>Catalog.employees</content>
   <content>Catalog.cancellationReasons</content>
   <content>Catalog.gyms</content>
-  <content>Catalog.cities</content>
   <content>Catalog.classesSchedule</content>
   <parentSubsystem>Subsystem.Catalogs</parentSubsystem>
 </mdclass:Subsystem>

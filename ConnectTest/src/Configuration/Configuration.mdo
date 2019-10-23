@@ -121,7 +121,6 @@
   <catalogs>Catalog.cacheValuesTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>
-  <catalogs>Catalog.cities</catalogs>
   <catalogs>Catalog.classesSchedule</catalogs>
   <catalogs>Catalog.CountryCodes</catalogs>
   <catalogs>Catalog.employees</catalogs>
@@ -142,6 +141,7 @@
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
   <enums>Enum.gymStates</enums>
+  <enums>Enum.gymTypes</enums>
   <enums>Enum.HTTPRequestTypes</enums>
   <enums>Enum.informationChannels</enums>
   <enums>Enum.JSONValueTypes</enums>
