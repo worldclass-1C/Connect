@@ -513,7 +513,8 @@ Procedure gymList(parameters)
 		|	NOT gyms.DeletionMark
 		|	AND gyms.chain.code = &chainCode
 		|	AND gyms.startDate <= &currentTime
-		|	AND gyms.endDate >= &currentTime");
+		|	AND gyms.endDate >= &currentTime
+		|	AND gyms.type <> VALUE(Enum.gymTypes.outdoor)");
 
 		query.SetParameter("chainCode", requestStruct.chain);
 		query.SetParameter("language", language);
