@@ -1,11 +1,11 @@
 
 Function attributesStructure(requestName) Export
 	
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 	
-	data.addRowInAttributesTable(attributesTable, "user", "user", "ref");
-	data.addRowInAttributesTable(attributesTable, "class", "class", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "user", "user", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "class", "class", "ref");
 
 	mdStruct = New Structure();
 	mdStruct.Insert("class", New Structure("classesSchedule", "uid"));

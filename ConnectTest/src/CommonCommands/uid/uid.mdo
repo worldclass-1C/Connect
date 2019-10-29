@@ -13,6 +13,8 @@
     <types>CatalogRef.gyms</types>
     <types>CatalogRef.accounts</types>
     <types>CatalogRef.users</types>
+    <types>CatalogRef.employees</types>
+    <types>CatalogRef.classesSchedule</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

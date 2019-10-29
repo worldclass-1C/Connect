@@ -1,20 +1,20 @@
 
 Function attributesStructure() Export
 
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTable, "code", "code", "string");
-	data.addRowInAttributesTable(attributesTable, "parent", "parent", "ref");
-	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "code", "code", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "parent", "parent", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 
 	parentStruct = New Structure();
 	parentStruct.Insert("errorDescriptions", "uid");
 
-	attributesTranslation = data.getValueTable();
+	attributesTranslation = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-	data.addRowInAttributesTable(attributesTranslation, "description", "description", "string");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "description", "description", "string");
 		
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);

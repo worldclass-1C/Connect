@@ -595,11 +595,13 @@
       <value>Состояние клуба</value>
     </synonym>
     <type>
-      <types>EnumRef.gymStates</types>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -695,39 +697,19 @@
       <key>ru</key>
       <value>Перевод</value>
     </synonym>
-    <attributes uuid="56cbad08-a297-4498-b396-de9d5ee55406">
-      <name>language</name>
+    <attributes uuid="e39211af-5442-4b14-a823-0c62367f7055">
+      <name>additional</name>
       <synonym>
         <key>en</key>
-        <value>Language</value>
+        <value>Additional</value>
       </synonym>
       <synonym>
         <key>ru</key>
-        <value>Язык</value>
-      </synonym>
-      <type>
-        <types>CatalogRef.languages</types>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="f35acabb-de97-489b-b41f-a04ed45566b9">
-      <name>description</name>
-      <synonym>
-        <key>en</key>
-        <value>Description</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Наименование</value>
+        <value>Дополнительно</value>
       </synonym>
       <type>
         <types>String</types>
-        <stringQualifiers>
-          <length>40</length>
-        </stringQualifiers>
+        <stringQualifiers/>
       </type>
       <minValue xsi:type="core:UndefinedValue"/>
       <maxValue xsi:type="core:UndefinedValue"/>
@@ -776,6 +758,45 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <attributes uuid="f35acabb-de97-489b-b41f-a04ed45566b9">
+      <name>description</name>
+      <synonym>
+        <key>en</key>
+        <value>Description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Наименование</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>40</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="56cbad08-a297-4498-b396-de9d5ee55406">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.languages</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
     <attributes uuid="14313a0a-818b-485e-9b13-6d7646ce5479">
       <name>nearestMetro</name>
       <synonym>
@@ -793,19 +814,21 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
-    <attributes uuid="e39211af-5442-4b14-a823-0c62367f7055">
-      <name>additional</name>
+    <attributes uuid="5736b232-f167-4a4d-b71c-65e7295ea357">
+      <name>state</name>
       <synonym>
         <key>en</key>
-        <value>Additional</value>
+        <value>State</value>
       </synonym>
       <synonym>
         <key>ru</key>
-        <value>Дополнительно</value>
+        <value>Состояние клуба</value>
       </synonym>
       <type>
         <types>String</types>
-        <stringQualifiers/>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
       </type>
       <minValue xsi:type="core:UndefinedValue"/>
       <maxValue xsi:type="core:UndefinedValue"/>

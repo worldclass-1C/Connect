@@ -32,7 +32,11 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "gyminfo" Then
 			gymInfo(parameters);	
 		ElsIf parameters.requestName = "gymschedule" Then
-			gymSchedule(parameters);			
+			gymSchedule(parameters);
+		ElsIf parameters.requestName = "employeelist" Then
+			employeeList(parameters);
+		ElsIf parameters.requestName = "employeeinfo" Then
+			employeeInfo(parameters);					
 		ElsIf parameters.requestName = "catalogcancelcauses"
 				Or parameters.requestName = "cancelcauseslist" Then // проверить описание в API
 			cancellationReasonsList(parameters);
@@ -48,17 +52,19 @@ Procedure executeRequestMethod(parameters) Export
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);			
-		ElsIf parameters.requestName = "addchangeusers"
-				Or parameters.requestName = "addemployees"
-				Or parameters.requestName = "addprovidedservices"
+		ElsIf parameters.requestName = "addchangeusers"				
 				Or parameters.requestName = "addclassmember"
 				Or parameters.requestName = "deleteclassmember"
+				Or parameters.requestName = "addemployees"
+				Or parameters.requestName = "addgymemployees"
+				Or parameters.requestName = "deletegymemployees"
+				Or parameters.requestName = "addprovidedservices"
 				Or parameters.requestName = "addgymsschedule"
 				Or parameters.requestName = "addgyms"				
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
 				Or parameters.requestName = "addcancelcauses" Then 
-			changeCreateCatalogItems(parameters);
+			changeCreateItems(parameters);
 		Else
 			executeExternalRequest(parameters);
 		EndIf;
@@ -534,7 +540,7 @@ Procedure gymList(parameters)
 			gymStruct.Insert("phone", select.phone);
 			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
 			gymStruct.Insert("holidaysTime", select.holidaysTime);
-			gymStruct.Insert("hasAccess", ?(authorized, false, Undefined));
+			gymStruct.Insert("hasAccess", ?(authorized, Undefined, false));
 			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
 			coords = New Structure();
@@ -757,6 +763,113 @@ Procedure gymSchedule(parameters)
 	EndIf;
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(classesScheduleArray));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);
+	parameters.Insert("errorDescription", errorDescription);
+	
+EndProcedure
+
+Procedure employeeInfo(parameters)
+
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	employeeArray = New Array();
+	
+	errorDescription = Service.getErrorDescription(language);
+
+	If Not requestStruct.Property("uid") Then
+		errorDescription = Service.getErrorDescription(language, "stuff");
+	EndIf;
+
+	If errorDescription.result = "" Then
+		query = New Query("SELECT
+		|	employees.Ref AS employee,
+		|	ISNULL(employeestranslation.firstName, employees.firstName) AS firstName,
+		|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName,
+		|	ISNULL(employeestranslation.descriptionFull, employees.descriptionFull) AS descriptionFull,
+		|	ISNULL(employeestranslation.categoryList, employees.categoryList) AS categoryList,
+		|	employees.photo AS photo,
+		|	employees.photos.(
+		|		URL)
+		|FROM
+		|	Catalog.employees AS employees
+		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
+		|		ON employees.Ref = employeestranslation.Ref
+		|		and employeestranslation.language = &language
+		|WHERE
+		|	employees.Ref = &employee");
+
+		query.SetParameter("employee", XMLValue(Type("CatalogRef.employees"), requestStruct.uid));
+		query.SetParameter("language", language);				
+		
+		select = query.Execute().Select();
+
+		While select.Next() Do
+			employeeStruct = New Structure();
+			employeeStruct.Insert("uid", XMLString(select.employee));
+			employeeStruct.Insert("firstName", select.firstName);
+			employeeStruct.Insert("lastName", select.lastName);			
+			employeeStruct.Insert("isMyCoach", False);
+			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
+			employeeStruct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
+			employeeStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));						
+			employeeArray.add(employeeStruct);
+		EndDo;
+	EndIf;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(employeeArray));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);
+	parameters.Insert("errorDescription", errorDescription);
+		
+EndProcedure
+
+Procedure employeeList(parameters)
+
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	employeeArray = New Array();
+	
+	errorDescription = Service.getErrorDescription(language);
+
+	If Not requestStruct.Property("uid") Then
+		errorDescription = Service.getErrorDescription(language, "gym");
+	EndIf;
+
+	If errorDescription.result = "" Then
+		query = New Query("SELECT
+		|	gymsEmployees.employee,
+		|	ISNULL(employeestranslation.firstName, gymsEmployees.employee.firstName) AS firstName,
+		|	ISNULL(employeestranslation.lastName, gymsEmployees.employee.lastName) AS lastName,
+		|	ISNULL(employeestranslation.categoryList, gymsEmployees.employee.categoryList) AS categoryList,
+		|	gymsEmployees.employee.photo AS photo
+		|FROM
+		|	InformationRegister.gymsEmployees AS gymsEmployees
+		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
+		|		ON gymsEmployees.employee = employeestranslation.Ref
+		|		AND employeestranslation.language = &language
+		|WHERE
+		|	gymsEmployees.gym = &gym
+		|	AND gymsEmployees.employee.active");
+
+		query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.uid));
+		query.SetParameter("language", language);				
+		
+		select = query.Execute().Select();
+
+		While select.Next() Do
+			employeeStruct = New Structure();
+			employeeStruct.Insert("uid", XMLString(select.employee));
+			employeeStruct.Insert("firstName", select.firstName);
+			employeeStruct.Insert("lastName", select.lastName);			
+			employeeStruct.Insert("photo", select.photo);
+			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
+			employeeStruct.Insert("isMyCoach", False);			
+			employeeArray.add(employeeStruct);
+		EndDo;
+	EndIf;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(employeeArray));
 	parameters.Insert("notSaveAnswer", True);
 	parameters.Insert("compressAnswer", True);
 	parameters.Insert("errorDescription", errorDescription);
@@ -1095,11 +1208,11 @@ Procedure executeExternalRequest(parameters)
 
 EndProcedure
 
-Procedure changeCreateCatalogItems(parameters)
+Procedure changeCreateItems(parameters)
 	tokenContext = parameters.tokenContext;
 	struct	= New Structure();
 	struct.Insert("result", "Ok");		
-	data.createCatalogItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
+	DataLoad.createItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 

@@ -1,11 +1,11 @@
 
 Function attributesStructure() Export
 
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTable, "employe", "employe", "ref");
-	data.addRowInAttributesTable(attributesTable, "services", "services", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "employe", "employe", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "services", "services", "JSON");
 
 	mdStruct = New Structure();
 	mdStruct.Insert("employe", New Structure("employees", "uid"));

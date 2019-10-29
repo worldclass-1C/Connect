@@ -1,31 +1,30 @@
 
 Function attributesStructure() Export
 
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
-	data.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
-	data.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-	data.addRowInAttributesTable(attributesTable, "education", "education", "JSON");
-	data.addRowInAttributesTable(attributesTable, "progress", "progress", "JSON");
-	data.addRowInAttributesTable(attributesTable, "tagList", "tagList", "JSON");
-	data.addRowInAttributesTable(attributesTable, "categoryList", "categoryList", "JSON");
-	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
-	data.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");	
+	DataLoad.addRowInAttributesTable(attributesTable, "descriptionFull", "descriptionFull", "JSON");	
+	DataLoad.addRowInAttributesTable(attributesTable, "tagList", "tagList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "categoryList", "categoryList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
 
-	attributesTranslation = data.getValueTable();
+	attributesTranslation = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-	data.addRowInAttributesTable(attributesTranslation, "firstName", "firstName", "string");
-	data.addRowInAttributesTable(attributesTranslation, "lastName", "lastName", "string");
-	data.addRowInAttributesTable(attributesTranslation, "education", "education", "JSON");
-	data.addRowInAttributesTable(attributesTranslation, "progress", "progress", "JSON");
-	data.addRowInAttributesTable(attributesTranslation, "tagList", "tagList", "JSON");
-	data.addRowInAttributesTable(attributesTranslation, "categoryList", "categoryList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "firstName", "firstName", "string");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "lastName", "lastName", "string");	
+	DataLoad.addRowInAttributesTable(attributesTranslation, "descriptionFull", "descriptionFull", "JSON");	
+	DataLoad.addRowInAttributesTable(attributesTranslation, "tagList", "tagList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "categoryList", "categoryList", "JSON");
 
-	attributesPhotos = data.getValueTable();
-	data.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
+	attributesPhotos = DataLoad.getValueTable();
+	DataLoad.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
 
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);

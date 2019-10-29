@@ -1,10 +1,10 @@
 
 Function attributesStructure() Export
 
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 	
-	data.addRowInAttributesTable(attributesTable, "description", "name", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "description", "name", "string");
 		
 	mdStruct = New Structure();
 	

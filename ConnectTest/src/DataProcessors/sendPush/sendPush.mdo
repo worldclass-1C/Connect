@@ -4,18 +4,22 @@
     <objectType typeId="78586bf3-04d8-42fe-9bec-829d812b5da9" valueTypeId="7a9b6eb8-bf12-42c2-93b3-72220c78f2ae"/>
     <managerType typeId="058946be-fc9d-4f85-b720-db9f7537bf61" valueTypeId="6fcc5c65-db1e-4d33-92bd-92f3d94fa0b6"/>
   </producedTypes>
-  <name>ОтправитьПуш</name>
+  <name>sendPush</name>
   <synonym>
     <key>ru</key>
-    <value>Отправить пуш</value>
+    <value>Send push</value>
+  </synonym>
+  <synonym>
+    <key>en</key>
+    <value>Send push</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <defaultForm>DataProcessor.ОтправитьПуш.Form.Форма</defaultForm>
-  <forms uuid="5b3b50e6-4291-4b1e-a619-50d41313f27e">
-    <name>Форма</name>
+  <defaultForm>DataProcessor.sendPush.Form.Form</defaultForm>
+  <forms uuid="275f107d-465b-4309-9b89-c774b8d38767">
+    <name>Form</name>
     <synonym>
-      <key>ru</key>
-      <value>Форма</value>
+      <key>en</key>
+      <value>Form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

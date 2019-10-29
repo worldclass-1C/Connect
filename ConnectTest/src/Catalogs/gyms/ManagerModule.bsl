@@ -1,36 +1,38 @@
 
 Function attributesStructure() Export
 
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTable, "description", "name", "string");
-	data.addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
-	data.addRowInAttributesTable(attributesTable, "startDate", "startDate", "date");
-	data.addRowInAttributesTable(attributesTable, "endDate", "endDate", "date");
-	data.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
-	data.addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
-	data.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
-	data.addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
-	data.addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");
-	data.addRowInAttributesTable(attributesTable, "additional", "additional", "JSON");
-	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
-	data.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
-	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
-	data.addRowInAttributesTable(attributesTable, "type", "type", "enum");	
+	DataLoad.addRowInAttributesTable(attributesTable, "description", "name", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "address", "gymAddress", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "startDate", "startDate", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "endDate", "endDate", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "longitude", "longitude", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "departmentWorkSchedule", "departments", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "nearestMetro", "metro", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "additional", "additional", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "segment", "division", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "state", "state", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "type", "type", "enum");	
 //	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
 
-	attributesTranslation = data.getValueTable();
+	attributesTranslation = DataLoad.getValueTable();
 
-	data.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-	data.addRowInAttributesTable(attributesTranslation, "description", "description", "string");
-	data.addRowInAttributesTable(attributesTranslation, "address", "gymAddress", "string");
-	data.addRowInAttributesTable(attributesTranslation, "departmentWorkSchedule", "departments", "JSON");
-	data.addRowInAttributesTable(attributesTranslation, "nearestMetro", "metro", "JSON");
-	data.addRowInAttributesTable(attributesTranslation, "additional", "additional", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "description", "description", "string");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "address", "gymAddress", "string");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "state", "state", "string");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "departmentWorkSchedule", "departments", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "nearestMetro", "metro", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "additional", "additional", "JSON");
 
-	attributesPhotos = data.getValueTable();
-	data.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
+	attributesPhotos = DataLoad.getValueTable();
+	DataLoad.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
 
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);

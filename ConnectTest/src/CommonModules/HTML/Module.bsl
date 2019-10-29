@@ -1,50 +1,40 @@
 
-Function getPhoto(gym) Export
+Function getPhoto(url, type = Undefined) Export
 	
+	If type = type("CatalogRef.employees") Then
+		width = "200px;";
+		height = "300px;";				
+	Else
+		width = "300px;";
+		height = "300px;";
+	EndIf;
+
 	strArray = New Array();
 	
 	head = "<html>
 		|<head>
 		|<style>
 		|.square{
-		|			width: 300px;
-		|			height: 300px;
+		|			width: " + width + "
+		|			height: " + height + "
 		|			object-fit: contain;
-		|		}
-		|
-		|a{ 
-		|			float: left;						
-		|			margin: 1.5% 0 0 1.5%;
-		|			background: #f0f0f0;						
-		|			padding: 0.5%;
-		|		}
+		|			margin: 0;
+		|			background: #f0f0f0;
+      	|			position: absolute;
+      	|			top: 50%;
+      	|			left: 50%;
+      	|			transform: translate(-50%, -50%);
+		|		}				
 		|</style>
 		|</head>
 		|<body>";
 		
 	down = "</body></html>";
 	
-	query = New Query("SELECT
-	|	gymsfoto.URL,
-	|	gymsfoto.LineNumber
-	|FROM
-	|	Catalog.gyms.photos AS gymsfoto
-	|WHERE
-	|	gymsfoto.Ref = &gym");
-	
-	query.SetParameter("gym", gym);
-	
-	select = query.Execute().Select();
 	bodyArray = New Array();
 	
-	While select.Next() Do
-		bodyArray.Add("<a href = ""#"" id = """ + select.LineNumber + """>");
-		bodyArray.Add("<img class=""square"" src=""" + select.url + """ alt=""photos"">");
-		bodyArray.Add("</a>");
-	EndDo;
-	
-	bodyArray.Add("<a href = ""#"" id = ""addPhoto"">");
-	bodyArray.Add("<img class=""square"" src=""https://tsolutions.worldclass.ru/img/service/addPhoto.jpg"" alt=""photos"">");
+	bodyArray.Add("<a href = ""#"" id = ""photo"">");
+	bodyArray.Add("<img class=""square"" src=" + url + " alt=""photos"">");
 	bodyArray.Add("</a>");
 		
 	strArray.Add(head);

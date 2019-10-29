@@ -26,7 +26,7 @@
       </visible>
     </visibilityFragments>
     <visibilityFragments>
-      <command>DataProcessor.ОтправитьПуш.StandardCommand.Open</command>
+      <command>DataProcessor.sendPush.StandardCommand.Open</command>
       <visible>
         <common>true</common>
       </visible>
@@ -49,7 +49,7 @@
     <placementFragments>
       <group>ActionsPanelTools</group>
       <commands>DataProcessor.DataSync_tConnect_Connect.StandardCommand.Open</commands>
-      <commands>DataProcessor.ОтправитьПуш.StandardCommand.Open</commands>
+      <commands>DataProcessor.sendPush.StandardCommand.Open</commands>
     </placementFragments>
   </commandsPlacement>
 </cmi:CommandInterface>

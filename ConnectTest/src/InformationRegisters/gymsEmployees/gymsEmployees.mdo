@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bda64999-025d-4df1-aadf-5ec0aa78633c">
+  <producedTypes>
+    <selectionType typeId="b7a57a9b-35f9-4a82-8fc4-78ebbcb84d4e" valueTypeId="ed43c20c-d3fe-48bf-bc0c-c4ce1a77f59a"/>
+    <listType typeId="320b0718-26f4-4b74-9ab9-2d7eb4877755" valueTypeId="61f5f34f-7437-441d-a00f-a7b3692dca4a"/>
+    <managerType typeId="5ba64195-a4d1-48ce-a7c5-ce06ab798563" valueTypeId="f7c897df-4e92-4723-ad42-5b763fc1c29c"/>
+    <recordSetType typeId="2c32b496-1fac-4812-a9c2-41879b7d65b1" valueTypeId="32e75758-6126-4629-8967-791610b6cf03"/>
+    <recordKeyType typeId="82f5906b-ab42-4aff-a66c-87a162674e06" valueTypeId="cace6e62-5545-4a15-a725-68675f5ccc02"/>
+    <recordType typeId="6d9a4fb8-17e1-412a-bc22-2f8ed44f2fc1" valueTypeId="e890b838-08f2-49d5-b2bb-f321091dc20e"/>
+    <recordManagerType typeId="74f889fe-7425-421d-872e-35a3201a8ed9" valueTypeId="1c7e91ce-d1e6-4cb2-a447-0a143790971b"/>
+  </producedTypes>
+  <name>gymsEmployees</name>
+  <synonym>
+    <key>en</key>
+    <value>Gyms employees</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Сотрудники клубов</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="3a6c23b9-e449-42e4-a432-195df9b61eac">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="cbd7f8fb-6b01-48f9-9b44-55f16e3e0ca2">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="865f1881-4f66-4ec7-8010-68fcb1c23dd7">
+    <name>employee</name>
+    <synonym>
+      <key>en</key>
+      <value>Employee</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сотрудник</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.employees</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

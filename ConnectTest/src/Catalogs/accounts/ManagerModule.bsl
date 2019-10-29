@@ -1,16 +1,16 @@
 
 Function attributesStructure() Export	
 	
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 	
-	data.addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
-	data.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
-	data.addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
-	data.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-	data.addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
-	data.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
-	data.addRowInAttributesTable(attributesTable, "email", "email", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "code", "phoneNumber", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "email", "email", "string");
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "accounts", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
 		

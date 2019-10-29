@@ -1,5 +1,5 @@
 
-Function createCatalogItems(requestName, holding, requestStruct, owner = Undefined) Export
+Function createItems(requestName, holding, requestStruct, owner = Undefined) Export
 
 	attributesStruct = attributesStructure(requestName);
 	requestStruct = requestStruct;
@@ -32,7 +32,7 @@ EndFunction
 
 //service
 Function getValueTable() Export
-	ValueTable = New ValueTable;
+	ValueTable = New ValueTable();
 	valueTable.Columns.Add("key");
 	valueTable.Columns.Add("value");
 	valueTable.Columns.Add("type");
@@ -55,6 +55,8 @@ Function attributesStructure(val requestName)
 		Return Catalogs.classesSchedule.attributesStructure();
 	ElsIf requestName = "addclassmember" or requestName = "deleteclassmember" Then
 		Return InformationRegisters.classMembers.attributesStructure(requestName);
+	ElsIf requestName = "addgymemployees" or requestName = "deletegymemployees" Then
+		Return InformationRegisters.gymsEmployees.attributesStructure(requestName);	
 	ElsIf requestName = "addcancelcauses" Then
 		Return Catalogs.cancellationReasons.attributesStructure();
 	ElsIf requestName = "addrequest" Then
@@ -130,7 +132,7 @@ EndProcedure
 
 Procedure fillEnum(object, attribute, attributesStruct, requestParameter)
 	For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
-		object[attribute.key] = Enums[refProperty.key][attribute.value];		
+		object[attribute.key] = Enums[refProperty.key][requestParameter[attribute.value]];		
 	EndDo;	
 EndProcedure
 

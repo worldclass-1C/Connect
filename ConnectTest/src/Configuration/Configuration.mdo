@@ -82,7 +82,7 @@
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
-  <commonModules>CommonModule.data</commonModules>
+  <commonModules>CommonModule.DataLoad</commonModules>
   <commonModules>CommonModule.Files</commonModules>
   <commonModules>CommonModule.General</commonModules>
   <commonModules>CommonModule.GeneralCallServer</commonModules>
@@ -140,7 +140,6 @@
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
-  <enums>Enum.gymStates</enums>
   <enums>Enum.gymTypes</enums>
   <enums>Enum.HTTPRequestTypes</enums>
   <enums>Enum.informationChannels</enums>
@@ -158,11 +157,12 @@
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
-  <dataProcessors>DataProcessor.ОтправитьПуш</dataProcessors>
+  <dataProcessors>DataProcessor.sendPush</dataProcessors>
   <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
+  <informationRegisters>InformationRegister.gymsEmployees</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
   <informationRegisters>InformationRegister.messagesId</informationRegisters>

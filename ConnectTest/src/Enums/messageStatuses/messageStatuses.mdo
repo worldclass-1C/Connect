@@ -87,4 +87,15 @@
       <value>Прочитано</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="a38c2909-3867-4898-81fc-06b64dcee77e">
+    <name>undefined</name>
+    <synonym>
+      <key>en</key>
+      <value>Undefined</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Неопределено</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

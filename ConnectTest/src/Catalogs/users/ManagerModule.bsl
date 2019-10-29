@@ -1,14 +1,14 @@
 
 Function attributesStructure() Export	
 	
-	attributesTable = data.getValueTable();
-	attributesTableForNewItem = data.getValueTable();
+	attributesTable = DataLoad.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
 	
-	data.addRowInAttributesTable(attributesTable, "userCode", "cid", "string");
-	data.addRowInAttributesTable(attributesTable, "userType", "userType", "string");
-	data.addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
-	data.addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
-	data.addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "userCode", "cid", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "userType", "userType", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "users", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
 		

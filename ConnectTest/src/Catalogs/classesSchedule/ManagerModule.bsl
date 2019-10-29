@@ -1,25 +1,25 @@
 
 Function attributesStructure() Export
 
-	attributesTableForNewItem = data.getValueTable();
+	attributesTableForNewItem = DataLoad.getValueTable();
+
+	attributesTable = DataLoad.getValueTable();
+	DataLoad.addRowInAttributesTable(attributesTable, "period", "period", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 
+	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "employee", "employee", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "fullDescription", "fullDescription", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	
-	attributesTable = data.getValueTable();
-	data.addRowInAttributesTable(attributesTable, "period", "period", "date");
-	data.addRowInAttributesTable(attributesTable, "active", "active", "boolean");
-	data.addRowInAttributesTable(attributesTable, "description", "description", "string");
-	data.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
-	data.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
-	data.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
-	data.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
-	data.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 
-	data.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
-	data.addRowInAttributesTable(attributesTable, "employee", "employee", "ref");
-	data.addRowInAttributesTable(attributesTable, "fullDescription", "fullDescription", "JSON");
-	data.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
-	
-	attributesTranslation = data.getValueTable();
-	data.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-	data.addRowInAttributesTable(attributesTranslation, "fullDescription", "fullDescription", "JSON");
+	attributesTranslation = DataLoad.getValueTable();
+	DataLoad.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "fullDescription", "fullDescription", "JSON");
 	
 	mdStruct = New Structure();
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));
