@@ -228,41 +228,59 @@ Procedure informationSourceAlert() Export
 	headers.Insert("Content-Type", "application/json");
 		
 	query	= New Query("SELECT TOP 100
+	|	usersChanges.Ref.holding AS holding,
 	|	usersChanges.Ref AS user,
-	|	tokens.appType AS appType,
-	|	MIN(tokens.lockDate) AS lockDate,
-	|	tokens.holding AS holding
+	|	CASE
+	|		WHEN tokensEmployee.Ref IS NULL
+	|			THEN FALSE
+	|		ELSE TRUE
+	|	END AS employee,
+	|	CASE
+	|		WHEN tokensCustomer.Ref IS NULL
+	|			THEN FALSE
+	|		ELSE TRUE
+	|	END AS customer
 	|FROM
 	|	Catalog.users.Changes AS usersChanges
-	|		LEFT JOIN Catalog.tokens AS tokens
-	|		ON usersChanges.Ref = tokens.user
-	|GROUP BY
-	|	usersChanges.Ref,
-	|	tokens.appType,
-	|	tokens.holding");
+	|		LEFT JOIN Catalog.tokens AS tokensEmployee
+	|		ON (usersChanges.Ref = tokensEmployee.user)
+	|			AND (tokensEmployee.appType = VALUE(Enum.appTypes.Employee))
+	|			AND (tokensEmployee.lockDate = DATETIME(1, 1, 1))
+	|		LEFT JOIN Catalog.tokens AS tokensCustomer
+	|		ON (usersChanges.Ref = tokensCustomer.user)
+	|			AND (tokensCustomer.appType = VALUE(Enum.appTypes.Customer))
+	|			AND (tokensCustomer.lockDate = DATETIME(1, 1, 1))
+	|WHERE
+	|	usersChanges.Node = &Node
+	|TOTALS BY
+	|	holding");
 	
-	core	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
-	select	= query.Execute().Select();
+	node	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
+	query.SetParameter("node", node);
+	selectHolding	= query.Execute().Select(QueryResultIteration.ByGroups);
 	
-	While select.next() Do	
-		queryStruct = HTTP.GetRequestStructure(?(select.lockDate = Date(1,1,1), "registerAccount", "unregisterAccount"), select.holding);
+	While selectHolding.next() Do		
+		queryStruct = HTTP.GetRequestStructure("registerAccount", selectHolding.holding);		
 		If queryStruct.count() > 0 Then			
-			structHTTPRequest	= New Structure();
-			structHTTPRequest.Insert("userId", XMLString(select.user));
-			structHTTPRequest.Insert("language", "en");
-			structHTTPRequest.Insert("appType", XMLString(select.appType));			
-			HTTPConnection	= New HTTPConnection(queryStruct.server,, queryStruct.user, queryStruct.password,, queryStruct.timeout, ?(queryStruct.secureConnection, New OpenSSLSecureConnection(), Undefined), queryStruct.UseOSAuthentication);
-			HTTPRequest = New HTTPRequest(queryStruct.URL + queryStruct.requestReceiver, headers);
-			HTTPRequest.SetBodyFromString(HTTP.encodeJSON(structHTTPRequest));			
-			response	= HTTPConnection.Post(HTTPRequest);
-			If response.StatusCode = 200 Then
-				ExchangePlans.DeleteChangeRecords(core, select.user);
-			EndIf;
-		Else
-			ExchangePlans.DeleteChangeRecords(core, select.user);
-		EndIf;	
+			select = selectHolding.Select();
+			While select.next() Do
+				structHTTPRequest = New Structure();
+				structHTTPRequest.Insert("userId", XMLString(select.user));
+				structHTTPRequest.Insert("language", "en");
+				structHTTPRequest.Insert("employee", select.employee);
+				structHTTPRequest.Insert("customer", select.customer);
+				HTTPConnection = New HTTPConnection(queryStruct.server, , queryStruct.user, queryStruct.password, , queryStruct.timeout, ?(queryStruct.secureConnection, New OpenSSLSecureConnection(), Undefined), queryStruct.UseOSAuthentication);
+				HTTPRequest = New HTTPRequest(queryStruct.URL
+					+ queryStruct.requestReceiver, headers);
+				HTTPRequest.SetBodyFromString(HTTP.encodeJSON(structHTTPRequest));
+				response = HTTPConnection.Post(HTTPRequest);
+				If response.StatusCode = 200 Then
+					ExchangePlans.DeleteChangeRecords(node, select.user);
+				EndIf;
+			EndDo;
+		EndIf;
 	EndDo;
-	
+			
 EndProcedure
 
 Процедура РассчитатьПоказатели() Экспорт
