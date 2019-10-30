@@ -13,7 +13,5 @@
   <content>Report.registeredMessages</content>
   <content>Report.statisticsByDay</content>
   <content>Report.statisticsByMonth</content>
-  <content>Report.goTokensDevices</content>
-  <content>Report.goMessages</content>
   <content>Report.applicationVersions</content>
 </mdclass:Subsystem>

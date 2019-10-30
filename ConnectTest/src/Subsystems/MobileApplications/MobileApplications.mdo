@@ -11,7 +11,6 @@
   </synonym>
   <includeHelpInContents>true</includeHelpInContents>
   <includeInCommandInterface>true</includeInCommandInterface>
-  <content>InformationRegister.registeredDevices</content>
   <content>InformationRegister.appCertificates</content>
   <content>InformationRegister.currentAppVersions</content>
   <content>74280498-81e5-485a-970f-310143213118</content>

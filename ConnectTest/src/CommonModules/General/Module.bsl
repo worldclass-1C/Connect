@@ -788,6 +788,7 @@ Procedure employeeInfo(parameters)
 		|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName,
 		|	ISNULL(employeestranslation.descriptionFull, employees.descriptionFull) AS descriptionFull,
 		|	ISNULL(employeestranslation.categoryList, employees.categoryList) AS categoryList,
+		|	employees.tagList,
 		|	employees.photo AS photo,
 		|	employees.photos.(
 		|		URL)
@@ -811,6 +812,7 @@ Procedure employeeInfo(parameters)
 			employeeStruct.Insert("lastName", select.lastName);			
 			employeeStruct.Insert("isMyCoach", False);
 			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
+			employeeStruct.Insert("tagList", HTTP.decodeJSON(select.tagList, Enums.JSONValueTypes.array));
 			employeeStruct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
 			employeeStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));						
 			employeeArray.add(employeeStruct);

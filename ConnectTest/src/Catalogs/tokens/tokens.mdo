@@ -409,4 +409,21 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <commands uuid="e31d5f21-4c9c-4121-b2fd-64435c58fe58">
+    <name>tokens</name>
+    <synonym>
+      <key>en</key>
+      <value>Tokens</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токены</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.users</types>
+      <types>CatalogRef.accounts</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+  </commands>
 </mdclass:Catalog>

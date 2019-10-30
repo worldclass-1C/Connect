@@ -152,8 +152,6 @@
   <enums>Enum.systemTypes</enums>
   <enums>Enum.Показатели</enums>
   <reports>Report.applicationVersions</reports>
-  <reports>Report.goMessages</reports>
-  <reports>Report.goTokensDevices</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
@@ -168,7 +166,6 @@
   <informationRegisters>InformationRegister.messagesId</informationRegisters>
   <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.providedServices</informationRegisters>
-  <informationRegisters>InformationRegister.registeredDevices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
