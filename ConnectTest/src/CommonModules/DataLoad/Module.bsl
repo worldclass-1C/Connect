@@ -124,8 +124,10 @@ Procedure fillRef(object, attribute, attributesStruct, requestParameter)
 	For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
 		If refProperty.key = "languages" Then
 			object[attribute.key] = Catalogs[refProperty.key].FindByCode(requestParameter[attribute.value][refProperty.value]);
+		ElsIf refProperty.key = "segments" Then
+			object[attribute.key] = Catalogs[refProperty.key].FindByDescription(requestParameter[attribute.value][refProperty.value]);				
 		Else
-			object[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
+			object[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));			
 		EndIf;
 	EndDo;	
 EndProcedure

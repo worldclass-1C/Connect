@@ -95,15 +95,7 @@ Procedure SendPushAtServer()
 			pushStruct.Insert("token", select.token);
 			pushStruct.Insert("informationChannel", "");
 			pushStruct.Insert("message", Catalogs.messages.EmptyRef());
-			Messages.sendPush(pushStruct);			
-			//notification = New DeliverableNotification;
-			//notification.title	= titleForPush;
-			//notification.text = pushText;
-			//notification.Data = Messages.pushData(action, objectId, objectType, noteId);			
-			//notification.Recipients.Add(Messages.pushSubscriber(select.deviceToken, select.SubscriberType));
-			//excludedRecipients	= New Array();
-			//errors	 = New Array();
-			//DeliverableNotificationSend.Send(notification, GeneralReuse.getAuthorizationKey(select.systemType, select.certificate), excludedRecipients,, errors);
+			Messages.sendPush(pushStruct);
 		EndIf;
 	EndDo;
 

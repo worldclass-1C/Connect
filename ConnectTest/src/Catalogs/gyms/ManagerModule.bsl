@@ -16,7 +16,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "additional", "additional", "JSON");
 	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
-	DataLoad.addRowInAttributesTable(attributesTable, "segment", "division", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "segment", "division", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "state", "state", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "type", "type", "enum");	
 //	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
@@ -38,6 +38,7 @@ Function attributesStructure() Export
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
 	mdStruct.Insert("language", New Structure("languages", "code"));
+	mdStruct.Insert("segment", New Structure("segments", "discription"));
 	mdStruct.Insert("type", New Structure("gymTypes", ""));	
 
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);

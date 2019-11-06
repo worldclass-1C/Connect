@@ -746,6 +746,10 @@ Procedure gymSchedule(parameters)
 
 		While select.Next() Do
 			classesScheduleStruct = HTTP.decodeJSON(select.fullDescription, Enums.JSONValueTypes.structure);
+			If tokenContext.user.IsEmpty() Then
+				//@skip-warning
+				classesScheduleStruct.Insert("price", Undefined);	
+			EndIf;
 			//@skip-warning
 			classesScheduleStruct.Insert("docId", XMLString(select.doc));
 			//@skip-warning
