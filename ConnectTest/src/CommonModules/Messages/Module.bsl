@@ -55,7 +55,7 @@ Procedure sendPush(parameters) Export
 
 	If parameters.deviceToken <> "" Then
 		
-		If parameters.systemType = Enums.systemTypes.Android Then
+//		If parameters.systemType = Enums.systemTypes.Android Then
 			HTTPConnection = New HTTPConnection("fcm.googleapis.com/fcm/send",,,,,,New OpenSSLSecureConnection());
 			
 			data = New Structure();
@@ -69,8 +69,11 @@ Procedure sendPush(parameters) Export
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
 			body.Insert("badge", parameters.badge);
-			body.Insert("data", data);			
-			
+			If parameters.systemType = Enums.systemTypes.Android Then
+				body.Insert("data", data);
+			Else	
+				body.Insert("notification", data);			
+			EndIf;
 			messageParam = New Structure();			
 			messageParam.Insert("to", parameters.deviceToken);
 			messageParam.Insert("data", body);
@@ -81,17 +84,17 @@ Procedure sendPush(parameters) Export
 			request.SetBodyFromString(HTTP.encodeJSON(messageParam), TextEncoding.UTF8);
 			
 			HTTPConnection.Post(request);			
-		Else
-			notification = New DeliverableNotification;
-			notification.Title = parameters.title;
-			notification.Text = parameters.text;
-			notification.Badge = parameters.badge;
-			notification.Recipients.Add(pushSubscriber(parameters.deviceToken, parameters.subscriberType));
-			notification.Data = pushData(parameters.action, parameters.objectId, parameters.objectType, parameters.message);
-
-			DeliverableNotificationSend.Send(notification, GeneralReuse.getAuthorizationKey(parameters.systemType, parameters.certificate));
-		EndIf;
-		
+//		Else
+//			notification = New DeliverableNotification;
+//			notification.Title = parameters.title;
+//			notification.Text = parameters.text;
+//			notification.Badge = parameters.badge;
+//			notification.Recipients.Add(pushSubscriber(parameters.deviceToken, parameters.subscriberType));
+//			notification.Data = pushData(parameters.action, parameters.objectId, parameters.objectType, parameters.message);
+//
+//			DeliverableNotificationSend.Send(notification, GeneralReuse.getAuthorizationKey(parameters.systemType, parameters.certificate));
+//		EndIf;
+//		
 		If Not parameters.message.isEmpty() Then
 			logMassage(parameters.message, parameters.informationChannel, Enums.messageStatuses.sent, "", ToUniversalTime(CurrentDate()), parameters.token);
 		EndIf;
