@@ -68,15 +68,16 @@ Procedure sendPush(parameters) Export
 			body.Insert("title", parameters.title);			
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
-			body.Insert("badge", parameters.badge);
-			If parameters.systemType = Enums.systemTypes.Android Then
-				body.Insert("data", data);
-			Else	
-				body.Insert("notification", data);			
-			EndIf;
+			body.Insert("badge", parameters.badge);			
+			body.Insert("data", data);
+			
 			messageParam = New Structure();			
 			messageParam.Insert("to", parameters.deviceToken);
-			messageParam.Insert("data", body);
+			If parameters.systemType = Enums.systemTypes.Android Then
+				messageParam.Insert("data", body);
+			Else	
+				messageParam.Insert("notification", body);			
+			EndIf;
 			
 			request = New HTTPRequest();
 			request.Headers.Insert("Content-Type", "application/json");
