@@ -111,15 +111,15 @@ Procedure sendSMS(parameters) Export
 
 	answer = New Structure("id, messageStatus, error, period", "", Enums.messageStatuses.notSent, "", Undefined);
 
-	If parameters.SMSProvider = Enums.SMSProviders.Rapporto Then
-		answer = Rapporto.sendSMS(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.Smstraffic Then
-		answer = SMSTraffic.sendSMS(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.IDMkg Then
-		answer = СIDMkg.sendSMS(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.Stramedia Then
-		answer = Stramedia.sendSMS(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.SmsGold Then
+	If parameters.SMSProvider = Enums.SmsProviders.Rapporto Then
+		answer = SmsRapporto.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smstraffic Then
+		answer = SmsTraffic.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDMkg Then
+		answer = SmsCIDMkg.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Stramedia Then
+		answer = SmsStramedia.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.SmsGold Then
 		answer = SmsGold.sendSMS(parameters, answer);
 	EndIf;
 
@@ -179,15 +179,15 @@ Procedure checkSmsStatus(parameters) Export
 
 	answer = New Structure("messageStatus, error, period", Enums.messageStatuses.notDelivered, "", Undefined);
 
-	If parameters.SMSProvider = Enums.SMSProviders.Rapporto Then
-		answer = Rapporto.checkSmsStatus(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.Smstraffic Then
-		answer = SMSTraffic.checkSmsStatus(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.IDMkg Then
-		answer = СIDMkg.checkSmsStatus(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.Stramedia Then
-		answer = Stramedia.checkSmsStatus(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SMSProviders.SmsGold Then
+	If parameters.SMSProvider = Enums.SmsProviders.Rapporto Then
+		answer = SmsRapporto.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smstraffic Then
+		answer = SmsTraffic.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDMkg Then
+		answer = SmsCIDMkg.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Stramedia Then
+		answer = SmsStramedia.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.SmsGold Then
 		answer = SmsGold.checkSmsStatus(parameters, answer);
 	EndIf;
 

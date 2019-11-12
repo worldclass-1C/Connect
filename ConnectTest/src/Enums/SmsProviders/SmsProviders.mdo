@@ -5,14 +5,14 @@
     <listType typeId="2ede6e7d-7b60-4fa1-98a2-e43e9d9cbe11" valueTypeId="81a546f0-c8fe-4d1e-a21e-9b33fbdd74ed"/>
     <managerType typeId="67893398-9cd4-4c42-8218-49c78ef0bd6a" valueTypeId="5c24918d-ca39-4b45-9ff7-3db2608d907f"/>
   </producedTypes>
-  <name>SMSProviders</name>
+  <name>SmsProviders</name>
   <synonym>
     <key>en</key>
-    <value>SMS providers</value>
+    <value>Sms providers</value>
   </synonym>
   <synonym>
     <key>ru</key>
-    <value>СМС провайдеры</value>
+    <value>Смс провайдеры</value>
   </synonym>
   <quickChoice>true</quickChoice>
   <choiceMode>BothWays</choiceMode>
