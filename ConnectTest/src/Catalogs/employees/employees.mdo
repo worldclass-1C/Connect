@@ -73,6 +73,28 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="095b7ea8-32e7-461c-acbb-9c86b8c3de31">
+    <name>descriptionFull</name>
+    <synonym>
+      <key>en</key>
+      <value>Description full</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Представление</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="344e7172-8d5c-4320-970f-1b4a18063cab">
     <name>firstName</name>
     <synonym>
@@ -87,6 +109,30 @@
       <types>String</types>
       <stringQualifiers>
         <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7faaefe7-aa50-4cf7-93eb-7b818f43b3fe">
+    <name>gender</name>
+    <synonym>
+      <key>en</key>
+      <value>Gender</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пол</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>6</length>
       </stringQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -155,28 +201,6 @@
       <stringQualifiers>
         <length>200</length>
       </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="095b7ea8-32e7-461c-acbb-9c86b8c3de31">
-    <name>descriptionFull</name>
-    <synonym>
-      <key>en</key>
-      <value>Description full</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Представление</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers/>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
