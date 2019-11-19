@@ -1,174 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f5c9b8e1-39ab-4fbe-abcb-7a62f1d96ee7">
-  <producedTypes>
-    <objectType typeId="1bf3aa1f-1f85-41f0-a22f-5add7ab9065f" valueTypeId="34684e77-e5f6-4cdf-8ec4-1d8b2e5105b0"/>
-    <refType typeId="2d846821-61a7-4585-8e04-a4ee37fc1bca" valueTypeId="28a4a032-bd48-4333-b358-e7fc8e595565"/>
-    <selectionType typeId="283ed1c3-11f6-4521-93b3-e3803f8b55c2" valueTypeId="ef92f8e7-25ee-466a-a047-0fe0eda58a0d"/>
-    <listType typeId="5cb0473b-762f-420f-b372-00114a6d63f4" valueTypeId="08acc07d-d3c9-424b-8c38-240de7778dd7"/>
-    <managerType typeId="e7a4621f-f9f6-446b-bd37-01107a5f150a" valueTypeId="22172ce3-9059-42c9-b857-b073bfb345f0"/>
-  </producedTypes>
-  <name>cacheValuesTypes</name>
-  <synonym>
-    <key>en</key>
-    <value>Cache values types</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Типы значений кэша</value>
-  </synonym>
-  <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.cacheValuesTypes.StandardAttribute.Code</inputByString>
-  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>PredefinedDataName</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Predefined</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Ref</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>DeletionMark</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>IsFolder</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Owner</name>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Parent</name>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Description</name>
-    <synonym>
-      <key>en</key>
-      <value>Description</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Наименование</value>
-    </synonym>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Code</name>
-    <synonym>
-      <key>en</key>
-      <value>Code</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Код</value>
-    </synonym>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <createOnInput>DontUse</createOnInput>
-  <dataLockControlMode>Managed</dataLockControlMode>
-  <fullTextSearch>Use</fullTextSearch>
-  <objectPresentation>
-    <key>ru</key>
-    <value>Тип значения кэша</value>
-  </objectPresentation>
-  <extendedObjectPresentation>
-    <key>ru</key>
-    <value>Тип значения кэша</value>
-  </extendedObjectPresentation>
-  <listPresentation>
-    <key>ru</key>
-    <value>Типы значений кэша</value>
-  </listPresentation>
-  <extendedListPresentation>
-    <key>ru</key>
-    <value>Типы значений кэша</value>
-  </extendedListPresentation>
-  <levelCount>2</levelCount>
-  <foldersOnTop>true</foldersOnTop>
-  <codeLength>25</codeLength>
-  <codeType>String</codeType>
-  <codeAllowedLength>Variable</codeAllowedLength>
-  <checkUnique>true</checkUnique>
-  <editType>InDialog</editType>
-  <choiceMode>BothWays</choiceMode>
-  <attributes uuid="dfb42be4-9524-4a1d-8dbc-06eda229d6b8">
-    <name>request</name>
-    <synonym>
-      <key>en</key>
-      <value>Request</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Запрос</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>25</length>
-      </stringQualifiers>
-    </type>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="55023a93-993d-430c-ad5a-964cbf4a5765">
-    <name>defaultValueType</name>
-    <synonym>
-      <key>en</key>
-      <value>Default value type</value>
-    </synonym>
-    <type>
-      <types>EnumRef.JSONValueTypes</types>
-    </type>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
+<mdclass:Catalog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="f5c9b8e1-39ab-4fbe-abcb-7a62f1d96ee7">
+	<producedTypes>
+		<objectType typeId="1bf3aa1f-1f85-41f0-a22f-5add7ab9065f"
+			valueTypeId="34684e77-e5f6-4cdf-8ec4-1d8b2e5105b0" />
+		<refType typeId="2d846821-61a7-4585-8e04-a4ee37fc1bca"
+			valueTypeId="28a4a032-bd48-4333-b358-e7fc8e595565" />
+		<selectionType
+			typeId="283ed1c3-11f6-4521-93b3-e3803f8b55c2"
+			valueTypeId="ef92f8e7-25ee-466a-a047-0fe0eda58a0d" />
+		<listType typeId="5cb0473b-762f-420f-b372-00114a6d63f4"
+			valueTypeId="08acc07d-d3c9-424b-8c38-240de7778dd7" />
+		<managerType typeId="e7a4621f-f9f6-446b-bd37-01107a5f150a"
+			valueTypeId="22172ce3-9059-42c9-b857-b073bfb345f0" />
+	</producedTypes>
+	<name>cacheValuesTypes</name>
+	<synonym>
+		<key>en</key>
+		<value>Cache values types</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Типы значений кэша</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>Catalog.cacheValuesTypes.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>PredefinedDataName</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Predefined</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Ref</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>DeletionMark</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>IsFolder</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Owner</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fillChecking>ShowError</fillChecking>
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Parent</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Description</name>
+		<synonym>
+			<key>en</key>
+			<value>Description</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Наименование</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fillChecking>ShowError</fillChecking>
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Code</name>
+		<synonym>
+			<key>en</key>
+			<value>Code</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Код</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<objectPresentation>
+		<key>ru</key>
+		<value>Тип значения кэша</value>
+	</objectPresentation>
+	<extendedObjectPresentation>
+		<key>ru</key>
+		<value>Тип значения кэша</value>
+	</extendedObjectPresentation>
+	<listPresentation>
+		<key>ru</key>
+		<value>Типы значений кэша</value>
+	</listPresentation>
+	<extendedListPresentation>
+		<key>ru</key>
+		<value>Типы значений кэша</value>
+	</extendedListPresentation>
+	<levelCount>2</levelCount>
+	<foldersOnTop>true</foldersOnTop>
+	<codeLength>25</codeLength>
+	<codeType>String</codeType>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<checkUnique>true</checkUnique>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<attributes uuid="dfb42be4-9524-4a1d-8dbc-06eda229d6b8">
+		<name>request</name>
+		<synonym>
+			<key>en</key>
+			<value>Request</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Запрос</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>25</length>
+			</stringQualifiers>
+		</type>
+		<fillChecking>ShowError</fillChecking>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="55023a93-993d-430c-ad5a-964cbf4a5765">
+		<name>defaultValueType</name>
+		<synonym>
+			<key>en</key>
+			<value>Default value type</value>
+		</synonym>
+		<type>
+			<types>EnumRef.JSONValueTypes</types>
+		</type>
+		<fillChecking>ShowError</fillChecking>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
 </mdclass:Catalog>

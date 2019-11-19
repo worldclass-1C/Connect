@@ -152,12 +152,14 @@ Procedure incPasswordSendCount(token, phone, password) Export
 	If record.Selected() Then
 		record.password = password;
 		record.phone = phone;
-		record.sendCount = record.sendCount + 1;  
+		record.sendCount = record.sendCount + 1;
+		record.inputCount = 0;  
 	Else
 		record.token = token;		
 		record.password = password;
 		record.phone = phone;
 		record.sendCount = 1;
+		record.inputCount = 0;
 	EndIf;	
 	record.recordDate	= ToUniversalTime(CurrentDate());			
 	record.Write();

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="116b1b31-184a-490e-b63c-11d1caaa244c">
-  <producedTypes>
-    <objectType typeId="815d127a-73e4-4a14-a419-672dcecd0c42" valueTypeId="1dd9d860-716c-4938-9e42-1f30cdbee202"/>
-    <managerType typeId="644d5051-0f7a-4506-8076-153aa3e2fb90" valueTypeId="4ed1d238-8da8-418b-a0f3-a4b048c49abb"/>
-  </producedTypes>
-  <name>statisticsByMonth</name>
-  <synonym>
-    <key>en</key>
-    <value>Statistics by month</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Статистика по месяцам</value>
-  </synonym>
-  <useStandardCommands>true</useStandardCommands>
-  <mainDataCompositionSchema>Report.statisticsByMonth.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
-  <templates uuid="ae1d621b-c63c-40a9-bb21-f75a2f187d13">
-    <name>ОсновнаяСхемаКомпоновкиДанных</name>
-    <synonym>
-      <key>ru</key>
-      <value>Основная схема компоновки данных</value>
-    </synonym>
-    <templateType>DataCompositionSchema</templateType>
-  </templates>
+<mdclass:Report
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="116b1b31-184a-490e-b63c-11d1caaa244c">
+	<producedTypes>
+		<objectType typeId="815d127a-73e4-4a14-a419-672dcecd0c42"
+			valueTypeId="1dd9d860-716c-4938-9e42-1f30cdbee202" />
+		<managerType typeId="644d5051-0f7a-4506-8076-153aa3e2fb90"
+			valueTypeId="4ed1d238-8da8-418b-a0f3-a4b048c49abb" />
+	</producedTypes>
+	<name>statisticsByMonth</name>
+	<synonym>
+		<key>en</key>
+		<value>Statistics by month</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Статистика по месяцам</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<mainDataCompositionSchema>Report.statisticsByMonth.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+	<templates uuid="ae1d621b-c63c-40a9-bb21-f75a2f187d13">
+		<name>ОсновнаяСхемаКомпоновкиДанных</name>
+		<synonym>
+			<key>ru</key>
+			<value>Основная схема компоновки данных</value>
+		</synonym>
+		<templateType>DataCompositionSchema</templateType>
+	</templates>
 </mdclass:Report>

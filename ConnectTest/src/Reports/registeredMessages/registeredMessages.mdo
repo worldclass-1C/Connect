@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6174b6f4-c7fe-40b9-b282-5697f1781bae">
-  <producedTypes>
-    <objectType typeId="9d5c8b69-67ae-4ae3-8f49-8362b6362cf1" valueTypeId="a3693917-5082-4023-9030-3dc653cd971b"/>
-    <managerType typeId="1f9586f5-e672-4b6a-b30c-aa7b40f60f6f" valueTypeId="c8812e6f-0fbe-443b-92e7-274983c6293c"/>
-  </producedTypes>
-  <name>registeredMessages</name>
-  <synonym>
-    <key>en</key>
-    <value>Registered messages</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Зарегистрированные сообщения</value>
-  </synonym>
-  <useStandardCommands>true</useStandardCommands>
-  <mainDataCompositionSchema>Report.registeredMessages.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
-  <templates uuid="c9cb2f28-163a-4abd-acc3-a468f4c5283e">
-    <name>ОсновнаяСхемаКомпоновкиДанных</name>
-    <synonym>
-      <key>ru</key>
-      <value>Основная схема компоновки данных</value>
-    </synonym>
-    <templateType>DataCompositionSchema</templateType>
-  </templates>
+<mdclass:Report
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="6174b6f4-c7fe-40b9-b282-5697f1781bae">
+	<producedTypes>
+		<objectType typeId="9d5c8b69-67ae-4ae3-8f49-8362b6362cf1"
+			valueTypeId="a3693917-5082-4023-9030-3dc653cd971b" />
+		<managerType typeId="1f9586f5-e672-4b6a-b30c-aa7b40f60f6f"
+			valueTypeId="c8812e6f-0fbe-443b-92e7-274983c6293c" />
+	</producedTypes>
+	<name>registeredMessages</name>
+	<synonym>
+		<key>en</key>
+		<value>Registered messages</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Зарегистрированные сообщения</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<mainDataCompositionSchema>Report.registeredMessages.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
+	<templates uuid="c9cb2f28-163a-4abd-acc3-a468f4c5283e">
+		<name>ОсновнаяСхемаКомпоновкиДанных</name>
+		<synonym>
+			<key>ru</key>
+			<value>Основная схема компоновки данных</value>
+		</synonym>
+		<templateType>DataCompositionSchema</templateType>
+	</templates>
 </mdclass:Report>

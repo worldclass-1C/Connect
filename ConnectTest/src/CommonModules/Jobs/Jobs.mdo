@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6bb30236-11cc-4e47-9695-8731a947141c">
-  <name>Jobs</name>
-  <synonym>
-    <key>ru</key>
-    <value>Jobs</value>
-  </synonym>
-  <server>true</server>
+<mdclass:CommonModule
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="6bb30236-11cc-4e47-9695-8731a947141c">
+	<name>Jobs</name>
+	<synonym>
+		<key>ru</key>
+		<value>Jobs</value>
+	</synonym>
+	<server>true</server>
 </mdclass:CommonModule>

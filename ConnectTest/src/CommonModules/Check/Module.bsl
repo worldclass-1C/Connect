@@ -58,9 +58,11 @@ Function getRequiredParameters(requestName)
 		Return "password";
 	ElsIF requestName = "registerdevice" Then
 		Return "appType,appVersion,deviceModel,systemType,systemVersion";
+	ElsIF requestName = "paymentstatus" Then
+		Return "orderId";
 	ElsIF requestName = "addusertotoken" Then
-		Return "uid";
-	ElsIF requestName = "imagePUT" Then
+		Return "uid";		
+	ElsIF requestName = "imagePOST" Then
 		Return "object,extension";		
 	Else
 		Return "";		

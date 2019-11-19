@@ -1,139 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:ExchangePlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="682c432c-6884-4653-b855-7bbabb3d8dc6" thisNode="02bcff61-0237-4334-ae3f-5aaa61a0e5a5">
-  <producedTypes>
-    <objectType typeId="10fbf628-c8a7-4e64-9e74-6cf48921b976" valueTypeId="a89be810-f061-4482-9143-fd6f3761bd57"/>
-    <refType typeId="68c37b64-5695-451c-a386-7f73f9766d32" valueTypeId="d26dffcb-be09-4570-81e2-f5229afd85b3"/>
-    <selectionType typeId="a0a8cdef-9f51-415a-8e50-77f6517cff2f" valueTypeId="7071e6ca-85b6-4dd3-bdb8-27d4dfb0b602"/>
-    <listType typeId="315dc05e-182d-466f-86f6-3a016b7570af" valueTypeId="dab9b44c-6929-4305-aec9-2ef6a962db29"/>
-    <managerType typeId="0d2d3df7-cf32-42bb-a7de-e9cc2e2263f1" valueTypeId="a66dbbce-ed8c-4655-8412-0a5448f89dae"/>
-  </producedTypes>
-  <name>messagesToCheckStatus</name>
-  <synonym>
-    <key>en</key>
-    <value>Messages to check status</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Сообщения для проверки статуса</value>
-  </synonym>
-  <useStandardCommands>true</useStandardCommands>
-  <inputByString>ExchangePlan.messagesToCheckStatus.StandardAttribute.Code</inputByString>
-  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>ThisNode</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>ReceivedNo</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>SentNo</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Ref</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>DeletionMark</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Description</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Code</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <createOnInput>DontUse</createOnInput>
-  <dataLockControlMode>Managed</dataLockControlMode>
-  <objectPresentation>
-    <key>en</key>
-    <value>Message to check status</value>
-  </objectPresentation>
-  <objectPresentation>
-    <key>ru</key>
-    <value>Сообщение для проверки статуса</value>
-  </objectPresentation>
-  <extendedObjectPresentation>
-    <key>en</key>
-    <value>Message to check status</value>
-  </extendedObjectPresentation>
-  <extendedObjectPresentation>
-    <key>ru</key>
-    <value>Сообщение для проверки статуса</value>
-  </extendedObjectPresentation>
-  <listPresentation>
-    <key>en</key>
-    <value>Messages to check status</value>
-  </listPresentation>
-  <listPresentation>
-    <key>ru</key>
-    <value>Сообщения для проверки статуса</value>
-  </listPresentation>
-  <extendedListPresentation>
-    <key>en</key>
-    <value>Messages to check status</value>
-  </extendedListPresentation>
-  <extendedListPresentation>
-    <key>ru</key>
-    <value>Сообщения для проверки статуса</value>
-  </extendedListPresentation>
-  <codeLength>9</codeLength>
-  <codeAllowedLength>Variable</codeAllowedLength>
-  <descriptionLength>10</descriptionLength>
-  <content>
-    <mdObject>Catalog.messages</mdObject>
-  </content>
-  <editType>InDialog</editType>
-  <choiceMode>BothWays</choiceMode>
-  <attributes uuid="56c9dc90-9418-4c4f-b99a-4047dfbea46a">
-    <name>informationChannel</name>
-    <synonym>
-      <key>en</key>
-      <value>Information channel</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Канал информирования</value>
-    </synonym>
-    <type>
-      <types>EnumRef.informationChannels</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
+<mdclass:ExchangePlan
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="682c432c-6884-4653-b855-7bbabb3d8dc6"
+	thisNode="02bcff61-0237-4334-ae3f-5aaa61a0e5a5">
+	<producedTypes>
+		<objectType typeId="10fbf628-c8a7-4e64-9e74-6cf48921b976"
+			valueTypeId="a89be810-f061-4482-9143-fd6f3761bd57" />
+		<refType typeId="68c37b64-5695-451c-a386-7f73f9766d32"
+			valueTypeId="d26dffcb-be09-4570-81e2-f5229afd85b3" />
+		<selectionType
+			typeId="a0a8cdef-9f51-415a-8e50-77f6517cff2f"
+			valueTypeId="7071e6ca-85b6-4dd3-bdb8-27d4dfb0b602" />
+		<listType typeId="315dc05e-182d-466f-86f6-3a016b7570af"
+			valueTypeId="dab9b44c-6929-4305-aec9-2ef6a962db29" />
+		<managerType typeId="0d2d3df7-cf32-42bb-a7de-e9cc2e2263f1"
+			valueTypeId="a66dbbce-ed8c-4655-8412-0a5448f89dae" />
+	</producedTypes>
+	<name>messagesToCheckStatus</name>
+	<synonym>
+		<key>en</key>
+		<value>Messages to check status</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Сообщения для проверки статуса</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>ExchangePlan.messagesToCheckStatus.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>ThisNode</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>ReceivedNo</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>SentNo</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Ref</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>DeletionMark</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Description</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Code</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<objectPresentation>
+		<key>en</key>
+		<value>Message to check status</value>
+	</objectPresentation>
+	<objectPresentation>
+		<key>ru</key>
+		<value>Сообщение для проверки статуса</value>
+	</objectPresentation>
+	<extendedObjectPresentation>
+		<key>en</key>
+		<value>Message to check status</value>
+	</extendedObjectPresentation>
+	<extendedObjectPresentation>
+		<key>ru</key>
+		<value>Сообщение для проверки статуса</value>
+	</extendedObjectPresentation>
+	<listPresentation>
+		<key>en</key>
+		<value>Messages to check status</value>
+	</listPresentation>
+	<listPresentation>
+		<key>ru</key>
+		<value>Сообщения для проверки статуса</value>
+	</listPresentation>
+	<extendedListPresentation>
+		<key>en</key>
+		<value>Messages to check status</value>
+	</extendedListPresentation>
+	<extendedListPresentation>
+		<key>ru</key>
+		<value>Сообщения для проверки статуса</value>
+	</extendedListPresentation>
+	<codeLength>9</codeLength>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<descriptionLength>10</descriptionLength>
+	<content>
+		<mdObject>Catalog.messages</mdObject>
+	</content>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<attributes uuid="56c9dc90-9418-4c4f-b99a-4047dfbea46a">
+		<name>informationChannel</name>
+		<synonym>
+			<key>en</key>
+			<value>Information channel</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Канал информирования</value>
+		</synonym>
+		<type>
+			<types>EnumRef.informationChannels</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
 </mdclass:ExchangePlan>

@@ -1,395 +1,405 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="20ea9dbe-f222-4724-bdc0-f29f1dfade89">
-  <producedTypes>
-    <objectType typeId="4e4ede92-a251-4ade-abbb-60ee0e4e83cd" valueTypeId="59f2894f-5136-440e-80e1-649a87258932"/>
-    <refType typeId="e0dba537-25cf-462d-b978-7ae250c6902e" valueTypeId="2820d5a4-c1cb-4d7f-bb62-ba8159a14f8e"/>
-    <selectionType typeId="03daee12-45aa-4c3b-874a-64e1ca312e03" valueTypeId="2c219395-b62e-414f-9ec9-e7ee2c34d609"/>
-    <listType typeId="b83cb1e9-3011-4a56-87a7-3583cb3fa950" valueTypeId="2516c21c-66f6-4b57-823f-802b48f53b4d"/>
-    <managerType typeId="21e9928b-ec9d-4510-9ea5-60cb55aef473" valueTypeId="7ad58c70-3eb4-40fb-865f-ee9ba9b616da"/>
-  </producedTypes>
-  <name>accounts</name>
-  <synonym>
-    <key>en</key>
-    <value>Accounts</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Учетные записи</value>
-  </synonym>
-  <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.accounts.StandardAttribute.Code</inputByString>
-  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>PredefinedDataName</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Predefined</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Ref</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>DeletionMark</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>IsFolder</name>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Owner</name>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Parent</name>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Description</name>
-    <synonym>
-      <key>en</key>
-      <value>Description</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Наименование</value>
-    </synonym>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Code</name>
-    <synonym>
-      <key>en</key>
-      <value>Phone</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Телефон</value>
-    </synonym>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-  </standardAttributes>
-  <createOnInput>DontUse</createOnInput>
-  <dataLockControlMode>Managed</dataLockControlMode>
-  <fullTextSearch>Use</fullTextSearch>
-  <objectPresentation>
-    <key>en</key>
-    <value>Account</value>
-  </objectPresentation>
-  <objectPresentation>
-    <key>ru</key>
-    <value>Учетная запись</value>
-  </objectPresentation>
-  <extendedObjectPresentation>
-    <key>en</key>
-    <value>Account</value>
-  </extendedObjectPresentation>
-  <extendedObjectPresentation>
-    <key>ru</key>
-    <value>Учетная запись</value>
-  </extendedObjectPresentation>
-  <listPresentation>
-    <key>en</key>
-    <value>Accounts</value>
-  </listPresentation>
-  <listPresentation>
-    <key>ru</key>
-    <value>Учетные записи</value>
-  </listPresentation>
-  <extendedListPresentation>
-    <key>en</key>
-    <value>Accounts</value>
-  </extendedListPresentation>
-  <extendedListPresentation>
-    <key>ru</key>
-    <value>Учетные записи</value>
-  </extendedListPresentation>
-  <levelCount>2</levelCount>
-  <foldersOnTop>true</foldersOnTop>
-  <codeLength>20</codeLength>
-  <descriptionLength>20</descriptionLength>
-  <codeType>String</codeType>
-  <codeAllowedLength>Variable</codeAllowedLength>
-  <checkUnique>true</checkUnique>
-  <editType>InDialog</editType>
-  <choiceMode>BothWays</choiceMode>
-  <defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>
-  <defaultListForm>Catalog.accounts.Form.ListForm</defaultListForm>
-  <defaultChoiceForm>Catalog.accounts.Form.ChoiceForm</defaultChoiceForm>
-  <attributes uuid="16d224e9-10ab-47d4-b16a-63822187ceda">
-    <name>birthday</name>
-    <synonym>
-      <key>en</key>
-      <value>Birthday</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Дата рождения</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="dfa799e0-e716-4db2-b378-aba09e03e03f">
-    <name>canUpdatePersonalData</name>
-    <synonym>
-      <key>en</key>
-      <value>Can update personal data</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Разрешить обновлять персональные данные</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="916cc2c3-ef0a-40a6-b3dd-bbe0af882881">
-    <name>email</name>
-    <synonym>
-      <key>en</key>
-      <value>email</value>
-    </synonym>
-    <synonym>
-      <key>fr_FR</key>
-      <value>E-mail</value>
-    </synonym>
-    <synonym>
-      <key>es_ES</key>
-      <value>E-mail</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Email</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>100</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="22b5a7d7-bd7d-4191-834e-2ecb87613f87">
-    <name>firstName</name>
-    <synonym>
-      <key>en</key>
-      <value>First name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Имя</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="3da2ca06-09a1-4d5e-a736-9c6f61c81dce">
-    <name>lastName</name>
-    <synonym>
-      <key>en</key>
-      <value>Last name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Фамилия</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="02f4b003-7eaf-433a-a82b-fa6601ba5e84">
-    <name>registrationDate</name>
-    <synonym>
-      <key>en</key>
-      <value>Registration date</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Дата регистрации</value>
-    </synonym>
-    <type>
-      <types>Date</types>
-      <dateQualifiers/>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="54e47297-4a91-4017-931a-4119605a7491">
-    <name>secondName</name>
-    <synonym>
-      <key>en</key>
-      <value>Second name</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Отчество</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>50</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="b28eb326-1aac-4ee4-8fee-535ae5fba4c2">
-    <name>gender</name>
-    <synonym>
-      <key>en</key>
-      <value>Gender</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Пол</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>6</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="05c7aa56-2174-4021-9627-0bb4bde525b0">
-    <name>status</name>
-    <synonym>
-      <key>en</key>
-      <value>Status</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Статус</value>
-    </synonym>
-    <type>
-      <types>EnumRef.accountStatuses</types>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <forms uuid="d179634c-fa46-42f9-aafc-4011b5cb769a">
-    <name>ItemForm</name>
-    <synonym>
-      <key>en</key>
-      <value>Item form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
-  <forms uuid="93813de3-42a5-4b3f-9de3-5b417c1f95ba">
-    <name>ListForm</name>
-    <synonym>
-      <key>en</key>
-      <value>List form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
-  <forms uuid="9de73937-c537-4667-a61c-530f5b810418">
-    <name>ChoiceForm</name>
-    <synonym>
-      <key>en</key>
-      <value>Choice form</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
+<mdclass:Catalog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="20ea9dbe-f222-4724-bdc0-f29f1dfade89">
+	<producedTypes>
+		<objectType typeId="4e4ede92-a251-4ade-abbb-60ee0e4e83cd"
+			valueTypeId="59f2894f-5136-440e-80e1-649a87258932" />
+		<refType typeId="e0dba537-25cf-462d-b978-7ae250c6902e"
+			valueTypeId="2820d5a4-c1cb-4d7f-bb62-ba8159a14f8e" />
+		<selectionType
+			typeId="03daee12-45aa-4c3b-874a-64e1ca312e03"
+			valueTypeId="2c219395-b62e-414f-9ec9-e7ee2c34d609" />
+		<listType typeId="b83cb1e9-3011-4a56-87a7-3583cb3fa950"
+			valueTypeId="2516c21c-66f6-4b57-823f-802b48f53b4d" />
+		<managerType typeId="21e9928b-ec9d-4510-9ea5-60cb55aef473"
+			valueTypeId="7ad58c70-3eb4-40fb-865f-ee9ba9b616da" />
+	</producedTypes>
+	<name>accounts</name>
+	<synonym>
+		<key>en</key>
+		<value>Accounts</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Учетные записи</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>Catalog.accounts.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>PredefinedDataName</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Predefined</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Ref</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>DeletionMark</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>IsFolder</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Owner</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fillChecking>ShowError</fillChecking>
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Parent</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Description</name>
+		<synonym>
+			<key>en</key>
+			<value>Description</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Наименование</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Code</name>
+		<synonym>
+			<key>en</key>
+			<value>Phone</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Телефон</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<objectPresentation>
+		<key>en</key>
+		<value>Account</value>
+	</objectPresentation>
+	<objectPresentation>
+		<key>ru</key>
+		<value>Учетная запись</value>
+	</objectPresentation>
+	<extendedObjectPresentation>
+		<key>en</key>
+		<value>Account</value>
+	</extendedObjectPresentation>
+	<extendedObjectPresentation>
+		<key>ru</key>
+		<value>Учетная запись</value>
+	</extendedObjectPresentation>
+	<listPresentation>
+		<key>en</key>
+		<value>Accounts</value>
+	</listPresentation>
+	<listPresentation>
+		<key>ru</key>
+		<value>Учетные записи</value>
+	</listPresentation>
+	<extendedListPresentation>
+		<key>en</key>
+		<value>Accounts</value>
+	</extendedListPresentation>
+	<extendedListPresentation>
+		<key>ru</key>
+		<value>Учетные записи</value>
+	</extendedListPresentation>
+	<levelCount>2</levelCount>
+	<foldersOnTop>true</foldersOnTop>
+	<codeLength>20</codeLength>
+	<descriptionLength>20</descriptionLength>
+	<codeType>String</codeType>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<checkUnique>true</checkUnique>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>
+	<defaultListForm>Catalog.accounts.Form.ListForm</defaultListForm>
+	<defaultChoiceForm>Catalog.accounts.Form.ChoiceForm</defaultChoiceForm>
+	<attributes uuid="16d224e9-10ab-47d4-b16a-63822187ceda">
+		<name>birthday</name>
+		<synonym>
+			<key>en</key>
+			<value>Birthday</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Дата рождения</value>
+		</synonym>
+		<type>
+			<types>Date</types>
+			<dateQualifiers>
+				<dateFractions>Date</dateFractions>
+			</dateQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="dfa799e0-e716-4db2-b378-aba09e03e03f">
+		<name>canUpdatePersonalData</name>
+		<synonym>
+			<key>en</key>
+			<value>Can update personal data</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Разрешить обновлять персональные данные</value>
+		</synonym>
+		<type>
+			<types>Boolean</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="916cc2c3-ef0a-40a6-b3dd-bbe0af882881">
+		<name>email</name>
+		<synonym>
+			<key>en</key>
+			<value>email</value>
+		</synonym>
+		<synonym>
+			<key>fr_FR</key>
+			<value>E-mail</value>
+		</synonym>
+		<synonym>
+			<key>es_ES</key>
+			<value>E-mail</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Email</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>100</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="22b5a7d7-bd7d-4191-834e-2ecb87613f87">
+		<name>firstName</name>
+		<synonym>
+			<key>en</key>
+			<value>First name</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Имя</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>50</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="3da2ca06-09a1-4d5e-a736-9c6f61c81dce">
+		<name>lastName</name>
+		<synonym>
+			<key>en</key>
+			<value>Last name</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Фамилия</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>50</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="02f4b003-7eaf-433a-a82b-fa6601ba5e84">
+		<name>registrationDate</name>
+		<synonym>
+			<key>en</key>
+			<value>Registration date</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Дата регистрации</value>
+		</synonym>
+		<type>
+			<types>Date</types>
+			<dateQualifiers />
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="54e47297-4a91-4017-931a-4119605a7491">
+		<name>secondName</name>
+		<synonym>
+			<key>en</key>
+			<value>Second name</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Отчество</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>50</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="b28eb326-1aac-4ee4-8fee-535ae5fba4c2">
+		<name>gender</name>
+		<synonym>
+			<key>en</key>
+			<value>Gender</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Пол</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>6</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="05c7aa56-2174-4021-9627-0bb4bde525b0">
+		<name>status</name>
+		<synonym>
+			<key>en</key>
+			<value>Status</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Статус</value>
+		</synonym>
+		<type>
+			<types>EnumRef.accountStatuses</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<forms uuid="d179634c-fa46-42f9-aafc-4011b5cb769a">
+		<name>ItemForm</name>
+		<synonym>
+			<key>en</key>
+			<value>Item form</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+	</forms>
+	<forms uuid="93813de3-42a5-4b3f-9de3-5b417c1f95ba">
+		<name>ListForm</name>
+		<synonym>
+			<key>en</key>
+			<value>List form</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+	</forms>
+	<forms uuid="9de73937-c537-4667-a61c-530f5b810418">
+		<name>ChoiceForm</name>
+		<synonym>
+			<key>en</key>
+			<value>Choice form</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+	</forms>
 </mdclass:Catalog>

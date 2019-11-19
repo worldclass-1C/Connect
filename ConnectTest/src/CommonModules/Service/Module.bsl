@@ -3,7 +3,7 @@ Function getErrorDescription(language, erroeCode = "",
 
 	errorDescription = New Structure("result, description", erroeCode, description);
 
-	If description = "" Then
+	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
 		|	errorDescriptionstranslation.description
 		|FROM
@@ -192,6 +192,13 @@ Procedure logRequestBackground(parameters) Export
 	BackgroundJobs.Execute("Service.logRequest", array, New UUID());
 EndProcedure
 	
+Procedure logAcquiringBackground(parameters) Export
+	array	= New Array();
+	array.Add(parameters);
+	BackgroundJobs.Execute("Service.logAcquiring", array, New UUID());
+EndProcedure
+
+	
 Procedure logRequest(parameters) Export
 	record = Catalogs.logs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
@@ -219,6 +226,17 @@ Procedure logRequest(parameters) Export
 			record.responseBody = ?(parameters.isError, parameters.errorDescription.description, parameters.answerBody);
 		EndIf;
 	EndIf;
+	record.Write();
+EndProcedure
+
+Procedure logAcquiring(parameters) Export
+	record = Catalogs.acquiringLogs.CreateItem();
+	record.period = ToUniversalTime(CurrentDate());
+	record.order = parameters.order;		
+	record.isError = parameters.errorCode <> "";
+	record.requestName = parameters.requestName;
+	record.requestBody = parameters.requestBody;	
+	record.responseBody = ?(record.isError, parameters.errorDescription, parameters.responseBody);
 	record.Write();
 EndProcedure
 

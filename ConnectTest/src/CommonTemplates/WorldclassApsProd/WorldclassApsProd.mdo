@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="85bf6813-8c0a-41d2-893a-a6929fae20fa">
-  <name>WorldclassApsProd</name>
-  <synonym>
-    <key>ru</key>
-    <value>Worldclass aps prod</value>
-  </synonym>
-  <templateType>BinaryData</templateType>
+<mdclass:CommonTemplate
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="85bf6813-8c0a-41d2-893a-a6929fae20fa">
+	<name>WorldclassApsProd</name>
+	<synonym>
+		<key>ru</key>
+		<value>Worldclass aps prod</value>
+	</synonym>
+	<templateType>BinaryData</templateType>
 </mdclass:CommonTemplate>

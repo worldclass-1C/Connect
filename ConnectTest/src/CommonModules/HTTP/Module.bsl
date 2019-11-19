@@ -35,7 +35,7 @@ Function processRequest(request, requestName = "") Export
 		parameters.Insert("headers", request.Headers);
 	Else
 		parameters.Insert("requestBody", request.GetBodyAsString());
-		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody));
+		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure));
 	EndIf;
 	If parameters.errorDescription.result = "" Then	
 		Try

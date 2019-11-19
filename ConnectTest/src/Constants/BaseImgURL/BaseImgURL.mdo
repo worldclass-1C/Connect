@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f0f082c0-c449-4754-9f60-8131cda389b1">
-  <producedTypes>
-    <managerType typeId="049aa721-ee4b-4825-a755-c2b2eb3d980f" valueTypeId="afde952c-42f7-4e20-a78a-5e2f6fd92de8"/>
-    <valueManagerType typeId="c15eff74-18b4-4a3f-aa2b-785bc4fd09d1" valueTypeId="d32a0f16-2b26-4a73-8930-4a1699cf852d"/>
-    <valueKeyType typeId="2967c1a4-5240-45d2-a097-627f3ab1cb57" valueTypeId="dcea2aa3-4594-490d-9512-2291548174aa"/>
-  </producedTypes>
-  <name>BaseImgURL</name>
-  <synonym>
-    <key>en</key>
-    <value>Base img URL</value>
-  </synonym>
-  <synonym>
-    <key>ru</key>
-    <value>Базовый URL</value>
-  </synonym>
-  <type>
-    <types>String</types>
-    <stringQualifiers>
-      <length>200</length>
-    </stringQualifiers>
-  </type>
-  <useStandardCommands>true</useStandardCommands>
-  <dataLockControlMode>Managed</dataLockControlMode>
+<mdclass:Constant
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="f0f082c0-c449-4754-9f60-8131cda389b1">
+	<producedTypes>
+		<managerType typeId="049aa721-ee4b-4825-a755-c2b2eb3d980f"
+			valueTypeId="afde952c-42f7-4e20-a78a-5e2f6fd92de8" />
+		<valueManagerType
+			typeId="c15eff74-18b4-4a3f-aa2b-785bc4fd09d1"
+			valueTypeId="d32a0f16-2b26-4a73-8930-4a1699cf852d" />
+		<valueKeyType
+			typeId="2967c1a4-5240-45d2-a097-627f3ab1cb57"
+			valueTypeId="dcea2aa3-4594-490d-9512-2291548174aa" />
+	</producedTypes>
+	<name>BaseImgURL</name>
+	<synonym>
+		<key>en</key>
+		<value>Base img URL</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Базовый URL</value>
+	</synonym>
+	<type>
+		<types>String</types>
+		<stringQualifiers>
+			<length>200</length>
+		</stringQualifiers>
+	</type>
+	<useStandardCommands>true</useStandardCommands>
+	<dataLockControlMode>Managed</dataLockControlMode>
 </mdclass:Constant>

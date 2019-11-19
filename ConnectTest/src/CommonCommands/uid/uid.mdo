@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e404622f-b2d0-4dc3-ab6d-9923349d6c88">
-  <name>uid</name>
-  <synonym>
-    <key>ru</key>
-    <value>uid</value>
-  </synonym>
-  <group>FormCommandBarImportant</group>
-  <commandParameterType>
-    <types>CatalogRef.holdings</types>
-    <types>CatalogRef.tokens</types>
-    <types>CatalogRef.chains</types>
-    <types>CatalogRef.gyms</types>
-    <types>CatalogRef.accounts</types>
-    <types>CatalogRef.users</types>
-    <types>CatalogRef.employees</types>
-    <types>CatalogRef.classesSchedule</types>
-  </commandParameterType>
-  <representation>Auto</representation>
-  <shortcut></shortcut>
+<mdclass:CommonCommand
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="e404622f-b2d0-4dc3-ab6d-9923349d6c88">
+	<name>uid</name>
+	<synonym>
+		<key>ru</key>
+		<value>uid</value>
+	</synonym>
+	<group>FormCommandBarImportant</group>
+	<commandParameterType>
+		<types>CatalogRef.holdings</types>
+		<types>CatalogRef.tokens</types>
+		<types>CatalogRef.chains</types>
+		<types>CatalogRef.gyms</types>
+		<types>CatalogRef.accounts</types>
+		<types>CatalogRef.users</types>
+		<types>CatalogRef.employees</types>
+		<types>CatalogRef.classesSchedule</types>
+	</commandParameterType>
+	<representation>Auto</representation>
+	<shortcut></shortcut>
 </mdclass:CommonCommand>

@@ -114,7 +114,7 @@ Procedure sendSMS(parameters) Export
 	If parameters.SMSProvider = Enums.SmsProviders.Rapporto Then
 		answer = SmsRapporto.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smstraffic Then
-		answer = SmsTraffic.sendSMS(parameters, answer);
+//		answer = SmsTraffic.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDMkg Then
 		answer = SmsCIDMkg.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Stramedia Then
@@ -182,7 +182,7 @@ Procedure checkSmsStatus(parameters) Export
 	If parameters.SMSProvider = Enums.SmsProviders.Rapporto Then
 		answer = SmsRapporto.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smstraffic Then
-		answer = SmsTraffic.checkSmsStatus(parameters, answer);
+//		answer = SmsTraffic.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDMkg Then
 		answer = SmsCIDMkg.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Stramedia Then

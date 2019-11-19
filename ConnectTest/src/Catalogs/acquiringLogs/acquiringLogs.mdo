@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
+	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
+	uuid="40cc0387-9cdf-4745-b0df-87399945b764">
+	<producedTypes>
+		<objectType typeId="61496bfe-b836-41ad-a5b8-a52d849bb1f4"
+			valueTypeId="23323bd0-3613-4c2a-b2d9-8a280a5a6ada" />
+		<refType typeId="5405b137-6821-4056-84a0-21c4c4601e12"
+			valueTypeId="ca13285c-3850-4ef0-9684-4a8f3ac09784" />
+		<selectionType
+			typeId="10ebcf48-0685-4305-8d81-51a1c3667ad2"
+			valueTypeId="0e79b945-8fd1-476c-9402-d25693e78bc6" />
+		<listType typeId="3f74f90e-f111-4070-8394-328ed9478d98"
+			valueTypeId="a3249c10-7319-4306-a3d0-ec46eef37e38" />
+		<managerType typeId="55a0aee4-0ba0-47c7-9cfe-c6b9c5615f9d"
+			valueTypeId="2fd9dcb7-0c10-4d9c-9534-19020d23fd6c" />
+	</producedTypes>
+	<name>acquiringLogs</name>
+	<synonym>
+		<key>en</key>
+		<value>Logs</value>
+	</synonym>
+	<synonym>
+		<key>ru</key>
+		<value>Истории запросов</value>
+	</synonym>
+	<useStandardCommands>true</useStandardCommands>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>PredefinedDataName</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Predefined</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Ref</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>DeletionMark</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>IsFolder</name>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Owner</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Parent</name>
+		<fillFromFillingValue>true</fillFromFillingValue>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Description</name>
+		<synonym>
+			<key>en</key>
+			<value>Description</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Наименование</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<standardAttributes>
+		<dataHistory>Use</dataHistory>
+		<name>Code</name>
+		<synonym>
+			<key>en</key>
+			<value>Code</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Код</value>
+		</synonym>
+		<fillValue xsi:type="core:UndefinedValue" />
+		<fullTextSearch>Use</fullTextSearch>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+	</standardAttributes>
+	<createOnInput>Use</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<objectPresentation>
+		<key>en</key>
+		<value>Log</value>
+	</objectPresentation>
+	<objectPresentation>
+		<key>ru</key>
+		<value>История запроса</value>
+	</objectPresentation>
+	<extendedObjectPresentation>
+		<key>en</key>
+		<value>Log</value>
+	</extendedObjectPresentation>
+	<extendedObjectPresentation>
+		<key>ru</key>
+		<value>История запроса</value>
+	</extendedObjectPresentation>
+	<listPresentation>
+		<key>en</key>
+		<value>Logs</value>
+	</listPresentation>
+	<listPresentation>
+		<key>ru</key>
+		<value>Истории запросов</value>
+	</listPresentation>
+	<extendedListPresentation>
+		<key>en</key>
+		<value>Logs</value>
+	</extendedListPresentation>
+	<extendedListPresentation>
+		<key>ru</key>
+		<value>Истории запросов</value>
+	</extendedListPresentation>
+	<levelCount>2</levelCount>
+	<foldersOnTop>true</foldersOnTop>
+	<codeType>String</codeType>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<defaultListForm>Catalog.acquiringLogs.Form.ListForm</defaultListForm>
+	<attributes uuid="de7767de-b957-4cdc-8210-f7d1adcb7b81">
+		<name>order</name>
+		<synonym>
+			<key>en</key>
+			<value>Order</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Заказ</value>
+		</synonym>
+		<type>
+			<types>CatalogRef.acquiringOrders</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<indexing>Index</indexing>
+	</attributes>
+	<attributes uuid="cf5d9265-af47-4ab2-9a65-094e4d4683a9">
+		<name>isError</name>
+		<synonym>
+			<key>en</key>
+			<value>Is error</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Ошибка</value>
+		</synonym>
+		<type>
+			<types>Boolean</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+	</attributes>
+	<attributes uuid="df555cf2-e5bf-484f-8277-4f28c344e927">
+		<name>period</name>
+		<synonym>
+			<key>en</key>
+			<value>Period</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Период</value>
+		</synonym>
+		<type>
+			<types>Date</types>
+			<dateQualifiers />
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+		<indexing>Index</indexing>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+	</attributes>
+	<attributes uuid="c5f26372-a5ad-4358-ab1f-bbb7db7ed2bf">
+		<name>requestBody</name>
+		<synonym>
+			<key>en</key>
+			<value>Request body</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Тело запроса</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>1000</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+	</attributes>
+	<attributes uuid="0e76cf2d-536c-4283-aaa6-46b12361158a">
+		<name>requestName</name>
+		<synonym>
+			<key>en</key>
+			<value>Request name</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Имя запроса</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>30</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:StringValue">
+			<value></value>
+		</fillValue>
+	</attributes>
+	<attributes uuid="2d82ad83-6e0a-40fc-bd4b-fc8118baa072">
+		<name>responseBody</name>
+		<synonym>
+			<key>en</key>
+			<value>Response body</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>Тело ответа</value>
+		</synonym>
+		<type>
+			<types>String</types>
+			<stringQualifiers>
+				<length>1000</length>
+			</stringQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue" />
+		<maxValue xsi:type="core:UndefinedValue" />
+		<fillValue xsi:type="core:UndefinedValue" />
+	</attributes>
+	<forms uuid="5b53f7e0-4a5d-45c2-b4d6-c26ecad2fd59">
+		<name>ListForm</name>
+		<synonym>
+			<key>en</key>
+			<value>List form</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+	</forms>
+	<commands uuid="dcbbd22d-6717-4dca-a364-26de22348a6e">
+		<name>logs</name>
+		<synonym>
+			<key>en</key>
+			<value>Logs</value>
+		</synonym>
+		<synonym>
+			<key>ru</key>
+			<value>История запросов</value>
+		</synonym>
+		<group>FormNavigationPanelGoTo</group>
+		<commandParameterType>
+			<types>CatalogRef.acquiringOrders</types>
+		</commandParameterType>
+		<representation>Auto</representation>
+		<shortcut></shortcut>
+	</commands>
+</mdclass:Catalog>

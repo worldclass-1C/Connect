@@ -7,6 +7,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "photo", "photo", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");	
 	DataLoad.addRowInAttributesTable(attributesTable, "descriptionFull", "descriptionFull", "JSON");	
 	DataLoad.addRowInAttributesTable(attributesTable, "tagList", "tagList", "JSON");

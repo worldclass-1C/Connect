@@ -36,7 +36,15 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "employeelist" Then
 			employeeList(parameters);
 		ElsIf parameters.requestName = "employeeinfo" Then
-			employeeInfo(parameters);					
+			employeeInfo(parameters);
+		ElsIf parameters.requestName = "paymentpreparation" Then
+			paymentPreparation(parameters);
+		ElsIf parameters.requestName = "payment" Then
+			payment(parameters);
+		ElsIf parameters.requestName = "paymentstatus" Then
+			paymentStatus(parameters);
+		ElsIf parameters.requestName = "bindcard" Then
+			bindCard(parameters);
 		ElsIf parameters.requestName = "catalogcancelcauses"
 				Or parameters.requestName = "cancelcauseslist" Then // проверить описание в API
 			cancellationReasonsList(parameters);
@@ -52,7 +60,8 @@ Procedure executeRequestMethod(parameters) Export
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);			
-		ElsIf parameters.requestName = "addchangeusers"				
+		ElsIf False
+				Or parameters.requestName = "addchangeusers"					
 				Or parameters.requestName = "addclassmember"
 				Or parameters.requestName = "deleteclassmember"
 				Or parameters.requestName = "addemployees"
@@ -63,7 +72,8 @@ Procedure executeRequestMethod(parameters) Export
 				Or parameters.requestName = "addgyms"				
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
-				Or parameters.requestName = "addcancelcauses" Then 
+				Or parameters.requestName = "addcancelcauses" 
+		Then 
 			changeCreateItems(parameters);
 		Else
 			executeExternalRequest(parameters);
@@ -332,6 +342,7 @@ Procedure signIn(parameters)
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
 			If tokenContext.chain <> chain Then				
+				//TODO ошибку надо исправить
 				changeStruct = New Structure("chain, holding", chain, chain.holding);
 				Token.editProperty(tokenContext.token, changeStruct);
 			EndIf;
@@ -346,7 +357,7 @@ Procedure signIn(parameters)
 			rowsArray.Add(tempCode);
 			rowsArray.Add(?(language = "ru", " - ваш код для входа", " - your login code"));
 			rowsArray.Add(?(language = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
-			messageStruct = New Структура;
+			messageStruct = New Structure();
 			messageStruct.Insert("phone", requestStruct.phone);
 			messageStruct.Insert("title", "SMS code");
 			messageStruct.Insert("text", StrConcat(rowsArray));
@@ -506,10 +517,34 @@ Procedure gymList(parameters)
 		|	gyms.photo,
 		|	gyms.weekdaysTime,
 		|	gyms.holidaysTime,
-		|	ISNULL(gymstranslation.description, gyms.Description) AS Description,
-		|	ISNULL(gymstranslation.address, gyms.address) AS address,
-		|	ISNULL(gymstranslation.nearestMetro, gyms.nearestMetro) AS nearestMetro,
-		|	REFPRESENTATION(gyms.state) AS state
+		|	CASE
+		|		WHEN gymstranslation.description IS NULL
+		|			THEN gyms.Description
+		|		WHEN gymstranslation.description = """"
+		|			THEN gyms.Description
+		|		ELSE gymstranslation.description
+		|	END AS Description,
+		|	CASE
+		|		WHEN gymstranslation.address IS NULL
+		|			THEN gyms.address
+		|		WHEN gymstranslation.address = """"
+		|			THEN gyms.address
+		|		ELSE gymstranslation.address
+		|	END AS address,
+		|	CASE
+		|		WHEN gymstranslation.nearestMetro IS NULL
+		|			THEN gyms.nearestMetro
+		|		WHEN gymstranslation.nearestMetro = ""[]""
+		|			THEN gyms.nearestMetro
+		|		ELSE gymstranslation.nearestMetro
+		|	END AS nearestMetro,
+		|	CASE
+		|		WHEN gymstranslation.state IS NULL
+		|			THEN gyms.state
+		|		WHEN gymstranslation.state = """"
+		|			THEN gyms.state
+		|		ELSE gymstranslation.state
+		|	END AS state
 		|FROM
 		|	Catalog.gyms AS gyms
 		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -540,7 +575,7 @@ Procedure gymList(parameters)
 			gymStruct.Insert("phone", select.phone);
 			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
 			gymStruct.Insert("holidaysTime", select.holidaysTime);
-			gymStruct.Insert("hasAccess", ?(authorized, Undefined, false));
+			gymStruct.Insert("hasAccess", ?(authorized, false, Undefined));
 			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
 			coords = New Structure();
@@ -584,12 +619,46 @@ Procedure gymInfo(parameters)
 		|	gyms.longitude,
 		|	ISNULL(gyms.segment.Description, """") AS segment,
 		|	ISNULL(gyms.segment.color, """") AS segmentColor,
-		|	ISNULL(gymstranslation.description, gyms.Description) AS Description,
-		|	ISNULL(gymstranslation.address, gyms.address) AS address,
-		|	ISNULL(gymstranslation.departmentWorkSchedule, gyms.departmentWorkSchedule) AS departments,
-		|	ISNULL(gymstranslation.nearestMetro, gyms.nearestMetro) AS nearestMetro,
-		|	ISNULL(gymstranslation.additional, gyms.additional) AS additional,
-		|	REFPRESENTATION(gyms.state) AS state,
+		|	CASE
+		|		WHEN gymstranslation.description IS NULL
+		|			THEN gyms.Description
+		|		WHEN gymstranslation.description = """"
+		|			THEN gyms.Description
+		|		ELSE gymstranslation.description
+		|	END AS Description,
+		|	CASE
+		|		WHEN gymstranslation.address IS NULL
+		|			THEN gyms.address
+		|		WHEN gymstranslation.address = """"
+		|			THEN gyms.address
+		|		ELSE gymstranslation.address
+		|	END AS address,
+		|	CASE
+		|		WHEN gymstranslation.departmentWorkSchedule IS NULL
+		|			THEN gyms.departmentWorkSchedule
+		|		WHEN gymstranslation.departmentWorkSchedule = ""[]""
+		|			THEN gyms.departmentWorkSchedule
+		|		ELSE gymstranslation.departmentWorkSchedule
+		|	END AS departments,
+		|	CASE
+		|		WHEN gymstranslation.nearestMetro IS NULL
+		|			THEN gyms.nearestMetro
+		|		WHEN gymstranslation.nearestMetro = ""[]""
+		|			THEN gyms.nearestMetro
+		|		ELSE gymstranslation.nearestMetro
+		|	END AS nearestMetro,
+		|	CASE
+		|		WHEN gymstranslation.additional IS NULL
+		|			THEN gyms.additional
+		|		ELSE gymstranslation.additional
+		|	END AS additional,
+		|	CASE
+		|		WHEN gymstranslation.state IS NULL
+		|			THEN gyms.state
+		|		WHEN gymstranslation.state = """"
+		|			THEN gyms.state
+		|		ELSE gymstranslation.state
+		|	END AS state,
 		|	gyms.photos.(
 		|		URL)
 		|FROM
@@ -790,6 +859,7 @@ Procedure employeeInfo(parameters)
 		|	employees.Ref AS employee,
 		|	ISNULL(employeestranslation.firstName, employees.firstName) AS firstName,
 		|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName,
+		|	employees.gender,
 		|	ISNULL(employeestranslation.descriptionFull, employees.descriptionFull) AS descriptionFull,
 		|	ISNULL(employeestranslation.categoryList, employees.categoryList) AS categoryList,
 		|	employees.tagList,
@@ -813,7 +883,8 @@ Procedure employeeInfo(parameters)
 			employeeStruct = New Structure();
 			employeeStruct.Insert("uid", XMLString(select.employee));
 			employeeStruct.Insert("firstName", select.firstName);
-			employeeStruct.Insert("lastName", select.lastName);			
+			employeeStruct.Insert("lastName", select.lastName);
+			employeeStruct.Insert("gender", select.gender);			
 			employeeStruct.Insert("isMyCoach", False);
 			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
 			employeeStruct.Insert("tagList", HTTP.decodeJSON(select.tagList, Enums.JSONValueTypes.array));
@@ -848,7 +919,8 @@ Procedure employeeList(parameters)
 		|	ISNULL(employeestranslation.firstName, gymsEmployees.employee.firstName) AS firstName,
 		|	ISNULL(employeestranslation.lastName, gymsEmployees.employee.lastName) AS lastName,
 		|	ISNULL(employeestranslation.categoryList, gymsEmployees.employee.categoryList) AS categoryList,
-		|	gymsEmployees.employee.photo AS photo
+		|	gymsEmployees.employee.photo AS photo,
+		|	gymsEmployees.employee.gender AS gender
 		|FROM
 		|	InformationRegister.gymsEmployees AS gymsEmployees
 		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
@@ -867,7 +939,8 @@ Procedure employeeList(parameters)
 			employeeStruct = New Structure();
 			employeeStruct.Insert("uid", XMLString(select.employee));
 			employeeStruct.Insert("firstName", select.firstName);
-			employeeStruct.Insert("lastName", select.lastName);			
+			employeeStruct.Insert("lastName", select.lastName);
+			employeeStruct.Insert("gender", select.gender);			
 			employeeStruct.Insert("photo", select.photo);
 			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
 			employeeStruct.Insert("isMyCoach", False);			
@@ -1323,4 +1396,116 @@ Procedure imageDELETE(parameters)
 	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	
+EndProcedure
+
+Procedure paymentPreparation(parameters)
+		
+	tokenContext = parameters.tokenContext;
+		
+	parametersNew = Service.getStructCopy(parameters);		
+	General.executeRequestMethod(parametersNew);
+	If parametersNew.errorDescription.result = "" Then
+		struct = HTTP.decodeJSON(parametersNew.answerBody);		
+		answer = Acquiring.newOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
+		//@skip-warning
+		struct.Insert("uid", XMLString(answer.order));
+	Else
+		struct = New Structure();		
+	EndIf;
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+	parameters.Insert("errorDescription", parametersNew.errorDescription);
+		
+EndProcedure
+
+Procedure payment(parameters)
+		
+	tokenContext = parameters.tokenContext;
+	requestStruct = parameters.requestStruct;	 
+	struct = New Structure();	
+	
+	orderStruct = New Structure();
+	orderStruct.Insert("amount", requestStruct.amount);
+	orderStruct.Insert("user", tokenContext.user);
+	orderStruct.Insert("holding", tokenContext.holding);
+	
+	orderStruct.Insert("acquiringRequest", ?(requestStruct.Property("acquiringRequest"), Enums.acquiringRequests[requestStruct.acquiringRequest], Enums.acquiringRequests.register));
+	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
+	orderStruct.Insert("bindingId", ?(requestStruct.Property("bindingId"), requestStruct.bindingId, ""));
+	
+	Acquiring.newOrder(orderStruct);	
+	
+	struct.Insert("result", "Ok");
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+	
+EndProcedure
+
+Procedure paymentStatus(parameters)
+	
+	requestStruct = parameters.requestStruct;	
+	language = parameters.language;
+	struct = New Structure();
+	
+	query = New Query("SELECT
+	|	acquiringOrderIdentifiers.Owner AS order
+	|FROM
+	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|WHERE
+	|	acquiringOrderIdentifiers.Ref = &orderIdentifier");
+	
+	query.SetParameter("orderIdentifier", Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(requestStruct.orderId)));
+	
+	result = query.Execute();
+	
+	If result.IsEmpty() Then
+		errorDescription = Service.getErrorDescription(language, "acquiringConnection");
+	Else
+		select = result.Select();
+		select.Next();
+		answer = Acquiring.checkOrder(select.order);	
+	EndIf;
+	
+	
+	
+//	If answer = Undefined Then
+//		errorDescription = Service.getErrorDescription(language, "acquiringConnection");		
+//	Else
+//		struct.Insert("orderId", answer.orderId);
+//		struct.Insert("formUrl", answer.formUrl);
+//		struct.Insert("returnUrl", answer.returnUrl);
+//		struct.Insert("failUrl", answer.failUrl);
+//		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
+//	EndIf;
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+			
+EndProcedure
+
+Procedure bindCard(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	tokenContext = parameters.tokenContext;
+	language = parameters.language;
+	struct = New Structure();
+	
+	orderStruct = New Structure();
+	orderStruct.Insert("acquiringAmount", 1);
+	orderStruct.Insert("user", tokenContext.user);
+	orderStruct.Insert("holding", tokenContext.holding);	
+	
+	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
+	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
+	
+	answer = Acquiring.newOrder(orderStruct, True);
+	If answer = Undefined Then
+		errorDescription = Service.getErrorDescription(language, "acquiringConnection");		
+	Else
+		struct.Insert("orderId", answer.orderId);
+		struct.Insert("formUrl", answer.formUrl);
+		struct.Insert("returnUrl", answer.returnUrl);
+		struct.Insert("failUrl", answer.failUrl);
+		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
+	EndIf;
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
+			
 EndProcedure
