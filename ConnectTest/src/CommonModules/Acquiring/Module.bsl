@@ -1,5 +1,5 @@
 
-Function newOrder(parameters, sendOrderImmediately = False) Export	
+Function newHoldingOrder(parameters, sendOrderImmediately = False) Export	
 	orderObject = Catalogs.acquiringOrders.CreateItem();
 	FillPropertyValues(orderObject, parameters);
 	If parameters.Property("orders") Then
@@ -18,7 +18,17 @@ Function newOrder(parameters, sendOrderImmediately = False) Export
 	Return answer;
 EndFunction
 
-Function checkOrder(parameters) Export
+Function sendHoldingOrder(order, sendOrderImmediately = False) Export	
+	answer = orderDetails(order);
+	answer.Insert("requestName", "write");	
+	Service.logAcquiringBackground(answer);
+	If sendOrderImmediately Then		
+		sendOrder(answer);		
+	EndIf;
+	Return answer;
+EndFunction
+
+Function checkHoldingOrder(parameters) Export
 	answer = orderDetails(parameters.order);
 	answer.Insert("requestName", "write");	
 	Return answer;

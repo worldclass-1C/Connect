@@ -34,7 +34,7 @@ Function getFromExternalSystem(val parameters, val parametrName,
 			userProfile = profile(account);
 			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
-			authKey = XMLString(tokenContext.token);			
+			authKey = XMLString(tokenContext.token) + Account.tempPassword();			
 			parametersNew.tokenContext.Insert("user", userArray[0]);			
 			Users.updateCache(parametersNew);									
 		ElsIf answerStruct.Count() > 1 Then			
@@ -142,7 +142,7 @@ Function profile(account) Export
 EndFunction
 
 Function initProfileStruct()
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "");
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "");
 EndFunction
 
 Procedure incPasswordSendCount(token, phone, password) Export

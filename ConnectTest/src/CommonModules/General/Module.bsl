@@ -286,11 +286,11 @@ Procedure registerDevice(parameters)
 	Else		
 		select = queryResult.Select();
 		select.Next();
-		If tokenContext.Property("holding") Then
-			isHoldingChanged = tokenContext.holding <> select.holding;
-		Else
-			isHoldingChanged = False;
-		EndIf;
+//		If tokenContext.Property("holding") Then
+//			isHoldingChanged = tokenContext.holding <> select.holding;
+//		Else
+//			isHoldingChanged = False;
+//		EndIf;
 		tokenStruct = New Structure();
 		tokenStruct.Insert("appType", Enums.appTypes[requestStruct.appType]);
 		tokenStruct.Insert("appVersion", requestStruct.appVersion);
@@ -302,14 +302,15 @@ Procedure registerDevice(parameters)
 		tokenStruct.Insert("systemVersion", requestStruct.systemVersion);
 		tokenStruct.Insert("timeZone", select.timeZone);		
 		
-		strToken = XMLString(Token.get(tokenContext.token, tokenStruct)); 
-		If isHoldingChanged Then
-			struct.Insert("token",  strToken + requestStruct.chainCode);
-		ElsIf tokenContext.user.IsEmpty() Then
-			 struct.Insert("token",  strToken + "0");
-		Else
-			struct.Insert("token",  strToken);
-		EndIf;
+		strToken = XMLString(Token.get(tokenContext.token, tokenStruct));
+		struct.Insert("token",  strToken + Account.tempPassword()); 
+//		If isHoldingChanged Then
+//			struct.Insert("token",  strToken + requestStruct.chainCode);
+//		ElsIf tokenContext.user.IsEmpty() Then
+//			 struct.Insert("token",  strToken + Account.tempPassword());
+//		Else
+//			struct.Insert("token",  strToken + Account.tempPassword());
+//		EndIf;
 		
 	EndIf;
 
@@ -342,7 +343,6 @@ Procedure signIn(parameters)
 		chain = Catalogs.chains.FindByCode(requestStruct.chainCode);
 		If ValueIsFilled(chain) Then
 			If tokenContext.chain <> chain Then				
-				//TODO ошибку надо исправить
 				changeStruct = New Structure("chain, holding", chain, chain.holding);
 				Token.editProperty(tokenContext.token, changeStruct);
 			EndIf;
@@ -414,7 +414,7 @@ Procedure confirmPhone(parameters)
 				Token.editProperty(tokenContext.token, changeStruct);
 				struct.Insert("userProfile", Account.profile(select.account));
 				struct.Insert("userList", New Array());
-				struct.Insert("token", XMLString(tokenContext.token));
+				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
 				parametersNew = Service.getStructCopy(parameters);
 				parametersNew.tokenContext.Insert("user", select.user);
 				Users.updateCache(parametersNew);				
@@ -451,7 +451,7 @@ Procedure signOut(parameters)
 	tokenContext = parameters.tokenContext;
 	changeStruct = New Structure("account, user", Catalogs.accounts.EmptyRef(), Catalogs.users.EmptyRef());
 	Token.editProperty(tokenContext.token, changeStruct);
-	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenContext.token) + "0")));	
+	parameters.Insert("answerBody", HTTP.encodeJSON(New Structure("token", XMLString(tokenContext.token) + Account.tempPassword())));	
 EndProcedure
 
 Procedure accountProfile(parameters)
@@ -1406,7 +1406,7 @@ Procedure paymentPreparation(parameters)
 	General.executeRequestMethod(parametersNew);
 	If parametersNew.errorDescription.result = "" Then
 		struct = HTTP.decodeJSON(parametersNew.answerBody);		
-		answer = Acquiring.newOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
+		answer = Acquiring.newHoldingOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
 		//@skip-warning
 		struct.Insert("uid", XMLString(answer.order));
 	Else
@@ -1432,7 +1432,7 @@ Procedure payment(parameters)
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 	orderStruct.Insert("bindingId", ?(requestStruct.Property("bindingId"), requestStruct.bindingId, ""));
 	
-	Acquiring.newOrder(orderStruct);	
+	Acquiring.newHoldingOrder(orderStruct);	
 	
 	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
@@ -1461,7 +1461,7 @@ Procedure paymentStatus(parameters)
 	Else
 		select = result.Select();
 		select.Next();
-		answer = Acquiring.checkOrder(select.order);	
+		answer = Acquiring.checkHoldingOrder(select.order);	
 	EndIf;
 	
 	
@@ -1495,7 +1495,7 @@ Procedure bindCard(parameters)
 	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 	
-	answer = Acquiring.newOrder(orderStruct, True);
+	answer = Acquiring.newHoldingOrder(orderStruct, True);
 	If answer = Undefined Then
 		errorDescription = Service.getErrorDescription(language, "acquiringConnection");		
 	Else
