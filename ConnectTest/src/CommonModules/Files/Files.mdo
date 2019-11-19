@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="d5759467-93fc-4528-87f7-d4df4a1bc3a7">
-	<name>Files</name>
-	<synonym>
-		<key>en</key>
-		<value>Files</value>
-	</synonym>
-	<server>true</server>
-	<serverCall>true</serverCall>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d5759467-93fc-4528-87f7-d4df4a1bc3a7">
+  <name>Files</name>
+  <synonym>
+    <key>en</key>
+    <value>Files</value>
+  </synonym>
+  <server>true</server>
+  <serverCall>true</serverCall>
 </mdclass:CommonModule>

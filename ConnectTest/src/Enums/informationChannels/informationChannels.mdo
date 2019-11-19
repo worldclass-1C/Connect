@@ -1,56 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Enum
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="c239fb29-a4fa-4bf8-94d8-4c243c61c876">
-	<producedTypes>
-		<refType typeId="48607918-a23f-4d2f-aa41-e0c055dec8e4"
-			valueTypeId="19b1437e-1d48-4491-9285-b11037bbdb52" />
-		<listType typeId="89d2ca56-aa00-4df3-953c-6aa53b3aa8dc"
-			valueTypeId="a158f9c0-e3ab-4a0e-b4ea-47247139a555" />
-		<managerType typeId="e4131abb-7a04-4428-84d1-c370806c44a1"
-			valueTypeId="caab5617-2b77-447a-9be6-bbf5871508d2" />
-	</producedTypes>
-	<name>informationChannels</name>
-	<synonym>
-		<key>ru</key>
-		<value>Information channels</value>
-	</synonym>
-	<quickChoice>true</quickChoice>
-	<choiceMode>BothWays</choiceMode>
-	<listPresentation>
-		<key>ru</key>
-		<value>Каналы информирования</value>
-	</listPresentation>
-	<extendedListPresentation>
-		<key>ru</key>
-		<value>Каналы информирования</value>
-	</extendedListPresentation>
-	<enumValues uuid="046f463a-914a-4b31-b7d5-4d1d0cc5e267">
-		<name>pushEmployee</name>
-		<synonym>
-			<key>ru</key>
-			<value>Push employee</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="83af1590-1e30-4e23-b334-76d65ace2087">
-		<name>pushCustomer</name>
-		<synonym>
-			<key>ru</key>
-			<value>Push customer</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="9b3a4f6a-7adc-4e8f-8d4e-a23cb29d85d2">
-		<name>sms</name>
-		<synonym>
-			<key>ru</key>
-			<value>sms</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="b63b0696-603a-40fc-8817-265714e39092">
-		<name>email</name>
-		<synonym>
-			<key>ru</key>
-			<value>email</value>
-		</synonym>
-	</enumValues>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c239fb29-a4fa-4bf8-94d8-4c243c61c876">
+  <producedTypes>
+    <refType typeId="48607918-a23f-4d2f-aa41-e0c055dec8e4" valueTypeId="19b1437e-1d48-4491-9285-b11037bbdb52"/>
+    <listType typeId="89d2ca56-aa00-4df3-953c-6aa53b3aa8dc" valueTypeId="a158f9c0-e3ab-4a0e-b4ea-47247139a555"/>
+    <managerType typeId="e4131abb-7a04-4428-84d1-c370806c44a1" valueTypeId="caab5617-2b77-447a-9be6-bbf5871508d2"/>
+  </producedTypes>
+  <name>informationChannels</name>
+  <synonym>
+    <key>ru</key>
+    <value>Information channels</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <listPresentation>
+    <key>ru</key>
+    <value>Каналы информирования</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Каналы информирования</value>
+  </extendedListPresentation>
+  <enumValues uuid="046f463a-914a-4b31-b7d5-4d1d0cc5e267">
+    <name>pushEmployee</name>
+    <synonym>
+      <key>ru</key>
+      <value>Push employee</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="83af1590-1e30-4e23-b334-76d65ace2087">
+    <name>pushCustomer</name>
+    <synonym>
+      <key>ru</key>
+      <value>Push customer</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="9b3a4f6a-7adc-4e8f-8d4e-a23cb29d85d2">
+    <name>sms</name>
+    <synonym>
+      <key>ru</key>
+      <value>sms</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="b63b0696-603a-40fc-8817-265714e39092">
+    <name>email</name>
+    <synonym>
+      <key>ru</key>
+      <value>email</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

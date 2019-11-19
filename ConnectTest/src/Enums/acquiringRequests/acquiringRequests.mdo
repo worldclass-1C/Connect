@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Enum
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="ae84bd66-e78b-4271-841c-38ccfe5d6059">
-	<producedTypes>
-		<refType typeId="abb052d0-f592-4286-9479-e30f46ceaeb7"
-			valueTypeId="f6ccf9fd-64bd-4b29-bf76-61581a36820b" />
-		<listType typeId="b545d399-f6e8-4985-a734-e7722e70cf75"
-			valueTypeId="b4ccdbe1-f94b-41d3-876d-e413ba5f0190" />
-		<managerType typeId="223d751d-4c41-43b1-ae9a-0795751fad3d"
-			valueTypeId="dc6774cc-ca7b-4ca6-848e-783eba3e1d67" />
-	</producedTypes>
-	<name>acquiringRequests</name>
-	<synonym>
-		<key>en</key>
-		<value>Acquiring requests</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Запросы в банк</value>
-	</synonym>
-	<quickChoice>true</quickChoice>
-	<choiceMode>BothWays</choiceMode>
-	<enumValues uuid="40efcf31-0733-46ea-8e65-c985b4ca2688">
-		<name>register</name>
-		<synonym>
-			<key>en</key>
-			<value>Register</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Регистрация</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="8306414c-c5df-4f76-9b64-983820d1216d">
-		<name>registerPreAuth</name>
-		<synonym>
-			<key>en</key>
-			<value>Register pre auth</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Регистрация с предавторизацией</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="6549c440-0501-42cb-be88-263ab5ba654c">
-		<name>binding</name>
-		<synonym>
-			<key>en</key>
-			<value>Binding</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Привязка</value>
-		</synonym>
-	</enumValues>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ae84bd66-e78b-4271-841c-38ccfe5d6059">
+  <producedTypes>
+    <refType typeId="abb052d0-f592-4286-9479-e30f46ceaeb7" valueTypeId="f6ccf9fd-64bd-4b29-bf76-61581a36820b"/>
+    <listType typeId="b545d399-f6e8-4985-a734-e7722e70cf75" valueTypeId="b4ccdbe1-f94b-41d3-876d-e413ba5f0190"/>
+    <managerType typeId="223d751d-4c41-43b1-ae9a-0795751fad3d" valueTypeId="dc6774cc-ca7b-4ca6-848e-783eba3e1d67"/>
+  </producedTypes>
+  <name>acquiringRequests</name>
+  <synonym>
+    <key>en</key>
+    <value>Acquiring requests</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Запросы в банк</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="40efcf31-0733-46ea-8e65-c985b4ca2688">
+    <name>register</name>
+    <synonym>
+      <key>en</key>
+      <value>Register</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Регистрация</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="8306414c-c5df-4f76-9b64-983820d1216d">
+    <name>registerPreAuth</name>
+    <synonym>
+      <key>en</key>
+      <value>Register pre auth</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Регистрация с предавторизацией</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="6549c440-0501-42cb-be88-263ab5ba654c">
+    <name>binding</name>
+    <synonym>
+      <key>en</key>
+      <value>Binding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Привязка</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

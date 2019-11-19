@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:ScheduledJob
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="f03925f9-2447-40b4-8566-fa892b458bff">
-	<name>РасчетПоказателей</name>
-	<synonym>
-		<key>ru</key>
-		<value>Расчет показателей</value>
-	</synonym>
-	<methodName>CommonModule.Jobs.РассчитатьПоказатели</methodName>
-	<description>РасчетПоказателей</description>
-	<key>РасчетПоказателей</key>
-	<use>true</use>
-	<predefined>true</predefined>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f03925f9-2447-40b4-8566-fa892b458bff">
+  <name>РасчетПоказателей</name>
+  <synonym>
+    <key>ru</key>
+    <value>Расчет показателей</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.РассчитатьПоказатели</methodName>
+  <description>РасчетПоказателей</description>
+  <key>РасчетПоказателей</key>
+  <use>true</use>
+  <predefined>true</predefined>
 </mdclass:ScheduledJob>

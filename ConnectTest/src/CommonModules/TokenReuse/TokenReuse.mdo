@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="05a0e899-7bc3-4804-81ee-0031c02a535d">
-	<name>TokenReuse</name>
-	<synonym>
-		<key>ru</key>
-		<value>Token reuse</value>
-	</synonym>
-	<server>true</server>
-	<returnValuesReuse>DuringSession</returnValuesReuse>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="05a0e899-7bc3-4804-81ee-0031c02a535d">
+  <name>TokenReuse</name>
+  <synonym>
+    <key>ru</key>
+    <value>Token reuse</value>
+  </synonym>
+  <server>true</server>
+  <returnValuesReuse>DuringSession</returnValuesReuse>
 </mdclass:CommonModule>

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:ScheduledJob
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="e5519cc8-6d96-4adf-a4d8-01966b477165">
-	<name>checkSmsStatus</name>
-	<synonym>
-		<key>ru</key>
-		<value>Check sms status</value>
-	</synonym>
-	<methodName>CommonModule.Jobs.checkSmsStatus</methodName>
-	<description>checkSmsStatus</description>
-	<key>checkSmsStatus</key>
-	<use>true</use>
-	<predefined>true</predefined>
-	<restartCountOnFailure>3</restartCountOnFailure>
-	<restartIntervalOnFailure>10</restartIntervalOnFailure>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e5519cc8-6d96-4adf-a4d8-01966b477165">
+  <name>checkSmsStatus</name>
+  <synonym>
+    <key>ru</key>
+    <value>Check sms status</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.checkSmsStatus</methodName>
+  <description>checkSmsStatus</description>
+  <key>checkSmsStatus</key>
+  <use>true</use>
+  <predefined>true</predefined>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>10</restartIntervalOnFailure>
 </mdclass:ScheduledJob>

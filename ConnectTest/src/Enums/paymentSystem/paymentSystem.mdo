@@ -1,145 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Enum
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="4b5fc4cf-b94a-4f6c-aac3-ade82e70c5cb">
-	<producedTypes>
-		<refType typeId="8e75edaf-7b7e-42a0-b706-5ffecc039efc"
-			valueTypeId="c249e2fb-52ae-4b16-b4fa-6a7b6b378eed" />
-		<listType typeId="009d8354-b184-44e6-baa8-f0da1c858571"
-			valueTypeId="aaf1aa16-4ab3-4ef6-b805-d65c1392dceb" />
-		<managerType typeId="5967e899-2a31-4c27-bb0d-a88ed0525042"
-			valueTypeId="d2dc5d95-4705-4655-bc6b-bc905ac3115d" />
-	</producedTypes>
-	<name>paymentSystem</name>
-	<synonym>
-		<key>en</key>
-		<value>Payment system</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Платежная система</value>
-	</synonym>
-	<quickChoice>true</quickChoice>
-	<choiceMode>BothWays</choiceMode>
-	<enumValues uuid="5c5554c4-5b8e-450a-be6b-4227faf05e16">
-		<name>mir</name>
-		<synonym>
-			<key>en</key>
-			<value>Mir</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Mir</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="6474d2e2-7215-4941-9d0a-d4bc813afdc6">
-		<name>americanExpress</name>
-		<synonym>
-			<key>en</key>
-			<value>americanExpress</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>americanExpress</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="a32f7baf-58c8-4bde-bd5b-54ec13d91735">
-		<name>jcb</name>
-		<synonym>
-			<key>en</key>
-			<value>jcb</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>jcb</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="757e8a80-041d-42a4-a375-9860218b1641">
-		<name>international</name>
-		<synonym>
-			<key>en</key>
-			<value>international</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>international</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="444ee0f2-fecd-41bc-9af9-22644e9b54d1">
-		<name>dinersClub</name>
-		<synonym>
-			<key>en</key>
-			<value>dinersClub</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>dinersClub</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="79709872-87e7-41aa-854b-71c98c23be11">
-		<name>visa</name>
-		<synonym>
-			<key>en</key>
-			<value>visa</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>visa</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="29eef1bf-98fc-406f-a2fa-b01e137827af">
-		<name>masterCard</name>
-		<synonym>
-			<key>en</key>
-			<value>masterCard</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>masterCard</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="cb3438d7-6531-4168-8124-85c203027daf">
-		<name>maestro</name>
-		<synonym>
-			<key>en</key>
-			<value>maestro</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>maestro</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="ddccd884-76a8-4313-8297-df16cdff85b9">
-		<name>chinaUnionPay</name>
-		<synonym>
-			<key>en</key>
-			<value>chinaUnionPay</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>chinaUnionPay</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="0db266ab-dc36-40d3-bd43-139051cc9fd2">
-		<name>discover</name>
-		<synonym>
-			<key>en</key>
-			<value>discover</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>discover</value>
-		</synonym>
-	</enumValues>
-	<enumValues uuid="21ad6f03-8017-42cf-8c53-5fbe8573a4d9">
-		<name>universalElectronicCard</name>
-		<synonym>
-			<key>en</key>
-			<value>universalElectronicCard</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>universalElectronicCard</value>
-		</synonym>
-	</enumValues>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4b5fc4cf-b94a-4f6c-aac3-ade82e70c5cb">
+  <producedTypes>
+    <refType typeId="8e75edaf-7b7e-42a0-b706-5ffecc039efc" valueTypeId="c249e2fb-52ae-4b16-b4fa-6a7b6b378eed"/>
+    <listType typeId="009d8354-b184-44e6-baa8-f0da1c858571" valueTypeId="aaf1aa16-4ab3-4ef6-b805-d65c1392dceb"/>
+    <managerType typeId="5967e899-2a31-4c27-bb0d-a88ed0525042" valueTypeId="d2dc5d95-4705-4655-bc6b-bc905ac3115d"/>
+  </producedTypes>
+  <name>paymentSystem</name>
+  <synonym>
+    <key>en</key>
+    <value>Payment system</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Платежная система</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="5c5554c4-5b8e-450a-be6b-4227faf05e16">
+    <name>mir</name>
+    <synonym>
+      <key>en</key>
+      <value>Mir</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Mir</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="6474d2e2-7215-4941-9d0a-d4bc813afdc6">
+    <name>americanExpress</name>
+    <synonym>
+      <key>en</key>
+      <value>americanExpress</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>americanExpress</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="a32f7baf-58c8-4bde-bd5b-54ec13d91735">
+    <name>jcb</name>
+    <synonym>
+      <key>en</key>
+      <value>jcb</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>jcb</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="757e8a80-041d-42a4-a375-9860218b1641">
+    <name>international</name>
+    <synonym>
+      <key>en</key>
+      <value>international</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>international</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="444ee0f2-fecd-41bc-9af9-22644e9b54d1">
+    <name>dinersClub</name>
+    <synonym>
+      <key>en</key>
+      <value>dinersClub</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>dinersClub</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="79709872-87e7-41aa-854b-71c98c23be11">
+    <name>visa</name>
+    <synonym>
+      <key>en</key>
+      <value>visa</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>visa</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="29eef1bf-98fc-406f-a2fa-b01e137827af">
+    <name>masterCard</name>
+    <synonym>
+      <key>en</key>
+      <value>masterCard</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>masterCard</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="cb3438d7-6531-4168-8124-85c203027daf">
+    <name>maestro</name>
+    <synonym>
+      <key>en</key>
+      <value>maestro</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>maestro</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="ddccd884-76a8-4313-8297-df16cdff85b9">
+    <name>chinaUnionPay</name>
+    <synonym>
+      <key>en</key>
+      <value>chinaUnionPay</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>chinaUnionPay</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="0db266ab-dc36-40d3-bd43-139051cc9fd2">
+    <name>discover</name>
+    <synonym>
+      <key>en</key>
+      <value>discover</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>discover</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="21ad6f03-8017-42cf-8c53-5fbe8573a4d9">
+    <name>universalElectronicCard</name>
+    <synonym>
+      <key>en</key>
+      <value>universalElectronicCard</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>universalElectronicCard</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="c35e1dff-54fd-4f55-bab4-3b1a17b6f0ec">
-	<producedTypes>
-		<objectType typeId="0d9aed6e-e3fd-47f3-9785-a10e692b529c"
-			valueTypeId="4209abd5-99a3-40cd-92a1-e616029fde30" />
-		<refType typeId="dc7fc207-b656-4cb5-99cb-4b09f4e3a8c9"
-			valueTypeId="d64a3ba5-cb2f-4cac-bd91-91271657fbb7" />
-		<selectionType
-			typeId="08fdf2c6-d55c-4d6e-9480-ce202b461f7c"
-			valueTypeId="a7d09cb0-b5db-44e8-b899-1782fec879d3" />
-		<listType typeId="ec4d6734-f4fe-440d-ad96-51dae3ef1718"
-			valueTypeId="8808fd69-e3b7-4cc0-909f-cfd42b7dbb8d" />
-		<managerType typeId="42c96a5d-c14a-4af5-a3a8-ae5bc69314c5"
-			valueTypeId="c8e4bd75-e2e6-4400-b166-acf6cdad24eb" />
-	</producedTypes>
-	<name>acquiringOrderIdentifiers</name>
-	<synonym>
-		<key>en</key>
-		<value>Order identifiers</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Идентификаторы заказов</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<createOnInput>Use</createOnInput>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<owners>Catalog.acquiringOrders</owners>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<defaultPresentation>AsDescription</defaultPresentation>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
-	<defaultListForm>Catalog.acquiringOrderIdentifiers.Form.ListForm</defaultListForm>
-	<forms uuid="3d72b798-7c68-46f9-b464-bc608e7be5a0">
-		<name>ListForm</name>
-		<synonym>
-			<key>en</key>
-			<value>List form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c35e1dff-54fd-4f55-bab4-3b1a17b6f0ec">
+  <producedTypes>
+    <objectType typeId="0d9aed6e-e3fd-47f3-9785-a10e692b529c" valueTypeId="4209abd5-99a3-40cd-92a1-e616029fde30"/>
+    <refType typeId="dc7fc207-b656-4cb5-99cb-4b09f4e3a8c9" valueTypeId="d64a3ba5-cb2f-4cac-bd91-91271657fbb7"/>
+    <selectionType typeId="08fdf2c6-d55c-4d6e-9480-ce202b461f7c" valueTypeId="a7d09cb0-b5db-44e8-b899-1782fec879d3"/>
+    <listType typeId="ec4d6734-f4fe-440d-ad96-51dae3ef1718" valueTypeId="8808fd69-e3b7-4cc0-909f-cfd42b7dbb8d"/>
+    <managerType typeId="42c96a5d-c14a-4af5-a3a8-ae5bc69314c5" valueTypeId="c8e4bd75-e2e6-4400-b166-acf6cdad24eb"/>
+  </producedTypes>
+  <name>acquiringOrderIdentifiers</name>
+  <synonym>
+    <key>en</key>
+    <value>Order identifiers</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Идентификаторы заказов</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <owners>Catalog.acquiringOrders</owners>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.acquiringOrderIdentifiers.Form.ListForm</defaultListForm>
+  <forms uuid="3d72b798-7c68-46f9-b464-bc608e7be5a0">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

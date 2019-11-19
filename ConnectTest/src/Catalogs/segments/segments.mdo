@@ -1,106 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="4fb2df7f-0472-43b0-b4ed-d3d1a59216be">
-	<producedTypes>
-		<objectType typeId="1b3f76cb-c515-4455-a7dd-6dca1e63fddc"
-			valueTypeId="bcee2a4e-2c9f-4f6c-938d-d2656898a015" />
-		<refType typeId="cf6b9117-4810-4204-8366-b973a257dc11"
-			valueTypeId="472f8638-db1b-49ae-bbf9-94a274928d4a" />
-		<selectionType
-			typeId="1ef59247-f5fe-477e-bbee-16cd2d6ca939"
-			valueTypeId="a4bfd330-9c32-4257-b5f8-5381ed4d84b2" />
-		<listType typeId="562b1b60-c766-48c9-ae40-f20f32ea15f4"
-			valueTypeId="43c51671-136a-46f3-890b-201e0017fe33" />
-		<managerType typeId="94671600-0c61-43c4-a45c-ab297e0bb745"
-			valueTypeId="d1f64b40-5b29-4b7c-93db-d0b673a9c621" />
-	</producedTypes>
-	<name>segments</name>
-	<synonym>
-		<key>en</key>
-		<value>Segments</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Сегменты</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<inputByString>Catalog.segments.StandardAttribute.Code</inputByString>
-	<inputByString>Catalog.segments.StandardAttribute.Description</inputByString>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<createOnInput>Use</createOnInput>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<codeLength>9</codeLength>
-	<descriptionLength>25</descriptionLength>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<checkUnique>true</checkUnique>
-	<autonumbering>true</autonumbering>
-	<defaultPresentation>AsDescription</defaultPresentation>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
-	<defaultListForm>Catalog.segments.Form.ListForm</defaultListForm>
-	<defaultChoiceForm>Catalog.segments.Form.ChoiceForm</defaultChoiceForm>
-	<attributes uuid="83cf505f-a6f0-444c-85b0-decc46aa6f6f">
-		<name>color</name>
-		<synonym>
-			<key>en</key>
-			<value>Color</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Цвет</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>10</length>
-			</stringQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="64403aeb-75df-45b8-8813-00bdd99daf58">
-		<name>registrationDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Registration date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата регистрации</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<forms uuid="3b6e5b5d-0bc6-41c2-99bf-3a5275e65a5c">
-		<name>ListForm</name>
-		<synonym>
-			<key>en</key>
-			<value>List form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
-	<forms uuid="08244f33-4c1a-45f6-bb21-fbac079aedd8">
-		<name>ChoiceForm</name>
-		<synonym>
-			<key>en</key>
-			<value>Choice form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4fb2df7f-0472-43b0-b4ed-d3d1a59216be">
+  <producedTypes>
+    <objectType typeId="1b3f76cb-c515-4455-a7dd-6dca1e63fddc" valueTypeId="bcee2a4e-2c9f-4f6c-938d-d2656898a015"/>
+    <refType typeId="cf6b9117-4810-4204-8366-b973a257dc11" valueTypeId="472f8638-db1b-49ae-bbf9-94a274928d4a"/>
+    <selectionType typeId="1ef59247-f5fe-477e-bbee-16cd2d6ca939" valueTypeId="a4bfd330-9c32-4257-b5f8-5381ed4d84b2"/>
+    <listType typeId="562b1b60-c766-48c9-ae40-f20f32ea15f4" valueTypeId="43c51671-136a-46f3-890b-201e0017fe33"/>
+    <managerType typeId="94671600-0c61-43c4-a45c-ab297e0bb745" valueTypeId="d1f64b40-5b29-4b7c-93db-d0b673a9c621"/>
+  </producedTypes>
+  <name>segments</name>
+  <synonym>
+    <key>en</key>
+    <value>Segments</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Сегменты</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.segments.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.segments.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.segments.Form.ListForm</defaultListForm>
+  <defaultChoiceForm>Catalog.segments.Form.ChoiceForm</defaultChoiceForm>
+  <attributes uuid="83cf505f-a6f0-444c-85b0-decc46aa6f6f">
+    <name>color</name>
+    <synonym>
+      <key>en</key>
+      <value>Color</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Цвет</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="64403aeb-75df-45b8-8813-00bdd99daf58">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="3b6e5b5d-0bc6-41c2-99bf-3a5275e65a5c">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="08244f33-4c1a-45f6-bb21-fbac079aedd8">
+    <name>ChoiceForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Choice form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

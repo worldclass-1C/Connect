@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="a21d1343-dbee-42cb-a6cc-eb683dee5f0d">
-	<name>Crypto</name>
-	<synonym>
-		<key>en</key>
-		<value>Crypto</value>
-	</synonym>
-	<server>true</server>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a21d1343-dbee-42cb-a6cc-eb683dee5f0d">
+  <name>Crypto</name>
+  <synonym>
+    <key>en</key>
+    <value>Crypto</value>
+  </synonym>
+  <server>true</server>
 </mdclass:CommonModule>

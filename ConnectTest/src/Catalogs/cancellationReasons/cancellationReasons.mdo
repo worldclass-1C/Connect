@@ -1,216 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="0b56fe98-476c-40e0-b6d1-93eb8806a420">
-	<producedTypes>
-		<objectType typeId="48f7ebd6-75a8-42d3-a8c8-2c28530626cd"
-			valueTypeId="6d1df944-7053-490f-98bb-0689107c5dbc" />
-		<refType typeId="35812ed7-1eb8-4253-bddc-2508754270c2"
-			valueTypeId="6121b52b-ddae-49d7-b299-2ad9f60dea67" />
-		<selectionType
-			typeId="1672f1fe-0176-43f6-bb48-55f4d59fda7e"
-			valueTypeId="aa60d309-5966-43e3-b217-2ebd00ecb749" />
-		<listType typeId="0f2bde28-76f2-4108-8753-fcaf0c9501a0"
-			valueTypeId="9d32a343-21ea-432c-aae5-c3a07f849678" />
-		<managerType typeId="b7f7bb83-9300-4e60-9c80-3ebf3b6e760a"
-			valueTypeId="f1dc723a-99df-4197-b99d-ee16225c182a" />
-	</producedTypes>
-	<name>cancellationReasons</name>
-	<synonym>
-		<key>en</key>
-		<value>Cancellation reasons</value>
-	</synonym>
-	<synonym>
-		<key>fr_FR</key>
-		<value>Raisons d'annuler l'enregistrement</value>
-	</synonym>
-	<synonym>
-		<key>es_ES</key>
-		<value>Razones cancelar la grabaciуn</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Причины отмены записи</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<inputByString>Catalog.cancellationReasons.StandardAttribute.Description</inputByString>
-	<inputByString>Catalog.cancellationReasons.StandardAttribute.Code</inputByString>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>PredefinedDataName</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Predefined</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Ref</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>DeletionMark</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>IsFolder</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Owner</name>
-		<fillFromFillingValue>true</fillFromFillingValue>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fillChecking>ShowError</fillChecking>
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Parent</name>
-		<fillFromFillingValue>true</fillFromFillingValue>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Description</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fillChecking>ShowError</fillChecking>
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Code</name>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-	</standardAttributes>
-	<createOnInput>Use</createOnInput>
-	<includeHelpInContents>true</includeHelpInContents>
-	<help>
-		<pages>
-			<lang>ru</lang>
-		</pages>
-	</help>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<objectPresentation>
-		<key>en</key>
-		<value>Cancellation reason</value>
-	</objectPresentation>
-	<objectPresentation>
-		<key>fr_FR</key>
-		<value>Raisons d'annuler l'enregistrement</value>
-	</objectPresentation>
-	<objectPresentation>
-		<key>es_ES</key>
-		<value>Razones cancelar la grabaciуn</value>
-	</objectPresentation>
-	<objectPresentation>
-		<key>ru</key>
-		<value>Причина отмены записи</value>
-	</objectPresentation>
-	<extendedObjectPresentation>
-		<key>en</key>
-		<value>Cancellation reason</value>
-	</extendedObjectPresentation>
-	<extendedObjectPresentation>
-		<key>ru</key>
-		<value>Причина отмены записи</value>
-	</extendedObjectPresentation>
-	<listPresentation>
-		<key>en</key>
-		<value>Cancellation reasons</value>
-	</listPresentation>
-	<listPresentation>
-		<key>ru</key>
-		<value>Причины отмены записи</value>
-	</listPresentation>
-	<extendedListPresentation>
-		<key>en</key>
-		<value>Cancellation reasons</value>
-	</extendedListPresentation>
-	<extendedListPresentation>
-		<key>ru</key>
-		<value>Причины отмены записи</value>
-	</extendedListPresentation>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<codeLength>9</codeLength>
-	<descriptionLength>25</descriptionLength>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<checkUnique>true</checkUnique>
-	<autonumbering>true</autonumbering>
-	<defaultPresentation>AsDescription</defaultPresentation>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
-	<attributes uuid="efb4ce56-2f87-4b56-8350-38cb12fed335">
-		<name>registrationDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Registration date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата регистрации</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="9358f89b-23fa-4ee4-b121-fbc0621ab89f">
-		<name>holding</name>
-		<synonym>
-			<key>en</key>
-			<value>Holding</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Холдинг</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.holdings</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0b56fe98-476c-40e0-b6d1-93eb8806a420">
+  <producedTypes>
+    <objectType typeId="48f7ebd6-75a8-42d3-a8c8-2c28530626cd" valueTypeId="6d1df944-7053-490f-98bb-0689107c5dbc"/>
+    <refType typeId="35812ed7-1eb8-4253-bddc-2508754270c2" valueTypeId="6121b52b-ddae-49d7-b299-2ad9f60dea67"/>
+    <selectionType typeId="1672f1fe-0176-43f6-bb48-55f4d59fda7e" valueTypeId="aa60d309-5966-43e3-b217-2ebd00ecb749"/>
+    <listType typeId="0f2bde28-76f2-4108-8753-fcaf0c9501a0" valueTypeId="9d32a343-21ea-432c-aae5-c3a07f849678"/>
+    <managerType typeId="b7f7bb83-9300-4e60-9c80-3ebf3b6e760a" valueTypeId="f1dc723a-99df-4197-b99d-ee16225c182a"/>
+  </producedTypes>
+  <name>cancellationReasons</name>
+  <synonym>
+    <key>en</key>
+    <value>Cancellation reasons</value>
+  </synonym>
+  <synonym>
+    <key>fr_FR</key>
+    <value>Raisons d'annuler l'enregistrement</value>
+  </synonym>
+  <synonym>
+    <key>es_ES</key>
+    <value>Razones cancelar la grabaciуn</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Причины отмены записи</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.cancellationReasons.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.cancellationReasons.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>PredefinedDataName</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Predefined</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Ref</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>DeletionMark</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>IsFolder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Owner</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Description</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <includeHelpInContents>true</includeHelpInContents>
+  <help>
+    <pages>
+      <lang>ru</lang>
+    </pages>
+  </help>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Cancellation reason</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>fr_FR</key>
+    <value>Raisons d'annuler l'enregistrement</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>es_ES</key>
+    <value>Razones cancelar la grabaciуn</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Причина отмены записи</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Cancellation reason</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Причина отмены записи</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Cancellation reasons</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Причины отмены записи</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Cancellation reasons</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Причины отмены записи</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="efb4ce56-2f87-4b56-8350-38cb12fed335">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9358f89b-23fa-4ee4-b121-fbc0621ab89f">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
 </mdclass:Catalog>

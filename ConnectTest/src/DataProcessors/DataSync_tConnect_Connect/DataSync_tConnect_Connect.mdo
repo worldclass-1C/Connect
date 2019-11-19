@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:DataProcessor
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="0237f163-bb24-460f-b170-d635cae6ceb2">
-	<producedTypes>
-		<objectType typeId="52449bdd-1c54-40da-8ee7-801bac1e0a0a"
-			valueTypeId="b91ae297-7e9d-4984-97e6-44449771c2e6" />
-		<managerType typeId="c8259a81-6b8e-4084-b1f4-42d1de71cc61"
-			valueTypeId="5811961c-4083-4cfd-9058-c6438a99deb1" />
-	</producedTypes>
-	<name>DataSync_tConnect_Connect</name>
-	<synonym>
-		<key>ru</key>
-		<value>Синхронизация данных tConnect - Connect</value>
-	</synonym>
-	<synonym>
-		<key>en</key>
-		<value>Data sync tconnect to connect</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<defaultForm>DataProcessor.DataSync_tConnect_Connect.Form.Form</defaultForm>
-	<forms uuid="000fb67f-1efc-40cd-b075-526595613b1a">
-		<name>Form1</name>
-		<synonym>
-			<key>ru</key>
-			<value>Form1</value>
-		</synonym>
-		<synonym>
-			<key>en</key>
-			<value>Form1</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
-	<forms uuid="f7093423-cfa7-4063-8de1-a4decd4a87bb">
-		<name>Form</name>
-		<synonym>
-			<key>en</key>
-			<value>Form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0237f163-bb24-460f-b170-d635cae6ceb2">
+  <producedTypes>
+    <objectType typeId="52449bdd-1c54-40da-8ee7-801bac1e0a0a" valueTypeId="b91ae297-7e9d-4984-97e6-44449771c2e6"/>
+    <managerType typeId="c8259a81-6b8e-4084-b1f4-42d1de71cc61" valueTypeId="5811961c-4083-4cfd-9058-c6438a99deb1"/>
+  </producedTypes>
+  <name>DataSync_tConnect_Connect</name>
+  <synonym>
+    <key>ru</key>
+    <value>Синхронизация данных tConnect - Connect</value>
+  </synonym>
+  <synonym>
+    <key>en</key>
+    <value>Data sync tconnect to connect</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>DataProcessor.DataSync_tConnect_Connect.Form.Form</defaultForm>
+  <forms uuid="000fb67f-1efc-40cd-b075-526595613b1a">
+    <name>Form1</name>
+    <synonym>
+      <key>ru</key>
+      <value>Form1</value>
+    </synonym>
+    <synonym>
+      <key>en</key>
+      <value>Form1</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="f7093423-cfa7-4063-8de1-a4decd4a87bb">
+    <name>Form</name>
+    <synonym>
+      <key>en</key>
+      <value>Form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:DataProcessor>

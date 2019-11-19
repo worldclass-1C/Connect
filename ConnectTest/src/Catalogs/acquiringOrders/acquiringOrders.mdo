@@ -1,265 +1,252 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="1ee392af-ab95-4a94-92b9-652f1169ce7e">
-	<producedTypes>
-		<objectType typeId="92eb8278-0a33-40b3-a724-3f3eec42ea19"
-			valueTypeId="0813934f-ecc3-4660-b0f8-45f0fb34d2d5" />
-		<refType typeId="44aaa030-ef5e-40f4-962a-b777550e1788"
-			valueTypeId="33f91a61-3415-4c5e-b78c-cd738dcf2cb0" />
-		<selectionType
-			typeId="ff501ed2-0232-43fd-8022-14668f1fb75a"
-			valueTypeId="6d9c6f91-bceb-4ce8-b56f-624c57255628" />
-		<listType typeId="3e0e12cd-b7ef-47d8-b41e-04124747efc2"
-			valueTypeId="ccb7a440-3bf8-4f95-a8f0-d1e72756a998" />
-		<managerType typeId="f74716ff-38fc-47f8-ad2b-3c48c183f2ac"
-			valueTypeId="ab4d1b7d-ceb0-4909-9a47-22076b0b2fd2" />
-	</producedTypes>
-	<name>acquiringOrders</name>
-	<synonym>
-		<key>en</key>
-		<value>Orders</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Заказы</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<inputByString>Catalog.acquiringOrders.StandardAttribute.Code</inputByString>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<createOnInput>Use</createOnInput>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<objectPresentation>
-		<key>en</key>
-		<value>Order</value>
-	</objectPresentation>
-	<objectPresentation>
-		<key>ru</key>
-		<value>Заказ</value>
-	</objectPresentation>
-	<extendedObjectPresentation>
-		<key>en</key>
-		<value>Order</value>
-	</extendedObjectPresentation>
-	<extendedObjectPresentation>
-		<key>ru</key>
-		<value>Заказ</value>
-	</extendedObjectPresentation>
-	<listPresentation>
-		<key>en</key>
-		<value>Orders</value>
-	</listPresentation>
-	<listPresentation>
-		<key>ru</key>
-		<value>Заказы</value>
-	</listPresentation>
-	<extendedListPresentation>
-		<key>en</key>
-		<value>Orders</value>
-	</extendedListPresentation>
-	<extendedListPresentation>
-		<key>ru</key>
-		<value>Заказы</value>
-	</extendedListPresentation>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<codeLength>12</codeLength>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<checkUnique>true</checkUnique>
-	<autonumbering>true</autonumbering>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
-	<defaultObjectForm>Catalog.acquiringOrders.Form.ItemForm</defaultObjectForm>
-	<attributes uuid="3bed062b-7c4c-486e-83ef-6f62cc58b432">
-		<name>acquiringAmount</name>
-		<synonym>
-			<key>en</key>
-			<value>Acquiring amount</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Сумма эквайринга</value>
-		</synonym>
-		<type>
-			<types>Number</types>
-			<numberQualifiers>
-				<precision>15</precision>
-				<scale>2</scale>
-			</numberQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="8e74387e-15a5-4763-b474-8bb1c5aab8de">
-		<name>acquiringProvider</name>
-		<synonym>
-			<key>en</key>
-			<value>Acquiring provider</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Тип эквайринга</value>
-		</synonym>
-		<type>
-			<types>EnumRef.acquiringProviders</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="a90e7770-202c-4d85-a538-77aab0ee4fb2">
-		<name>acquiringRequest</name>
-		<synonym>
-			<key>en</key>
-			<value>Acquiring request</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Запрос в банк</value>
-		</synonym>
-		<type>
-			<types>EnumRef.acquiringRequests</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="268521e4-247e-44d9-a2f7-9586b76ea6a2">
-		<name>amount</name>
-		<synonym>
-			<key>en</key>
-			<value>Amount</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Сумма</value>
-		</synonym>
-		<type>
-			<types>Number</types>
-			<numberQualifiers>
-				<precision>15</precision>
-				<scale>2</scale>
-			</numberQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="b83d8649-f083-4af8-8a40-c1f2e89723c5">
-		<name>bindingId</name>
-		<synonym>
-			<key>en</key>
-			<value>Binding id</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>36</length>
-			</stringQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="26ecfc76-9674-4683-9f2a-af647068c017">
-		<name>gym</name>
-		<synonym>
-			<key>en</key>
-			<value>Gym</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Клуб</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.gyms</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="136e7418-67e7-4e29-9d06-efef6a4da2de">
-		<name>holding</name>
-		<synonym>
-			<key>en</key>
-			<value>Holding</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Холдинг</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.holdings</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="7e5abda4-4cb7-4cab-9fef-988e7e3e81de">
-		<name>user</name>
-		<synonym>
-			<key>en</key>
-			<value>User</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Пользователь</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.users</types>
-		</type>
-		<indexing>Index</indexing>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<tabularSections
-		uuid="dbed714a-78d2-4586-9e2b-aef89d143b35">
-		<producedTypes>
-			<objectType typeId="7145ed3c-a60b-4979-aeec-33be2c986fc4"
-				valueTypeId="4a258e99-4553-48d6-a363-376d1e407cd7" />
-			<rowType typeId="e0fcb3a9-89ee-4c52-904d-d1a53ae70619"
-				valueTypeId="905b2600-ba69-48f6-b086-f23aca2250e6" />
-		</producedTypes>
-		<name>orders</name>
-		<synonym>
-			<key>en</key>
-			<value>Orders</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Заказы</value>
-		</synonym>
-		<attributes uuid="0047f0db-cb12-48e8-8d14-33be690eab09">
-			<name>uid</name>
-			<synonym>
-				<key>en</key>
-				<value>Uid</value>
-			</synonym>
-			<synonym>
-				<key>ru</key>
-				<value>ИД</value>
-			</synonym>
-			<type>
-				<types>String</types>
-				<stringQualifiers>
-					<length>36</length>
-				</stringQualifiers>
-			</type>
-			<dataHistory>Use</dataHistory>
-			<fullTextSearch>Use</fullTextSearch>
-		</attributes>
-	</tabularSections>
-	<forms uuid="a558244a-2faf-4896-acd2-f1b879413c98">
-		<name>ItemForm</name>
-		<synonym>
-			<key>en</key>
-			<value>Item form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1ee392af-ab95-4a94-92b9-652f1169ce7e">
+  <producedTypes>
+    <objectType typeId="92eb8278-0a33-40b3-a724-3f3eec42ea19" valueTypeId="0813934f-ecc3-4660-b0f8-45f0fb34d2d5"/>
+    <refType typeId="44aaa030-ef5e-40f4-962a-b777550e1788" valueTypeId="33f91a61-3415-4c5e-b78c-cd738dcf2cb0"/>
+    <selectionType typeId="ff501ed2-0232-43fd-8022-14668f1fb75a" valueTypeId="6d9c6f91-bceb-4ce8-b56f-624c57255628"/>
+    <listType typeId="3e0e12cd-b7ef-47d8-b41e-04124747efc2" valueTypeId="ccb7a440-3bf8-4f95-a8f0-d1e72756a998"/>
+    <managerType typeId="f74716ff-38fc-47f8-ad2b-3c48c183f2ac" valueTypeId="ab4d1b7d-ceb0-4909-9a47-22076b0b2fd2"/>
+  </producedTypes>
+  <name>acquiringOrders</name>
+  <synonym>
+    <key>en</key>
+    <value>Orders</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Заказы</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.acquiringOrders.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Order</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Заказ</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Order</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Заказ</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Orders</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Заказы</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Orders</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Заказы</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>12</codeLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.acquiringOrders.Form.ItemForm</defaultObjectForm>
+  <attributes uuid="3bed062b-7c4c-486e-83ef-6f62cc58b432">
+    <name>acquiringAmount</name>
+    <synonym>
+      <key>en</key>
+      <value>Acquiring amount</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сумма эквайринга</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="8e74387e-15a5-4763-b474-8bb1c5aab8de">
+    <name>acquiringProvider</name>
+    <synonym>
+      <key>en</key>
+      <value>Acquiring provider</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип эквайринга</value>
+    </synonym>
+    <type>
+      <types>EnumRef.acquiringProviders</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a90e7770-202c-4d85-a538-77aab0ee4fb2">
+    <name>acquiringRequest</name>
+    <synonym>
+      <key>en</key>
+      <value>Acquiring request</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Запрос в банк</value>
+    </synonym>
+    <type>
+      <types>EnumRef.acquiringRequests</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="268521e4-247e-44d9-a2f7-9586b76ea6a2">
+    <name>amount</name>
+    <synonym>
+      <key>en</key>
+      <value>Amount</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сумма</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="b83d8649-f083-4af8-8a40-c1f2e89723c5">
+    <name>bindingId</name>
+    <synonym>
+      <key>en</key>
+      <value>Binding id</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>36</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="26ecfc76-9674-4683-9f2a-af647068c017">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="136e7418-67e7-4e29-9d06-efef6a4da2de">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7e5abda4-4cb7-4cab-9fef-988e7e3e81de">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="dbed714a-78d2-4586-9e2b-aef89d143b35">
+    <producedTypes>
+      <objectType typeId="7145ed3c-a60b-4979-aeec-33be2c986fc4" valueTypeId="4a258e99-4553-48d6-a363-376d1e407cd7"/>
+      <rowType typeId="e0fcb3a9-89ee-4c52-904d-d1a53ae70619" valueTypeId="905b2600-ba69-48f6-b086-f23aca2250e6"/>
+    </producedTypes>
+    <name>orders</name>
+    <synonym>
+      <key>en</key>
+      <value>Orders</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Заказы</value>
+    </synonym>
+    <attributes uuid="0047f0db-cb12-48e8-8d14-33be690eab09">
+      <name>uid</name>
+      <synonym>
+        <key>en</key>
+        <value>Uid</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>ИД</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>36</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <forms uuid="a558244a-2faf-4896-acd2-f1b879413c98">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

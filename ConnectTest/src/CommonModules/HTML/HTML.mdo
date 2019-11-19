@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="817e2007-9875-4590-ae5b-922197304e1e">
-	<name>HTML</name>
-	<synonym>
-		<key>en</key>
-		<value>HTML</value>
-	</synonym>
-	<server>true</server>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="817e2007-9875-4590-ae5b-922197304e1e">
+  <name>HTML</name>
+  <synonym>
+    <key>en</key>
+    <value>HTML</value>
+  </synonym>
+  <server>true</server>
 </mdclass:CommonModule>

@@ -1,45 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="f927e69a-e7a0-4f9f-bd23-50703a96aa45">
-	<producedTypes>
-		<objectType typeId="6a68cdc6-1331-4e7c-a809-aa45f7bb3c05"
-			valueTypeId="7031423b-784b-4384-b96d-0ca0024baa1e" />
-		<refType typeId="3456a105-66e1-4aa0-83b4-e131df5bff57"
-			valueTypeId="9aa3557e-e6f1-4d50-8799-4a4c86fdfcbe" />
-		<selectionType
-			typeId="0043289b-1d2b-46f8-9d3d-c683a81d36e6"
-			valueTypeId="126b0701-69f1-4fc6-8e16-43aedf7b65f0" />
-		<listType typeId="ef2e55a8-65e8-4981-b81b-04e86978c054"
-			valueTypeId="67b5ad32-a32c-4704-8f28-16da49dace86" />
-		<managerType typeId="405cf6a2-363a-49ef-bf25-74bb96c1ae02"
-			valueTypeId="9253d224-0328-4baa-911c-269faf5d99c9" />
-	</producedTypes>
-	<name>languages</name>
-	<synonym>
-		<key>en</key>
-		<value>Languages</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Языки</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<inputByString>Catalog.languages.StandardAttribute.Code</inputByString>
-	<inputByString>Catalog.languages.StandardAttribute.Description</inputByString>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<createOnInput>Use</createOnInput>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<codeLength>3</codeLength>
-	<descriptionLength>25</descriptionLength>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<checkUnique>true</checkUnique>
-	<autonumbering>true</autonumbering>
-	<defaultPresentation>AsDescription</defaultPresentation>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f927e69a-e7a0-4f9f-bd23-50703a96aa45">
+  <producedTypes>
+    <objectType typeId="6a68cdc6-1331-4e7c-a809-aa45f7bb3c05" valueTypeId="7031423b-784b-4384-b96d-0ca0024baa1e"/>
+    <refType typeId="3456a105-66e1-4aa0-83b4-e131df5bff57" valueTypeId="9aa3557e-e6f1-4d50-8799-4a4c86fdfcbe"/>
+    <selectionType typeId="0043289b-1d2b-46f8-9d3d-c683a81d36e6" valueTypeId="126b0701-69f1-4fc6-8e16-43aedf7b65f0"/>
+    <listType typeId="ef2e55a8-65e8-4981-b81b-04e86978c054" valueTypeId="67b5ad32-a32c-4704-8f28-16da49dace86"/>
+    <managerType typeId="405cf6a2-363a-49ef-bf25-74bb96c1ae02" valueTypeId="9253d224-0328-4baa-911c-269faf5d99c9"/>
+  </producedTypes>
+  <name>languages</name>
+  <synonym>
+    <key>en</key>
+    <value>Languages</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Языки</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.languages.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.languages.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>3</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
 </mdclass:Catalog>

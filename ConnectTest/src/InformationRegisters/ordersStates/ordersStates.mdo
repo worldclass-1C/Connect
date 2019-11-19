@@ -1,70 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:InformationRegister
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="0f2ee5c9-1c11-4092-9f6f-651a86cb0035">
-	<producedTypes>
-		<selectionType
-			typeId="b1e22a9c-6bc4-4200-aa65-51cfb67da9e2"
-			valueTypeId="402ba002-7378-4ef4-8dcf-5f3f5959502c" />
-		<listType typeId="7c751e8d-3ac9-4046-a01b-7221699332ed"
-			valueTypeId="cce68dd9-fd73-4a87-bb11-def1b632a386" />
-		<managerType typeId="17433e32-3cac-441b-b272-2b0c452fa061"
-			valueTypeId="9fee1a53-9807-4139-83e8-186588aef958" />
-		<recordSetType
-			typeId="a805b1fa-cca2-4ed9-9e7f-82f6935ab7d8"
-			valueTypeId="eb78b59c-4c70-4178-bdb2-77e6fdeeeda9" />
-		<recordKeyType
-			typeId="d3c8b7b4-c705-44dd-bfca-d85988a6a28a"
-			valueTypeId="ffe17f34-9050-4cea-b12c-7085ef4f4b49" />
-		<recordType typeId="acc4a590-c4ed-4b93-8af6-dae24739a43c"
-			valueTypeId="be1dafe2-35aa-4335-a0f6-1f811b746ab6" />
-		<recordManagerType
-			typeId="88ef39d6-16de-4383-9d22-871a1376d947"
-			valueTypeId="c203dc07-ce4a-4ff0-95f1-d07b5f8d70e4" />
-	</producedTypes>
-	<name>ordersStates</name>
-	<synonym>
-		<key>en</key>
-		<value>Orders states</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Состояния заказов</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<resources uuid="f845cd91-354e-41b6-89dd-b5d06bee7f03">
-		<name>state</name>
-		<synonym>
-			<key>en</key>
-			<value>State</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Состояние</value>
-		</synonym>
-		<type>
-			<types>EnumRef.acquiringOrderSrates</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</resources>
-	<dimensions uuid="bd753eef-17ba-4849-8707-d78a72347827">
-		<name>order</name>
-		<synonym>
-			<key>en</key>
-			<value>Order</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Заказ</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.acquiringOrders</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-		<master>true</master>
-		<mainFilter>true</mainFilter>
-	</dimensions>
+<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0f2ee5c9-1c11-4092-9f6f-651a86cb0035">
+  <producedTypes>
+    <selectionType typeId="b1e22a9c-6bc4-4200-aa65-51cfb67da9e2" valueTypeId="402ba002-7378-4ef4-8dcf-5f3f5959502c"/>
+    <listType typeId="7c751e8d-3ac9-4046-a01b-7221699332ed" valueTypeId="cce68dd9-fd73-4a87-bb11-def1b632a386"/>
+    <managerType typeId="17433e32-3cac-441b-b272-2b0c452fa061" valueTypeId="9fee1a53-9807-4139-83e8-186588aef958"/>
+    <recordSetType typeId="a805b1fa-cca2-4ed9-9e7f-82f6935ab7d8" valueTypeId="eb78b59c-4c70-4178-bdb2-77e6fdeeeda9"/>
+    <recordKeyType typeId="d3c8b7b4-c705-44dd-bfca-d85988a6a28a" valueTypeId="ffe17f34-9050-4cea-b12c-7085ef4f4b49"/>
+    <recordType typeId="acc4a590-c4ed-4b93-8af6-dae24739a43c" valueTypeId="be1dafe2-35aa-4335-a0f6-1f811b746ab6"/>
+    <recordManagerType typeId="88ef39d6-16de-4383-9d22-871a1376d947" valueTypeId="c203dc07-ce4a-4ff0-95f1-d07b5f8d70e4"/>
+  </producedTypes>
+  <name>ordersStates</name>
+  <synonym>
+    <key>en</key>
+    <value>Orders states</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Состояния заказов</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="f845cd91-354e-41b6-89dd-b5d06bee7f03">
+    <name>state</name>
+    <synonym>
+      <key>en</key>
+      <value>State</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Состояние</value>
+    </synonym>
+    <type>
+      <types>EnumRef.acquiringOrderSrates</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <dimensions uuid="bd753eef-17ba-4849-8707-d78a72347827">
+    <name>order</name>
+    <synonym>
+      <key>en</key>
+      <value>Order</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Заказ</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.acquiringOrders</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
 </mdclass:InformationRegister>

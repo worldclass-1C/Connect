@@ -1,186 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:InformationRegister
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="457321d4-f4df-4696-8d03-479eb88c17d3">
-	<producedTypes>
-		<selectionType
-			typeId="008d914f-cd4f-4999-a9ef-b1f262695364"
-			valueTypeId="0b882a77-d48c-4eaf-a05a-988ca8db5119" />
-		<listType typeId="8ab77fb3-61d5-4e8f-b8a3-4424ed6a38f8"
-			valueTypeId="821817ef-d7cf-4a1a-8ad4-673f2718bd44" />
-		<managerType typeId="47408fff-6b3a-4ea8-a85c-0edc079b4111"
-			valueTypeId="1871c503-4003-4f46-8ac6-640ec3884857" />
-		<recordSetType
-			typeId="386ba211-aab5-4c63-ba90-0e18d75916d5"
-			valueTypeId="0bee8b46-8eed-4759-b81c-df418da5cb8b" />
-		<recordKeyType
-			typeId="3fc4f0b4-18e9-4a83-8020-706bea4d9eb6"
-			valueTypeId="d57a60e6-699a-44d3-8953-b0ec5ef42cee" />
-		<recordType typeId="f076def4-4394-49b1-98ea-a3659b90f027"
-			valueTypeId="7247f380-45e8-4901-9b93-946ce028ff03" />
-		<recordManagerType
-			typeId="95ac6f2a-81d8-41a9-b2f1-a952736d612f"
-			valueTypeId="51be46ed-b10a-435f-8938-0d11d3106f5b" />
-	</producedTypes>
-	<name>usersAuthorizationCodes</name>
-	<synonym>
-		<key>en</key>
-		<value>Users authorization codes</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Коды авторизации пользователей</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<recordPresentation>
-		<key>en</key>
-		<value>User authorization code</value>
-	</recordPresentation>
-	<recordPresentation>
-		<key>ru</key>
-		<value>Код авторизации пользователя</value>
-	</recordPresentation>
-	<extendedRecordPresentation>
-		<key>en</key>
-		<value>User authorization code</value>
-	</extendedRecordPresentation>
-	<extendedRecordPresentation>
-		<key>ru</key>
-		<value>Код авторизации пользователя</value>
-	</extendedRecordPresentation>
-	<listPresentation>
-		<key>en</key>
-		<value>Users authorization codes</value>
-	</listPresentation>
-	<listPresentation>
-		<key>ru</key>
-		<value>Коды авторизации пользователей</value>
-	</listPresentation>
-	<extendedListPresentation>
-		<key>en</key>
-		<value>Users authorization codes</value>
-	</extendedListPresentation>
-	<extendedListPresentation>
-		<key>ru</key>
-		<value>Коды авторизации пользователей</value>
-	</extendedListPresentation>
-	<resources uuid="17684c8e-99e9-4ff1-a283-1640a7e95d50">
-		<name>password</name>
-		<synonym>
-			<key>en</key>
-			<value>Password</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Пароль</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>5</length>
-			</stringQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</resources>
-	<resources uuid="0112d9a2-c052-4388-96c0-b9301ff29ae1">
-		<name>phone</name>
-		<synonym>
-			<key>en</key>
-			<value>Phone</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Номер телефона</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>20</length>
-			</stringQualifiers>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-		<fillValue xsi:type="core:StringValue">
-			<value></value>
-		</fillValue>
-		<indexing>Index</indexing>
-	</resources>
-	<resources uuid="bbc9ca9c-de74-49e1-bceb-39fc67417946">
-		<name>sendCount</name>
-		<synonym>
-			<key>en</key>
-			<value>Send count</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Количество отправленных смс</value>
-		</synonym>
-		<type>
-			<types>Number</types>
-			<numberQualifiers>
-				<precision>2</precision>
-			</numberQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</resources>
-	<resources uuid="6c17b2a7-2501-4f48-a401-36de5175ef49">
-		<name>inputCount</name>
-		<synonym>
-			<key>en</key>
-			<value>Input count</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Количество вводов смс</value>
-		</synonym>
-		<type>
-			<types>Number</types>
-			<numberQualifiers>
-				<precision>2</precision>
-			</numberQualifiers>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</resources>
-	<resources uuid="6e44df9a-0c43-4534-8616-8f7e4e655f87">
-		<name>recordDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Record date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата записи</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</resources>
-	<dimensions uuid="e0ce1d31-481d-4745-8998-b331d5ccf776">
-		<name>token</name>
-		<synonym>
-			<key>en</key>
-			<value>Token</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Холдинг</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.tokens</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-		<mainFilter>true</mainFilter>
-	</dimensions>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="457321d4-f4df-4696-8d03-479eb88c17d3">
+  <producedTypes>
+    <selectionType typeId="008d914f-cd4f-4999-a9ef-b1f262695364" valueTypeId="0b882a77-d48c-4eaf-a05a-988ca8db5119"/>
+    <listType typeId="8ab77fb3-61d5-4e8f-b8a3-4424ed6a38f8" valueTypeId="821817ef-d7cf-4a1a-8ad4-673f2718bd44"/>
+    <managerType typeId="47408fff-6b3a-4ea8-a85c-0edc079b4111" valueTypeId="1871c503-4003-4f46-8ac6-640ec3884857"/>
+    <recordSetType typeId="386ba211-aab5-4c63-ba90-0e18d75916d5" valueTypeId="0bee8b46-8eed-4759-b81c-df418da5cb8b"/>
+    <recordKeyType typeId="3fc4f0b4-18e9-4a83-8020-706bea4d9eb6" valueTypeId="d57a60e6-699a-44d3-8953-b0ec5ef42cee"/>
+    <recordType typeId="f076def4-4394-49b1-98ea-a3659b90f027" valueTypeId="7247f380-45e8-4901-9b93-946ce028ff03"/>
+    <recordManagerType typeId="95ac6f2a-81d8-41a9-b2f1-a952736d612f" valueTypeId="51be46ed-b10a-435f-8938-0d11d3106f5b"/>
+  </producedTypes>
+  <name>usersAuthorizationCodes</name>
+  <synonym>
+    <key>en</key>
+    <value>Users authorization codes</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Коды авторизации пользователей</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>User authorization code</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Код авторизации пользователя</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>User authorization code</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>Код авторизации пользователя</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Users authorization codes</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Коды авторизации пользователей</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Users authorization codes</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Коды авторизации пользователей</value>
+  </extendedListPresentation>
+  <resources uuid="17684c8e-99e9-4ff1-a283-1640a7e95d50">
+    <name>password</name>
+    <synonym>
+      <key>en</key>
+      <value>Password</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пароль</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>5</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="0112d9a2-c052-4388-96c0-b9301ff29ae1">
+    <name>phone</name>
+    <synonym>
+      <key>en</key>
+      <value>Phone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номер телефона</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <indexing>Index</indexing>
+  </resources>
+  <resources uuid="bbc9ca9c-de74-49e1-bceb-39fc67417946">
+    <name>sendCount</name>
+    <synonym>
+      <key>en</key>
+      <value>Send count</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Количество отправленных смс</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>2</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="6c17b2a7-2501-4f48-a401-36de5175ef49">
+    <name>inputCount</name>
+    <synonym>
+      <key>en</key>
+      <value>Input count</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Количество вводов смс</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>2</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <resources uuid="6e44df9a-0c43-4534-8616-8f7e4e655f87">
+    <name>recordDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Record date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <dimensions uuid="e0ce1d31-481d-4745-8998-b331d5ccf776">
+    <name>token</name>
+    <synonym>
+      <key>en</key>
+      <value>Token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.tokens</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
 </mdclass:InformationRegister>

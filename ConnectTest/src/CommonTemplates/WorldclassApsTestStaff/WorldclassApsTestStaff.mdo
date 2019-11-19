@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonTemplate
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="84d474f7-67af-4e73-8690-33ea2f2aaea3">
-	<name>WorldclassApsTestStaff</name>
-	<synonym>
-		<key>ru</key>
-		<value>Worldclass aps test staff</value>
-	</synonym>
-	<templateType>BinaryData</templateType>
+<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="84d474f7-67af-4e73-8690-33ea2f2aaea3">
+  <name>WorldclassApsTestStaff</name>
+  <synonym>
+    <key>ru</key>
+    <value>Worldclass aps test staff</value>
+  </synonym>
+  <templateType>BinaryData</templateType>
 </mdclass:CommonTemplate>

@@ -1,439 +1,430 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:core="http://g5.1c.ru/v8/dt/mcore"
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="ad40492e-9744-46a8-ad95-3a951b75f4a0">
-	<producedTypes>
-		<objectType typeId="9dc61478-21ca-4da7-ae40-9e9cd5128fe1"
-			valueTypeId="48743232-fac3-4958-9303-17903517ac4d" />
-		<refType typeId="9b03b7c9-f1fb-4638-af28-636f0a9c423c"
-			valueTypeId="111eaaac-0852-4e88-85da-b3e0e4789734" />
-		<selectionType
-			typeId="a69d9d14-fb88-4a90-a572-4d8c7be65334"
-			valueTypeId="6b56efe9-f9b3-4469-9bab-7167055dd361" />
-		<listType typeId="24876296-d711-44d2-80cd-ab0358fb07c1"
-			valueTypeId="42c590be-62b1-4202-9378-a1f9b1b08aae" />
-		<managerType typeId="6adde868-a1c0-4e88-bce5-ec70bd8e3546"
-			valueTypeId="1c8dbba5-1e86-4641-bcab-12c03ce3b318" />
-	</producedTypes>
-	<name>tokens</name>
-	<synonym>
-		<key>en</key>
-		<value>Tokens</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Токены</value>
-	</synonym>
-	<useStandardCommands>true</useStandardCommands>
-	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Code</name>
-		<synonym>
-			<key>en</key>
-			<value>Code</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Код</value>
-		</synonym>
-		<fullTextSearch>Use</fullTextSearch>
-	</standardAttributes>
-	<standardAttributes>
-		<dataHistory>Use</dataHistory>
-		<name>Description</name>
-		<synonym>
-			<key>en</key>
-			<value>Description</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Наименование</value>
-		</synonym>
-		<fillChecking>ShowError</fillChecking>
-		<fullTextSearch>Use</fullTextSearch>
-	</standardAttributes>
-	<createOnInput>Use</createOnInput>
-	<dataLockControlMode>Managed</dataLockControlMode>
-	<fullTextSearch>Use</fullTextSearch>
-	<objectPresentation>
-		<key>en</key>
-		<value>Token</value>
-	</objectPresentation>
-	<objectPresentation>
-		<key>ru</key>
-		<value>Токен</value>
-	</objectPresentation>
-	<extendedObjectPresentation>
-		<key>en</key>
-		<value>Token</value>
-	</extendedObjectPresentation>
-	<extendedObjectPresentation>
-		<key>ru</key>
-		<value>Токен</value>
-	</extendedObjectPresentation>
-	<listPresentation>
-		<key>en</key>
-		<value>Tokens</value>
-	</listPresentation>
-	<listPresentation>
-		<key>ru</key>
-		<value>Токены</value>
-	</listPresentation>
-	<extendedListPresentation>
-		<key>en</key>
-		<value>Tokens</value>
-	</extendedListPresentation>
-	<extendedListPresentation>
-		<key>ru</key>
-		<value>Токены</value>
-	</extendedListPresentation>
-	<levelCount>2</levelCount>
-	<foldersOnTop>true</foldersOnTop>
-	<codeType>String</codeType>
-	<codeAllowedLength>Variable</codeAllowedLength>
-	<editType>InDialog</editType>
-	<choiceMode>BothWays</choiceMode>
-	<defaultObjectForm>Catalog.tokens.Form.ItemForm</defaultObjectForm>
-	<defaultListForm>Catalog.tokens.Form.ListForm</defaultListForm>
-	<attributes uuid="bcc9341d-1385-42b0-9385-2b95800a296b">
-		<name>account</name>
-		<synonym>
-			<key>en</key>
-			<value>Account</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Учетная запись</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.accounts</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillFromFillingValue>true</fillFromFillingValue>
-		<fillValue xsi:type="core:UndefinedValue" />
-		<indexing>Index</indexing>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="b5d77d93-0b4d-4a03-a1e9-ded3171aa124">
-		<name>appType</name>
-		<synonym>
-			<key>en</key>
-			<value>App type</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Вид приложения</value>
-		</synonym>
-		<type>
-			<types>EnumRef.appTypes</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="da732dd5-6a1a-416a-94bc-552be2f5d531">
-		<name>appVersion</name>
-		<synonym>
-			<key>en</key>
-			<value>App version</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Версия приложения</value>
-		</synonym>
-		<type>
-			<types>Number</types>
-			<numberQualifiers>
-				<precision>10</precision>
-			</numberQualifiers>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="47800124-5bfc-4fb9-9f32-622ce6342cac">
-		<name>chain</name>
-		<synonym>
-			<key>en</key>
-			<value>Chain</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Сеть</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.chains</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="48af4938-60e1-4598-b906-1fe187f1d37d">
-		<name>changeDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Change date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата записи</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="8223a31a-3b52-48d4-8d7f-3215e101aae4">
-		<name>createDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Create date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата создания</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="d05b8c76-497a-4de6-8710-ef6c4faded36">
-		<name>deviceModel</name>
-		<synonym>
-			<key>en</key>
-			<value>Device model</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Модель устройства</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>30</length>
-			</stringQualifiers>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:StringValue">
-			<value></value>
-		</fillValue>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="e5535a0e-28d8-4863-9519-4c0fe5581282">
-		<name>deviceToken</name>
-		<synonym>
-			<key>en</key>
-			<value>Device token</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Токен устройства</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>200</length>
-			</stringQualifiers>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:StringValue">
-			<value></value>
-		</fillValue>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="bfede6b2-09c5-4ddd-9dcb-8cb96ca4aace">
-		<name>holding</name>
-		<synonym>
-			<key>en</key>
-			<value>Holding</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Холдинг</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.holdings</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="cb57383d-7b20-4591-b24a-d96fad7d002a">
-		<name>lockDate</name>
-		<synonym>
-			<key>en</key>
-			<value>Lock date</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Дата блокировки</value>
-		</synonym>
-		<type>
-			<types>Date</types>
-			<dateQualifiers />
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="f3bdf242-95d5-456c-86dc-c3091331bd22">
-		<name>systemType</name>
-		<synonym>
-			<key>en</key>
-			<value>System type</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Операционная система</value>
-		</synonym>
-		<comment>Операционная система устройства</comment>
-		<type>
-			<types>EnumRef.systemTypes</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="4f6ad9fe-b40a-4301-bd74-15a029a01cbe">
-		<name>systemVersion</name>
-		<synonym>
-			<key>en</key>
-			<value>System version</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Версия ОС</value>
-		</synonym>
-		<type>
-			<types>String</types>
-			<stringQualifiers>
-				<length>10</length>
-			</stringQualifiers>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:StringValue">
-			<value></value>
-		</fillValue>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="984056c4-6782-4448-96cb-9769edd9acdc">
-		<name>timeZone</name>
-		<synonym>
-			<key>en</key>
-			<value>Time zone</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Часовой пояс</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.timeZones</types>
-		</type>
-		<minValue xsi:type="core:UndefinedValue" />
-		<maxValue xsi:type="core:UndefinedValue" />
-		<fillValue xsi:type="core:UndefinedValue" />
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="92181561-be05-45fa-b9bd-809a569d1931">
-		<name>underControl</name>
-		<synonym>
-			<key>en</key>
-			<value>Under control</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>На контроле</value>
-		</synonym>
-		<type>
-			<types>Boolean</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<attributes uuid="ef02965c-872e-4780-8734-88e1a896da13">
-		<name>user</name>
-		<synonym>
-			<key>en</key>
-			<value>User</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Пользователь</value>
-		</synonym>
-		<type>
-			<types>CatalogRef.users</types>
-		</type>
-		<fullTextSearch>Use</fullTextSearch>
-		<dataHistory>Use</dataHistory>
-	</attributes>
-	<forms uuid="5db4b20a-dfd7-44e6-9084-0dd42e06cd12">
-		<name>ItemForm</name>
-		<synonym>
-			<key>en</key>
-			<value>Item form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
-	<forms uuid="f1306456-681e-4171-8e4b-16df6b3f99a5">
-		<name>ListForm</name>
-		<synonym>
-			<key>en</key>
-			<value>List form</value>
-		</synonym>
-		<usePurposes>PersonalComputer</usePurposes>
-		<usePurposes>MobileDevice</usePurposes>
-	</forms>
-	<commands uuid="e31d5f21-4c9c-4121-b2fd-64435c58fe58">
-		<name>tokens</name>
-		<synonym>
-			<key>en</key>
-			<value>Tokens</value>
-		</synonym>
-		<synonym>
-			<key>ru</key>
-			<value>Токены</value>
-		</synonym>
-		<group>FormNavigationPanelGoTo</group>
-		<commandParameterType>
-			<types>CatalogRef.users</types>
-			<types>CatalogRef.accounts</types>
-		</commandParameterType>
-		<representation>Auto</representation>
-	</commands>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ad40492e-9744-46a8-ad95-3a951b75f4a0">
+  <producedTypes>
+    <objectType typeId="9dc61478-21ca-4da7-ae40-9e9cd5128fe1" valueTypeId="48743232-fac3-4958-9303-17903517ac4d"/>
+    <refType typeId="9b03b7c9-f1fb-4638-af28-636f0a9c423c" valueTypeId="111eaaac-0852-4e88-85da-b3e0e4789734"/>
+    <selectionType typeId="a69d9d14-fb88-4a90-a572-4d8c7be65334" valueTypeId="6b56efe9-f9b3-4469-9bab-7167055dd361"/>
+    <listType typeId="24876296-d711-44d2-80cd-ab0358fb07c1" valueTypeId="42c590be-62b1-4202-9378-a1f9b1b08aae"/>
+    <managerType typeId="6adde868-a1c0-4e88-bce5-ec70bd8e3546" valueTypeId="1c8dbba5-1e86-4641-bcab-12c03ce3b318"/>
+  </producedTypes>
+  <name>tokens</name>
+  <synonym>
+    <key>en</key>
+    <value>Tokens</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Токены</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <synonym>
+      <key>en</key>
+      <value>Code</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Код</value>
+    </synonym>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Description</name>
+    <synonym>
+      <key>en</key>
+      <value>Description</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Наименование</value>
+    </synonym>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Token</value>
+  </objectPresentation>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Токен</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>en</key>
+    <value>Token</value>
+  </extendedObjectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Токен</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Tokens</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Токены</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Tokens</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Токены</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.tokens.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.tokens.Form.ListForm</defaultListForm>
+  <attributes uuid="bcc9341d-1385-42b0-9385-2b95800a296b">
+    <name>account</name>
+    <synonym>
+      <key>en</key>
+      <value>Account</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Учетная запись</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.accounts</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="b5d77d93-0b4d-4a03-a1e9-ded3171aa124">
+    <name>appType</name>
+    <synonym>
+      <key>en</key>
+      <value>App type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вид приложения</value>
+    </synonym>
+    <type>
+      <types>EnumRef.appTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="da732dd5-6a1a-416a-94bc-552be2f5d531">
+    <name>appVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>App version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия приложения</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="47800124-5bfc-4fb9-9f32-622ce6342cac">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="48af4938-60e1-4598-b906-1fe187f1d37d">
+    <name>changeDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Change date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="8223a31a-3b52-48d4-8d7f-3215e101aae4">
+    <name>createDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Create date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата создания</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="d05b8c76-497a-4de6-8710-ef6c4faded36">
+    <name>deviceModel</name>
+    <synonym>
+      <key>en</key>
+      <value>Device model</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Модель устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e5535a0e-28d8-4863-9519-4c0fe5581282">
+    <name>deviceToken</name>
+    <synonym>
+      <key>en</key>
+      <value>Device token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен устройства</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="bfede6b2-09c5-4ddd-9dcb-8cb96ca4aace">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="cb57383d-7b20-4591-b24a-d96fad7d002a">
+    <name>lockDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Lock date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата блокировки</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="f3bdf242-95d5-456c-86dc-c3091331bd22">
+    <name>systemType</name>
+    <synonym>
+      <key>en</key>
+      <value>System type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Операционная система</value>
+    </synonym>
+    <comment>Операционная система устройства</comment>
+    <type>
+      <types>EnumRef.systemTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="4f6ad9fe-b40a-4301-bd74-15a029a01cbe">
+    <name>systemVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>System version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия ОС</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="984056c4-6782-4448-96cb-9769edd9acdc">
+    <name>timeZone</name>
+    <synonym>
+      <key>en</key>
+      <value>Time zone</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Часовой пояс</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.timeZones</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="92181561-be05-45fa-b9bd-809a569d1931">
+    <name>underControl</name>
+    <synonym>
+      <key>en</key>
+      <value>Under control</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>На контроле</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ef02965c-872e-4780-8734-88e1a896da13">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="5db4b20a-dfd7-44e6-9084-0dd42e06cd12">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="f1306456-681e-4171-8e4b-16df6b3f99a5">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <commands uuid="e31d5f21-4c9c-4121-b2fd-64435c58fe58">
+    <name>tokens</name>
+    <synonym>
+      <key>en</key>
+      <value>Tokens</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токены</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.users</types>
+      <types>CatalogRef.accounts</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+    <shortcut></shortcut>
+  </commands>
 </mdclass:Catalog>

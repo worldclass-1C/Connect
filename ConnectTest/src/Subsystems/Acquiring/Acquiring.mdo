@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Subsystem
-	xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass"
-	uuid="a46dc512-0d37-492b-8e30-00594e3c390d">
-	<name>Acquiring</name>
-	<synonym>
-		<key>en</key>
-		<value>Acquiring</value>
-	</synonym>
-	<synonym>
-		<key>ru</key>
-		<value>Эквайринг</value>
-	</synonym>
-	<includeHelpInContents>true</includeHelpInContents>
-	<includeInCommandInterface>true</includeInCommandInterface>
-	<content>Catalog.acquiringOrders</content>
-	<content>Catalog.acquiringConnections</content>
-	<content>Catalog.creditCards</content>
-	<content>Catalog.acquiringLogs</content>
-	<content>CommonModule.Acquiring</content>
-	<content>CommonModule.AcquiringSberbank</content>
-	<content>Catalog.acquiringOrderIdentifiers</content>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a46dc512-0d37-492b-8e30-00594e3c390d">
+  <name>Acquiring</name>
+  <synonym>
+    <key>en</key>
+    <value>Acquiring</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Эквайринг</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>Catalog.acquiringOrders</content>
+  <content>Catalog.acquiringConnections</content>
+  <content>Catalog.creditCards</content>
+  <content>Catalog.acquiringLogs</content>
+  <content>CommonModule.Acquiring</content>
+  <content>CommonModule.AcquiringSberbank</content>
+  <content>Catalog.acquiringOrderIdentifiers</content>
 </mdclass:Subsystem>
