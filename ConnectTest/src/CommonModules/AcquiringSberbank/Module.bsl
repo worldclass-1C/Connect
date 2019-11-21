@@ -41,7 +41,7 @@ Procedure checkOrder(parameters) Export
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" + parameters.user);
 	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("orderId=" + parameters.orderId);
+	requestParametrs.Add("orderId=" + XMLString(parameters.orderId));
 	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
 			
 	requestURL = New Array();
@@ -72,6 +72,31 @@ Procedure checkOrder(parameters) Export
 		
 EndProcedure
 
+Procedure reverseOrder(parameters) Export
+			
+	requestParametrs = New Array();
+	requestParametrs.Add("userName=" + parameters.user);
+	requestParametrs.Add("password=" + parameters.password);
+	requestParametrs.Add("orderId=" + XMLString(parameters.orderId));
+		
+	response = requestExecute(parameters, "reverse", requestParametrs);		
+	If response.StatusCode = 200 Then
+		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+		parameters.Insert("response", responseStruct);
+		If responseStruct.Property("errorCode") And responseStruct.errorCode <> "0" Then
+			parameters.Insert("result", "fail");
+			parameters.Insert("errorCode", responseStruct.errorCode);
+			parameters.Insert("errorDescription", responseStruct.errorMessage);
+		Else
+			parameters.Insert("result", "ok");
+			parameters.Insert("errorCode", "");
+		EndIf;
+	Else
+		parameters.Insert("errorCode", "acquiringConnection");		
+	EndIf;		
+		
+EndProcedure
+
 Procedure unBindCard(parameters) Export
 			
 	requestParametrs = New Array();
@@ -84,13 +109,13 @@ Procedure unBindCard(parameters) Export
 	If response.StatusCode = 200 Then
 		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 		parameters.Insert("response", responseStruct);				
-		If responseStruct.Property("errorCode") Then
+		If responseStruct.Property("errorCode") And responseStruct.errorCode <> "0" Then
 			parameters.Insert("result", "fail");
 			parameters.Insert("errorCode", responseStruct.errorCode);
-			parameters.Insert("errorDescription", responseStruct.errorMessage);			
-		Else		
+			parameters.Insert("errorDescription", responseStruct.errorMessage);
+		Else
 			parameters.Insert("result", "ok");
-			parameters.Insert("errorCode", "");			
+			parameters.Insert("errorCode", "");
 		EndIf;
 	Else
 		parameters.Insert("result", "fail");

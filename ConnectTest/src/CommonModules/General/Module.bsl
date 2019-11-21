@@ -43,6 +43,8 @@ Procedure executeRequestMethod(parameters) Export
 			payment(parameters);
 		ElsIf parameters.requestName = "paymentstatus" Then
 			paymentStatus(parameters);
+		ElsIf parameters.requestName = "bindcardlist" Then
+			bindCardList(parameters);
 		ElsIf parameters.requestName = "bindcard" Then
 			bindCard(parameters);
 		ElsIf parameters.requestName = "unbindcard" Then
@@ -1477,6 +1479,32 @@ Procedure paymentStatus(parameters)
 			
 EndProcedure
 
+Procedure bindCardList(parameters)
+			
+	array = New Array();
+	query = New Query("SELECT
+	|	creditCards.Ref AS creditCard,
+	|	creditCards.Description AS name,
+	|	PRESENTATION(creditCards.paymentSystem) AS paymentSystem
+	|FROM
+	|	Catalog.creditCards AS creditCards
+	|WHERE
+	|	creditCards.Owner = &owner
+	|	AND creditCards.active");
+	
+	query.SetParameter("owner", parameters.tokenContext.user);	
+	select = query.Execute().Select();	
+	While select.Next() Do
+		cardStruct = New Structure();
+		cardStruct.Insert("uid", XMLString(select.creditCard));
+		cardStruct.Insert("name", select.name);
+		cardStruct.Insert("paymentSystem", select.paymentSystem);
+		array.Add(cardStruct);
+	EndDo;		
+	parameters.Insert("answerBody", HTTP.encodeJSON(array));	
+			
+EndProcedure
+
 Procedure bindCard(parameters)
 	
 	requestStruct = parameters.requestStruct;
@@ -1496,7 +1524,8 @@ Procedure bindCard(parameters)
 		struct.Insert("orderId", answer.orderId);
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
-		struct.Insert("failUrl", answer.failUrl);		
+		struct.Insert("failUrl", answer.failUrl);
+		answer = Acquiring.executeRequestBackground("reverse", answer.order);		
 	EndIf;	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
@@ -1519,7 +1548,7 @@ Procedure unBindCard(parameters)
 	|	creditCards.Ref = &creditCard
 	|	AND creditCards.Owner = &owner");
 	
-	query.SetParameter("creditCard", XMLValue(Type("CatalogRef.creditCards"), parameters.bindingId));
+	query.SetParameter("creditCard", XMLValue(Type("CatalogRef.creditCards"), requestStruct.uid));
 	query.SetParameter("owner", tokenContext.user);
 	
 	result = query.Execute();
@@ -1528,6 +1557,7 @@ Procedure unBindCard(parameters)
 		errorDescription = Service.getErrorDescription(language, "acquiringCreditCard");
 	Else
 		select = result.Select();
+		select.Next();
 		If select.active Then
 			orderStruct = New Structure();
 			orderStruct.Insert("user", tokenContext.user);
@@ -1545,3 +1575,4 @@ Procedure unBindCard(parameters)
 	parameters.Insert("errorDescription", errorDescription);
 			
 EndProcedure
+

@@ -60,6 +60,8 @@ Function getRequiredParameters(requestName)
 		Return "appType,appVersion,deviceModel,systemType,systemVersion";
 	ElsIF requestName = "paymentstatus" Then
 		Return "orderId";
+	ElsIF requestName = "unbindcard" Then
+		Return "uid";	
 	ElsIF requestName = "addusertotoken" Then
 		Return "uid";		
 	ElsIF requestName = "imagePOST" Then

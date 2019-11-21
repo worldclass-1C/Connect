@@ -13,6 +13,13 @@ Function newOrder(parameters) Export
 	Return orderObject.ref;	
 EndFunction
 
+Function executeRequestBackground(requestName, order) Export
+	array	= New Array();
+	array.Add(requestName);
+	array.Add(order);
+	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
+EndFunction
+
 Function executeRequest(requestName, order) Export
 	parameters = orderDetails(order);
 	parameters.Insert("requestName", requestName);	
@@ -22,7 +29,9 @@ Function executeRequest(requestName, order) Export
 		ElsIf requestName = "check" Then
 			checkOrder(parameters);
 		ElsIf requestName = "unBindCard" Then
-			unBindCard(parameters);	
+			unBindCard(parameters);
+		ElsIf requestName = "reverse" Then
+			reverseOrder(parameters);		
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -58,29 +67,34 @@ Function paymentSystem(val code) Export
 	EndIf;
 EndFunction
 
-Function sendOrder(parameters)	
+Procedure sendOrder(parameters)
 	parameters.Insert("errorCode", "acquiringOrderSend");
 	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/payment/success");
 	parameters.Insert("failUrl", "https://solutions.worldclass.ru/payment/fail");
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.sendOrder(parameters);
-	EndIf;
-	Return parameters;
-EndFunction
+	EndIf;	
+EndProcedure
 
-Function checkOrder(parameters)	
+Procedure checkOrder(parameters)
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.checkOrder(parameters);
 	EndIf;		
 	If parameters.errorCode = "" And parameters.acquiringRequest = Enums.acquiringRequests.binding Then
-		activateCard(parameters);
-	EndIf;		
-	Return parameters;
-EndFunction
+		activateCard(parameters);		
+	EndIf;
+EndProcedure
 
-Function unBindCard(parameters)	
+Procedure reverseOrder(parameters)
+	parameters.Insert("errorCode", "acquiringOrderReverse");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.reverseOrder(parameters);
+	EndIf;	
+EndProcedure
+
+Procedure unBindCard(parameters)
 	parameters.Insert("errorCode", "acquiringUnBindCard");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.unBindCard(parameters);
@@ -88,8 +102,7 @@ Function unBindCard(parameters)
 	If parameters.errorCode = "" Then 
 		deactivateCard(parameters.creditCard);
 	EndIf;
-	Return parameters;
-EndFunction
+EndProcedure
 
 Function newCard(parameters)
 	If parameters.bindingId = "" Then
@@ -120,12 +133,12 @@ Procedure addCardToQueue(creditCard)
 	EndIf;
 EndProcedure
 
-Procedure activateCard(parameters)		
-	creditCardObject = Catalogs.creditCards.GetRef(New UUID(parameters.bindingId)).GetObject();
-	If creditCardObject = Undefined Then
-		If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-			bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
-		EndIf;
+Procedure activateCard(parameters)
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
+	EndIf;	
+	creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
+	If creditCardObject = Undefined Then		
 		creditCard = newCard(bindCardParameters); 
 	Else
 		creditCardObject.active = True;
@@ -136,9 +149,9 @@ Procedure activateCard(parameters)
 EndProcedure
 
 Procedure deactivateCard(creditCard)
-	creditCard = creditCard.GetObject();
-	creditCard.active = False;
-	creditCard.Write();
+	creditCardObject = creditCard.GetObject();
+	creditCardObject.active = False;
+	creditCardObject.Write();
 	addCardToQueue(creditCard);
 EndProcedure
 
@@ -153,7 +166,6 @@ Function orderDetails(order)
 	|	acquiringOrders.Code AS orderNumber,
 	|	acquiringOrders.acquiringAmount AS acquiringAmount,
 	|	acquiringOrders.user AS bindingUser,
-	|	acquiringOrders.bindingId AS bindingId,
 	|	acquiringOrders.creditCard,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
 	|	CASE
@@ -230,25 +242,25 @@ Function orderDetails(order)
 	|	END AS UseOSAuthentication,
 	|	"""" AS errorDescription
 	|FROM
-	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
-	|		LEFT JOIN Catalog.acquiringOrders AS acquiringOrders
-	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
-	|			ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
-	|			AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
-	|			AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
-	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|			ON acquiringOrders.holding = AcquiringProviderConnection.holding
-	|			AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|			AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
-	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
-	|			ON acquiringOrders.holding = gymConnection.holding
-	|			AND acquiringOrders.gym = gymConnection.gym
-	|			AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
-	|			ON acquiringOrders.holding = holdingConnection.holding
-	|			AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|			AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
 	|		ON acquiringOrderIdentifiers.Owner = acquiringOrders.Ref
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
+	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
+	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
+	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
+	|		ON acquiringOrders.holding = gymConnection.holding
+	|		AND acquiringOrders.gym = gymConnection.gym
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
+	|		ON acquiringOrders.holding = holdingConnection.holding
+	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|WHERE
 	|	acquiringOrders.ref = &order";
 
@@ -296,4 +308,3 @@ Function answerStruct()
 	answer.Insert("response", New Structure());	
 	Return answer;		
 EndFunction
-

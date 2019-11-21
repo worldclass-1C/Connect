@@ -197,7 +197,6 @@ Procedure logAcquiringBackground(parameters) Export
 	array.Add(parameters);
 	BackgroundJobs.Execute("Service.logAcquiring", array, New UUID());
 EndProcedure
-
 	
 Procedure logRequest(parameters) Export
 	record = Catalogs.logs.CreateItem();
