@@ -233,10 +233,22 @@ Procedure logAcquiring(parameters) Export
 	record = Catalogs.acquiringLogs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
 	record.order = parameters.order;		
-	record.isError = parameters.errorCode <> "";
 	record.requestName = parameters.requestName;
-	record.requestBody = parameters.requestBody;	
-	record.responseBody = ?(record.isError, parameters.errorDescription, parameters.responseBody);
+	If parameters.Property("errorCode") Then
+		record.isError = parameters.errorCode <> "";
+	EndIf;
+	If parameters.Property("requestBody") Then
+		record.requestBody = parameters.requestBody;
+	EndIf;	
+	If parameters.Property("response") Then
+		If record.isError Then
+			record.responseBody = parameters.errorCode + " " + parameters.errorDescription;	
+		ElsIf TypeOf(parameters.response) = Type("Structure") Then
+			record.responseBody = HTTP.encodeJSON(parameters.response);
+		Else
+			record.responseBody = "" + parameters.response;		
+		EndIf;
+	EndIf;
 	record.Write();
 EndProcedure
 

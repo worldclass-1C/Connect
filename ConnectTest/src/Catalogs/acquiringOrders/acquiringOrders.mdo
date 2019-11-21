@@ -136,17 +136,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="b83d8649-f083-4af8-8a40-c1f2e89723c5">
-    <name>bindingId</name>
+  <attributes uuid="927422da-1a96-4cc1-b26b-b08de40f7bfe">
+    <name>creditCard</name>
     <synonym>
       <key>en</key>
-      <value>Binding id</value>
+      <value>Credit card</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Банковская карта</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>36</length>
-      </stringQualifiers>
+      <types>CatalogRef.creditCards</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

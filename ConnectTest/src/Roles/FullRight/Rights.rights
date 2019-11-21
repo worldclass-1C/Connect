@@ -697,13 +697,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.acquiringOrders.Attribute.bindingId</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Catalog.acquiringOrders.TabularSection.orders</name>
 		<right>
 			<name>Edit</name>
@@ -884,4 +877,3 @@
 		</right>
 	</object>
 </Rights>
-

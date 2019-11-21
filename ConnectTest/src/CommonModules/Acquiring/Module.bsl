@@ -1,5 +1,5 @@
 
-Function newHoldingOrder(parameters, sendOrderImmediately = False) Export	
+Function newOrder(parameters) Export
 	orderObject = Catalogs.acquiringOrders.CreateItem();
 	FillPropertyValues(orderObject, parameters);
 	If parameters.Property("orders") Then
@@ -8,30 +8,25 @@ Function newHoldingOrder(parameters, sendOrderImmediately = False) Export
 			newRow.uid = element.docId;				
 		EndDo;	
 	EndIf;	
-	orderObject.Write();
-	answer = orderDetails(orderObject.ref);
-	answer.Insert("requestName", "write");	
-	Service.logAcquiringBackground(answer);
-	If sendOrderImmediately Then		
-		sendOrder(answer);		
-	EndIf;
-	Return answer;
+	orderObject.Write();	
+	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));		
+	Return orderObject.ref;	
 EndFunction
 
-Function sendHoldingOrder(order, sendOrderImmediately = False) Export	
-	answer = orderDetails(order);
-	answer.Insert("requestName", "write");	
-	Service.logAcquiringBackground(answer);
-	If sendOrderImmediately Then		
-		sendOrder(answer);		
+Function executeRequest(requestName, order) Export
+	parameters = orderDetails(order);
+	parameters.Insert("requestName", requestName);	
+	If parameters.errorCode = "" Then
+		If requestName = "send" Then
+			sendOrder(parameters);
+		ElsIf requestName = "check" Then
+			checkOrder(parameters);
+		ElsIf requestName = "unBindCard" Then
+			unBindCard(parameters);	
+		EndIf;
 	EndIf;
-	Return answer;
-EndFunction
-
-Function checkHoldingOrder(parameters) Export
-	answer = orderDetails(parameters.order);
-	answer.Insert("requestName", "write");	
-	Return answer;
+	Service.logAcquiringBackground(parameters);
+	Return parameters;
 EndFunction
 
 Function paymentSystem(val code) Export
@@ -63,20 +58,103 @@ Function paymentSystem(val code) Export
 	EndIf;
 EndFunction
 
+Function sendOrder(parameters)	
+	parameters.Insert("errorCode", "acquiringOrderSend");
+	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/payment/success");
+	parameters.Insert("failUrl", "https://solutions.worldclass.ru/payment/fail");
+	parameters.Insert("formUrl", "");
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.sendOrder(parameters);
+	EndIf;
+	Return parameters;
+EndFunction
+
+Function checkOrder(parameters)	
+	parameters.Insert("errorCode", "acquiringOrderCheck");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.checkOrder(parameters);
+	EndIf;		
+	If parameters.errorCode = "" And parameters.acquiringRequest = Enums.acquiringRequests.binding Then
+		activateCard(parameters);
+	EndIf;		
+	Return parameters;
+EndFunction
+
+Function unBindCard(parameters)	
+	parameters.Insert("errorCode", "acquiringUnBindCard");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.unBindCard(parameters);
+	EndIf;	
+	If parameters.errorCode = "" Then 
+		deactivateCard(parameters.creditCard);
+	EndIf;
+	Return parameters;
+EndFunction
+
+Function newCard(parameters)
+	If parameters.bindingId = "" Then
+		Return Catalogs.creditCards.EmptyRef();
+	Else
+		creditCardRef = Catalogs.creditCards.GetRef(New UUID(parameters.bindingId));
+		creditCard = Catalogs.creditCards.CreateItem();
+		creditCard.SetNewObjectRef(creditCardRef);
+		creditCard.Owner = Catalogs.users.GetRef(New UUID(parameters.userId));
+		creditCard.acquiringBank = parameters.acquiringBank;
+		creditCard.active = parameters.active;
+		creditCard.autopayment = parameters.autopayment;
+		creditCard.expiryDate = parameters.expiryDate;
+		creditCard.ownerName = parameters.ownerName;
+		creditCard.Description = parameters.description;
+		creditCard.paymentSystem = Acquiring.paymentSystem(left(creditCard.Description, 2));
+		creditCard.Write();
+		Return creditCard.Ref;
+	EndIf;
+EndFunction
+
+Procedure addCardToQueue(creditCard)
+	If Not creditCard.IsEmpty() Then
+		record = InformationRegisters.queueCreditCardToSend.CreateRecordManager();
+		record.Period = ToUniversalTime(CurrentDate());
+		record.creditCard = creditCard;
+		record.Write();
+	EndIf;
+EndProcedure
+
+Procedure activateCard(parameters)		
+	creditCardObject = Catalogs.creditCards.GetRef(New UUID(parameters.bindingId)).GetObject();
+	If creditCardObject = Undefined Then
+		If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+			bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
+		EndIf;
+		creditCard = newCard(bindCardParameters); 
+	Else
+		creditCardObject.active = True;
+		creditCardObject.Write();
+		creditCard = creditCardObject.Ref;				
+	EndIf;	
+	addCardToQueue(creditCard);
+EndProcedure
+
+Procedure deactivateCard(creditCard)
+	creditCard = creditCard.GetObject();
+	creditCard.active = False;
+	creditCard.Write();
+	addCardToQueue(creditCard);
+EndProcedure
+
 Function orderDetails(order)
 	
 	answer = answerStruct();
-		
+			
 	query = New Query();
 	query.text = "SELECT
 	|	acquiringOrders.Ref AS order,
+	|	acquiringOrderIdentifiers.Ref AS orderId,
 	|	acquiringOrders.Code AS orderNumber,
 	|	acquiringOrders.acquiringAmount AS acquiringAmount,
-	|	""https://solutions.worldclass.ru/payment/success"" AS returnUrl,
-	|	""https://solutions.worldclass.ru/payment/fail"" AS failUrl,
-	|	""DESKTOP"" AS pageView,
 	|	acquiringOrders.user AS bindingUser,
 	|	acquiringOrders.bindingId AS bindingId,
+	|	acquiringOrders.creditCard,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
@@ -87,7 +165,7 @@ Function orderDetails(order)
 	|			THEN gymConnection.connection.acquiringProvider
 	|		ELSE holdingConnection.connection.acquiringProvider
 	|	END AS acquiringProvider,
-	|	CASE
+	|	ISNULL(CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.server
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
@@ -95,7 +173,7 @@ Function orderDetails(order)
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.server
 	|		ELSE holdingConnection.connection.server
-	|	END AS server,
+	|	END, """") AS server,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.port
@@ -152,60 +230,55 @@ Function orderDetails(order)
 	|	END AS UseOSAuthentication,
 	|	"""" AS errorDescription
 	|FROM
-	|	Catalog.acquiringOrders AS acquiringOrders
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
-	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
-	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
-	|		ON acquiringOrders.holding = gymConnection.holding
-	|		AND acquiringOrders.gym = gymConnection.gym
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
-	|		ON acquiringOrders.holding = holdingConnection.holding
-	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|		LEFT JOIN Catalog.acquiringOrders AS acquiringOrders
+	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
+	|			ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
+	|			AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
+	|			AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
+	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
+	|			ON acquiringOrders.holding = AcquiringProviderConnection.holding
+	|			AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
+	|			AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
+	|			ON acquiringOrders.holding = gymConnection.holding
+	|			AND acquiringOrders.gym = gymConnection.gym
+	|			AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|			LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
+	|			ON acquiringOrders.holding = holdingConnection.holding
+	|			AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
+	|			AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		ON acquiringOrderIdentifiers.Owner = acquiringOrders.Ref
 	|WHERE
 	|	acquiringOrders.ref = &order";
 
 	query.SetParameter("order", order);	
 	result = query.Execute();
-	If Not result.IsEmpty() Then
+	If result.IsEmpty() Then
+		answer.Insert("errorCode", "acquiringConnectionSetup");
+	Else	
 		select = result.Select();
 		select.Next();
-		FillPropertyValues(answer, select);		
-//		sendOrder(parameters);	 
+		If select.server = "" Then
+			answer.Insert("errorCode", "acquiringConnectionSetup");
+		Else	
+			FillPropertyValues(answer, select);
+		EndIf;	 
 	EndIf;	
 	
 	Return answer;
 	
 EndFunction
 
-Procedure sendOrder(parameters)
-	parameters.Insert("requestName", "send");
-	parameters.Insert("errorCode", "acquiringOrderSend");
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.sendOrder(parameters);
-	EndIf;
-	Service.logAcquiringBackground(parameters);		
-EndProcedure
-
 Function answerStruct()
 	answer = New Structure();
 	answer.Insert("order", Catalogs.acquiringOrders.EmptyRef());
 	answer.Insert("orderNumber", "");
 	answer.Insert("acquiringAmount", 0);
-	answer.Insert("orderId", "");
-	answer.Insert("formUrl", "");
-	answer.Insert("returnUrl", "");
-	answer.Insert("failUrl" "");
-	answer.Insert("pageView", "");
+	answer.Insert("orderId", "");	
 	answer.Insert("bindingUser", Catalogs.users.EmptyRef());
 	answer.Insert("bindingId", "");
+	answer.Insert("creditCard", Catalogs.creditCards.EmptyRef());
 	answer.Insert("acquiringProvider", Enums.acquiringProviders.EmptyRef());
 	answer.Insert("acquiringRequest", Enums.acquiringRequests.EmptyRef());
 	answer.Insert("server", "");
@@ -219,7 +292,8 @@ Function answerStruct()
 	answer.Insert("errorDescription", "");
 	answer.Insert("requestName", "");
 	answer.Insert("requestBody", "");
-	answer.Insert("responseBody", "");	
+	answer.Insert("responseBody", "");
+	answer.Insert("response", New Structure());	
 	Return answer;		
 EndFunction
 

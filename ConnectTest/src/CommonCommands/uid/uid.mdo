@@ -15,6 +15,7 @@
     <types>CatalogRef.users</types>
     <types>CatalogRef.employees</types>
     <types>CatalogRef.classesSchedule</types>
+    <types>CatalogRef.creditCards</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

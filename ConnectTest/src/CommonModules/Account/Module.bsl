@@ -19,7 +19,7 @@ Function getFromExternalSystem(val parameters, val parametrName,
 	language = parametersNew.language;
 	errorDescription = parametersNew.errorDescription;	
 	authKey = parametersNew.authKey;
-	userProfile = initProfileStruct();
+	userProfile = Users.initProfileStruct();
 	userList = New Array();		
 	
 	General.executeRequestMethod(parametersNew);
@@ -30,9 +30,9 @@ Function getFromExternalSystem(val parameters, val parametrName,
 				accountArray = DataLoad.createItems("addChangeAccounts", tokenContext.holding, answerStruct);
 				account = accountArray[0];
 				setStatus(account);								
-			EndIf;
-			userProfile = profile(account);
+			EndIf;			
 			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account);
+			userProfile = Users.profile(userArray[0], tokenContext.appType);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
 			authKey = XMLString(tokenContext.token) + Account.tempPassword();			
 			parametersNew.tokenContext.Insert("user", userArray[0]);			

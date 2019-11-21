@@ -247,21 +247,19 @@
         </extInfo>
       </items>
       <items xsi:type="form:FormField">
-        <name>bindingId</name>
-        <id>16</id>
+        <name>creditCard</name>
+        <id>74</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
           <common>true</common>
         </userVisible>
-        <dataPath xsi:type="form:MultiLanguageDataPath">
-          <paths xsi:type="form:DataPath">
-            <segments>Object.bindingId</segments>
-          </paths>
+        <dataPath xsi:type="form:DataPath">
+          <segments>Object.creditCard</segments>
         </dataPath>
         <extendedTooltip>
-          <name>bindingIdExtendedTooltip</name>
-          <id>18</id>
+          <name>creditCardExtendedTooltip</name>
+          <id>76</id>
           <visible>true</visible>
           <enabled>true</enabled>
           <userVisible>
@@ -275,8 +273,8 @@
           </extInfo>
         </extendedTooltip>
         <contextMenu>
-          <name>bindingIdContextMenu</name>
-          <id>17</id>
+          <name>creditCardContextMenu</name>
+          <id>75</id>
           <visible>true</visible>
           <enabled>true</enabled>
           <userVisible>
@@ -285,7 +283,7 @@
           <autoFill>true</autoFill>
         </contextMenu>
         <type>InputField</type>
-        <editMode>EnterOnInput</editMode>
+        <editMode>Enter</editMode>
         <showInHeader>true</showInHeader>
         <headerHorizontalAlign>Left</headerHorizontalAlign>
         <showInFooter>true</showInFooter>

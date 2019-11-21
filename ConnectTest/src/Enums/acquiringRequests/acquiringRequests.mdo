@@ -46,7 +46,18 @@
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Привязка</value>
+      <value>Привязка карты</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="53ee2ecb-be93-45fd-9e54-94b243e493be">
+    <name>unbinding</name>
+    <synonym>
+      <key>en</key>
+      <value>Unbinding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Отвязка карты</value>
     </synonym>
   </enumValues>
 </mdclass:Enum>

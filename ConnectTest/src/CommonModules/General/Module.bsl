@@ -45,6 +45,8 @@ Procedure executeRequestMethod(parameters) Export
 			paymentStatus(parameters);
 		ElsIf parameters.requestName = "bindcard" Then
 			bindCard(parameters);
+		ElsIf parameters.requestName = "unbindcard" Then
+			unBindCard(parameters);	
 		ElsIf parameters.requestName = "catalogcancelcauses"
 				Or parameters.requestName = "cancelcauseslist" Then // проверить описание в API
 			cancellationReasonsList(parameters);
@@ -412,7 +414,7 @@ Procedure confirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenContext.token, changeStruct);
-				struct.Insert("userProfile", Account.profile(select.account));
+				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType));
 				struct.Insert("userList", New Array());
 				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
 				parametersNew = Service.getStructCopy(parameters);
@@ -1406,7 +1408,7 @@ Procedure paymentPreparation(parameters)
 	General.executeRequestMethod(parametersNew);
 	If parametersNew.errorDescription.result = "" Then
 		struct = HTTP.decodeJSON(parametersNew.answerBody);		
-		answer = Acquiring.newHoldingOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
+		answer = Acquiring.newOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
 		//@skip-warning
 		struct.Insert("uid", XMLString(answer.order));
 	Else
@@ -1432,7 +1434,7 @@ Procedure payment(parameters)
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 	orderStruct.Insert("bindingId", ?(requestStruct.Property("bindingId"), requestStruct.bindingId, ""));
 	
-	Acquiring.newHoldingOrder(orderStruct);	
+	Acquiring.newOrder(orderStruct);	
 	
 	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
@@ -1461,20 +1463,15 @@ Procedure paymentStatus(parameters)
 	Else
 		select = result.Select();
 		select.Next();
-		answer = Acquiring.checkHoldingOrder(select.order);	
+		answer = Acquiring.executeRequest("check", select.order);	
 	EndIf;
 	
-	
-	
-//	If answer = Undefined Then
-//		errorDescription = Service.getErrorDescription(language, "acquiringConnection");		
-//	Else
-//		struct.Insert("orderId", answer.orderId);
-//		struct.Insert("formUrl", answer.formUrl);
-//		struct.Insert("returnUrl", answer.returnUrl);
-//		struct.Insert("failUrl", answer.failUrl);
-//		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
-//	EndIf;
+	If answer = Undefined Then
+		errorDescription = Service.getErrorDescription(language, "acquiringOrderCheck");		
+	Else
+		struct.Insert("result", answer.result);		
+		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
+	EndIf;
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);
 			
@@ -1491,19 +1488,58 @@ Procedure bindCard(parameters)
 	orderStruct.Insert("acquiringAmount", 1);
 	orderStruct.Insert("user", tokenContext.user);
 	orderStruct.Insert("holding", tokenContext.holding);	
-	
 	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 	
-	answer = Acquiring.newHoldingOrder(orderStruct, True);
-	If answer = Undefined Then
-		errorDescription = Service.getErrorDescription(language, "acquiringConnection");		
-	Else
+	answer = Acquiring.executeRequest("send", Acquiring.newOrder(orderStruct));	
+	If answer.errorCode = "" Then		
 		struct.Insert("orderId", answer.orderId);
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
-		struct.Insert("failUrl", answer.failUrl);
-		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
+		struct.Insert("failUrl", answer.failUrl);		
+	EndIf;	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
+			
+EndProcedure
+
+Procedure unBindCard(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	tokenContext = parameters.tokenContext;
+	language = parameters.language;
+	struct = New Structure();
+	
+	query = New Query("SELECT
+	|	creditCards.Ref AS creditCard,
+	|	creditCards.active
+	|FROM
+	|	Catalog.creditCards AS creditCards
+	|WHERE
+	|	creditCards.Ref = &creditCard
+	|	AND creditCards.Owner = &owner");
+	
+	query.SetParameter("creditCard", XMLValue(Type("CatalogRef.creditCards"), parameters.bindingId));
+	query.SetParameter("owner", tokenContext.user);
+	
+	result = query.Execute();
+	
+	If result.IsEmpty() Then
+		errorDescription = Service.getErrorDescription(language, "acquiringCreditCard");
+	Else
+		select = result.Select();
+		If select.active Then
+			orderStruct = New Structure();
+			orderStruct.Insert("user", tokenContext.user);
+			orderStruct.Insert("holding", tokenContext.holding);			
+			orderStruct.Insert("creditCard", select.creditCard);
+			orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.unbinding);
+			orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
+			answer = Acquiring.executeRequest("unBindCard", Acquiring.newOrder(orderStruct));
+			errorDescription = Service.getErrorDescription(language, answer.errorCode);
+		Else
+			errorDescription = Service.getErrorDescription(language, "");	
+		EndIf;
 	EndIf;
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);

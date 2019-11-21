@@ -160,7 +160,7 @@
   <defaultObjectForm>Catalog.users.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.users.Form.ListForm</defaultListForm>
   <attributes uuid="6af8271f-8292-4602-88a7-b092c506caaa">
-    <name>barCode</name>
+    <name>barcode</name>
     <synonym>
       <key>en</key>
       <value>Barcode</value>

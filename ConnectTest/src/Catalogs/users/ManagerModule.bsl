@@ -6,7 +6,7 @@ Function attributesStructure() Export
 	
 	DataLoad.addRowInAttributesTable(attributesTable, "userCode", "cid", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "userType", "userType", "string");
-	DataLoad.addRowInAttributesTable(attributesTable, "barCode", "barcode", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "barcode", "barcode", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
 	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
 	

@@ -412,7 +412,7 @@
     </userVisible>
     <dataPath xsi:type="form:MultiLanguageDataPath">
       <paths xsi:type="form:DataPath">
-        <segments>Object.barCode</segments>
+        <segments>Object.barcode</segments>
       </paths>
     </dataPath>
     <extendedTooltip>

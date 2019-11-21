@@ -22,7 +22,7 @@ Function profile(user, appType) Export
 	|		ELSE users.owner.gender
 	|	END AS gender,
 	|	REFPRESENTATION(users.owner.status) AS status,
-	|	users.barCode AS barCode,
+	|	users.barcode AS barcode,
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
@@ -79,8 +79,8 @@ Function profile(user, appType) Export
 	
 EndFunction
 
-Function initProfileStruct()
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barCode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
+Function initProfileStruct() Export
+	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
 
 Procedure updateCache(val parameters) Export	

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6ce0bafa-cf06-48f9-9b4d-9df75593008f">
+  <producedTypes>
+    <selectionType typeId="2787a198-65a9-4016-872a-d72c906e25b0" valueTypeId="8a321d56-1d5f-4042-8dfd-33428cb40104"/>
+    <listType typeId="7ea9552a-03f6-460c-8732-660051f6c28c" valueTypeId="6ea2377c-b6af-431a-ada1-7cebf679d2b8"/>
+    <managerType typeId="f5c74293-2962-4231-8171-cc40c1aeee7f" valueTypeId="b0240bf0-8efc-46f8-8201-bb083724806a"/>
+    <recordSetType typeId="f6a56491-5266-4398-a381-2c5fc20d551c" valueTypeId="1c4cf769-ea42-4cd2-9b6a-231532b8c1fc"/>
+    <recordKeyType typeId="5931aba5-778e-48b6-9832-36000034a091" valueTypeId="23559b8f-ad2d-4b26-ab17-c1ced89f83d7"/>
+    <recordType typeId="65b8239b-69d9-4b22-80d7-60328e5cbe64" valueTypeId="d6875c34-a40f-41e7-b480-387ce4e359e9"/>
+    <recordManagerType typeId="6fd2f52e-c03b-450d-841c-9540344ac8f8" valueTypeId="c3e1855f-159d-4cfb-bab2-cdb928a3374e"/>
+  </producedTypes>
+  <name>queueCreditCardToSend</name>
+  <synonym>
+    <key>en</key>
+    <value>Credit card to send</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Кредитные карты к отправке</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <informationRegisterPeriodicity>Second</informationRegisterPeriodicity>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <dimensions uuid="c199c234-d85b-4ca9-8dc9-fe9b5201805e">
+    <name>creditCard</name>
+    <synonym>
+      <key>en</key>
+      <value>Credit card</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.creditCards</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>
