@@ -8,7 +8,7 @@ Function sendSMS(parameters, answer) Export
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
 	
-	XMLReader = Новый XMLReader();;
+	XMLReader = Новый XMLReader();
 	XMLReader.SetString(answerBody);
 	currentPath = "";
 	code = "";

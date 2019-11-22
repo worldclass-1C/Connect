@@ -10,7 +10,8 @@ Function processRequest(request, requestName = "") Export
 	parameters.Insert("languageCode", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
-	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));	
+	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
+	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));	
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
 	parameters.Insert("underControl", False);
@@ -55,7 +56,7 @@ Function processRequest(request, requestName = "") Export
 
 EndFunction
 
-Function decodeJSON(val body, val JSONValueType = "") Export	
+Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False) Export	
 	body = TrimAll(body);
 	If JSONValueType = "" Then
 		JSONValueType = Enums.JSONValueTypes.string;
@@ -63,7 +64,7 @@ Function decodeJSON(val body, val JSONValueType = "") Export
 	If StrLen(Body) > 0 Then			
 		JSONReader = New JSONReader();
 		JSONReader.SetString(body);
-		RequestStruct   = ReadJSON(JSONReader);
+		RequestStruct   = ReadJSON(JSONReader, ReadToMap);
 		JSONReader.Close();
 		Return RequestStruct;
 	Else
@@ -135,6 +136,9 @@ Function prepareResponse(parameters) Export
 		response = New HTTPServiceResponse(200);
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
+	If HTTP.inTheWhiteList(parameters.origin) Then
+		Response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);				
+	EndIf;
 	If parameters.answerBody <> "" Then
 		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
 	EndIf;
@@ -214,3 +218,14 @@ Function getRequestHeader(request, key) Export
 	Return ?(TypeOf(value) = Undefined, Undefined, Lower(value));
 EndFunction
 
+Function inTheWhiteList(origin) Export
+	If False 
+		Or origin = "https://stoplight.io" 
+		Or origin = "https://tilda.cc"
+		Or origin = "https://ufcgymrussia.ru" 
+	Then
+		Return True;
+	Else
+		Return False;
+	EndIf;	
+EndFunction

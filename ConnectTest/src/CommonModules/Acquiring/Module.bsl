@@ -112,13 +112,13 @@ Function newCard(parameters)
 		creditCard = Catalogs.creditCards.CreateItem();
 		creditCard.SetNewObjectRef(creditCardRef);
 		creditCard.Owner = Catalogs.users.GetRef(New UUID(parameters.userId));
-		creditCard.acquiringBank = parameters.acquiringBank;
-		creditCard.active = parameters.active;
+		creditCard.acquiringBank = parameters.acquiringBank;		
 		creditCard.autopayment = parameters.autopayment;
 		creditCard.expiryDate = parameters.expiryDate;
 		creditCard.ownerName = parameters.ownerName;
 		creditCard.Description = parameters.description;
 		creditCard.paymentSystem = Acquiring.paymentSystem(left(creditCard.Description, 2));
+		creditCard.registrationDate = ToUniversalTime(CurrentDate());
 		creditCard.Write();
 		Return creditCard.Ref;
 	EndIf;
@@ -141,7 +141,7 @@ Procedure activateCard(parameters)
 	If creditCardObject = Undefined Then		
 		creditCard = newCard(bindCardParameters); 
 	Else
-		creditCardObject.active = True;
+		creditCardObject.inactive = False;
 		creditCardObject.Write();
 		creditCard = creditCardObject.Ref;				
 	EndIf;	
@@ -150,7 +150,7 @@ EndProcedure
 
 Procedure deactivateCard(creditCard)
 	creditCardObject = creditCard.GetObject();
-	creditCardObject.active = False;
+	creditCardObject.inactive = True;
 	creditCardObject.Write();
 	addCardToQueue(creditCard);
 EndProcedure

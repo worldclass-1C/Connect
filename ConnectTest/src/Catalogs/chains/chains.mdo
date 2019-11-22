@@ -159,6 +159,7 @@
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.chains.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.chains.Form.ListForm</defaultListForm>
+  <defaultChoiceForm>Catalog.chains.Form.ChoiceForm</defaultChoiceForm>
   <attributes uuid="44b7b374-2db9-41af-a470-c43e465293ec">
     <name>brand</name>
     <synonym>
@@ -391,11 +392,11 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
-  <forms uuid="78483e22-e9d9-465c-8c4c-6b45a9ed4e3b">
-    <name>ListForm</name>
+  <forms uuid="99c6115b-56cc-4155-9181-de5eaed5d9a3">
+    <name>ChoiceForm</name>
     <synonym>
-      <key>ru</key>
-      <value>List form</value>
+      <key>en</key>
+      <value>Choice form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
@@ -405,6 +406,15 @@
     <synonym>
       <key>ru</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="b6935990-4dbb-4430-9b84-da1bc9d0bbac">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

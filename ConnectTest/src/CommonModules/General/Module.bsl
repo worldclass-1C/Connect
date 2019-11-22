@@ -1111,7 +1111,7 @@ Procedure readNotification(parameters)
 				record.messageStatus		= Enums.messageStatuses.read;
 				record.informationChannel	= informationChannel;
 				record.Write();
-			EndDo;;
+			EndDo;
 			unReadMessagesCount = 0;
 		Else
 			If select.FindNext(New Structure("message", message)) Then
@@ -1472,7 +1472,10 @@ Procedure paymentStatus(parameters)
 		errorDescription = Service.getErrorDescription(language, "acquiringOrderCheck");		
 	Else
 		struct.Insert("result", answer.result);		
-		errorDescription = Service.getErrorDescription(language, answer.errorCode);;
+		errorDescription = Service.getErrorDescription(language, answer.errorCode);
+		If answer.errorCode = ""  And answer.acquiringRequest = Enums.acquiringRequests.binding Then
+			Acquiring.executeRequestBackground("reverse", answer.order);
+		EndIf;
 	EndIf;
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);
@@ -1490,7 +1493,8 @@ Procedure bindCardList(parameters)
 	|	Catalog.creditCards AS creditCards
 	|WHERE
 	|	creditCards.Owner = &owner
-	|	AND creditCards.active");
+	|	AND
+	|	NOT creditCards.inactive");
 	
 	query.SetParameter("owner", parameters.tokenContext.user);	
 	select = query.Execute().Select();	
@@ -1524,8 +1528,7 @@ Procedure bindCard(parameters)
 		struct.Insert("orderId", answer.orderId);
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
-		struct.Insert("failUrl", answer.failUrl);
-		answer = Acquiring.executeRequestBackground("reverse", answer.order);		
+		struct.Insert("failUrl", answer.failUrl);				
 	EndIf;	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
@@ -1541,7 +1544,7 @@ Procedure unBindCard(parameters)
 	
 	query = New Query("SELECT
 	|	creditCards.Ref AS creditCard,
-	|	creditCards.active
+	|	NOT creditCards.inactive AS active
 	|FROM
 	|	Catalog.creditCards AS creditCards
 	|WHERE
@@ -1575,4 +1578,3 @@ Procedure unBindCard(parameters)
 	parameters.Insert("errorDescription", errorDescription);
 			
 EndProcedure
-

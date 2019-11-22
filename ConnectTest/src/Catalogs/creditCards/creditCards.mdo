@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5abb43e0-3ffc-4646-b351-fe9d2aba0752">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5abb43e0-3ffc-4646-b351-fe9d2aba0752">
   <producedTypes>
     <objectType typeId="63fdb34f-946a-42d0-b4ae-330d999cf391" valueTypeId="90b5c39e-6ad8-48e1-9400-6ad313aa60ea"/>
     <refType typeId="4a23b070-5f5e-4afa-aa6c-81d71adc68bd" valueTypeId="98f5d0f3-04ce-4f6a-97bc-058e39b92c6f"/>
@@ -54,22 +54,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="91030923-23e4-4f4d-8c19-5ac4be7be5f4">
-    <name>active</name>
-    <synonym>
-      <key>en</key>
-      <value>Active</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Активна</value>
-    </synonym>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="e4f81b11-3675-4ae9-a5ea-adf67d234d16">
     <name>autopayment</name>
     <synonym>
@@ -105,6 +89,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="91030923-23e4-4f4d-8c19-5ac4be7be5f4">
+    <name>inactive</name>
+    <synonym>
+      <key>en</key>
+      <value>Inactive</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Не активна</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="58e3f81a-ef93-4138-ad24-d70929262b67">
     <name>ownerName</name>
     <synonym>
@@ -133,6 +133,26 @@
     <type>
       <types>EnumRef.paymentSystem</types>
     </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a6e5cdcf-6bda-4921-ac30-c66769e187f7">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

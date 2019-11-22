@@ -4,8 +4,14 @@ Function ProcessRequestPOST(Request)
 EndFunction
 
 Function ProcessRequestOPTIONS(Request)
-	Response = New HTTPServiceResponse(200);		
-	Response.Headers.Insert("Access-Control-Allow-Headers", "*");	
+	Response = New HTTPServiceResponse(200);	
+	origin = HTTP.getRequestHeader(request, "origin");
+	If HTTP.inTheWhiteList(origin) Then
+		Response.Headers.Insert("Access-Control-Allow-Headers", "*");
+		//	Response.Headers.Insert("Access-Control-Allow-Credentials", "true");
+		Response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+		Response.Headers.Insert("Access-Control-Allow-Origin", origin);				
+	EndIf;
 	Return Response;
 EndFunction
 

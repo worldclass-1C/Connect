@@ -5,7 +5,7 @@ Function sendSMS(parameters, answer) Export
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
-	XMLReader = New XMLReader();;
+	XMLReader = New XMLReader();
 	XMLReader.SetString(answerBody);
 	currentPath = "";
 	While XMLReader.Read() Do
@@ -36,7 +36,7 @@ Function checkSmsStatus(parameters, answer) Export
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
-	XMLReader = New XMLReader();;
+	XMLReader = New XMLReader();
 	XMLReader.SetString(answerBody);
 	currentPath = "";	
 	While XMLReader.Read() Do
