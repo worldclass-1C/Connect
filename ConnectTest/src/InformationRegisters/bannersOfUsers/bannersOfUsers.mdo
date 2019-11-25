@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1bcbc344-d27b-4fa7-b99f-f21f3c4fc89e">
+  <producedTypes>
+    <selectionType typeId="5f116fe1-5e72-4bd0-8b79-6ddb21f3a9aa" valueTypeId="ab5b34fc-d804-4d8c-9140-56008ab06588"/>
+    <listType typeId="8e36b725-f4e4-4789-a268-2738b6c5f6d1" valueTypeId="239cb968-fecd-4b5a-97e1-b7eb151ab7d5"/>
+    <managerType typeId="c3ce8e0e-9a73-4bbe-9452-05d4a75fe949" valueTypeId="99754f8e-ce01-4111-a2bf-5c31814e0274"/>
+    <recordSetType typeId="238bfabb-e402-4368-8b95-51d07be30838" valueTypeId="726bccdb-09eb-4d46-81c5-a41ca11f6dda"/>
+    <recordKeyType typeId="98859275-352d-4b48-88f6-a3091076a131" valueTypeId="99a462dc-62ce-4d70-9126-1fa0c8b959c6"/>
+    <recordType typeId="eed7e01f-938a-4f49-ae72-db58aa46e095" valueTypeId="863d9b71-ac7c-4b7e-85be-dd0654f99adb"/>
+    <recordManagerType typeId="71d87ead-2541-49d2-94be-b88e16ff8c98" valueTypeId="dbf66fbd-a0a9-4dc8-a573-70665c037f10"/>
+  </producedTypes>
+  <name>bannersOfUsers</name>
+  <synonym>
+    <key>en</key>
+    <value>Banners of users</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Баннеры пользователей</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <dimensions uuid="8e605ff5-b127-4694-84b0-e31d988aceeb">
+    <name>chains</name>
+    <synonym>
+      <key>en</key>
+      <value>Chains</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="eebce0bc-7a23-436a-b3d5-6e35d9f13ea2">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="a5a0389a-b842-4fe8-89e6-eb8c0248169a">
+    <name>banner</name>
+    <synonym>
+      <key>en</key>
+      <value>Banner</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Баннер</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.banners</types>
+    </type>
+    <denyIncompleteValues>true</denyIncompleteValues>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>
