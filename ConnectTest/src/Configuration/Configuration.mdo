@@ -143,6 +143,7 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
+  <catalogs>Catalog.banners</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderSrates</enums>
@@ -183,5 +184,6 @@
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
   <informationRegisters>InformationRegister.queueCreditCardToSend</informationRegisters>
+  <informationRegisters>InformationRegister.bannersOfUsers</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>
