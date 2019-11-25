@@ -222,7 +222,8 @@ Function inTheWhiteList(origin) Export
 	If False 
 		Or origin = "https://stoplight.io" 
 		Or origin = "https://tilda.cc"
-		Or origin = "https://ufcgymrussia.ru" 
+		Or origin = "https://ufcgymrussia.ru"
+		Or origin = "https://localhost:55555" 
 	Then
 		Return True;
 	Else
