@@ -5,7 +5,7 @@ Procedure sendOrder(parameters) Export
 	requestParametrs.Add("userName=" + parameters.user);
 	requestParametrs.Add("password=" + parameters.password);
 	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
-	requestParametrs.Add("amount=" + (parameters.acquiringAmount * 100));
+	requestParametrs.Add("amount=" + Format(parameters.acquiringAmount * 100,"NFD=0; NG=0"));
 	requestParametrs.Add("returnUrl=" + parameters.returnUrl);
 	requestParametrs.Add("failUrl=" + parameters.failUrl);
 	requestParametrs.Add("pageView=DESKTOP");

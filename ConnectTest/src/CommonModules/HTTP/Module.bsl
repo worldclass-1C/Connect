@@ -137,7 +137,10 @@ Function prepareResponse(parameters) Export
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
 	If HTTP.inTheWhiteList(parameters.origin) Then
-		Response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);				
+		Response.Headers.Insert("Access-Control-Allow-Headers", "*");
+		//	Response.Headers.Insert("Access-Control-Allow-Credentials", "true");
+		Response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+		Response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);
 	EndIf;
 	If parameters.answerBody <> "" Then
 		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);

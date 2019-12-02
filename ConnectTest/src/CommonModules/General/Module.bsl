@@ -86,6 +86,12 @@ Procedure executeRequestMethod(parameters) Export
 			
 EndProcedure
 
+Procedure executeRequestMethodBackground(parameters) Export
+	array	= New Array();
+	array.Add(parameters);	
+	BackgroundJobs.Execute("General.executeRequestMethod", array, New UUID());
+EndProcedure
+
 Procedure config(parameters)
 
 	tokenContext = parameters.tokenContext;
@@ -737,8 +743,8 @@ Procedure gymSchedule(parameters)
 
 	If errorDescription.result = "" Then
 		query = New Query();
-		querryTextArray = New Array();
-		querryTextArray.Add("SELECT
+		
+		textTampTable = "SELECT
 		|	classesSchedule.Ref AS Doc,
 		|	classesSchedule.period AS period,
 		|	MAX(CASE
@@ -763,16 +769,22 @@ Procedure gymSchedule(parameters)
 		|FROM
 		|	Catalog.classesSchedule AS classesSchedule
 		|		LEFT JOIN InformationRegister.classMembers AS classMembers
-		|		ON classesSchedule.Ref = classMembers.class
+		|		ON classesSchedule.Ref = classMembers.class";
+		textCondition = "
 		|WHERE
 		|	classesSchedule.gym IN (&gymList)
 		|	AND classesSchedule.period BETWEEN &startDate AND &endDate
-		|	AND classesSchedule.active
+		|	AND classesSchedule.active";
+		textConditionEmployee = "";
+		textConditionService = "";
+		
+		textGroup = "
 		|GROUP BY
 		|	classesSchedule.Ref,
 		|	classesSchedule.period
 		|;
-		|////////////////////////////////////////////////////////////////////////////////
+		|////////////////////////////////////////////////////////////////////////////////";
+		textResum = "
 		|SELECT
 		|	TT.Doc,
 		|	TT.period,
@@ -791,8 +803,8 @@ Procedure gymSchedule(parameters)
 		|		ON TT.Doc = classesSchedule.Ref
 		|		LEFT JOIN Catalog.classesSchedule.translation AS classesScheduletranslation
 		|		ON TT.Doc = classesScheduletranslation.Ref
-		|		AND classesScheduletranslation.language = &language");
-				
+		|		AND classesScheduletranslation.language = &language";
+								
 		gymList = New Array();
 		For Each gymUid In requestStruct.gymList Do
 			gymList.Add(XMLValue(Type("CatalogRef.gyms"), gymUid));	
@@ -806,13 +818,24 @@ Procedure gymSchedule(parameters)
 		query.SetParameter("endDate", EndOfDay(XMLValue(Type("Date"), requestStruct.endDate)));				
 		
 		If requestStruct.Property("employeeId") And ValueIsFilled(requestStruct.employeeId) Then
-			querryTextArray.Add("AND classesSchedule.employee = &employee");
+			textConditionEmployee = "AND classesSchedule.employee = &employee";
 			query.SetParameter("employee", XMLValue(Type("CatalogRef.employees"), requestStruct.employeeId));	
 		EndIf;		 
-		If requestStruct.Property("serviceid") And ValueIsFilled(requestStruct.serviceid) Then
-			querryTextArray.Add("AND classesSchedule.serviceid = &serviceid");
-			query.SetParameter("serviceid", requestStruct.serviceid);	
+		If requestStruct.Property("serviceDescriptionId") And ValueIsFilled(requestStruct.serviceDescriptionId) Then
+			textConditionService = "AND classesSchedule.serviceid = &serviceid";
+			query.SetParameter("serviceid", requestStruct.serviceDescriptionId);	
 		EndIf; 
+		
+		querryConditionArray = New Array();
+		querryConditionArray.Add(textCondition);
+		querryConditionArray.Add(textConditionEmployee);
+		querryConditionArray.Add(textConditionService);
+		
+		querryTextArray = New Array();
+		querryTextArray.Add(textTampTable);
+		querryTextArray.Add(StrConcat(querryConditionArray, " "));
+		querryTextArray.Add(textGroup);
+		querryTextArray.Add(textResum);
 		query.Text = StrConcat(querryTextArray, " ");
 		
 		select = query.Execute().Select();
@@ -1347,11 +1370,14 @@ Procedure sendMessage(parameters)
 				EndDo;
 			EndIf;
 			messageStruct.Insert("informationChannels", channelsArray);
+			
+			sendImmediately = ?(message.Property("sendImmediately"), message.sendImmediately, False);
 			If messageStruct.phone = ""
 					And messageStruct.user.GetObject() = Undefined Then
-			ElsIf messageStruct.user = messageStruct.token.user Then
+				errorDescription = Service.getErrorDescription(language, "phoneError");		
+			//ElsIf messageStruct.user = messageStruct.token.user Then
 			Else
-				Messages.newMessage(messageStruct);
+				Messages.newMessage(messageStruct, sendImmediately);
 			EndIf;
 		EndDo;
 	EndIf;
@@ -1405,16 +1431,35 @@ EndProcedure
 Procedure paymentPreparation(parameters)
 		
 	tokenContext = parameters.tokenContext;
-		
-	parametersNew = Service.getStructCopy(parameters);		
+	requestStruct	= parameters.requestStruct;
+			
+	parametersNew = Service.getStructCopy(parameters);
+	parametersNew.Insert("requestName", "paymentPreparationBack");		
 	General.executeRequestMethod(parametersNew);
 	If parametersNew.errorDescription.result = "" Then
-		struct = HTTP.decodeJSON(parametersNew.answerBody);		
-		answer = Acquiring.newOrder(New Structure("user,holding,amount,orders", tokenContext.user, tokenContext.holding, struct.amount, struct.orders));
+		struct = HTTP.decodeJSON(parametersNew.answerBody, Enums.JSONValueTypes.structure);
+		orderStruct = New Structure();
+		If requestStruct.Property("customerId") And requestStruct.customerId <> "" Then
+			orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), requestStruct.customerId));
+		Else	
+			orderStruct.Insert("user", tokenContext.user);		
+		EndIf;		
+		If requestStruct.Property("acquiringRequest") And requestStruct.acquiringRequest <> "" Then
+			orderStruct.Insert("acquiringRequest", Enums.acquiringRequests[requestStruct.acquiringRequest]);
+		Else
+			orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.register);
+		EndIf;
+		orderStruct.Insert("holding", tokenContext.holding);
+		orderStruct.Insert("amount", struct.paymentAmount);
+		orderStruct.Insert("acquiringAmount", struct.paymentAmount);
+		orderStruct.Insert("orders", struct.docList);
+		orderStruct.Insert("paymentOptions", struct.paymentOptions);
 		//@skip-warning
-		struct.Insert("uid", XMLString(answer.order));
+		struct.Insert("uid", XMLString(Acquiring.newOrder(orderStruct)));		
+		//@skip-warning
+		struct.Delete("docList");
 	Else
-		struct = New Structure();		
+		struct = New Structure();				
 	EndIf;
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	parameters.Insert("errorDescription", parametersNew.errorDescription);
@@ -1422,24 +1467,87 @@ Procedure paymentPreparation(parameters)
 EndProcedure
 
 Procedure payment(parameters)
-		
-	tokenContext = parameters.tokenContext;
-	requestStruct = parameters.requestStruct;	 
-	struct = New Structure();	
-	
-	orderStruct = New Structure();
-	orderStruct.Insert("amount", requestStruct.amount);
-	orderStruct.Insert("user", tokenContext.user);
-	orderStruct.Insert("holding", tokenContext.holding);
-	
-	orderStruct.Insert("acquiringRequest", ?(requestStruct.Property("acquiringRequest"), Enums.acquiringRequests[requestStruct.acquiringRequest], Enums.acquiringRequests.register));
-	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
-	orderStruct.Insert("bindingId", ?(requestStruct.Property("bindingId"), requestStruct.bindingId, ""));
-	
-	Acquiring.newOrder(orderStruct);	
-	
+
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	errorDescription = Service.getErrorDescription(language);
+	struct = New Structure();
+
+	query = New Query("SELECT
+		|	acquiringOrders.Ref AS order,
+		|	acquiringOrders.amount
+		|FROM
+		|	Catalog.acquiringOrders AS acquiringOrders
+		|WHERE
+		|	acquiringOrders.Ref = &order
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	acquiringOrderscards.card
+		|FROM
+		|	Catalog.acquiringOrders.cards AS acquiringOrderscards
+		|WHERE
+		|	acquiringOrderscards.Ref = &order
+		|	AND acquiringOrderscards.card = &card
+		|	AND &cardIsFilled
+		|	AND
+		|	NOT acquiringOrderscards.card.inactive
+		|
+		|UNION ALL
+		|
+		|SELECT
+		|	&card
+		|WHERE
+		|	NOT &cardIsFilled");
+
+	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
+	card = ?(requestStruct.Property("card"), XMLValue(Type("CatalogRef.creditCards"), requestStruct.card), Catalogs.creditCards.EmptyRef());
+	query.SetParameter("order", order);
+	query.SetParameter("card", card);
+	query.SetParameter("cardIsFilled", ValueIsFilled(card));
+
+	results = query.ExecuteBatch();
+
+	orderObject = Undefined;
+	orderResult = results[0];
+
+	If orderResult.IsEmpty() Then
+		errorDescription = Service.getErrorDescription(language, "acquiringOrder");
+	EndIf;
+
+	//Проверяем есть ли указанная карта, в списке доступных карт
+	If errorDescription.result = "" Then
+		If results[1].IsEmpty() Then
+			errorDescription = Service.getErrorDescription(language, "acquiringCard");
+		ElsIf ValueIsFilled(card) Then
+			orderObject = order.GetObject();
+			orderObject.creditCard = card;
+		EndIf;
+	EndIf;
+
+	//Проверяем есть ли оплата авансами
+	If errorDescription.result = "" Then
+
+	EndIf;
+	//Отправляем в запрос в банк на оставшуюся сумму
+	If errorDescription.result = "" Then
+		If orderObject <> Undefined Then
+			orderObject.Write();
+		EndIf;
+		answer = Acquiring.executeRequest("send", order);
+		If answer.errorCode = "" Then
+			struct.Insert("orderId", answer.orderId);
+			struct.Insert("formUrl", answer.formUrl);
+			struct.Insert("returnUrl", answer.returnUrl);
+			struct.Insert("failUrl", answer.failUrl);
+		Else
+			errorDescription = Service.getErrorDescription(language, answer.errorCode);
+		EndIf;
+	EndIf;
+
 	struct.Insert("result", "Ok");
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("errorDescription", errorDescription);
 	
 EndProcedure
 
@@ -1461,24 +1569,27 @@ Procedure paymentStatus(parameters)
 	result = query.Execute();
 	
 	If result.IsEmpty() Then
-		errorDescription = Service.getErrorDescription(language, "acquiringConnection");
+		parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringConnection"));
 	Else
 		select = result.Select();
 		select.Next();
-		answer = Acquiring.executeRequest("check", select.order);	
-	EndIf;
-	
-	If answer = Undefined Then
-		errorDescription = Service.getErrorDescription(language, "acquiringOrderCheck");		
-	Else
-		struct.Insert("result", answer.result);		
-		errorDescription = Service.getErrorDescription(language, answer.errorCode);
-		If answer.errorCode = ""  And answer.acquiringRequest = Enums.acquiringRequests.binding Then
-			Acquiring.executeRequestBackground("reverse", answer.order);
+		answer = Acquiring.executeRequest("check", select.order);
+		If answer = Undefined Then
+			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
+		Else
+			struct.Insert("result", answer.result);
+			parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
+			If answer.errorCode = "" Then				
+				If answer.acquiringRequest = Enums.acquiringRequests.register Then
+					
+				ElsIf answer.acquiringRequest = Enums.acquiringRequests.binding Then
+					Acquiring.executeRequestBackground("reverse", answer.order);
+				EndIf;
+			EndIf;
 		EndIf;
-	EndIf;
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	EndIf;	
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 			
 EndProcedure
 

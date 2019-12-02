@@ -5,19 +5,39 @@ Function newOrder(parameters) Export
 	If parameters.Property("orders") Then
 		For Each element In parameters.orders Do
 			newRow = orderObject.orders.Add();
-			newRow.uid = element.docId;				
-		EndDo;	
-	EndIf;	
-	orderObject.Write();	
-	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));		
-	Return orderObject.ref;	
-EndFunction
-
-Function executeRequestBackground(requestName, order) Export
-	array	= New Array();
-	array.Add(requestName);
-	array.Add(order);
-	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
+			newRow.uid = element.docId;
+			newRow.amount = element.amount;
+		EndDo;
+	EndIf;
+	If parameters.Property("paymentOptions") Then
+		For Each paymentOption In parameters.paymentOptions Do
+			If paymentOption.Property("owner") Then
+				owner = XMLValue(TypeOf("CatalogRef.users"), paymentOption.owner.uid);
+			Else
+				owner = Catalogs.users.EmptyRef();
+			EndIf;
+			If paymentOption.Property("cards") Then
+				For Each element In paymentOption.cards Do
+					newRow = orderObject.cards.Add();
+					newRow.card = XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);					
+				EndDo;
+			EndIf;
+			If paymentOption.Property("deposits") Then
+				For Each element In paymentOption.deposits Do
+					newRow = orderObject.deposits.Add();
+					newRow.owner = owner;
+					newRow.type = element.type;
+					newRow.balance = element.balance;
+					newRow.min = element.min;
+					newRow.max = element.max;
+				EndDo;
+			EndIf;
+		EndDo;
+	EndIf;
+	orderObject.registrationDate = ToUniversalTime(CurrentDate());
+	orderObject.Write();
+	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));
+	Return orderObject.ref;
 EndFunction
 
 Function executeRequest(requestName, order) Export
@@ -67,10 +87,17 @@ Function paymentSystem(val code) Export
 	EndIf;
 EndFunction
 
+Procedure executeRequestBackground(requestName, order) Export
+	array	= New Array();
+	array.Add(requestName);
+	array.Add(order);
+	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
+EndProcedure
+
 Procedure sendOrder(parameters)
 	parameters.Insert("errorCode", "acquiringOrderSend");
-	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/payment/success");
-	parameters.Insert("failUrl", "https://solutions.worldclass.ru/payment/fail");
+	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
+	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.sendOrder(parameters);

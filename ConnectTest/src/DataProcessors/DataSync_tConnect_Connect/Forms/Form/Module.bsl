@@ -14,9 +14,23 @@ Procedure fillErrors()
 EndProcedure
 
 &AtServer
+Procedure fillRequest()
+	query = New Query("SELECT
+	                  |	matchingRequestsInformationSources.Ref AS request
+	                  |FROM
+	                  |	Catalog.matchingRequestsInformationSources AS matchingRequestsInformationSources");
+	
+	select = query.Execute().Select();	
+	While select.Next() Do
+		newRow = requests.Add();
+		newRow.request = select.request;
+	EndDo;	
+EndProcedure
+
+&AtServer
 Procedure fillAtServer()
 	If Items.GroupPages.CurrentPage = Items.Page1 Then
-			
+		fillRequest();		
 	ElsIf Items.GroupPages.CurrentPage = Items.Page2 Then
 		fillErrors();
 	EndIf;
@@ -59,78 +73,78 @@ Procedure unloadAtServer()
 EndProcedure
 
 &AtServer
-Function getRequestBody_Requests(МассивЗапросов)
+Function getRequestBody_Requests(requestList)
 	
-	МассивJSON		= Новый Массив;	
-	ЗаписьJSON		= Новый ЗаписьJSON;
-	ЗаписьJSON.УстановитьСтроку(); 		
+	array = New Array();	
 		
-	пЗапрос	= Новый Запрос;
-	пЗапрос.Текст	= "ВЫБРАТЬ
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.Ссылка КАК Ссылка,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.Ссылка.Код КАК Код,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.Атрибут КАК Атрибут,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.ВыполнятьВФоне КАК ВыполнятьВФоне,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.ЗапросИсточник КАК ЗапросИсточник,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.ЗапросПриемник КАК ЗапросПриемник,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.ИсточникИнформации КАК ИсточникИнформации,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.НеИспользовать КАК НеИспользовать,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.НеСохранятьОтветВЛогах КАК НеСохранятьОтветВЛогах,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.СжиматьЛоги КАК СжиматьЛоги,
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.ТолькоДляСотрудников КАК ТолькоДляСотрудников
-	             	  |ИЗ
-	             	  |	Справочник.СоответствиеЗапросовИсточникамИнформации.ИсточникиИнформации КАК СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации
-	             	  |ГДЕ
-	             	  |	СоответствиеЗапросовИсточникамИнформацииИсточникиИнформации.Ссылка В(&МассивЗапросов)
-	             	  |ИТОГИ
-	             	  |	МАКСИМУМ(Код),
-	             	  |	МАКСИМУМ(ВыполнятьВФоне),
-	             	  |	МАКСИМУМ(НеСохранятьОтветВЛогах),
-	             	  |	МАКСИМУМ(СжиматьЛоги),
-	             	  |	МАКСИМУМ(ТолькоДляСотрудников)
-	             	  |ПО
-	             	  |	Ссылка";
+	query = New Query();
+	query.text	= "SELECT
+	|	matchingRequestsInformationSources.Ref AS Ref,
+	|	matchingRequestsInformationSources.Ref.Code AS Code,
+	|	matchingRequestsInformationSources.Attribute AS attribute,
+	|	matchingRequestsInformationSources.performBackground AS performBackground,
+	|	matchingRequestsInformationSources.requestSource AS requestSource,
+	|	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
+	|	matchingRequestsInformationSources.informationSource AS informationSource,
+	|	matchingRequestsInformationSources.notUse AS notUse,
+	|	matchingRequestsInformationSources.notSaveAnswer AS notSaveAnswer,
+	|	matchingRequestsInformationSources.compressAnswer AS compressAnswer,
+	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
+	|	matchingRequestsInformationSources.Ref.IsFolder AS IsFolder,
+	|	matchingRequestsInformationSources.Ref.Parent AS parent
+	|FROM
+	|	Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
+	|WHERE
+	|	matchingRequestsInformationSources.Ref IN (&requestList)
+	|TOTALS
+	|	MAX(Code),
+	|	MAX(performBackground),
+	|	MAX(notSaveAnswer),
+	|	MAX(compressAnswer),
+	|	MAX(staffOnly)
+	|BY
+	|	Ref";
 	
-	пЗапрос.УстановитьПараметр("МассивЗапросов", МассивЗапросов);
-	Выборка	= пЗапрос.Выполнить().Выбрать(ОбходРезультатаЗапроса.ПоГруппировкам);	
+	query.SetParameter("requestList", requestList);
+	select	= query.Execute().Select(QueryResultIteration.ByGroups);	
 	
-	Пока Выборка.Следующий() Цикл
-		СтруктураЗапроса	= Новый Структура;
-		СтруктураЗапроса.Вставить("uid", XMLСтрока(Выборка.Ссылка));
-		СтруктураЗапроса.Вставить("code", Выборка.Код);
-		СтруктураЗапроса.Вставить("background", XMLСтрока(Выборка.ВыполнятьВФоне));
-		СтруктураЗапроса.Вставить("notSaveLogs", XMLСтрока(Выборка.НеСохранятьОтветВЛогах));
-		СтруктураЗапроса.Вставить("compressLogs", XMLСтрока(Выборка.СжиматьЛоги));
-		СтруктураЗапроса.Вставить("staffOnly", XMLСтрока(Выборка.ТолькоДляСотрудников));
+	While select.Next() Do 
+		struct = New Structure();
+		struct.Insert("uid", XMLString(select.Ref));
+		struct.Insert("code", select.Code);
+		struct.Insert("IsFolder", select.IsFolder);
+		struct.Insert("parent", New Structure("uid", XMLString(select.parent)));
+		struct.Insert("performBackground", select.performBackground);
+		struct.Insert("notSaveAnswer", select.notSaveAnswer);
+		struct.Insert("compressAnswer", select.compressAnswer);
+		struct.Insert("staffOnly", select.staffOnly);
 		
-		ВыборкаДеталей	= Выборка.Выбрать();
-		МассивИсточниковИнформации	= Новый Массив;
-		Пока ВыборкаДеталей.Следующий() Цикл			
-			ИсточникИнформации	= Новый Структура;
-			ИсточникИнформации.Вставить("atribute", ВыборкаДеталей.Атрибут);		
-			ИсточникИнформации.Вставить("background", XMLСтрока(ВыборкаДеталей.ВыполнятьВФоне));
-			ИсточникИнформации.Вставить("requestSource", ВыборкаДеталей.ЗапросИсточник);
-			ИсточникИнформации.Вставить("requestReceiver", ВыборкаДеталей.ЗапросПриемник);
-			ИсточникИнформации.Вставить("notUse", XMLСтрока(ВыборкаДеталей.НеИспользовать));
-			ИсточникИнформации.Вставить("notSaveLogs", XMLСтрока(ВыборкаДеталей.НеСохранятьОтветВЛогах));
-			ИсточникИнформации.Вставить("compressLogs", XMLСтрока(ВыборкаДеталей.СжиматьЛоги));
-			ИсточникИнформации.Вставить("staffOnly", XMLСтрока(ВыборкаДеталей.ТолькоДляСотрудников));
+		selectDetail = select.Select();
+		informationSources	= New Array();
+		While selectDetail.Next() Do			
+			structDetail = New Structure();
+			structDetail.Insert("attribute", selectDetail.attribute);		
+			structDetail.Insert("performBackground", selectDetail.performBackground);
+			structDetail.Insert("requestSource", selectDetail.requestSource);
+			structDetail.Insert("requestReceiver", selectDetail.requestReceiver);
+			structDetail.Insert("notUse", selectDetail.notUse);
+			structDetail.Insert("notSaveAnswer", selectDetail.notSaveAnswer);
+			structDetail.Insert("compressAnswer", selectDetail.compressAnswer);
+			structDetail.Insert("staffOnly", selectDetail.staffOnly);
 			
-			СтруктураИсточникаИнформации	= Новый Структура;
-			СтруктураИсточникаИнформации.Вставить("uid", XMLСтрока(ВыборкаДеталей.ИсточникИнформации));
-			ИсточникИнформации.Вставить("informationSource", СтруктураИсточникаИнформации);
+			informationSourceStruct	= New Structure();
+			informationSourceStruct.Insert("uid", XMLString(selectDetail.informationSource));
+			structDetail.Insert("informationSource", informationSourceStruct);
 			
-			МассивИсточниковИнформации.Добавить(ИсточникИнформации);
-		КонецЦикла;
+			informationSources.add(structDetail);
+		EndDo;
 		
-		СтруктураЗапроса.Вставить("informationSources", МассивИсточниковИнформации);
+		struct.Insert("informationSources", informationSources);
 		
-		МассивJSON.Добавить(СтруктураЗапроса);
-	КонецЦикла;		
-	
-	ЗаписатьJSON(ЗаписьJSON, МассивJSON);
-	
-	Возврат ЗаписьJSON.Закрыть();
+		array.add(struct);
+	EndDo;		
+	Message(HTTP.encodeJSON(array));	
+	Return HTTP.encodeJSON(array);  
 	
 EndFunction 
 

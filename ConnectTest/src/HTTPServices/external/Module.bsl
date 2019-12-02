@@ -10,7 +10,7 @@ Function ProcessRequestOPTIONS(Request)
 		Response.Headers.Insert("Access-Control-Allow-Headers", "*");
 		//	Response.Headers.Insert("Access-Control-Allow-Credentials", "true");
 		Response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-		Response.Headers.Insert("Access-Control-Allow-Origin", origin);				
+		Response.Headers.Insert("Access-Control-Allow-Origin", origin);
 	EndIf;
 	Return Response;
 EndFunction
