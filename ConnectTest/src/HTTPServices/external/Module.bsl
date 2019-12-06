@@ -4,13 +4,14 @@ Function ProcessRequestPOST(Request)
 EndFunction
 
 Function ProcessRequestOPTIONS(Request)
-	Response = New HTTPServiceResponse(200);	
+	response = New HTTPServiceResponse(200);	
 	origin = HTTP.getRequestHeader(request, "origin");
-	If HTTP.inTheWhiteList(origin) Then
-		Response.Headers.Insert("Access-Control-Allow-Headers", "*");
-		//	Response.Headers.Insert("Access-Control-Allow-Credentials", "true");
-		Response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-		Response.Headers.Insert("Access-Control-Allow-Origin", origin);
+	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");
+//	response.Headers.Insert("Access-Control-Allow-Headers", "*, content-type");
+	If HTTP.inTheWhiteList(origin) Then		
+		//	response.Headers.Insert("Access-Control-Allow-Credentials", "true");
+		response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+		response.Headers.Insert("Access-Control-Allow-Origin", origin);
 	EndIf;
 	Return Response;
 EndFunction
@@ -40,7 +41,7 @@ Function pingGet(Request)
 	
 	response = New HTTPServiceResponse(200);
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	response.SetBodyFromString(HTTP.encodeJSON(array), TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+	response.SetBodyFromString(HTTP.encodeJSON(array), TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
 	Return response;
 	
 EndFunction
