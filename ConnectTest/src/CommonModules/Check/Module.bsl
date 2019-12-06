@@ -66,8 +66,8 @@ Function getRequiredParameters(requestName)
 		Return "uid";	
 	ElsIF requestName = "addusertotoken" Then
 		Return "uid";		
-	ElsIF requestName = "imagePOST" Then
-		Return "object,extension";		
+//	ElsIF requestName = "imagePOST" Then
+//		Return "object,extension";		
 	Else
 		Return "";		
 	EndIf;
