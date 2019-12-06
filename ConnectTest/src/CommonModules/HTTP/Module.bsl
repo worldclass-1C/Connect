@@ -33,7 +33,7 @@ Function processRequest(request, requestName = "") Export
 	EndIf;			
 	If requestName = "imagePOST" Then
 		parameters.Insert("requestBody", request.GetBodyAsBinaryData());
-		parameters.Insert("headers", request.Headers);
+		parameters.Insert("headers", request.Headers);		
 	Else
 		parameters.Insert("requestBody", request.GetBodyAsString());
 		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure));
@@ -136,14 +136,14 @@ Function prepareResponse(parameters) Export
 		response = New HTTPServiceResponse(200);
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	If HTTP.inTheWhiteList(parameters.origin) Then
-		Response.Headers.Insert("Access-Control-Allow-Headers", "*");
-		//	Response.Headers.Insert("Access-Control-Allow-Credentials", "true");
-		Response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-		Response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);
+	response.Headers.Insert("Access-Control-Allow-Headers", "Content-type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+	If HTTP.inTheWhiteList(parameters.origin) Then		
+		//	response.Headers.Insert("Access-Control-Allow-Credentials", "true");
+		response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+		response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);
 	EndIf;
 	If parameters.answerBody <> "" Then
-		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.Use);
+		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
 	EndIf;
 	Return response;
 EndFunction
