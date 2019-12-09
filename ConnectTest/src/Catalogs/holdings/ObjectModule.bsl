@@ -1,7 +1,7 @@
 
 Procedure BeforeWrite(Cancel)
-	If TrimAll(token) = "" Then
-		token	= New UUID();
+	If TrimAll(tokenDefault) = "" Then
+		tokenDefault = New UUID();
 	EndIf;
 EndProcedure
 
@@ -10,6 +10,6 @@ Procedure OnWrite(Cancel)
 EndProcedure
 
 Procedure OnCopy(CopiedObject)
-	token	= "";
+	tokenDefault	= "";
 EndProcedure
 

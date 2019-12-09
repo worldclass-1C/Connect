@@ -31,7 +31,7 @@
       <value>Состояние</value>
     </synonym>
     <type>
-      <types>EnumRef.acquiringOrderSrates</types>
+      <types>EnumRef.acquiringOrderStates</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

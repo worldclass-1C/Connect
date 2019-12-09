@@ -40,22 +40,29 @@ Function newOrder(parameters) Export
 	Return orderObject.ref;
 EndFunction
 
-Function executeRequest(requestName, order) Export
-	parameters = orderDetails(order);
-	parameters.Insert("requestName", requestName);	
-	If parameters.errorCode = "" Then
-		If requestName = "send" Then
-			sendOrder(parameters);
-		ElsIf requestName = "check" Then
-			checkOrder(parameters);
-		ElsIf requestName = "unBindCard" Then
-			unBindCard(parameters);
-		ElsIf requestName = "reverse" Then
-			reverseOrder(parameters);		
-		EndIf;
+Function findOrder(orderId) Export
+	
+	query = New Query("SELECT
+	|	acquiringOrderIdentifiers.Owner AS order,
+	|	ISNULL(ordersStates.state, VALUE(Enum.acquiringOrderStates.EmptyRef)) AS state
+	|FROM
+	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
+	|		ON acquiringOrderIdentifiers.Owner = ordersStates.order
+	|WHERE
+	|	acquiringOrderIdentifiers.Ref = &orderIdentifier");
+	
+	query.SetParameter("orderIdentifier", Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderId)));
+	
+	result = query.Execute();
+	If result.IsEmpty() Then
+		Return Undefined;
+	Else
+		select = result.Select();
+		select.Next();
+		Return New Structure("order, state", select.order, select.state);
 	EndIf;
-	Service.logAcquiringBackground(parameters);
-	Return parameters;
+	
 EndFunction
 
 Function paymentSystem(val code) Export
@@ -87,49 +94,25 @@ Function paymentSystem(val code) Export
 	EndIf;
 EndFunction
 
-Procedure executeRequestBackground(requestName, order) Export
-	array	= New Array();
-	array.Add(requestName);
-	array.Add(order);
-	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
-EndProcedure
-
-Procedure sendOrder(parameters)
-	parameters.Insert("errorCode", "acquiringOrderSend");
-	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
-	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
-	parameters.Insert("formUrl", "");
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.sendOrder(parameters);
-	EndIf;	
-EndProcedure
-
-Procedure checkOrder(parameters)
-	parameters.Insert("errorCode", "acquiringOrderCheck");	
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.checkOrder(parameters);
-	EndIf;		
-	If parameters.errorCode = "" And parameters.acquiringRequest = Enums.acquiringRequests.binding Then
-		activateCard(parameters);		
+Function executeRequest(requestName, order, additionalParameters = Undefined) Export
+	parameters = orderDetails(order);
+	parameters.Insert("requestName", requestName);	
+	If parameters.errorCode = "" Then
+		If requestName = "send" Then
+			sendOrder(parameters);
+		ElsIf requestName = "check" Then
+			checkOrder(parameters);
+		ElsIf requestName = "unBindCard" Then
+			unBindCard(parameters);
+		ElsIf requestName = "reverse" Then
+			reverseOrder(parameters);
+		ElsIf requestName = "process" Then
+			processOrder(order, additionalParameters);			
+		EndIf;
 	EndIf;
-EndProcedure
-
-Procedure reverseOrder(parameters)
-	parameters.Insert("errorCode", "acquiringOrderReverse");	
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.reverseOrder(parameters);
-	EndIf;	
-EndProcedure
-
-Procedure unBindCard(parameters)
-	parameters.Insert("errorCode", "acquiringUnBindCard");	
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.unBindCard(parameters);
-	EndIf;	
-	If parameters.errorCode = "" Then 
-		deactivateCard(parameters.creditCard);
-	EndIf;
-EndProcedure
+	Service.logAcquiringBackground(parameters);
+	Return parameters;
+EndFunction
 
 Function newCard(parameters)
 	If parameters.bindingId = "" Then
@@ -151,37 +134,6 @@ Function newCard(parameters)
 	EndIf;
 EndFunction
 
-Procedure addCardToQueue(creditCard)
-	If Not creditCard.IsEmpty() Then
-		record = InformationRegisters.queueCreditCardToSend.CreateRecordManager();
-		record.Period = ToUniversalTime(CurrentDate());
-		record.creditCard = creditCard;
-		record.Write();
-	EndIf;
-EndProcedure
-
-Procedure activateCard(parameters)
-	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
-	EndIf;	
-	creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
-	If creditCardObject = Undefined Then		
-		creditCard = newCard(bindCardParameters); 
-	Else
-		creditCardObject.inactive = False;
-		creditCardObject.Write();
-		creditCard = creditCardObject.Ref;				
-	EndIf;	
-	addCardToQueue(creditCard);
-EndProcedure
-
-Procedure deactivateCard(creditCard)
-	creditCardObject = creditCard.GetObject();
-	creditCardObject.inactive = True;
-	creditCardObject.Write();
-	addCardToQueue(creditCard);
-EndProcedure
-
 Function orderDetails(order)
 	
 	answer = answerStruct();
@@ -194,6 +146,7 @@ Function orderDetails(order)
 	|	acquiringOrders.acquiringAmount AS acquiringAmount,
 	|	acquiringOrders.user AS bindingUser,
 	|	acquiringOrders.creditCard,
+	|	ISNULL(acquiringOrders.creditCard.owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
@@ -318,6 +271,7 @@ Function answerStruct()
 	answer.Insert("bindingUser", Catalogs.users.EmptyRef());
 	answer.Insert("bindingId", "");
 	answer.Insert("creditCard", Catalogs.creditCards.EmptyRef());
+	answer.Insert("ownerCreditCard", Catalogs.users.EmptyRef());
 	answer.Insert("acquiringProvider", Enums.acquiringProviders.EmptyRef());
 	answer.Insert("acquiringRequest", Enums.acquiringRequests.EmptyRef());
 	answer.Insert("server", "");
@@ -335,3 +289,162 @@ Function answerStruct()
 	answer.Insert("response", New Structure());	
 	Return answer;		
 EndFunction
+
+Procedure addOrderToQueue(order) Export
+	record = InformationRegisters.acquiringOrdersQueue.CreateRecordManager();
+	record.order = order;
+	record.registrationDate = ToUniversalTime(CurrentDate());
+	record.Write();	
+EndProcedure
+
+Procedure delOrderToQueue(order) Export
+	record = InformationRegisters.acquiringOrdersQueue.CreateRecordManager();
+	record.order = order;
+	record.Read();
+	If record.Selected() Then
+		record.Delete();
+	EndIf;	
+EndProcedure
+
+Procedure executeRequestBackground(requestName, order, additionalParameters = Undefined) Export
+	array	= New Array();
+	array.Add(requestName);
+	array.Add(order);
+	array.Add(additionalParameters);
+	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
+EndProcedure
+
+Procedure sendOrder(parameters)
+	parameters.Insert("errorCode", "acquiringOrderSend");
+	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
+	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
+	parameters.Insert("formUrl", "");
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.sendOrder(parameters);		
+	EndIf;
+	If parameters.errorCode = "" Then
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);		
+	EndIf;
+EndProcedure
+
+Procedure checkOrder(parameters)
+	parameters.Insert("errorCode", "acquiringOrderCheck");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.checkOrder(parameters);
+	EndIf;
+	If parameters.errorCode = "" Then
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
+		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
+			activateCard(parameters);
+		EndIf;
+	ElsIf parameters.errorCode = "rejected" Then
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected); 	
+	EndIf;
+EndProcedure
+
+Procedure reverseOrder(parameters)
+	parameters.Insert("errorCode", "acquiringOrderReverse");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.reverseOrder(parameters);
+	EndIf;	
+EndProcedure
+
+Procedure processOrder(order, parameters)
+	
+	query = New Query("SELECT
+	|	acquiringOrders.orders.(
+	|		uid),
+	|	acquiringOrders.payments.(
+	|		owner,
+	|		type,
+	|		amount,
+	|		details),
+	|	acquiringOrders.acquiringRequest
+	|FROM
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|WHERE
+	|	acquiringOrders.Ref = &order");
+	
+	query.SetParameter("order", order);
+	
+	result =query.Execute();
+	
+	If Not result.IsEmpty() Then		
+		parametersNew = Service.getStructCopy(parameters);
+		requestStruct = New Structure();
+		select = result.Select();
+		select.Next();		
+		If select.acquiringRequest = Enums.acquiringRequests.register Then			
+			requestStruct.Insert("request", "payment");
+			requestStruct.Insert("uid", XMLString(order));
+			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
+			paymentList = New Array();
+			For Each row In select.payments.Unload() Do
+				paymentListStruct = New Structure();
+				paymentListStruct.Insert("owner", XMLString(row.owner));
+				paymentListStruct.Insert("type", row.type);
+				paymentListStruct.Insert("amount", row.amount);
+				paymentListStruct.Insert("details", HTTP.decodeJSON(row.details, Enums.JSONValueTypes.structure));
+				paymentList.Add(paymentListStruct);
+			EndDo;
+			requestStruct.Insert("paymentList", paymentList);
+			parametersNew.Insert("requestName", "paymentBack");			
+		ElsIf select.acquiringRequest = Enums.acquiringRequests.binding Then
+			parametersNew.Insert("requestName", "paymentBack");
+		EndIf;
+		parametersNew.Insert("requestStruct", requestStruct);
+		Acquiring.delOrderToQueue(order);
+		General.executeRequestMethod(parametersNew);		
+		If parametersNew.errorDescription.result <> "" Then
+			Acquiring.addOrderToQueue(order);	
+		EndIf;		
+	EndIf;	
+	
+EndProcedure
+
+Procedure unBindCard(parameters)
+	parameters.Insert("errorCode", "acquiringUnBindCard");	
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.unBindCard(parameters);
+	EndIf;	
+	If parameters.errorCode = "" Then 
+		deactivateCard(parameters.creditCard);
+	EndIf;
+EndProcedure
+
+Procedure addCardToOrder(order, creditCard)
+	If Not creditCard.IsEmpty() Then
+		orderObject = order.GetObject();		
+		orderObject.creditCard = creditCard;
+		orderObject.Write();
+	EndIf;
+EndProcedure
+
+Procedure activateCard(parameters)
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
+	EndIf;	
+	creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
+	If creditCardObject = Undefined Then		
+		creditCard = newCard(bindCardParameters); 
+	Else
+		creditCardObject.inactive = False;
+		creditCardObject.Write();
+		creditCard = creditCardObject.Ref;				
+	EndIf;	
+	addCardToOrder(parameters.order, creditCard);
+EndProcedure
+
+Procedure deactivateCard(creditCard)
+	creditCardObject = creditCard.GetObject();
+	creditCardObject.inactive = True;
+	creditCardObject.Write();	
+EndProcedure
+
+Procedure changeOrderState(order, state)
+	record = InformationRegisters.ordersStates.CreateRecordManager();
+	record.order = order;
+	record.state = state;
+	record.Write();
+EndProcedure
+

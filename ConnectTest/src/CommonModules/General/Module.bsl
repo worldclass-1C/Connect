@@ -1512,7 +1512,7 @@ Procedure payment(parameters)
 	orderResult = results[0];
 
 	If orderResult.IsEmpty() Then
-		errorDescription = Service.getErrorDescription(language, "acquiringOrder");
+		errorDescription = Service.getErrorDescription(language, "acquiringOrderFind");
 	EndIf;
 
 	//Проверяем есть ли указанная карта, в списке доступных карт
@@ -1545,52 +1545,40 @@ Procedure payment(parameters)
 		EndIf;
 	EndIf;
 
-	struct.Insert("result", "Ok");
+//	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);
 	
 EndProcedure
 
 Procedure paymentStatus(parameters)
-	
-	requestStruct = parameters.requestStruct;	
+	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	struct = New Structure();
 	
-	query = New Query("SELECT
-	|	acquiringOrderIdentifiers.Owner AS order
-	|FROM
-	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
-	|WHERE
-	|	acquiringOrderIdentifiers.Ref = &orderIdentifier");
-	
-	query.SetParameter("orderIdentifier", Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(requestStruct.orderId)));
-	
-	result = query.Execute();
-	
-	If result.IsEmpty() Then
+	answer = Acquiring.findOrder(requestStruct.orderId);
+	If answer = Undefined Then
 		parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringConnection"));
 	Else
-		select = result.Select();
-		select.Next();
-		answer = Acquiring.executeRequest("check", select.order);
-		If answer = Undefined Then
-			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
-		Else
-			struct.Insert("result", answer.result);
-			parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
-			If answer.errorCode = "" Then				
-				If answer.acquiringRequest = Enums.acquiringRequests.register Then
-					
-				ElsIf answer.acquiringRequest = Enums.acquiringRequests.binding Then
-					Acquiring.executeRequestBackground("reverse", answer.order);
+		If answer.state = Enums.acquiringOrderStates.send Then
+			response = Acquiring.executeRequest("check", answer.order);
+			If response = Undefined Then
+				parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
+			Else				
+				struct.Insert("result", "ok");
+				parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
+				If response.errorCode = "" Then
+					Acquiring.addOrderToQueue(answer.order);					
+					Acquiring.executeRequestBackground("process", answer.order, parameters);
 				EndIf;
 			EndIf;
+		ElsIf answer.state = Enums.acquiringOrderStates.rejected Then			
+			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
+		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then			
+			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
 		EndIf;
 	EndIf;	
-	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-			
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));			
 EndProcedure
 
 Procedure bindCardList(parameters)

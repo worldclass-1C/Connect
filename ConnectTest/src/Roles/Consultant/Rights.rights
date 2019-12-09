@@ -980,7 +980,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.holdings.Attribute.token</name>
+		<name>Catalog.holdings.Attribute.tokenDefault</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

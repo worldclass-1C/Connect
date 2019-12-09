@@ -4,16 +4,11 @@ Function ProcessRequestPOST(Request)
 EndFunction
 
 Function ProcessRequestOPTIONS(Request)
-	response = New HTTPServiceResponse(200);	
-	origin = HTTP.getRequestHeader(request, "origin");
-	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");
-//	response.Headers.Insert("Access-Control-Allow-Headers", "*, content-type");
-	If HTTP.inTheWhiteList(origin) Then		
-		//	response.Headers.Insert("Access-Control-Allow-Credentials", "true");
-		response.Headers.Insert("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-		response.Headers.Insert("Access-Control-Allow-Origin", origin);
-	EndIf;
-	Return Response;
+	parameters = New Structure();
+	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));
+	parameters.Insert("answerBody", "");
+	parameters.Insert("errorDescription", New Structure("result, description", "", ""));
+	Return HTTP.prepareResponse(parameters);	
 EndFunction
 
 Function pingGet(Request)

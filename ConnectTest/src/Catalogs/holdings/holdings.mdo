@@ -160,36 +160,11 @@
   <defaultObjectForm>Catalog.holdings.Form.ItemForm</defaultObjectForm>
   <defaultListForm>Catalog.holdings.Form.ListForm</defaultListForm>
   <defaultChoiceForm>Catalog.holdings.Form.ChoiceForm</defaultChoiceForm>
-  <attributes uuid="37a6d2af-7cfb-48e9-b6ea-f5791b0e0bd3">
-    <name>token</name>
-    <synonym>
-      <key>en</key>
-      <value>Token</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Токен</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>36</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <indexing>Index</indexing>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="90f4a164-064f-40e5-b05e-3b640badb720">
     <name>languageDefault</name>
     <synonym>
       <key>en</key>
-      <value>Language default</value>
+      <value>Default language </value>
     </synonym>
     <synonym>
       <key>ru</key>
@@ -199,6 +174,25 @@
       <types>CatalogRef.languages</types>
     </type>
     <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="37a6d2af-7cfb-48e9-b6ea-f5791b0e0bd3">
+    <name>tokenDefault</name>
+    <synonym>
+      <key>en</key>
+      <value>Default token </value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен по умолчанию</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.tokens</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>

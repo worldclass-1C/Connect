@@ -227,70 +227,32 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <tabularSections uuid="dbed714a-78d2-4586-9e2b-aef89d143b35">
+  <tabularSections uuid="b76aa4c0-e224-40d0-a8ce-3472bf3de256">
     <producedTypes>
-      <objectType typeId="7145ed3c-a60b-4979-aeec-33be2c986fc4" valueTypeId="4a258e99-4553-48d6-a363-376d1e407cd7"/>
-      <rowType typeId="e0fcb3a9-89ee-4c52-904d-d1a53ae70619" valueTypeId="905b2600-ba69-48f6-b086-f23aca2250e6"/>
+      <objectType typeId="1196ce49-425c-49f5-b732-2fcf62125973" valueTypeId="d370e40f-7320-4d8e-8e37-fe8301d14904"/>
+      <rowType typeId="a6fae4db-bab6-4186-a6c6-835fe48e5584" valueTypeId="15a4681e-60cb-4d43-b851-3bc551cfa711"/>
     </producedTypes>
-    <name>orders</name>
+    <name>cards</name>
     <synonym>
       <key>en</key>
-      <value>Orders</value>
+      <value>Cards</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Заказы</value>
+      <value>Банковские карты</value>
     </synonym>
-    <attributes uuid="0047f0db-cb12-48e8-8d14-33be690eab09">
-      <name>uid</name>
+    <attributes uuid="84e0d30e-4907-4902-bba4-cef1bb42d845">
+      <name>card</name>
       <synonym>
         <key>en</key>
-        <value>Uid</value>
+        <value>Card</value>
       </synonym>
       <synonym>
         <key>ru</key>
-        <value>ИД</value>
+        <value>Банковская карта</value>
       </synonym>
       <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>36</length>
-        </stringQualifiers>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="0d8b8108-d2a2-4439-8545-2aee38570fd6">
-      <name>type</name>
-      <synonym>
-        <key>en</key>
-        <value>Type</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers>
-          <length>10</length>
-        </stringQualifiers>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="71e631d0-cd36-4ce2-b745-76f1c5a257f4">
-      <name>amount</name>
-      <synonym>
-        <key>en</key>
-        <value>Amount</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Сумма</value>
-      </synonym>
-      <type>
-        <types>Number</types>
-        <numberQualifiers>
-          <precision>15</precision>
-          <scale>2</scale>
-        </numberQualifiers>
+        <types>CatalogRef.creditCards</types>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
@@ -331,6 +293,10 @@
       <synonym>
         <key>en</key>
         <value>Type</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Тип</value>
       </synonym>
       <type>
         <types>String</types>
@@ -402,32 +368,163 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
-  <tabularSections uuid="b76aa4c0-e224-40d0-a8ce-3472bf3de256">
+  <tabularSections uuid="dbed714a-78d2-4586-9e2b-aef89d143b35">
     <producedTypes>
-      <objectType typeId="1196ce49-425c-49f5-b732-2fcf62125973" valueTypeId="d370e40f-7320-4d8e-8e37-fe8301d14904"/>
-      <rowType typeId="a6fae4db-bab6-4186-a6c6-835fe48e5584" valueTypeId="15a4681e-60cb-4d43-b851-3bc551cfa711"/>
+      <objectType typeId="7145ed3c-a60b-4979-aeec-33be2c986fc4" valueTypeId="4a258e99-4553-48d6-a363-376d1e407cd7"/>
+      <rowType typeId="e0fcb3a9-89ee-4c52-904d-d1a53ae70619" valueTypeId="905b2600-ba69-48f6-b086-f23aca2250e6"/>
     </producedTypes>
-    <name>cards</name>
+    <name>orders</name>
     <synonym>
       <key>en</key>
-      <value>Cards</value>
+      <value>Orders</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Банковские карты</value>
+      <value>Заказы</value>
     </synonym>
-    <attributes uuid="84e0d30e-4907-4902-bba4-cef1bb42d845">
-      <name>card</name>
+    <attributes uuid="0047f0db-cb12-48e8-8d14-33be690eab09">
+      <name>uid</name>
       <synonym>
         <key>en</key>
-        <value>Card</value>
+        <value>Uid</value>
       </synonym>
       <synonym>
         <key>ru</key>
-        <value>Банковская карта</value>
+        <value>ИД</value>
       </synonym>
       <type>
-        <types>CatalogRef.creditCards</types>
+        <types>String</types>
+        <stringQualifiers>
+          <length>36</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="0d8b8108-d2a2-4439-8545-2aee38570fd6">
+      <name>type</name>
+      <synonym>
+        <key>en</key>
+        <value>Type</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Тип</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="71e631d0-cd36-4ce2-b745-76f1c5a257f4">
+      <name>amount</name>
+      <synonym>
+        <key>en</key>
+        <value>Amount</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Сумма</value>
+      </synonym>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="5a0d24e4-41a5-40cf-88e5-ca39764d089c">
+    <producedTypes>
+      <objectType typeId="d5377d88-6cf1-4c69-a20f-aefbb50709c3" valueTypeId="1ba1b071-8a02-4756-9f88-5edf50ec439f"/>
+      <rowType typeId="499dfaf1-b455-43b7-8249-817f3a46fb44" valueTypeId="c629191d-e134-49f5-9974-668acaa38215"/>
+    </producedTypes>
+    <name>payments</name>
+    <synonym>
+      <key>en</key>
+      <value>Payments</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Оплаты</value>
+    </synonym>
+    <attributes uuid="966e6baf-14b7-4b22-ac0b-7ac2163ee0c1">
+      <name>owner</name>
+      <synonym>
+        <key>en</key>
+        <value>Owner</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Владелец</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.users</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="2dc59512-eab7-4e18-8651-2925beae3631">
+      <name>type</name>
+      <synonym>
+        <key>en</key>
+        <value>Type</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Тип</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="1f36bca0-b075-40f4-8481-ffdd958ad364">
+      <name>amount</name>
+      <synonym>
+        <key>en</key>
+        <value>Amount</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Сумма</value>
+      </synonym>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="b1db1c3f-8e70-472a-9fa8-a92328b51cf6">
+      <name>details</name>
+      <synonym>
+        <key>en</key>
+        <value>Details</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Детали</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>1024</length>
+        </stringQualifiers>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>

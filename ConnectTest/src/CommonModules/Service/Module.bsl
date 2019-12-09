@@ -239,13 +239,15 @@ Procedure logAcquiring(parameters) Export
 	If parameters.Property("requestBody") Then
 		record.requestBody = parameters.requestBody;
 	EndIf;	
-	If parameters.Property("response") Then
-		If record.isError Then
-			record.responseBody = parameters.errorCode + " " + parameters.errorDescription;	
-		ElsIf TypeOf(parameters.response) = Type("Structure") Then
+	If parameters.Property("response") Then			
+		If TypeOf(parameters.response) = Type("Structure") Then
 			record.responseBody = HTTP.encodeJSON(parameters.response);
 		Else
-			record.responseBody = "" + parameters.response;		
+			If record.isError Then
+				record.responseBody = parameters.errorCode + " " + parameters.errorDescription;
+			Else
+				record.responseBody = "" + parameters.response;
+			EndIf;		
 		EndIf;
 	EndIf;
 	record.Write();

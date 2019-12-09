@@ -17,10 +17,10 @@ Procedure sendOrder(parameters) Export
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 	EndIf;
 	
-	response = requestExecute(parameters, "register", requestParametrs);		
+	response = requestExecute(parameters, "register", requestParametrs);
+	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+	parameters.Insert("response", responseStruct);		
 	If response.StatusCode = 200 Then
-		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-		parameters.Insert("response", responseStruct);
 		If responseStruct.Property("orderId") Then
 			parameters.Insert("orderId", responseStruct.orderId);
 			parameters.Insert("formUrl", responseStruct.formUrl);
@@ -54,20 +54,30 @@ Procedure checkOrder(parameters) Export
 	
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	If answerHTTP.StatusCode = 200 Then
-		answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-		parameters.Insert("response", answerStruct);				
-		If answerStruct.actionCode = 0 Then
-			parameters.Insert("result", "ok");
+	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+	parameters.Insert("response", answerStruct);
+	If answerHTTP.StatusCode = 200 Then						
+		If answerStruct.actionCode = 0 Then			
 			parameters.Insert("errorCode", "");
-		Else		
-			parameters.Insert("result", "fail");
-			parameters.Insert("errorDescription", answerStruct.errorMessage);	
+			orderObject = parameters.order.GetObject();
+			newRow = orderObject.payments.Add();
+			newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+			newRow.type = "card";
+			newRow.amount = parameters.acquiringAmount;			
+			newRow.details = prepareDetails(answerStruct);			
+			orderObject.Write();
+		ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = -1
+				Or answerStruct.actionCode = 1001 Or answerStruct.actionCode = 51018
+				Or answerStruct.actionCode = 151019 Then
+			parameters.Insert("errorCode", "fail");
+			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+		Else
+			parameters.Insert("errorCode", "rejected");
+			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
 		EndIf;
 	Else
 		parameters.Insert("result", "fail");
-		parameters.Insert("errorCode", "acquirerNotAvailable");
-		parameters.Insert("errorDescription", "acquirer not available");
+		parameters.Insert("errorCode", "acquiringConnection");		
 	EndIf;		
 		
 EndProcedure
@@ -163,3 +173,31 @@ Function requestExecute(parameters, requestName, requestParametrs)
 	Return connection.Get(request);
 EndFunction
 
+Function prepareDetails(parameters)
+	
+	details = New Structure();
+	
+	details.Insert("terminalId", ?(parameters.Property("terminalId"), parameters.terminalId, ""));
+	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));	
+	details.Insert("approvalCode", "");
+	details.Insert("maskedPan", "");
+	details.Insert("cardholderName", "");
+	details.Insert("paymentSystem", "");
+	details.Insert("bankName", "");
+		
+	If parameters.Property("cardAuthInfo") Then
+		cardAuthInfo = parameters.cardAuthInfo;
+		details.Insert("approvalCode", ?(cardAuthInfo.Property("approvalCode"), cardAuthInfo.approvalCode, ""));		
+		details.Insert("cardholderName", ?(cardAuthInfo.Property("cardholderName"), cardAuthInfo.cardholderName, ""));
+		If cardAuthInfo.Property("maskedPan") Then
+			details.Insert("maskedPan", cardAuthInfo.maskedPan);
+			details.Insert("paymentSystem", TrimAll(Acquiring.paymentSystem(left(cardAuthInfo.maskedPan, 2))));
+		EndIf;
+	EndIf;
+	If parameters.Property("bankInfo") And parameters.bankInfo.Property("bankName") Then
+		details.Insert("bankName", parameters.bankInfo.bankName);
+	EndIf;
+	
+	Return HTTP.encodeJSON(details);
+	
+EndFunction

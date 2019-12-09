@@ -146,7 +146,7 @@
   <catalogs>Catalog.banners</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
-  <enums>Enum.acquiringOrderSrates</enums>
+  <enums>Enum.acquiringOrderStates</enums>
   <enums>Enum.acquiringProviders</enums>
   <enums>Enum.acquiringRequests</enums>
   <enums>Enum.appTypes</enums>
@@ -169,7 +169,9 @@
   <reports>Report.statisticsByMonth</reports>
   <dataProcessors>DataProcessor.sendPush</dataProcessors>
   <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>
+  <informationRegisters>InformationRegister.acquiringOrdersQueue</informationRegisters>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
+  <informationRegisters>InformationRegister.bannersOfUsers</informationRegisters>
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
   <informationRegisters>InformationRegister.gymsEmployees</informationRegisters>
@@ -183,7 +185,5 @@
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
-  <informationRegisters>InformationRegister.queueCreditCardToSend</informationRegisters>
-  <informationRegisters>InformationRegister.bannersOfUsers</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>
