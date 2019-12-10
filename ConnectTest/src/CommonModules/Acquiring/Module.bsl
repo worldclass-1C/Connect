@@ -17,13 +17,15 @@ Function newOrder(parameters) Export
 				owner = Catalogs.users.EmptyRef();
 			EndIf;
 			If paymentOption.Property("cards") Then
-				For Each element In paymentOption.cards Do
+				For Each element In paymentOption.cards Do					
+					//@skip-warning
 					newRow = orderObject.cards.Add();
 					newRow.card = XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);					
 				EndDo;
 			EndIf;
 			If paymentOption.Property("deposits") Then
 				For Each element In paymentOption.deposits Do
+					//@skip-warning
 					newRow = orderObject.deposits.Add();
 					newRow.owner = owner;
 					newRow.type = element.type;
