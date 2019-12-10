@@ -1,6 +1,6 @@
 
 Function newOrder(parameters) Export
-	orderObject = Catalogs.acquiringOrders.CreateItem();
+	orderObject = Catalogs.acquiringOrders.CreateItem();	
 	FillPropertyValues(orderObject, parameters);
 	If parameters.Property("orders") Then
 		For Each element In parameters.orders Do
@@ -107,7 +107,7 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "reverse" Then
 			reverseOrder(parameters);
 		ElsIf requestName = "process" Then
-			processOrder(order, additionalParameters);			
+			processOrder(parameters, additionalParameters);			
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -349,34 +349,37 @@ Procedure reverseOrder(parameters)
 	EndIf;	
 EndProcedure
 
-Procedure processOrder(order, parameters)
+Procedure processOrder(parameters, additionalParameters)
 	
 	query = New Query("SELECT
 	|	acquiringOrders.orders.(
-	|		uid),
+	|		uid AS uid) AS orders,
 	|	acquiringOrders.payments.(
-	|		owner,
-	|		type,
-	|		amount,
-	|		details),
-	|	acquiringOrders.acquiringRequest
+	|		owner AS owner,
+	|		type AS type,
+	|		amount AS amount,
+	|		details AS details) AS payments,
+	|	acquiringOrders.acquiringRequest AS acquiringRequest
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
+	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
+	|		ON ordersStates.order = acquiringOrders.Ref
 	|WHERE
-	|	acquiringOrders.Ref = &order");
+	|	acquiringOrders.Ref = &order
+	|	AND ordersStates.state = VALUE(Enum.acquiringOrderStates.success)");
 	
-	query.SetParameter("order", order);
+	query.SetParameter("order", parameters.order);
 	
-	result =query.Execute();
+	result = query.Execute();
 	
 	If Not result.IsEmpty() Then		
-		parametersNew = Service.getStructCopy(parameters);
+		parametersNew = Service.getStructCopy(additionalParameters);
 		requestStruct = New Structure();
 		select = result.Select();
 		select.Next();		
 		If select.acquiringRequest = Enums.acquiringRequests.register Then			
 			requestStruct.Insert("request", "payment");
-			requestStruct.Insert("uid", XMLString(order));
+			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array();
 			For Each row In select.payments.Unload() Do
@@ -393,10 +396,12 @@ Procedure processOrder(order, parameters)
 			parametersNew.Insert("requestName", "paymentBack");
 		EndIf;
 		parametersNew.Insert("requestStruct", requestStruct);
-		Acquiring.delOrderToQueue(order);
+		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
-			Acquiring.addOrderToQueue(order);	
+			Acquiring.addOrderToQueue(parameters.order);
+			parameters.Insert("errorCode", parametersNew.errorDescription.result);
+			parameters.Insert("response", parametersNew.errorDescription.description);	
 		EndIf;		
 	EndIf;	
 	
