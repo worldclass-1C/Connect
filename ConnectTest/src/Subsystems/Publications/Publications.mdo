@@ -16,4 +16,5 @@
   <content>Catalog.gyms</content>
   <content>Catalog.classesSchedule</content>
   <content>Catalog.tags</content>
+  <content>Catalog.products</content>
 </mdclass:Subsystem>

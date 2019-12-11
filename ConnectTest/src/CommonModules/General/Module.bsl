@@ -77,7 +77,8 @@ Procedure executeRequestMethod(parameters) Export
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
 				Or parameters.requestName = "addcancelcauses"
-				Or parameters.requestName = "addtags" 
+				Or parameters.requestName = "addtags"
+				Or parameters.requestName = "addproducts" 
 		Then 
 			changeCreateItems(parameters);
 		Else

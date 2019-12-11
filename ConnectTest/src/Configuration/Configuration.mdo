@@ -146,6 +146,7 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
+  <catalogs>Catalog.products</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderStates</enums>
