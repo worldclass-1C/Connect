@@ -76,7 +76,8 @@ Procedure executeRequestMethod(parameters) Export
 				Or parameters.requestName = "addgyms"				
 				Or parameters.requestName = "addrequest"
 				Or parameters.requestName = "adderrordescription"
-				Or parameters.requestName = "addcancelcauses" 
+				Or parameters.requestName = "addcancelcauses"
+				Or parameters.requestName = "addtags" 
 		Then 
 			changeCreateItems(parameters);
 		Else

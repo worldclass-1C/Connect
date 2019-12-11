@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="17c37d3f-9170-4e3b-8fad-d20b62c3e2a0">
+  <producedTypes>
+    <objectType typeId="b3191d8e-6430-4904-8191-37204ccf4e9f" valueTypeId="55684139-d3fc-439d-85c6-38377ebf5a60"/>
+    <refType typeId="588c046d-086c-47bc-990a-3c0a54482266" valueTypeId="0c7fee07-2c01-45a3-b082-e82fc3e6f1fa"/>
+    <selectionType typeId="b9a4c8f1-d9ac-4d4f-a8c1-a9a7188de957" valueTypeId="a4672cad-dd0e-4a2f-9ca9-21d4dee7610e"/>
+    <listType typeId="fca98a0b-506e-42f8-83a0-7fb4a8edadf8" valueTypeId="40d21f50-2faa-4c7c-9c7d-85f3d7fd85d8"/>
+    <managerType typeId="665e96dd-90e2-432b-928b-796a7ef18898" valueTypeId="4819d211-9942-40e3-a591-754ae48ab766"/>
+  </producedTypes>
+  <name>tags</name>
+  <synonym>
+    <key>en</key>
+    <value>Tags</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Теги</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.tags.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.tags.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>50</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="283984bf-84ad-4738-9298-7ae583993058">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ac73220e-77ef-4627-a5f9-8b459f70520c">
+    <name>level</name>
+    <synonym>
+      <key>en</key>
+      <value>Level</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Уровень</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>1</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="1a56168b-8c46-40b8-aaf9-29e6ebf445a9">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="37c44e15-3b1b-4878-8128-f13e0a07c182">
+    <name>weight</name>
+    <synonym>
+      <key>en</key>
+      <value>Weight</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вес</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="3c8c21b3-0150-4238-a454-87a936586fb1">
+    <producedTypes>
+      <objectType typeId="867ca345-1fef-4751-8342-ed5f1d8a8a64" valueTypeId="e6b2fed3-ecf8-4457-a639-cab9bfd8e6ff"/>
+      <rowType typeId="5a4a263e-195a-4eb6-810f-742196cba07b" valueTypeId="7060212a-d6fc-45f3-bc3b-e02332d2975a"/>
+    </producedTypes>
+    <name>photos</name>
+    <synonym>
+      <key>en</key>
+      <value>Photos</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фото</value>
+    </synonym>
+    <attributes uuid="84c3f534-3d05-4a35-9630-7ac20ffee6a2">
+      <name>URL</name>
+      <synonym>
+        <key>en</key>
+        <value>URL</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>URL</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="9037ab5a-37c1-498f-8640-354552865b24">
+    <producedTypes>
+      <objectType typeId="e62fc134-e0df-442d-bc78-52f52586ff1d" valueTypeId="067c4305-791f-4184-a78a-f169e04abae2"/>
+      <rowType typeId="9e874581-a1a9-42e5-8a46-e566de8e5ec1" valueTypeId="bbf2401a-f9f4-4bc9-862e-3a38fb1cf7e2"/>
+    </producedTypes>
+    <name>translation</name>
+    <synonym>
+      <key>en</key>
+      <value>Translation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Перевод</value>
+    </synonym>
+    <attributes uuid="9a46752b-7616-4352-b759-96bc88c40778">
+      <name>description</name>
+      <synonym>
+        <key>en</key>
+        <value>Description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Наименование</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="685b0282-a799-4d69-a221-10a89b10b5ba">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.languages</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

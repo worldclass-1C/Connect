@@ -63,6 +63,8 @@ Function attributesStructure(val requestName)
 		Return Catalogs.matchingRequestsInformationSources.attributesStructure();
 	ElsIf requestName = "adderrordescription" Then
 		Return Catalogs.errorDescriptions.attributesStructure();
+	ElsIf requestName = "addtags" Then
+		Return Catalogs.tags.attributesStructure();	
 	Else
 		Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "", "", "", getValueTable(), getValueTable(), New Structure());
 	EndIf;	 

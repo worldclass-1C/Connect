@@ -20,6 +20,5 @@
   <content>Catalog.languages</content>
   <content>Catalog.errorDescriptions</content>
   <content>Catalog.segments</content>
-  <subsystems>publishedData</subsystems>
   <subsystems>accounts</subsystems>
 </mdclass:Subsystem>

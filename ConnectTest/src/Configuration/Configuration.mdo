@@ -69,6 +69,7 @@
   <subsystems>Subsystem.Catalogs</subsystems>
   <subsystems>Subsystem.Messages</subsystems>
   <subsystems>Subsystem.MobileApplications</subsystems>
+  <subsystems>Subsystem.Publications</subsystems>
   <subsystems>Subsystem.Reports</subsystems>
   <subsystems>Subsystem.Settings</subsystems>
   <styles>Style.СУЗ</styles>
@@ -124,6 +125,7 @@
   <catalogs>Catalog.acquiringOrders</catalogs>
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
+  <catalogs>Catalog.banners</catalogs>
   <catalogs>Catalog.cacheValuesTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>
@@ -140,10 +142,10 @@
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
   <catalogs>Catalog.segments</catalogs>
+  <catalogs>Catalog.tags</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
-  <catalogs>Catalog.banners</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderStates</enums>
