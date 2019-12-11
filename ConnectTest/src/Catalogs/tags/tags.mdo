@@ -111,6 +111,50 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="e0995189-e5cf-42c7-b511-ef5eb8600794">
+    <name>endDate</name>
+    <synonym>
+      <key>en</key>
+      <value>End date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата окончания</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2cf61f3c-a8a2-4ff4-bf99-08fab9563269">
+    <name>startDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Start date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата начала</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="3c8c21b3-0150-4238-a454-87a936586fb1">
     <producedTypes>
       <objectType typeId="867ca345-1fef-4751-8342-ed5f1d8a8a64" valueTypeId="e6b2fed3-ecf8-4457-a639-cab9bfd8e6ff"/>

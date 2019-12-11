@@ -7,7 +7,8 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");	
 	DataLoad.addRowInAttributesTable(attributesTable, "level", "level", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "weight", "weight", "number");
-	
+	DataLoad.addRowInAttributesTable(attributesTable, "startDate", "startDate", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "endDate", "endDate", "date");
 	
 	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
