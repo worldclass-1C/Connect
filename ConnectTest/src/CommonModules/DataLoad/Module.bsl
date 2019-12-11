@@ -58,7 +58,9 @@ Function attributesStructure(val requestName)
 	ElsIf requestName = "addgymemployees" or requestName = "deletegymemployees" Then
 		Return InformationRegisters.gymsEmployees.attributesStructure(requestName);
 	ElsIf requestName = "addgymproducts" or requestName = "deletegymproducts" Then
-		Return InformationRegisters.gymsProducts.attributesStructure(requestName);		
+		Return InformationRegisters.gymsProducts.attributesStructure(requestName);
+	ElsIf requestName = "addproductmapping" or requestName = "deleteproductmapping" Then
+		Return InformationRegisters.productsMapping.attributesStructure(requestName);			
 	ElsIf requestName = "addcancelcauses" Then
 		Return Catalogs.cancellationReasons.attributesStructure();
 	ElsIf requestName = "addrequest" Then
