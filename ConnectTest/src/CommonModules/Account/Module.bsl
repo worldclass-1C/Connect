@@ -33,8 +33,8 @@ Function getFromExternalSystem(val parameters, val parametrName,
 			EndIf;			
 			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account);
 			userProfile = Users.profile(userArray[0], tokenContext.appType);
-			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));
-			authKey = XMLString(tokenContext.token) + Account.tempPassword();			
+			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));			
+			authKey = XMLString(tokenContext.token) + tempPassword();			
 			parametersNew.tokenContext.Insert("user", userArray[0]);			
 			Users.updateCache(parametersNew);									
 		ElsIf answerStruct.Count() > 1 Then			
