@@ -141,12 +141,12 @@
   <catalogs>Catalog.logs</catalogs>
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
+  <catalogs>Catalog.products</catalogs>
   <catalogs>Catalog.segments</catalogs>
   <catalogs>Catalog.tags</catalogs>
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
-  <catalogs>Catalog.products</catalogs>
   <documents>Document.РегистраторДвижений</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderStates</enums>
@@ -178,6 +178,7 @@
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
   <informationRegisters>InformationRegister.gymsEmployees</informationRegisters>
+  <informationRegisters>InformationRegister.gymsProducts</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsAcquiringBank</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>

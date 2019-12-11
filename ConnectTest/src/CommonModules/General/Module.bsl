@@ -71,6 +71,8 @@ Procedure executeRequestMethod(parameters) Export
 				Or parameters.requestName = "addemployees"
 				Or parameters.requestName = "addgymemployees"
 				Or parameters.requestName = "deletegymemployees"
+				Or parameters.requestName = "addgymproducts"
+				Or parameters.requestName = "deletegymproducts"
 				Or parameters.requestName = "addprovidedservices"
 				Or parameters.requestName = "addgymsschedule"
 				Or parameters.requestName = "addgyms"				
