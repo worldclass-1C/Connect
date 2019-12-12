@@ -9,7 +9,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
-	DataLoad.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
+//	DataLoad.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 

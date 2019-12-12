@@ -142,6 +142,7 @@
   <catalogs>Catalog.matchingRequestsInformationSources</catalogs>
   <catalogs>Catalog.messages</catalogs>
   <catalogs>Catalog.products</catalogs>
+  <catalogs>Catalog.rooms</catalogs>
   <catalogs>Catalog.segments</catalogs>
   <catalogs>Catalog.tags</catalogs>
   <catalogs>Catalog.timeZones</catalogs>

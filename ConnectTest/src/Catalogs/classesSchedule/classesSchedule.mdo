@@ -51,6 +51,45 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2fe1947d-b966-4eb0-b66f-93726589ae02">
+    <name>ageMax</name>
+    <synonym>
+      <key>en</key>
+      <value>Age max</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Масимальный возраст</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>5</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="268d3198-9946-481a-b324-f46d04bff2b8">
+    <name>ageMin</name>
+    <synonym>
+      <key>en</key>
+      <value>Age min</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Минимальный возраст</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>5</precision>
+      </numberQualifiers>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -68,6 +107,25 @@
       <types>Number</types>
       <numberQualifiers>
         <precision>4</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="65abfc91-816d-4f1b-8ba8-ac556c7950ce">
+    <name>duration</name>
+    <synonym>
+      <key>en</key>
+      <value>Duration</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Длительность</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>5</precision>
       </numberQualifiers>
     </type>
     <fullTextSearch>Use</fullTextSearch>
@@ -169,6 +227,70 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="6cf783d1-7985-4343-90cc-e29400f43924">
+    <name>isPreBooked</name>
+    <synonym>
+      <key>en</key>
+      <value>By appointment</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>По предварительной записи</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="7f708785-0558-44aa-83b6-d649ff7f8f82">
+    <name>isPrePaid</name>
+    <synonym>
+      <key>en</key>
+      <value>By prepayment</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>По предварительной оплате</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="588aa156-bee2-490a-9e4d-67570092ea5a">
+    <name>onlyMembers</name>
+    <synonym>
+      <key>en</key>
+      <value>Only members</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Только для членов клуба</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="17118577-1d33-48e4-917b-2520f4339312">
+    <name>onlyWithParents</name>
+    <synonym>
+      <key>en</key>
+      <value>Only with parents</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Только с родителями</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="7764e7a5-e0cc-408f-9dee-4862ab466bec">
     <name>period</name>
     <synonym>
@@ -186,6 +308,22 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="3b2a3bc7-55ff-4353-8d41-67c1141225ae">
+    <name>price</name>
+    <synonym>
+      <key>en</key>
+      <value>Price</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -244,6 +382,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="45aef5ff-16f0-4c0e-a96b-9b927ce209c1">
+    <name>room</name>
+    <synonym>
+      <key>en</key>
+      <value>Room</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Помещение</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.rooms</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="cb025a27-236e-498e-9a11-af5cf1764e15">
     <name>serviceid</name>
     <synonym>
@@ -280,6 +434,25 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="8a4cc495-7e83-4094-bd5e-5942beac0b60">
+    <name>studentLevel</name>
+    <synonym>
+      <key>en</key>
+      <value>Student level</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Уровень подготовки</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
