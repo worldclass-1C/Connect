@@ -33,9 +33,10 @@ Function attributesStructure() Export
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
+	mdStruct.Insert("tags", attributesTags);
 	mdStruct.Insert("language", New Structure("languages", "code"));
 	mdStruct.Insert("tag", New Structure("tags", "uid"));
 	
-	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "products", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

@@ -453,10 +453,15 @@ EndProcedure
 Procedure addUserToToken(parameters)
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
-	If tokenContext.user.IsEmpty() Then
+	If tokenContext.account.IsEmpty() Then
 		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid);
 	Else
-		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenContext.user.owner);
+		accountObject = tokenContext.account.GetObject();
+		If accountObject = Undefined Then
+			answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid);
+		Else
+			answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, tokenContext.account);
+		EndIf;
 	EndIf;
 	answerStruct.response.Delete("userList");
 	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response));
@@ -879,7 +884,7 @@ Procedure employeeInfo(parameters)
 
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
-	employeeArray = New Array();
+	struct = New Structure();
 	
 	errorDescription = Service.getErrorDescription(language);
 
@@ -912,22 +917,20 @@ Procedure employeeInfo(parameters)
 		
 		select = query.Execute().Select();
 
-		While select.Next() Do
-			employeeStruct = New Structure();
-			employeeStruct.Insert("uid", XMLString(select.employee));
-			employeeStruct.Insert("firstName", select.firstName);
-			employeeStruct.Insert("lastName", select.lastName);
-			employeeStruct.Insert("gender", select.gender);			
-			employeeStruct.Insert("isMyCoach", False);
-			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
-			employeeStruct.Insert("tagList", HTTP.decodeJSON(select.tagList, Enums.JSONValueTypes.array));
-			employeeStruct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
-			employeeStruct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));						
-			employeeArray.add(employeeStruct);
-		EndDo;
+		If select.Next() Then			
+			struct.Insert("uid", requestStruct.uid);
+			struct.Insert("firstName", select.firstName);
+			struct.Insert("lastName", select.lastName);
+			struct.Insert("gender", select.gender);			
+			struct.Insert("isMyCoach", False);
+			struct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
+			struct.Insert("tagList", HTTP.decodeJSON(select.tagList, Enums.JSONValueTypes.array));
+			struct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
+			struct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));
+		EndIf;
 	EndIf;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(employeeArray));
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("notSaveAnswer", True);
 	parameters.Insert("compressAnswer", True);
 	parameters.Insert("errorDescription", errorDescription);

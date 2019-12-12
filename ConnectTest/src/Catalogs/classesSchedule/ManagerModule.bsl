@@ -10,6 +10,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 
 	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
@@ -25,6 +26,7 @@ Function attributesStructure() Export
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));
 	mdStruct.Insert("employee", New Structure("employees", "uid"));
 	mdStruct.Insert("language", New Structure("languages", "code"));
+	mdStruct.Insert("product", New Structure("products", "uid"));
 	mdStruct.Insert("translation", attributesTranslation);
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "classesSchedule", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);

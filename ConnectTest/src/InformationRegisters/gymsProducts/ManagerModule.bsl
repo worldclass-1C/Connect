@@ -13,6 +13,6 @@ Function attributesStructure(requestName) Export
 	
 	actType = ?(requestName = "deletegymproducts", "delete", "write"); 
 	
-	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "gymsEmployees", "informationRegister", actType, attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "gymsProducts", "informationRegister", actType, attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

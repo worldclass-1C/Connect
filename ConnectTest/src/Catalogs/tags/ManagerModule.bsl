@@ -26,6 +26,6 @@ Function attributesStructure() Export
 	mdStruct.Insert("photos", attributesPhotos);
 	mdStruct.Insert("language", New Structure("languages", "code"));
 	
-	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "gyms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "tags", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

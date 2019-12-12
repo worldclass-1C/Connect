@@ -185,10 +185,10 @@
   <informationRegisters>InformationRegister.messagesId</informationRegisters>
   <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.ordersStates</informationRegisters>
+  <informationRegisters>InformationRegister.productsMapping</informationRegisters>
   <informationRegisters>InformationRegister.providedServices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
-  <informationRegisters>InformationRegister.productsMapping</informationRegisters>
   <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
 </mdclass:Configuration>

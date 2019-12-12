@@ -439,6 +439,37 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
+  <tabularSections uuid="b109b6a7-2878-40fd-8499-408db8286293">
+    <producedTypes>
+      <objectType typeId="0a9d5e5f-2cbd-4e1e-b6db-610e9b634d3d" valueTypeId="166cbc30-dda7-43a5-9d03-3aedca3c44fe"/>
+      <rowType typeId="57cab843-b72b-40c2-8bf7-be67e98c427c" valueTypeId="a66b14f9-5454-490e-8b23-e47c2831e897"/>
+    </producedTypes>
+    <name>tags</name>
+    <synonym>
+      <key>en</key>
+      <value>Tags</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Теги</value>
+    </synonym>
+    <attributes uuid="5cb8149a-9b16-4b37-aec0-1312988b300e">
+      <name>tag</name>
+      <synonym>
+        <key>en</key>
+        <value>Tag</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Тег</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.tags</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <forms uuid="a55c489a-b238-481f-8ee7-a34b66733fbe">
     <name>ListForm</name>
     <synonym>
