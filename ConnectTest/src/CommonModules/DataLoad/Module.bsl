@@ -70,7 +70,9 @@ Function attributesStructure(val requestName)
 	ElsIf requestName = "addtags" Then
 		Return Catalogs.tags.attributesStructure();
 	ElsIf requestName = "addproducts" Then
-		Return Catalogs.products.attributesStructure();		
+		Return Catalogs.products.attributesStructure();
+	ElsIf requestName = "addrooms" Then
+		Return Catalogs.rooms.attributesStructure();			
 	Else
 		Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "", "", "", getValueTable(), getValueTable(), New Structure());
 	EndIf;	 

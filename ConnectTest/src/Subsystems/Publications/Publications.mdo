@@ -17,4 +17,5 @@
   <content>Catalog.classesSchedule</content>
   <content>Catalog.tags</content>
   <content>Catalog.products</content>
+  <content>Catalog.rooms</content>
 </mdclass:Subsystem>
