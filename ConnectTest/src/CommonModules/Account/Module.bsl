@@ -121,7 +121,7 @@ Function profile(account) Export
 	|		ELSE accounts.gender
 	|	END AS gender,
 	|	REFPRESENTATION(accounts.status) AS status,
-	|	"""" AS photo
+	|	accounts.photo AS photo
 	|FROM
 	|	Catalog.accounts AS accounts
 	|WHERE
