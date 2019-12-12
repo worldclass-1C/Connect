@@ -5,6 +5,8 @@ Function attributesStructure() Export
 	attributesTableForNewItem = DataLoad.getValueTable();
 
 	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "type", "type", "enum");
 	DataLoad.addRowInAttributesTable(attributesTable, "startDate", "startDate", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "endDate", "endDate", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "latitude", "latitude", "number");
@@ -19,6 +21,8 @@ Function attributesStructure() Export
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("language", New Structure("languages", "code"));
+	mdStruct.Insert("gym", New Structure("gyms", "uid"));
+	mdStruct.Insert("type", New Structure("roomTypes", ""));
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "rooms", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 

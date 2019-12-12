@@ -6,28 +6,32 @@ Function attributesStructure() Export
 	attributesTable = DataLoad.getValueTable();
 	DataLoad.addRowInAttributesTable(attributesTable, "period", "period", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");
-	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
-	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
-	DataLoad.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
-//	DataLoad.addRowInAttributesTable(attributesTable, "serviceid", "serviceid", "string");
-	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "ageMax", "ageMax", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "ageMin", "ageMin", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "availablePlaces", "totalCount", "number");
-	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");	 
-	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "duration", "duration", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "employee", "employee", "ref");
-	DataLoad.addRowInAttributesTable(attributesTable, "fullDescription", "fullDescription", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "endRegistration", "endRegistration", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "isPreBooked", "isPreBooked", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "isPrePaid", "isPrePaid", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "onlyMembers", "onlyMembers", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "onlyWithParents", "onlyWithParents", "boolean");
+	DataLoad.addRowInAttributesTable(attributesTable, "price", "price", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");
+	DataLoad.addRowInAttributesTable(attributesTable, "room", "room", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "studentLevel", "studentLevel", "string");			
 	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
-	
-	attributesTranslation = DataLoad.getValueTable();
-	DataLoad.addRowInAttributesTable(attributesTranslation, "language", "language", "ref");
-	DataLoad.addRowInAttributesTable(attributesTranslation, "fullDescription", "fullDescription", "JSON");
 	
 	mdStruct = New Structure();
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));
+	mdStruct.Insert("room", New Structure("rooms", "uid"));
 	mdStruct.Insert("employee", New Structure("employees", "uid"));
-	mdStruct.Insert("language", New Structure("languages", "code"));
 	mdStruct.Insert("product", New Structure("products", "uid"));
-	mdStruct.Insert("translation", attributesTranslation);
+	mdStruct.Insert("language", New Structure("languages", "code"));	
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "classesSchedule", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 

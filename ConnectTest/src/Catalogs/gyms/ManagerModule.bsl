@@ -19,7 +19,6 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "segment", "division", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "state", "state", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "type", "type", "enum");	
-//	data.addRowInAttributesTable(attributesTable, "segment", "division", "string");
 
 	attributesTranslation = DataLoad.getValueTable();
 

@@ -168,7 +168,11 @@ EndProcedure
 
 Procedure fillEnum(object, attribute, attributesStruct, requestParameter)
 	For Each refProperty In attributesStruct.mdStruct[attribute.key] Do
-		object[attribute.key] = Enums[refProperty.key][requestParameter[attribute.value]];		
+		If ValueIsFilled(requestParameter[attribute.value]) Then
+			object[attribute.key] = Enums[refProperty.key][requestParameter[attribute.value]];
+		Else
+			object[attribute.key] = Enums[refProperty.key].EmptyRef();			
+		EndIf;
 	EndDo;	
 EndProcedure
 

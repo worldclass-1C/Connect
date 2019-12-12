@@ -168,6 +168,7 @@
   <enums>Enum.paymentSystem</enums>
   <enums>Enum.registrationTypes</enums>
   <enums>Enum.reportPeriods</enums>
+  <enums>Enum.roomTypes</enums>
   <enums>Enum.SmsProviders</enums>
   <enums>Enum.systemTypes</enums>
   <enums>Enum.Показатели</enums>
