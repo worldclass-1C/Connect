@@ -83,6 +83,10 @@
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Acquiring</commonModules>
   <commonModules>CommonModule.AcquiringSberbank</commonModules>
+  <commonModules>CommonModule.API_Info</commonModules>
+  <commonModules>CommonModule.API_List</commonModules>
+  <commonModules>CommonModule.API_Payment</commonModules>
+  <commonModules>CommonModule.API_Schedule</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
   <commonModules>CommonModule.DataLoad</commonModules>
