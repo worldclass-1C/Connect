@@ -30,13 +30,37 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined) Exp
 
 EndFunction
 
-//service
 Function getValueTable() Export
 	ValueTable = New ValueTable();
 	valueTable.Columns.Add("key");
 	valueTable.Columns.Add("value");
 	valueTable.Columns.Add("type");
 	Return ValueTable;	
+EndFunction
+
+Function isUploadRequest(requestName) Export
+	If False
+		Or requestName = "addchangeusers"					
+		Or requestName = "addclassmember"
+		Or requestName = "deleteclassmember"
+		Or requestName = "addemployees"
+		Or requestName = "addgymemployees" Or requestName = "deletegymemployees"
+		Or requestName = "addgymproducts" Or requestName = "deletegymproducts"
+		Or requestName = "addproductmapping" Or requestName = "deleteproductmapping"
+		Or requestName = "addprovidedservices"
+		Or requestName = "addgymsschedule"
+		Or requestName = "addgyms"				
+		Or requestName = "addrequest"
+		Or requestName = "adderrordescription"
+		Or requestName = "addcancelcauses"
+		Or requestName = "addtags"
+		Or requestName = "addproducts"
+		Or requestName = "addrooms"
+	Then
+		Return True;	
+	Else
+		Return False;
+	EndIf; 
 EndFunction
 
 Function attributesStructure(val requestName)

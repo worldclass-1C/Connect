@@ -64,27 +64,7 @@ Procedure executeRequestMethod(parameters) Export
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);			
-		ElsIf False
-				Or parameters.requestName = "addchangeusers"					
-				Or parameters.requestName = "addclassmember"
-				Or parameters.requestName = "deleteclassmember"
-				Or parameters.requestName = "addemployees"
-				Or parameters.requestName = "addgymemployees"
-				Or parameters.requestName = "deletegymemployees"
-				Or parameters.requestName = "addgymproducts"
-				Or parameters.requestName = "deletegymproducts"
-				Or parameters.requestName = "addproductmapping"
-				Or parameters.requestName = "deleteproductmapping"
-				Or parameters.requestName = "addprovidedservices"
-				Or parameters.requestName = "addgymsschedule"
-				Or parameters.requestName = "addgyms"				
-				Or parameters.requestName = "addrequest"
-				Or parameters.requestName = "adderrordescription"
-				Or parameters.requestName = "addcancelcauses"
-				Or parameters.requestName = "addtags"
-				Or parameters.requestName = "addproducts"
-				Or parameters.requestName = "addrooms" 
-		Then 
+		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
 		Else
 			executeExternalRequest(parameters);
