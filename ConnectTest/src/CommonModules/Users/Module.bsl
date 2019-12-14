@@ -27,7 +27,7 @@ Function profile(user, appType) Export
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
 	|	"""" AS rating,
-	|	"""" AS photo
+	|	users.owner.photo AS photo
 	|FROM
 	|	Catalog.users AS users
 	|WHERE

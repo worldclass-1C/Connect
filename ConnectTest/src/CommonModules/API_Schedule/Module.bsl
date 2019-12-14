@@ -69,7 +69,7 @@ Procedure gymSchedule(parameters) Export
 		textGroup = "
 		|GROUP BY
 		|	classesSchedule.Ref,
-		|	classesSchedule.period
+		|	classesSchedule.period,
 		|	classesSchedule.employee,
 		|	classesSchedule.gym,
 		|	classesSchedule.room,
@@ -86,11 +86,13 @@ Procedure gymSchedule(parameters) Export
 		|
 		|;
 		|////////////////////////////////////////////////////////////////////////////////";
-		textResum = "SELECT
+		textResum = "
+		|SELECT
 		|	TT.Doc AS Doc,
 		|	TT.period AS period,
 		|	TT.employee AS employee,
 		|	TT.gym AS gym,
+		|	TT.room AS room,
 		|	TT.product AS product,
 		|	TT.recorded AS recorded,
 		|	TT.canRecord AS canRecord,
@@ -117,8 +119,8 @@ Procedure gymSchedule(parameters) Export
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
 		|	TT.employee AS employee,
-		|	ISNULL(employeestranslation.firstName, TT.employee.firstName) AS firstName,
-		|	ISNULL(employeestranslation.lastName, TT.employee.lastName) AS lastName
+		|	ISNULL(employeestranslation.firstName, ISNULL(TT.employee.firstName, """")) AS firstName,
+		|	ISNULL(employeestranslation.lastName, ISNULL(TT.employee.lastName, """")) AS lastName
 		|FROM
 		|	TT AS TT
 		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
@@ -129,7 +131,7 @@ Procedure gymSchedule(parameters) Export
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
 		|	TT.gym AS gym,
-		|	ISNULL(gymstranslation.description, TT.gym.Description) AS name
+		|	ISNULL(gymstranslation.description, ISNULL(TT.gym.Description, """")) AS name
 		|FROM
 		|	TT AS TT
 		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -140,9 +142,9 @@ Procedure gymSchedule(parameters) Export
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
 		|	TT.product AS product,
-		|	ISNULL(productstranslation.description, TT.product.Description) AS name,
-		|	ISNULL(productstranslation.shortDescription, TT.product.shortDescription) AS shortDescription,
-		|	TT.product.photo AS photo
+		|	ISNULL(productstranslation.description, ISNULL(TT.product.Description, """")) AS name,
+		|	ISNULL(productstranslation.shortDescription, ISNULL(TT.product.shortDescription, """")) AS shortDescription,
+		|	ISNULL(TT.product.photo, """") AS photo
 		|FROM
 		|	TT AS TT
 		|		LEFT JOIN Catalog.products.translation AS productstranslation
@@ -153,7 +155,7 @@ Procedure gymSchedule(parameters) Export
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
 		|	TT.product AS product,	
-		|	ISNULL(tagstranslation.description, productstags.tag.Description) AS tag,
+		|	ISNULL(tagstranslation.description, ISNULL(productstags.tag.Description, """")) AS tag,
 		|	ISNULL(productstags.tag.level, 0) AS level,
 		|	ISNULL(productstags.tag.weight, 0) AS weight
 		|FROM
@@ -168,9 +170,9 @@ Procedure gymSchedule(parameters) Export
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
 		|	TT.room AS room,
-		|	TT.room.latitude AS latitude,
-		|	TT.room.longitude AS longitude,
-		|	ISNULL(roomstranslation.description, TT.room.Description) AS name
+		|	ISNULL(TT.room.latitude, 0) AS latitude,
+		|	ISNULL(TT.room.longitude, 0) AS longitude,
+		|	ISNULL(roomstranslation.description, ISNULL(TT.room.Description, """")) AS name
 		|FROM
 		|	TT AS TT
 		|		LEFT JOIN Catalog.rooms.translation AS roomstranslation
@@ -231,13 +233,16 @@ Procedure gymSchedule(parameters) Export
 			classesScheduleStruct.Insert("duration", select.duration);
 			classesScheduleStruct.Insert("ageMin", select.ageMin);
 			classesScheduleStruct.Insert("ageMax", select.ageMax);
-			classesScheduleStruct.Insert("studentLevel", select.studentLevel);
+			classesScheduleStruct.Insert("studentLevel", ?(select.studentLevel = "", "Any", select.studentLevel));
 			classesScheduleStruct.Insert("recorded", select.recorded);			
 			classesScheduleStruct.Insert("canCancel", select.canCancel);
+//			classesScheduleStruct.Insert("serviceKindName", "");
 			classesScheduleStruct.Insert("canRecord", select.canRecord and Not select.recorded);
 			classesScheduleStruct.Insert("availablePlaces", select.availablePlaces);
-			If tokenContext.user.IsEmpty() Then				
-				classesScheduleStruct.Insert("price", Undefined);	
+			If  tokenContext.user.IsEmpty() Then				
+				classesScheduleStruct.Insert("price", Undefined);
+			Else
+				classesScheduleStruct.Insert("price", ?(select.price = 0, Undefined, select.price));	
 			EndIf;			
 			
 			serviceStruct = New Structure();
@@ -265,7 +270,7 @@ Procedure gymSchedule(parameters) Export
 			selectTags.Reset();			
 			
 			employeeStruct = New Structure();
-			employeeStruct.Insert("uid", XMLString(select.employee));
+			employeeStruct.Insert("uid", ?(select.employee.isEmpty(), "", XMLString(select.employee)));
 			If selectEmployees.FindNext(New Structure("employee", select.employee)) Then
 				employeeStruct.Insert("firstName", selectEmployees.firstName);
 				employeeStruct.Insert("lastName", selectEmployees.lastName);
@@ -287,15 +292,15 @@ Procedure gymSchedule(parameters) Export
 			selectGyms.Reset();
 			
 			roomStruct = New Structure();
-			roomStruct.Insert("uid", XMLString(select.room));
+			roomStruct.Insert("uid", ?(select.room.isEmpty(), "", XMLString(select.room)));
 			If selectRooms.FindNext(New Structure("room", select.room)) Then
 				roomStruct.Insert("name", selectRooms.name);
 				roomStruct.Insert("latitude", selectRooms.latitude);
 				roomStruct.Insert("longitude", selectRooms.longitude);
 			Else
 				roomStruct.Insert("name", "");
-				roomStruct.Insert("latitude", "");
-				roomStruct.Insert("longitude", "");
+				roomStruct.Insert("latitude", 0);
+				roomStruct.Insert("longitude", 0);
 			EndIf;						
 			classesScheduleStruct.Insert("room", roomStruct);
 			selectRooms.Reset();			

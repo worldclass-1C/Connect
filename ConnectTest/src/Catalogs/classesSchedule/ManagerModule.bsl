@@ -22,9 +22,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "recordCancelInterval", "recordCancelInterval", "number");
 	DataLoad.addRowInAttributesTable(attributesTable, "room", "room", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "startRegistration", "startRegistration", "date");
-	DataLoad.addRowInAttributesTable(attributesTable, "description", "description", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "studentLevel", "studentLevel", "string");			
-	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	
 	mdStruct = New Structure();
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));

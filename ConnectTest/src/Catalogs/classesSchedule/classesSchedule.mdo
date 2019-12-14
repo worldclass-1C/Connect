@@ -166,28 +166,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="29ace9af-58b2-4723-a497-db25ac084d0b">
-    <name>fullDescription</name>
-    <synonym>
-      <key>en</key>
-      <value>Full description</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Полное описание</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers/>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="80c1246e-dedb-4114-ada5-31ba026d30af">
     <name>gym</name>
     <synonym>
@@ -398,25 +376,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="cb025a27-236e-498e-9a11-af5cf1764e15">
-    <name>serviceid</name>
-    <synonym>
-      <key>en</key>
-      <value>Serviceid</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>идентификатор описания услуги</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>36</length>
-      </stringQualifiers>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="f26b9168-b0d4-4501-82cb-fb04aeb547ac">
     <name>startRegistration</name>
     <synonym>
@@ -456,58 +415,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <tabularSections uuid="f11b0337-a9ec-4c1a-93b7-72517e0c0240">
-    <producedTypes>
-      <objectType typeId="b3d9e171-f63d-4317-b89a-d4021f704001" valueTypeId="ff2496bf-790a-4a6c-8e3c-cb66ed5fbf78"/>
-      <rowType typeId="38971ed3-8274-426a-ad73-7210d6b24954" valueTypeId="f4647dc8-4c04-4ca1-8778-5c039cf4ea7d"/>
-    </producedTypes>
-    <name>translation</name>
-    <synonym>
-      <key>en</key>
-      <value>Translation</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Перевод</value>
-    </synonym>
-    <attributes uuid="13938715-bb91-45cb-9ec6-4ae1b7348fac">
-      <name>language</name>
-      <synonym>
-        <key>en</key>
-        <value>Language</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Язык</value>
-      </synonym>
-      <type>
-        <types>CatalogRef.languages</types>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="02f2906c-d649-4ead-9edc-f69224c29f01">
-      <name>fullDescription</name>
-      <synonym>
-        <key>en</key>
-        <value>Full description</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Полное описание</value>
-      </synonym>
-      <type>
-        <types>String</types>
-        <stringQualifiers/>
-      </type>
-      <minValue xsi:type="core:UndefinedValue"/>
-      <maxValue xsi:type="core:UndefinedValue"/>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-  </tabularSections>
   <forms uuid="5d500f05-77af-4dd9-b864-b2129eab7a56">
     <name>ListForm</name>
     <synonym>
