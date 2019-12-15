@@ -55,7 +55,27 @@
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <master>true</master>
     <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="b32b9db5-9021-469f-ada1-7a7f0e15f751">
+    <name>entryType</name>
+    <synonym>
+      <key>en</key>
+      <value>Entry type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
   </dimensions>
   <dimensions uuid="771f64e9-1338-459d-a6ab-944ff522b8a8">
     <name>uid</name>

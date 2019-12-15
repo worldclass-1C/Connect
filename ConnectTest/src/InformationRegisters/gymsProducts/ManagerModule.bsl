@@ -4,6 +4,7 @@ Function attributesStructure(requestName) Export
 	attributesTable = DataLoad.getValueTable();
 	attributesTableForNewItem = DataLoad.getValueTable();
 	
+	DataLoad.addRowInAttributesTable(attributesTable, "productDirection", "productDirection", "enum");
 	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
 

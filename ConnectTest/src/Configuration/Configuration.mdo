@@ -166,6 +166,7 @@
   <enums>Enum.loyaltyTypes</enums>
   <enums>Enum.messageStatuses</enums>
   <enums>Enum.paymentSystem</enums>
+  <enums>Enum.productDirections</enums>
   <enums>Enum.registrationTypes</enums>
   <enums>Enum.reportPeriods</enums>
   <enums>Enum.roomTypes</enums>

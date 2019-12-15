@@ -40,6 +40,22 @@
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
   </resources>
+  <dimensions uuid="d607c664-02e8-4cd7-b7dc-de5fe022e62e">
+    <name>productDirection</name>
+    <synonym>
+      <key>en</key>
+      <value>Product direction</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Бизнес направление</value>
+    </synonym>
+    <type>
+      <types>EnumRef.productDirections</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </dimensions>
   <dimensions uuid="41cadc76-7e53-4e2b-b911-e800d7570743">
     <name>gym</name>
     <synonym>
@@ -73,7 +89,6 @@
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
-    <master>true</master>
     <mainFilter>true</mainFilter>
   </dimensions>
 </mdclass:InformationRegister>

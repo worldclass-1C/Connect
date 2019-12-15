@@ -37,6 +37,12 @@ Procedure executeRequestMethod(parameters) Export
 			API_List.employeeList(parameters);
 		ElsIf parameters.requestName = "employeeinfo" Then
 			API_Info.employeeInfo(parameters);
+		ElsIf parameters.requestName = "servicelist" 
+				Or parameters.requestName = "productlist" Then
+			API_List.productList(parameters);
+		ElsIf parameters.requestName = "serviceinfo" 
+				Or parameters.requestName = "productinfo" Then
+			API_Info.productInfo(parameters);		
 		ElsIf parameters.requestName = "paymentpreparation" Then
 			API_Payment.paymentPreparation(parameters);
 		ElsIf parameters.requestName = "payment" Then

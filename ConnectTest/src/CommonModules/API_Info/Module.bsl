@@ -171,6 +171,139 @@ Procedure employeeInfo(parameters) Export
 		
 EndProcedure
 
+Procedure productInfo(parameters) Export
+
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;	
+	productStruct = New Structure();
+
+	query = New Query();
+	query.Text = "SELECT
+	|	products.Ref AS product,
+	|	products.Description,
+	|	products.shortDescription,
+	|	products.fullDescription,
+	|	products.addDescription
+	|INTO TT
+	|FROM
+	|	Catalog.products AS products
+	|WHERE
+	|	products.Ref = &product
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.product,
+	|	ISNULL(productstranslation.description, TT.Description) AS description,
+	|	ISNULL(productstranslation.shortDescription, TT.shortDescription) AS shortDescription,
+	|	ISNULL(productstranslation.fullDescription, TT.fullDescription) AS fullDescription,
+	|	ISNULL(productstranslation.addDescription, TT.addDescription) AS addDescription
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.translation AS productstranslation
+	|		ON TT.product = productstranslation.Ref
+	|		AND productstranslation.language = &language
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.product AS product,
+	|	ISNULL(tagstranslation.description, ISNULL(productstags.tag.Description, """")) AS tag,
+	|	ISNULL(productstags.tag.level, 0) AS level,
+	|	ISNULL(productstags.tag.weight, 0) AS weight
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.tags AS productstags
+	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
+	|			ON productstags.tag = tagstranslation.Ref
+	|			AND tagstranslation.language = &language
+	|		ON TT.product = productstags.Ref
+	|WHERE
+	|	NOT productstags.Ref IS NULL
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.product AS product,
+	|	productsMapping.uid,
+	|	productsMapping.entryType
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
+	|		ON TT.product = productsMapping.product
+	|WHERE
+	|	NOT productsMapping.uid IS NULL
+	|	AND productsMapping.entryType in (&entryList)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.product,
+	|	productsphotos.URL
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.photos AS productsphotos
+	|		ON TT.product = productsphotos.Ref
+	|WHERE
+	|	NOT productsphotos.URL IS NULL";
+
+	If requestStruct.Property("entryList") And requestStruct.entryList.count() > 0 Then		
+		entryListArray = New Array();
+		For Each entryType In requestStruct.entryList Do
+			entryListArray.Add(entryType.uid);				
+		EndDo;		 
+		query.SetParameter("entryList", entryListArray);
+	Else
+		query.Text = StrReplace(query.Text, "AND productsMapping.entryType in (&entryList)", "");		
+	EndIf;	
+	query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.uid));
+	query.SetParameter("language", language);
+	
+	results = query.ExecuteBatch();
+	select = results[1].Select();
+	selectTags = results[2].Select();
+	selectMapping = results[3].Select();
+	selectPhotos = results[4].Select();
+	
+	While select.Next() Do		
+		productStruct.Insert("uid", XMLString(select.product));		
+		productStruct.Insert("name", select.description);		
+		productStruct.Insert("shortDescription", select.shortDescription);
+		productStruct.Insert("fullDescription", select.fullDescription);
+		productStruct.Insert("addDescription", select.addDescription);		
+		
+		photoArray = New Array();
+		While selectPhotos.FindNext(New Structure("product", select.product)) Do
+			photoArray.Add(selectPhotos.url);
+		EndDo;
+		productStruct.Insert("photoList", photoArray);
+		selectPhotos.Reset();		
+		
+		tagArray = New Array();
+		While selectTags.FindNext(New Structure("product", select.product)) Do
+			tagStruct = New Structure();
+			tagStruct.Insert("tag", XMLString(selectTags.tag));
+			tagStruct.Insert("level", selectTags.level);
+			tagStruct.Insert("weight", selectTags.weight);
+			tagArray.Add(tagStruct);
+		EndDo;
+		productStruct.Insert("tagList", tagArray);
+		selectTags.Reset();
+		
+		entryArray = New Array();
+		While selectMapping.FindNext(New Structure("product", select.product)) Do
+			entryStruct = New Structure();
+			entryStruct.Insert("uid", selectMapping.uid);
+			entryStruct.Insert("entryType", selectMapping.entryType);			
+			entryArray.Add(entryStruct);
+		EndDo;
+		productStruct.Insert("entryList", entryArray);
+		selectMapping.Reset();	
+		
+	EndDo;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(productStruct));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);	
+
+EndProcedure
+
 Procedure accountProfile(parameters) Export
 	parameters.Insert("answerBody", HTTP.encodeJSON(Account.profile(parameters.tokenContext.account)));		
 EndProcedure

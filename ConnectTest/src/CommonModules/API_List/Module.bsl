@@ -159,6 +159,112 @@ Procedure gymList(parameters) Export
 	
 EndProcedure
 
+Procedure productList(parameters) Export
+
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	baseImgURL = GeneralReuse.getBaseImgURL();
+	productArray = New Array();
+
+	query = New Query("SELECT
+	|	gymsProducts.product,
+	|	gymsProducts.productDirection
+	|INTO TT
+	|FROM
+	|	InformationRegister.gymsProducts AS gymsProducts
+	|WHERE
+	|	gymsProducts.productDirection = &productDirection
+	|	AND gymsProducts.gym = &gym
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.productDirection,
+	|	TT.product,
+	|	ISNULL(productstranslation.description, TT.product.Description) AS description,
+	|	ISNULL(productstranslation.shortDescription, TT.product.shortDescription) AS shortDescription,
+	|	TT.product.photo AS photo
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.translation AS productstranslation
+	|		ON TT.product = productstranslation.Ref
+	|		AND productstranslation.language = &language
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.product AS product,
+	|	ISNULL(tagstranslation.description, ISNULL(productstags.tag.Description, """")) AS tag,
+	|	ISNULL(productstags.tag.level, 0) AS level,
+	|	ISNULL(productstags.tag.weight, 0) AS weight
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.tags AS productstags
+	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
+	|			ON (productstags.tag = tagstranslation.Ref)
+	|			AND (tagstranslation.language = &language)
+	|		ON (TT.product = productstags.Ref)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.product AS product,
+	|	productsMapping.uid,
+	|	productsMapping.entryType
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
+	|		ON TT.product = productsMapping.product");
+
+	query.SetParameter("productDirection", XMLValue(Type("EnumRef.productDirections"), requestStruct.direction));
+	query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId));
+	query.SetParameter("language", language);
+	
+	results = query.ExecuteBatch();
+	select = results[1].Select();
+	selectTags = results[2].Select();
+	selectMapping = results[3].Select();
+	
+	While select.Next() Do
+		productStruct = New Structure();
+		productStruct.Insert("uid", XMLString(select.product));		
+		productStruct.Insert("name", select.description);		
+		productStruct.Insert("shortDescription", select.shortDescription);		
+		If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
+			productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
+		ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then
+			productStruct.Insert("photo", baseImgURL + "/service/spa.jpg");
+		Else			 	 
+			productStruct.Insert("photo", select.photo);
+		EndIf;				
+		
+		tagArray = New Array();
+		While selectTags.FindNext(New Structure("product", select.product)) Do
+			tagStruct = New Structure();
+			tagStruct.Insert("tag", XMLString(selectTags.tag));
+			tagStruct.Insert("level", selectTags.level);
+			tagStruct.Insert("weight", selectTags.weight);
+			tagArray.Add(tagStruct);
+		EndDo;
+		productStruct.Insert("tagList", tagArray);
+		selectTags.Reset();
+		
+		entryArray = New Array();
+		While selectMapping.FindNext(New Structure("product", select.product)) Do
+			entryStruct = New Structure();
+			entryStruct.Insert("uid", selectMapping.uid);
+			entryStruct.Insert("entryType", selectMapping.entryType);			
+			entryArray.Add(entryStruct);
+		EndDo;
+		productStruct.Insert("entryList", entryArray);
+		selectMapping.Reset();
+		
+		productArray.add(productStruct);
+	EndDo;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));
+	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("compressAnswer", True);	
+
+EndProcedure
+
 Procedure chainList(parameters) Export
 
 	language = parameters.language;

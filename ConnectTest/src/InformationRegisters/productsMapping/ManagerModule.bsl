@@ -6,6 +6,7 @@ Function attributesStructure(requestName) Export
 		
 	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "uid", "uid", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "entryType", "entryType", "string");
 	
 	mdStruct = New Structure();	
 	mdStruct.Insert("product", New Structure("products", "uid"));
