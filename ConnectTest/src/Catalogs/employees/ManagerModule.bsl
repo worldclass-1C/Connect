@@ -9,11 +9,12 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");	
-	DataLoad.addRowInAttributesTable(attributesTable, "descriptionFull", "descriptionFull", "JSON");	
-	DataLoad.addRowInAttributesTable(attributesTable, "tagList", "tagList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTable, "descriptionFull", "descriptionFull", "JSON");
 	DataLoad.addRowInAttributesTable(attributesTable, "categoryList", "categoryList", "JSON");
+	
 	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
+	DataLoad.addRowInAttributesTable(attributesTable, "tags", "tags", "valueTable");
 
 	attributesTranslation = DataLoad.getValueTable();
 
@@ -21,16 +22,20 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTranslation, "firstName", "firstName", "string");
 	DataLoad.addRowInAttributesTable(attributesTranslation, "lastName", "lastName", "string");	
 	DataLoad.addRowInAttributesTable(attributesTranslation, "descriptionFull", "descriptionFull", "JSON");	
-	DataLoad.addRowInAttributesTable(attributesTranslation, "tagList", "tagList", "JSON");
 	DataLoad.addRowInAttributesTable(attributesTranslation, "categoryList", "categoryList", "JSON");
-
+	
 	attributesPhotos = DataLoad.getValueTable();
 	DataLoad.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
 
+	attributesTags = DataLoad.getValueTable();
+	DataLoad.addRowInAttributesTable(attributesTags, "tag", "tag", "ref");
+	
 	mdStruct = New Structure();
 	mdStruct.Insert("translation", attributesTranslation);
 	mdStruct.Insert("photos", attributesPhotos);
+	mdStruct.Insert("tags", attributesTags);
 	mdStruct.Insert("language", New Structure("languages", "code"));
+	mdStruct.Insert("tag", New Structure("tags", "uid"));
 
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "employees", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 

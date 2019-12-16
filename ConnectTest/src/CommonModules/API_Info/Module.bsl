@@ -129,27 +129,67 @@ Procedure employeeInfo(parameters) Export
 	If errorDescription.result = "" Then
 		query = New Query("SELECT
 		|	employees.Ref AS employee,
-		|	ISNULL(employeestranslation.firstName, employees.firstName) AS firstName,
-		|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName,
+		|	employees.firstName,
+		|	employees.lastName,
 		|	employees.gender,
-		|	ISNULL(employeestranslation.descriptionFull, employees.descriptionFull) AS descriptionFull,
-		|	ISNULL(employeestranslation.categoryList, employees.categoryList) AS categoryList,
-		|	employees.tagList,
-		|	employees.photo AS photo,
-		|	employees.photos.(
-		|		URL)
+		|	employees.descriptionFull,
+		|	employees.categoryList,
+		|	employees.photo AS photo
+		|INTO TT
 		|FROM
 		|	Catalog.employees AS employees
-		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
-		|		ON employees.Ref = employeestranslation.Ref
-		|		and employeestranslation.language = &language
 		|WHERE
-		|	employees.Ref = &employee");
+		|	employees.Ref = &employee
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	TT.employee,
+		|	ISNULL(employeestranslation.firstName, TT.firstName) AS firstName,
+		|	ISNULL(employeestranslation.lastName, TT.lastName) AS lastName,
+		|	TT.gender,
+		|	ISNULL(employeestranslation.descriptionFull, TT.descriptionFull) AS descriptionFull,
+		|	ISNULL(employeestranslation.categoryList, TT.categoryList) AS categoryList,
+		|	TT.photo AS photo
+		|FROM
+		|	TT AS TT
+		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
+		|		ON TT.employee = employeestranslation.Ref
+		|		AND employeestranslation.language = &language
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT DISTINCT
+		|	TT.employee AS employee,
+		|	ISNULL(tagstranslation.description, ISNULL(employeestags.tag.Description, """")) AS tag,
+		|	ISNULL(employeestags.tag.level, 0) AS level,
+		|	ISNULL(employeestags.tag.weight, 0) AS weight
+		|FROM
+		|	TT AS TT
+		|		LEFT JOIN Catalog.employees.tags AS employeestags
+		|			LEFT JOIN Catalog.tags.translation AS tagstranslation
+		|			ON employeestags.tag = tagstranslation.Ref
+		|			AND tagstranslation.language = &language
+		|		ON TT.employee = employeestags.Ref
+		|WHERE
+		|	NOT employeestags.Ref IS NULL
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	TT.employee,
+		|	employeeshotos.URL
+		|FROM
+		|	TT AS TT
+		|		LEFT JOIN Catalog.employees.photos AS employeeshotos
+		|		ON TT.employee = employeeshotos.Ref
+		|WHERE
+		|	NOT employeeshotos.URL IS NULL");
 
 		query.SetParameter("employee", XMLValue(Type("CatalogRef.employees"), requestStruct.uid));
 		query.SetParameter("language", language);				
 		
-		select = query.Execute().Select();
+		results = query.ExecuteBatch();
+		select = results[1].Select();
+		selectTags = results[2].Select();
+		selectPhotos = results[3].Select();
 
 		If select.Next() Then			
 			struct.Insert("uid", requestStruct.uid);
@@ -157,10 +197,26 @@ Procedure employeeInfo(parameters) Export
 			struct.Insert("lastName", select.lastName);
 			struct.Insert("gender", select.gender);			
 			struct.Insert("isMyCoach", False);
-			struct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
-			struct.Insert("tagList", HTTP.decodeJSON(select.tagList, Enums.JSONValueTypes.array));
+			struct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));			
 			struct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
-			struct.Insert("photos", select.photos.Unload().UnloadColumn("URL"));
+			
+			tagArray = New Array();
+			While selectTags.FindNext(New Structure("employee", select.employee)) Do
+				tagStruct = New Structure();
+				tagStruct.Insert("tag", XMLString(selectTags.tag));
+				tagStruct.Insert("level", selectTags.level);
+				tagStruct.Insert("weight", selectTags.weight);
+				tagArray.Add(tagStruct);
+			EndDo;
+			struct.Insert("tagList", tagArray);
+			selectTags.Reset();
+			
+			photoArray = New Array();
+			While selectPhotos.FindNext(New Structure("employee", select.employee)) Do
+				photoArray.Add(selectPhotos.url);
+			EndDo;			
+			struct.Insert("photos", photoArray);
+			selectPhotos.Reset();
 		EndIf;
 	EndIf;
 		
@@ -272,6 +328,9 @@ Procedure productInfo(parameters) Export
 		While selectPhotos.FindNext(New Structure("product", select.product)) Do
 			photoArray.Add(selectPhotos.url);
 		EndDo;
+		If photoArray.Count() = 0 Then
+			photoArray.Add("" + GeneralReuse.getBaseImgURL() + "/service/fitness.jpg");
+		EndIf;	
 		productStruct.Insert("photoList", photoArray);
 		selectPhotos.Reset();		
 		
