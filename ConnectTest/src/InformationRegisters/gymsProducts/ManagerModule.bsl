@@ -9,6 +9,7 @@ Function attributesStructure(requestName) Export
 	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
 
 	mdStruct = New Structure();
+	mdStruct.Insert("productDirection", New Structure("productDirections", ""));
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));
 	mdStruct.Insert("product", New Structure("products", "uid"));
 	
