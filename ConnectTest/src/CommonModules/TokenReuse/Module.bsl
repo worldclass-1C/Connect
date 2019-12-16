@@ -18,6 +18,7 @@ Function getContext(authKey) Export
 	|	tokens.timeZone,
 	|	tokens.underControl,
 	|	tokens.user,
+	|	tokens.account AS account,
 	|	ISNULL(tokens.user.userType, """") AS userType
 	|FROM
 	|	Catalog.tokens AS tokens

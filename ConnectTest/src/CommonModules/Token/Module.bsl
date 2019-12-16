@@ -38,6 +38,7 @@ Function initContext() Export
 	tokenContext.Insert("timezone", Catalogs.timeZones.EmptyRef());
 	tokenContext.Insert("underControl", False);	
 	tokenContext.Insert("user", Catalogs.users.EmptyRef());
+	tokenContext.Insert("account", Catalogs.accounts.EmptyRef());
 	tokenContext.Insert("userType", "");
 	Return tokenContext;	
 EndFunction
