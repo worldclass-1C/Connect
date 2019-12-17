@@ -1,5 +1,5 @@
 
-Function processRequest(request, requestName = "") Export
+Function processRequest(request, requestName = "", synch = False) Export
 
 	dateInMilliseconds = CurrentUniversalDateInMilliseconds();
 
@@ -36,7 +36,7 @@ Function processRequest(request, requestName = "") Export
 		parameters.Insert("headers", request.Headers);		
 	Else
 		parameters.Insert("requestBody", request.GetBodyAsString());
-		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure));
+		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure,,synch));
 	EndIf;
 	If parameters.errorDescription.result = "" Then	
 		Try
@@ -50,13 +50,15 @@ Function processRequest(request, requestName = "") Export
 		- DateInMilliseconds);
 	parameters.Insert("isError", parameters.errorDescription.result <> "");
 
-	Service.logRequestBackground(parameters);
+	If Not synch Then
+		Service.logRequestBackground(parameters);
+	EndIf;
 
 	Return HTTP.prepareResponse(parameters);
 
 EndFunction
 
-Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False) Export	
+Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False, isXDTOSerializer = False) Export	
 	body = TrimAll(body);
 	If JSONValueType = "" Then
 		JSONValueType = Enums.JSONValueTypes.string;
@@ -64,7 +66,11 @@ Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False) Export
 	If StrLen(Body) > 0 Then			
 		JSONReader = New JSONReader();
 		JSONReader.SetString(body);
-		RequestStruct   = ReadJSON(JSONReader, ReadToMap);
+		If isXDTOSerializer Then
+			RequestStruct = XDTOSerializer.ReadJSON(JSONReader)	
+		Else		
+			RequestStruct = ReadJSON(JSONReader, ReadToMap);
+		EndIf;
 		JSONReader.Close();
 		Return RequestStruct;
 	Else

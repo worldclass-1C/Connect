@@ -14,3 +14,7 @@ EndFunction
 Function imageDELETE(Request)
 	Return HTTP.processRequest(request, "imageDELETE");
 EndFunction
+
+Function synchMethod(Request)
+	Return HTTP.processRequest(request,, True);
+EndFunction

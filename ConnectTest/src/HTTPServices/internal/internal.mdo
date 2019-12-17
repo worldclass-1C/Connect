@@ -25,6 +25,24 @@
       <handler>changeDataPOST</handler>
     </methods>
   </urlTemplates>
+  <urlTemplates uuid="3e356557-006e-4ffe-bded-36b52ef84cc8">
+    <name>image</name>
+    <synonym>
+      <key>en</key>
+      <value>Image</value>
+    </synonym>
+    <template>/img</template>
+    <methods uuid="eef4480b-3c93-4775-b24a-ec96e09ec801">
+      <name>POST</name>
+      <httpMethod>POST</httpMethod>
+      <handler>imagePOST</handler>
+    </methods>
+    <methods uuid="c262799b-61e1-4e46-b5e6-d8dacb7c44a9">
+      <name>DELETE</name>
+      <httpMethod>DELETE</httpMethod>
+      <handler>imageDELETE</handler>
+    </methods>
+  </urlTemplates>
   <urlTemplates uuid="2d308ec6-5db8-4aa8-9ee7-782d20aefbae">
     <name>sendMessage</name>
     <synonym>
@@ -42,22 +60,25 @@
       <handler>sendMessagePOST</handler>
     </methods>
   </urlTemplates>
-  <urlTemplates uuid="3e356557-006e-4ffe-bded-36b52ef84cc8">
-    <name>image</name>
+  <urlTemplates uuid="be6e23b0-b21b-41bd-88db-5034007d0a33">
+    <name>synch</name>
     <synonym>
       <key>en</key>
-      <value>Image</value>
+      <value>Synchronization</value>
     </synonym>
-    <template>/img</template>
-    <methods uuid="eef4480b-3c93-4775-b24a-ec96e09ec801">
+    <synonym>
+      <key>ru</key>
+      <value>Синхронизация</value>
+    </synonym>
+    <template>/synch</template>
+    <methods uuid="ca11c69d-9d3f-41c7-a618-30362a6d1028">
       <name>POST</name>
+      <synonym>
+        <key>en</key>
+        <value>POST</value>
+      </synonym>
       <httpMethod>POST</httpMethod>
-      <handler>imagePOST</handler>
-    </methods>
-    <methods uuid="c262799b-61e1-4e46-b5e6-d8dacb7c44a9">
-      <name>DELETE</name>
-      <httpMethod>DELETE</httpMethod>
-      <handler>imageDELETE</handler>
+      <handler>synchMethod</handler>
     </methods>
   </urlTemplates>
 </mdclass:HTTPService>

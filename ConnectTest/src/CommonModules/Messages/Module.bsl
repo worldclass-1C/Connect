@@ -154,21 +154,21 @@ Procedure sendMessages(informationChannel) Export
 	If procedureName <> "" Then
 		query = New Query();
 		query.text = "SELECT DISTINCT
-			|	messagesChanges.Ref.holding AS holding
-			|FROM
-			|	Catalog.messages.Changes AS messagesChanges
-			|WHERE
-			|	messagesChanges.Node = &node";
+		|	messagesChanges.Ref.holding AS holding
+		|FROM
+		|	Catalog.messages.Changes AS messagesChanges
+		|WHERE
+		|	messagesChanges.Node = &node";
 
 		query.SetParameter("node", nodeMessagesToSend);
 		selection = query.Execute().Select();
 
 		While selection.Next() Do
 			sendParameters = New Array();
-			sendParameters.Добавить(nodeMessagesToSend);
-			sendParameters.Добавить(nodeMessagesToCheckStatus);
-			sendParameters.Добавить(selection.holding);
-			sendParameters.Добавить(informationChannel);
+			sendParameters.Add(nodeMessagesToSend);
+			sendParameters.Add(nodeMessagesToCheckStatus);
+			sendParameters.Add(selection.holding);			
+			sendParameters.Add(informationChannel);
 			BackgroundJobs.Execute(procedureName, sendParameters, New UUID, "sendMessages");
 		EndDo;
 	EndIf;
@@ -245,23 +245,30 @@ Procedure sendHoldingSms(nodeMessagesToSend,
 	|	messages.Ref.text AS text,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
 	|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
-	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
-	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
-	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
-	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
-	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
-	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
-	|	ISNULL(gymSMSProviders.useOSAuthentication, SMSProviders.useOSAuthentication) AS useOSAuthentication,
-	|	ISNULL(gymSMSProviders.senderName, SMSProviders.senderName) AS senderName
+	|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
+	|	ISNULL(gymSMSProviders.server, ISNULL(chainSMSProviders.server, SMSProviders.server)) AS server,
+	|	ISNULL(gymSMSProviders.port, ISNULL(chainSMSProviders.port, SMSProviders.port)) AS port,
+	|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
+	|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
+	|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
+	|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
+	|		SMSProviders.secureConnection)) AS secureConnection,
+	|	ISNULL(gymSMSProviders.useOSAuthentication, ISNULL(chainSMSProviders.useOSAuthentication,
+	|		SMSProviders.useOSAuthentication)) AS useOSAuthentication,
+	|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
 	|FROM
 	|	Catalog.messages.Changes AS messages
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
-	|		ON (&holding = gymSMSProviders.holding)
+	|		ON (gymSMSProviders.holding = &holding)
 	|		AND (gymSMSProviders.gym = messages.Ref.gym)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
+	|		ON (chainSMSProviders.holding = &holding)
+	|		AND (chainSMSProviders.chain = messages.Ref.chain)
+	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
-	|		ON (&holding = SMSProviders.holding)
+	|		ON (SMSProviders.holding = &holding)
 	|		AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
+	|		AND (SMSProviders.chain = VALUE(Catalog.chains.EmptyRef))
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
 	|	AND messages.Ref.holding = &holding
@@ -270,7 +277,7 @@ Procedure sendHoldingSms(nodeMessagesToSend,
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
 	query.SetParameter("nodeMessagesToCheckStatus", nodeMessagesToCheckStatus);
-	query.SetParameter("holding", holding);
+	query.SetParameter("holding", holding);	
 
 	selection = query.Execute().Select();
 
@@ -290,27 +297,31 @@ Procedure sendSmsImmediately(nodeMessagesToSend,
 	|	messages.text AS text,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
 	|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
-	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
-	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
-	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
-	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
-	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
-	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
-	|	ISNULL(gymSMSProviders.useOSAuthentication, SMSProviders.useOSAuthentication) AS useOSAuthentication,
-	|	ISNULL(gymSMSProviders.senderName, SMSProviders.senderName) AS senderName
+	|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
+	|	ISNULL(gymSMSProviders.server, ISNULL(chainSMSProviders.server, SMSProviders.server)) AS server,
+	|	ISNULL(gymSMSProviders.port, ISNULL(chainSMSProviders.port, SMSProviders.port)) AS port,
+	|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
+	|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
+	|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
+	|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
+	|		SMSProviders.secureConnection)) AS secureConnection,
+	|	ISNULL(gymSMSProviders.useOSAuthentication, ISNULL(chainSMSProviders.useOSAuthentication,
+	|		SMSProviders.useOSAuthentication)) AS useOSAuthentication,
+	|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
 	|FROM
 	|	Catalog.messages AS messages
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
 	|		ON (messages.holding = gymSMSProviders.holding)
-	|		AND (gymSMSProviders.gym = messages.Ref.gym)
+	|		AND (gymSMSProviders.gym = messages.gym)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
+	|		ON (chainSMSProviders.holding = messages.holding)
+	|		AND (chainSMSProviders.chain = messages.chain)
+	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
 	|		ON (messages.holding = SMSProviders.holding)
 	|		AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|WHERE
-	|	messages.ref = &message
-	|ORDER BY
-	|	messages.priority";
+	|	messages.ref = &message";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
 	query.SetParameter("nodeMessagesToCheckStatus", nodeMessagesToCheckStatus);
@@ -332,22 +343,30 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 	|	messages.Ref AS message,
 	|	messagesId.id AS id,
 	|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
-	|	ISNULL(gymSMSProviders.SMSProvider, SMSProviders.SMSProvider) AS SMSProvider,
-	|	ISNULL(gymSMSProviders.server, SMSProviders.server) AS server,
-	|	ISNULL(gymSMSProviders.port, SMSProviders.port) AS port,
-	|	ISNULL(gymSMSProviders.user, SMSProviders.user) AS user,
-	|	ISNULL(gymSMSProviders.password, SMSProviders.password) AS password,
-	|	ISNULL(gymSMSProviders.timeout, SMSProviders.timeout) AS timeout,
-	|	ISNULL(gymSMSProviders.secureConnection, SMSProviders.secureConnection) AS secureConnection,
-	|	ISNULL(gymSMSProviders.useOSAuthentication, SMSProviders.useOSAuthentication) AS useOSAuthentication
+	|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
+	|	ISNULL(gymSMSProviders.server, ISNULL(chainSMSProviders.server, SMSProviders.server)) AS server,
+	|	ISNULL(gymSMSProviders.port, ISNULL(chainSMSProviders.port, SMSProviders.port)) AS port,
+	|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
+	|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
+	|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
+	|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
+	|		SMSProviders.secureConnection)) AS secureConnection,
+	|	ISNULL(gymSMSProviders.useOSAuthentication, ISNULL(chainSMSProviders.useOSAuthentication,
+	|		SMSProviders.useOSAuthentication)) AS useOSAuthentication,
+	|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
 	|FROM
 	|	Catalog.messages.Changes AS messages
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
-	|		ON (&holding = gymSMSProviders.holding)
+	|		ON (gymSMSProviders.holding = &holding)
 	|		AND (gymSMSProviders.gym = messages.Ref.gym)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
+	|		ON (chainSMSProviders.holding = &holding)
+	|		AND (chainSMSProviders.chain = messages.Ref.chain)
+	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
-	|		ON (&holding = SMSProviders.holding)
+	|		ON (SMSProviders.holding = &holding)
 	|		AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
+	|		AND (SMSProviders.chain = VALUE(Catalog.chains.EmptyRef))
 	|		LEFT JOIN InformationRegister.messagesId AS messagesId
 	|		ON messages.Ref = messagesId.message
 	|		AND (messagesId.informationChannel = VALUE(Enum.informationChannels.sms))

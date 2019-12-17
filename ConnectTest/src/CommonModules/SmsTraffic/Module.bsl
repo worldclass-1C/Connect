@@ -3,7 +3,7 @@ Function sendSMS(parameters, answer) Export
 		
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
 	
-	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&phones=" + parameters.phone + "&message=" + parameters.text + "&originator=" + parameters.senderName + "&want_sms_ids=1";
+	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&phones=" + parameters.phone + "&message=" + parameters.text + "&originator=" + parameters.senderName + "&rus=1" + "&want_sms_ids=1";
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());

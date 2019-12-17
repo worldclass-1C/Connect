@@ -1,29 +1,34 @@
 
 Function createItems(requestName, holding, requestStruct, owner = Undefined) Export
 
-	attributesStruct = attributesStructure(requestName);
-	requestStruct = requestStruct;
 	items = New Array();
-		
-	If TypeOf(requestStruct) = Type("Array") Then
-		For Each requestParameter In requestStruct Do
-			object = initObjectItem(attributesStruct, requestParameter);
-			For Each attribute In attributesStruct.attributesTable Do
-				fillField(object, attribute, attributesStruct, requestParameter);
-			EndDo;
-			fillPredefinedField(object, attributesStruct, holding, owner);
-			If attributesStruct.actType = "write" Then
-				object.Write();
-			ElsIf attributesStruct.actType = "delete" Then
-				object.Read();
-				If object.Selected() Then
-					object.Delete();
-				EndIf;				
-			EndIf;
-			If attributesStruct.mdType <> "informationRegister" Then
-				items.Add(object.Ref);
-			EndIf;
+	If requestName = "addrequest" Then
+		For Each itemObject In requestStruct Do
+			itemObject.write();
+			items.Add(itemObject.ref);	
 		EndDo;
+	Else
+		attributesStruct = attributesStructure(requestName);
+		If TypeOf(requestStruct) = Type("Array") Then
+			For Each requestParameter In requestStruct Do
+				object = initObjectItem(attributesStruct, requestParameter);
+				For Each attribute In attributesStruct.attributesTable Do
+					fillField(object, attribute, attributesStruct, requestParameter);
+				EndDo;
+				fillPredefinedField(object, attributesStruct, holding, owner);
+				If attributesStruct.actType = "write" Then
+					object.Write();
+				ElsIf attributesStruct.actType = "delete" Then
+					object.Read();
+					If object.Selected() Then
+						object.Delete();
+					EndIf;
+				EndIf;
+				If attributesStruct.mdType <> "informationRegister" Then
+					items.Add(object.Ref);
+				EndIf;
+			EndDo;
+		EndIf;
 	EndIf;
 
 	Return items;

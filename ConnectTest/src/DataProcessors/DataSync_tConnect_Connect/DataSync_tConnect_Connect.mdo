@@ -15,19 +15,6 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <defaultForm>DataProcessor.DataSync_tConnect_Connect.Form.Form</defaultForm>
-  <forms uuid="000fb67f-1efc-40cd-b075-526595613b1a">
-    <name>Form1</name>
-    <synonym>
-      <key>ru</key>
-      <value>Form1</value>
-    </synonym>
-    <synonym>
-      <key>en</key>
-      <value>Form1</value>
-    </synonym>
-    <usePurposes>PersonalComputer</usePurposes>
-    <usePurposes>MobileDevice</usePurposes>
-  </forms>
   <forms uuid="f7093423-cfa7-4063-8de1-a4decd4a87bb">
     <name>Form</name>
     <synonym>

@@ -54,7 +54,7 @@ Procedure unloadAtServer()
 		user = "";
 		password = "";
 		timeout = 30;	
-		URL = "API/hs/internal/edit";
+		URL = "API/hs/internal/synch";
 		
 		headers	= New Map;
 		headers.Insert("Content-Type", "application/json");
@@ -74,78 +74,23 @@ EndProcedure
 
 &AtServer
 Function getRequestBody_Requests(requestList)
-	
-	array = New Array();	
-		
 	query = New Query();
 	query.text	= "SELECT
-	|	matchingRequestsInformationSources.Ref AS Ref,
-	|	matchingRequestsInformationSources.Ref.Code AS Code,
-	|	matchingRequestsInformationSources.Attribute AS attribute,
-	|	matchingRequestsInformationSources.performBackground AS performBackground,
-	|	matchingRequestsInformationSources.requestSource AS requestSource,
-	|	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
-	|	matchingRequestsInformationSources.informationSource AS informationSource,
-	|	matchingRequestsInformationSources.notUse AS notUse,
-	|	matchingRequestsInformationSources.notSaveAnswer AS notSaveAnswer,
-	|	matchingRequestsInformationSources.compressAnswer AS compressAnswer,
-	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
-	|	matchingRequestsInformationSources.Ref.IsFolder AS IsFolder,
-	|	matchingRequestsInformationSources.Ref.Parent AS parent
+	|	matchingRequestsInformationSources.Ref AS ref
 	|FROM
-	|	Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
+	|	Catalog.matchingRequestsInformationSources AS matchingRequestsInformationSources
 	|WHERE
-	|	matchingRequestsInformationSources.Ref IN (&requestList)
-	|TOTALS
-	|	MAX(Code),
-	|	MAX(performBackground),
-	|	MAX(notSaveAnswer),
-	|	MAX(compressAnswer),
-	|	MAX(staffOnly)
-	|BY
-	|	Ref";
-	
+	|	matchingRequestsInformationSources.Ref IN (&requestList)";
 	query.SetParameter("requestList", requestList);
-	select	= query.Execute().Select(QueryResultIteration.ByGroups);	
-	
-	While select.Next() Do 
-		struct = New Structure();
-		struct.Insert("uid", XMLString(select.Ref));
-		struct.Insert("code", select.Code);
-		struct.Insert("IsFolder", select.IsFolder);
-		struct.Insert("parent", New Structure("uid", XMLString(select.parent)));
-		struct.Insert("performBackground", select.performBackground);
-		struct.Insert("notSaveAnswer", select.notSaveAnswer);
-		struct.Insert("compressAnswer", select.compressAnswer);
-		struct.Insert("staffOnly", select.staffOnly);
-		
-		selectDetail = select.Select();
-		informationSources	= New Array();
-		While selectDetail.Next() Do			
-			structDetail = New Structure();
-			structDetail.Insert("attribute", selectDetail.attribute);		
-			structDetail.Insert("performBackground", selectDetail.performBackground);
-			structDetail.Insert("requestSource", selectDetail.requestSource);
-			structDetail.Insert("requestReceiver", selectDetail.requestReceiver);
-			structDetail.Insert("notUse", selectDetail.notUse);
-			structDetail.Insert("notSaveAnswer", selectDetail.notSaveAnswer);
-			structDetail.Insert("compressAnswer", selectDetail.compressAnswer);
-			structDetail.Insert("staffOnly", selectDetail.staffOnly);
-			
-			informationSourceStruct	= New Structure();
-			informationSourceStruct.Insert("uid", XMLString(selectDetail.informationSource));
-			structDetail.Insert("informationSource", informationSourceStruct);
-			
-			informationSources.add(structDetail);
-		EndDo;
-		
-		struct.Insert("informationSources", informationSources);
-		
-		array.add(struct);
-	EndDo;		
-	Message(HTTP.encodeJSON(array));	
-	Return HTTP.encodeJSON(array);  
-	
+	select	= query.Execute().Select();	
+	array = New Array();
+	While select.Next() Do
+		JSONWriter = New JSONWriter;
+		JSONWriter.SetString();
+		array.Add(select.ref.GetObject());
+	EndDo;
+	XDTOSerializer.WriteJSON(JSONWriter, array, XMLTypeAssignment.Explicit);
+	Return JSONWriter.Close(); 	
 EndFunction 
 
 &AtServer

@@ -269,6 +269,7 @@ Procedure signIn(parameters)
 			messageStruct.Insert("title", "SMS code");
 			messageStruct.Insert("text", StrConcat(rowsArray));
 			messageStruct.Insert("holding", tokenContext.holding);
+			messageStruct.Insert("chain", tokenContext.chain);
 			messageStruct.Insert("informationChannels", informationChannels);
 			messageStruct.Insert("priority", 0);
 			Messages.newMessage(messageStruct, True);
