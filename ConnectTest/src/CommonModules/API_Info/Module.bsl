@@ -286,7 +286,7 @@ Procedure productInfo(parameters) Export
 	|		ON TT.product = productsMapping.product
 	|WHERE
 	|	NOT productsMapping.uid IS NULL
-	|	AND productsMapping.entryType in (&entryList)
+	|	AND productsMapping.uid in (&entryList)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
