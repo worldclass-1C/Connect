@@ -2,7 +2,7 @@
 Function createItems(requestName, holding, requestStruct, owner = Undefined) Export
 
 	items = New Array();
-	If requestName = "addrequest" Then
+	If requestName = "synchronization" Then
 		For Each itemObject In requestStruct Do
 			itemObject.write();
 			items.Add(itemObject.ref);	
@@ -46,21 +46,19 @@ EndFunction
 Function isUploadRequest(requestName) Export
 	If False
 		Or requestName = "addchangeusers"					
-		Or requestName = "addclassmember"
-		Or requestName = "deleteclassmember"
-		Or requestName = "addemployees"
+		Or requestName = "addclassmember" Or requestName = "deleteclassmember"
 		Or requestName = "addgymemployees" Or requestName = "deletegymemployees"
 		Or requestName = "addgymproducts" Or requestName = "deletegymproducts"
 		Or requestName = "addproductmapping" Or requestName = "deleteproductmapping"
 		Or requestName = "addprovidedservices"
 		Or requestName = "addgymsschedule"
-		Or requestName = "addgyms"				
-		Or requestName = "addrequest"
-		Or requestName = "adderrordescription"
-		Or requestName = "addcancelcauses"
-		Or requestName = "addtags"
-		Or requestName = "addproducts"
+		Or requestName = "addgyms"
 		Or requestName = "addrooms"
+		Or requestName = "addemployees"				
+		Or requestName = "addproducts"
+		Or requestName = "addtags"
+		Or requestName = "addcancelcauses"
+		Or requestName = "synchronization"
 	Then
 		Return True;	
 	Else
