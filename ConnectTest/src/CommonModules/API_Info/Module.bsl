@@ -306,7 +306,7 @@ Procedure productInfo(parameters) Export
 		EndDo;		 
 		query.SetParameter("entryList", entryListArray);
 	Else
-		query.Text = StrReplace(query.Text, "AND productsMapping.entryType in (&entryList)", "");		
+		query.Text = StrReplace(query.Text, "AND productsMapping.uid in (&entryList)", "");		
 	EndIf;	
 	query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.uid));
 	query.SetParameter("language", language);
