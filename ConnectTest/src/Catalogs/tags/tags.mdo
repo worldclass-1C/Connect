@@ -16,6 +16,7 @@
     <key>ru</key>
     <value>Теги</value>
   </synonym>
+  <comment>////</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.tags.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.tags.StandardAttribute.Description</inputByString>
