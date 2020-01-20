@@ -1052,8 +1052,7 @@
       </title>
       <id>5</id>
       <valueType>
-        <types>String</types>
-        <stringQualifiers/>
+        <types>CatalogRef.segments</types>
       </valueType>
       <view>
         <common>true</common>
