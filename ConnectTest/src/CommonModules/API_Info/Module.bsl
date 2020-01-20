@@ -198,7 +198,17 @@ Procedure employeeInfo(parameters) Export
 			struct.Insert("gender", select.gender);			
 			struct.Insert("isMyCoach", False);
 			struct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));			
-			struct.Insert("presentation", HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array));			
+			
+			presentationArray = HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array);
+			presentationArrayFinal = New Array();
+			For Each presentation In presentationArray Do
+				If presentation.Property("description")
+						And TypeOf(presentation.description) = Type("Array")
+						And presentation.description.count() > 0 Then
+					presentationArrayFinal.Add(presentation);	
+				EndIf;
+			EndDo; 
+			struct.Insert("presentation", presentationArrayFinal);			
 			
 			tagArray = New Array();
 			While selectTags.FindNext(New Structure("employee", select.employee)) Do
