@@ -83,7 +83,7 @@ Function initProfileStruct() Export
 	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
 
-Procedure updateCache(val parameters) Export	
+Procedure updateCache(val parameters) Export
 		
 	tokenContext = parameters.tokenContext;
 		
@@ -129,3 +129,5 @@ Procedure updateCache(val parameters) Export
 	EndIf;
 	
 EndProcedure
+
+//Комент
