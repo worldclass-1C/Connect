@@ -1,5 +1,5 @@
 
-Function checkHasp(language, timeStamp, hash) Export	 
+Function checkHasp(language, timeStamp, hash) Export
 	template = GetCommonTemplate("Connect");
 	If TypeOf(template) = Type("TextDocument") Then
 		word = template.GetText();		
@@ -80,7 +80,7 @@ Function BinRightPad(Val binaryData, Val length, Val hexString)
 	Return memoryStream.CloseAndGetBinaryData();	
 EndFunction
 
-Function binBitwiseXOR(Val binaryData1, Val binaryData2)	
+Function binBitwiseXOR(Val binaryData1, Val binaryData2)
 	memoryStream = New MemoryStream();
 	dataWriter = New DataWriter(memoryStream);	
 	dataReader1 = New DataReader(binaryData1);
