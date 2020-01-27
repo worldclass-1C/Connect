@@ -107,6 +107,7 @@
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
+  <commonModules>CommonModule.SmsNewProvider</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
