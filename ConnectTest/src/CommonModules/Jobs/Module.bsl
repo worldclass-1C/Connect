@@ -36,4 +36,32 @@ Procedure ПроверитьАктуальностьТокенов() Export
 	Service.ПроверитьАктуальностьТокенов();
 EndProcedure
 
+Procedure CheckAcquiringStatus() Export
+	OrdersToCheck = GetOrdersToCheck();
+	While OrdersToCheck.Next() Do
+		response = Acquiring.executeRequest("check", OrdersToCheck.order);
+		If response = Undefined Then
+			  Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.send);		
+		Else
+			If response.errorCode = "" Then
+				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.success);
+				Acquiring.executeRequestBackground("process", OrdersToCheck.order);
+			EndIf;
+		EndIf;
+	EndDo;
+EndProcedure
 
+Function GetOrdersToCheck()
+	Query = New Query();
+	Query.Text = "SELECT TOP 100
+	|	acquiringOrdersQueue.order
+	|FROM
+	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
+	|WHERE
+	|	acquiringOrdersQueue.orderState = VALUE(Enum.acquiringOrderStates.send)
+	|	AND acquiringOrdersQueue.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|ORDER BY
+	|	acquiringOrdersQueue.registrationDate";
+	Query.Parameters.Insert("CurrentDate", ToUniversalTime(CurrentDate()));
+	Return Query.Execute().Select();
+EndFunction

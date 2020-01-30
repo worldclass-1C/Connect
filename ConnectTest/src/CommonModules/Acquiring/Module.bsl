@@ -292,9 +292,10 @@ Function answerStruct()
 	Return answer;		
 EndFunction
 
-Procedure addOrderToQueue(order) Export
+Procedure addOrderToQueue(order, state) Export
 	record = InformationRegisters.acquiringOrdersQueue.CreateRecordManager();
 	record.order = order;
+	record.orderState = state;
 	record.registrationDate = ToUniversalTime(CurrentDate());
 	record.Write();	
 EndProcedure
@@ -325,11 +326,11 @@ Procedure sendOrder(parameters)
 		AcquiringSberbank.sendOrder(parameters);		
 	EndIf;
 	If parameters.errorCode = "" Then
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);		
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
 	EndIf;
 EndProcedure
 
-Procedure checkOrder(parameters)
+Procedure checkOrder(parameters) 
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.checkOrder(parameters);
@@ -401,7 +402,7 @@ Procedure processOrder(parameters, additionalParameters)
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
-			Acquiring.addOrderToQueue(parameters.order);
+			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
 			parameters.Insert("errorCode", parametersNew.errorDescription.result);
 			parameters.Insert("response", parametersNew.errorDescription.description);	
 		EndIf;		

@@ -40,6 +40,18 @@
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
   </resources>
+  <resources uuid="e05e2a02-7e0f-454b-baf5-5a4bb16b1037">
+    <name>orderState</name>
+    <synonym>
+      <key>en</key>
+      <value>Order state</value>
+    </synonym>
+    <type>
+      <types>EnumRef.acquiringOrderStates</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
   <dimensions uuid="c199c234-d85b-4ca9-8dc9-fe9b5201805e">
     <name>order</name>
     <synonym>

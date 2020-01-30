@@ -138,6 +138,7 @@ Procedure payment(parameters) Export
 			struct.Insert("formUrl", answer.formUrl);
 			struct.Insert("returnUrl", answer.returnUrl);
 			struct.Insert("failUrl", answer.failUrl);
+			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
 		Else
 			errorDescription = Service.getErrorDescription(language, answer.errorCode);
 		EndIf;
@@ -155,6 +156,7 @@ Procedure paymentStatus(parameters) Export
 	struct = New Structure();
 	
 	answer = Acquiring.findOrder(requestStruct.orderId);
+	struct.Insert("result", "fail");
 	If answer = Undefined Then
 		parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringConnection"));
 	Else
@@ -163,16 +165,16 @@ Procedure paymentStatus(parameters) Export
 			If response = Undefined Then
 				parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
 			Else				
-				struct.Insert("result", "ok");
 				parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
 				If response.errorCode = "" Then
-					Acquiring.addOrderToQueue(answer.order);					
+					struct.Insert("result", "ok");
+					Acquiring.addOrderToQueue(answer.order, Enums.acquiringOrderStates.success);					
 					Acquiring.executeRequestBackground("process", answer.order, parameters);
 				EndIf;
 			EndIf;
-		ElsIf answer.state = Enums.acquiringOrderStates.rejected Then			
+		ElsIf answer.state = Enums.acquiringOrderStates.rejected Then		
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
-		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then			
+		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
 		EndIf;
 	EndIf;	
@@ -192,13 +194,14 @@ Procedure bindCard(parameters) Export
 	orderStruct.Insert("holding", tokenContext.holding);	
 	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
-	
-	answer = Acquiring.executeRequest("send", Acquiring.newOrder(orderStruct));	
+	order = Acquiring.newOrder(orderStruct);
+	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
 		struct.Insert("orderId", answer.orderId);
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
-		struct.Insert("failUrl", answer.failUrl);				
+		struct.Insert("failUrl", answer.failUrl);	
+		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);				
 	EndIf;	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));

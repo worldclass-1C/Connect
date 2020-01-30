@@ -119,6 +119,7 @@
   <scheduledJobs>ScheduledJob.informationSourceAlert</scheduledJobs>
   <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
+  <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseImgURL</constants>
   <constants>Constant.BaseURL</constants>
