@@ -176,6 +176,8 @@ Procedure paymentStatus(parameters) Export
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
 		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
+		Else
+			struct.Insert("result", "ok");
 		EndIf;
 	EndIf;	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));			
