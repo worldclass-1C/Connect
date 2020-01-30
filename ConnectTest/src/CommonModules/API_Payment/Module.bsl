@@ -173,7 +173,7 @@ Procedure paymentStatus(parameters) Export
 				EndIf;
 			EndIf;
 		ElsIf answer.state = Enums.acquiringOrderStates.rejected Then		
-			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
+			//parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
 		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
 		Else
