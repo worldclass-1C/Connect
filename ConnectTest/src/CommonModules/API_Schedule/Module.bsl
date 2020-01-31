@@ -18,8 +18,40 @@ Procedure gymSchedule(parameters) Export
 
 	If errorDescription.result = "" Then
 		query = New Query();
+		textSelectGyms = "SELECT
+		|	gyms.chain
+		|INTO TemporaryChains
+		|FROM
+		|	Catalog.gyms AS gyms
+		|WHERE
+		|	gyms.Ref IN (&gymList)
+		|GROUP BY
+		|	gyms.chain
+		|;
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	gyms.Ref as gym
+		|INTO TemporaryGyms
+		|FROM
+		|	Catalog.gyms AS gyms
+		|WHERE
+		|	gyms.Ref IN (&gymList)
+		|
+		|UNION ALL
+		|
+		|SELECT
+		|	gyms.Ref as gym
+		|FROM
+		|	Catalog.gyms AS gyms
+		|		INNER JOIN TemporaryChains AS TemporaryChains
+		|		ON gyms.chain = TemporaryChains.chain
+		|		AND gyms.type = VALUE(Enum.gymTypes.Outdoor)
+		|
+		|;
+		|////////////////////////////////////////////////////////////////////////////////";
 		
-		textTampTable = "SELECT
+		textTampTable = "
+		|SELECT
 		|	classesSchedule.Ref AS Doc,
 		|	classesSchedule.period AS period,
 		|	classesSchedule.employee AS employee,
@@ -60,7 +92,7 @@ Procedure gymSchedule(parameters) Export
 		|		ON (classesSchedule.Ref = classMembers.class)";
 		textCondition = "
 		|WHERE
-		|	classesSchedule.gym IN (&gymList)
+		|	classesSchedule.gym IN (Select TemporaryGyms.gym from TemporaryGyms as TemporaryGyms)
 		|	AND classesSchedule.period BETWEEN &startDate AND &endDate
 		|	AND classesSchedule.active";
 		textConditionEmployee = "";
@@ -206,6 +238,7 @@ Procedure gymSchedule(parameters) Export
 		querryConditionArray.Add(textConditionService);
 		
 		querryTextArray = New Array();
+		querryTextArray.Add(textSelectGyms);
 		querryTextArray.Add(textTampTable);
 		querryTextArray.Add(StrConcat(querryConditionArray, " "));
 		querryTextArray.Add(textGroup);
@@ -214,12 +247,12 @@ Procedure gymSchedule(parameters) Export
 		
 		results = query.ExecuteBatch();
 			
-		select = results[1].Select();
-		selectEmployees = results[2].Select();
-		selectGyms = results[3].Select();
-		selectProducts = results[4].Select();
-		selectTags = results[5].Select();
-		selectRooms = results[6].Select();
+		select = results[3].Select();
+		selectEmployees = results[4].Select();
+		selectGyms = results[5].Select();
+		selectProducts = results[6].Select();
+		selectTags = results[7].Select();
+		selectRooms = results[8].Select();
 		 
 		While select.Next() Do
 			classesScheduleStruct = New Structure();			
