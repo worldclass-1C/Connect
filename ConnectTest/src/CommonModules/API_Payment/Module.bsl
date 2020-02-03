@@ -99,7 +99,7 @@ Procedure payment(parameters) Export
 		|	NOT &cardIsFilled");
 
 	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
-	card = ?(requestStruct.Property("card"), XMLValue(Type("CatalogRef.creditCards"), requestStruct.card), Catalogs.creditCards.EmptyRef());
+	card = ?(requestStruct.Property("card") and not requestStruct.card = Undefined, XMLValue(Type("CatalogRef.creditCards"), requestStruct.card), Catalogs.creditCards.EmptyRef());
 	query.SetParameter("order", order);
 	query.SetParameter("card", card);
 	query.SetParameter("cardIsFilled", ValueIsFilled(card));
