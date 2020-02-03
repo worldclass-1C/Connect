@@ -175,6 +175,22 @@ Procedure productList(parameters) Export
 	|WHERE
 	|	gymsProducts.productDirection = &productDirection
 	|	AND gymsProducts.gym = &gym
+	|
+	|UNION ALL
+	|
+	|SELECT DISTINCT
+	|	classesSchedule.product,
+	|	VALUE(Enum.productDirections.fitness)
+	|FROM
+	|	Catalog.classesSchedule AS classesSchedule
+	|WHERE
+	|	classesSchedule.gym = &gym
+	|	AND classesSchedule.active
+	|	AND
+	|	NOT classesSchedule.isPrePaid
+	|	AND &productDirection = VALUE(Enum.productDirections.fitness)
+	|	AND classesSchedule.period BETWEEN DATEADD(BEGINOFPERIOD(&CurrentDate, Day), Day,
+	|		-14) AND DATEADD(ENDOFPERIOD(&CurrentDate, day), Day, 14)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -216,6 +232,7 @@ Procedure productList(parameters) Export
 	query.SetParameter("productDirection", XMLValue(Type("EnumRef.productDirections"), requestStruct.direction));
 	query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId));
 	query.SetParameter("language", language);
+	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	
 	results = query.ExecuteBatch();
 	select = results[1].Select();
