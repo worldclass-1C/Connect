@@ -165,7 +165,7 @@ Procedure paymentStatus(parameters) Export
 			If response = Undefined Then
 				parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
 			Else				
-				parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
+				//parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
 				If response.errorCode = "" Then
 					struct.Insert("result", "ok");
 					Acquiring.addOrderToQueue(answer.order, Enums.acquiringOrderStates.success);					
