@@ -144,6 +144,10 @@ Procedure payment(parameters) Export
 		EndIf;
 	EndIf;
 
+     If errorDescription.result <> "" Then
+     	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+     EndIf;
+     
 //	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("errorDescription", errorDescription);
@@ -179,7 +183,11 @@ Procedure paymentStatus(parameters) Export
 		Else
 			struct.Insert("result", "ok");
 		EndIf;
-	EndIf;	
+	EndIf;
+	If struct.result = "fail" Then
+		Acquiring.addOrderToQueue(answer.order, Enums.acquiringOrderStates.rejected);
+	EndIf;
+	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));			
 EndProcedure
 

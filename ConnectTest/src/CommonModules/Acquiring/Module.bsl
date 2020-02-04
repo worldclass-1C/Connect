@@ -362,14 +362,15 @@ Procedure processOrder(parameters, additionalParameters)
 	|		type AS type,
 	|		amount AS amount,
 	|		details AS details) AS payments,
-	|	acquiringOrders.acquiringRequest AS acquiringRequest
+	|	acquiringOrders.acquiringRequest AS acquiringRequest,
+	|	ordersStates.state
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
 	|		ON ordersStates.order = acquiringOrders.Ref
 	|WHERE
 	|	acquiringOrders.Ref = &order
-	|	AND ordersStates.state = VALUE(Enum.acquiringOrderStates.success)");
+	|	AND ordersStates.state in (VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected))");
 	
 	query.SetParameter("order", parameters.order);
 	
@@ -381,7 +382,7 @@ Procedure processOrder(parameters, additionalParameters)
 		select = result.Select();
 		select.Next();		
 		If select.acquiringRequest = Enums.acquiringRequests.register Then			
-			requestStruct.Insert("request", "payment");
+			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success,"payment","cancel"));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array();
@@ -402,7 +403,7 @@ Procedure processOrder(parameters, additionalParameters)
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
-			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
+			Acquiring.addOrderToQueue(parameters.order, select.state);
 			parameters.Insert("errorCode", parametersNew.errorDescription.result);
 			parameters.Insert("response", parametersNew.errorDescription.description);	
 		EndIf;		
