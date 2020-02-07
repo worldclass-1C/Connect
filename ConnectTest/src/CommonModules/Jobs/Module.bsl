@@ -72,7 +72,7 @@ Procedure ProcessQueue() Export
 	OrdersToProcess = GetOrdersToProcess();
 	While OrdersToProcess.Next() Do
 		parameters = GetParametersToProcessOrder(OrdersToProcess);
-		response = Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+		Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
 	EndDo;	
 EndProcedure
 
