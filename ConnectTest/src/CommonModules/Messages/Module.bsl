@@ -261,9 +261,11 @@ Procedure sendHoldingSms(nodeMessagesToSend,
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
 	|		ON (gymSMSProviders.holding = &holding)
 	|		AND (gymSMSProviders.gym = messages.Ref.gym)
+	|		AND (gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
 	|		ON (chainSMSProviders.holding = &holding)
 	|		AND (chainSMSProviders.chain = messages.Ref.chain)
+	|		AND (chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef))
 	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
 	|		ON (SMSProviders.holding = &holding)
@@ -313,9 +315,11 @@ Procedure sendSmsImmediately(nodeMessagesToSend,
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
 	|		ON (messages.holding = gymSMSProviders.holding)
 	|		AND (gymSMSProviders.gym = messages.gym)
+	|		AND (gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
 	|		ON (chainSMSProviders.holding = messages.holding)
 	|		AND (chainSMSProviders.chain = messages.chain)
+	|		AND (chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef))
 	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
 	|		ON (messages.holding = SMSProviders.holding)
@@ -359,9 +363,11 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
 	|		ON (gymSMSProviders.holding = &holding)
 	|		AND (gymSMSProviders.gym = messages.Ref.gym)
+	|		AND (gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
 	|		ON (chainSMSProviders.holding = &holding)
 	|		AND (chainSMSProviders.chain = messages.Ref.chain)
+	|		AND (chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef))
 	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
 	|		ON (SMSProviders.holding = &holding)
