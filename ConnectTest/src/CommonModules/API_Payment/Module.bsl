@@ -197,6 +197,7 @@ Procedure bindCard(parameters) Export
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	struct = New Structure();
+	struct.Insert("result", "ok");
 	
 	orderStruct = New Structure();
 	orderStruct.Insert("acquiringAmount", 1);
@@ -224,6 +225,7 @@ Procedure unBindCard(parameters) Export
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	struct = New Structure();
+	struct.Insert("result", "ok");
 	
 	query = New Query("SELECT
 	|	creditCards.Ref AS creditCard,
