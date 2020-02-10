@@ -222,8 +222,8 @@ Procedure productList(parameters) Export
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
-	|	productsMapping.uid,
-	|	productsMapping.entryType
+	|	ISNULL(productsMapping.uid,"""") AS uid ,
+	|	ISNULL(productsMapping.entryType,"""") AS entryType
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
