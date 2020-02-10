@@ -319,8 +319,13 @@ EndProcedure
 
 Procedure sendOrder(parameters)
 	parameters.Insert("errorCode", "acquiringOrderSend");
-	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
-	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
+	If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
+		parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
+		parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/bindFail.html");
+	Else
+		parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
+		parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
+	EndIf;
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.sendOrder(parameters);		
