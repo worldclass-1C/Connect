@@ -324,6 +324,7 @@ Procedure sendSmsImmediately(nodeMessagesToSend,
 	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
 	|		ON (messages.holding = SMSProviders.holding)
 	|		AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
+	|		AND (SMSProviders.chain = VALUE(Catalog.chains.EmptyRef))
 	|WHERE
 	|	messages.ref = &message";
 
