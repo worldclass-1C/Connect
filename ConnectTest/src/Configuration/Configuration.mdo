@@ -96,18 +96,19 @@
   <commonModules>CommonModule.GeneralReuse</commonModules>
   <commonModules>CommonModule.HTML</commonModules>
   <commonModules>CommonModule.HTTP</commonModules>
+  <commonModules>CommonModule.Internal_API_Payment</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
+  <commonModules>CommonModule.SmsNewProvider</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.SmsNewProvider</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>

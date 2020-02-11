@@ -72,7 +72,13 @@ Procedure ProcessQueue() Export
 	OrdersToProcess = GetOrdersToProcess();
 	While OrdersToProcess.Next() Do
 		parameters = GetParametersToProcessOrder(OrdersToProcess);
-		Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.register Then
+			Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
+			Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
+		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.unbinding Then
+			Acquiring.executeRequest("unBindCardBack", OrdersToProcess.order, parameters);
+		EndIf;
 	EndDo;	
 EndProcedure
 
@@ -86,7 +92,8 @@ Function GetOrdersToProcess()
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.user.userCode, """") AS userCode,
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.deviceModel, """") AS deviceModel,
 	|	acquiringOrdersQueue.order.holding.tokenDefault AS tokenDefault,
-	|	acquiringOrdersQueue.order.holding as holding
+	|	acquiringOrdersQueue.order.holding as holding,
+	|	acquiringOrdersQueue.order.acquiringRequest AS acquiringRequest
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|WHERE

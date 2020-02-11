@@ -109,7 +109,11 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "reverse" Then
 			reverseOrder(parameters);
 		ElsIf requestName = "process" Then
-			processOrder(parameters, additionalParameters);			
+			Internal_API_Payment.processOrder(parameters, additionalParameters);	
+		ElsIf requestName = "bindCardBack" Then
+			Internal_API_Payment.bindCard(parameters, additionalParameters);	
+		ElsIf requestName = "unBindCardBack" Then
+			Internal_API_Payment.unBindCard(parameters, additionalParameters);				
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -355,65 +359,6 @@ Procedure reverseOrder(parameters)
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.reverseOrder(parameters);
 	EndIf;	
-EndProcedure
-
-Procedure processOrder(parameters, additionalParameters)
-	
-	query = New Query("SELECT
-	|	acquiringOrders.orders.(
-	|		uid AS uid) AS orders,
-	|	acquiringOrders.payments.(
-	|		owner AS owner,
-	|		type AS type,
-	|		amount AS amount,
-	|		details AS details) AS payments,
-	|	acquiringOrders.acquiringRequest AS acquiringRequest,
-	|	ordersStates.state
-	|FROM
-	|	Catalog.acquiringOrders AS acquiringOrders
-	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
-	|		ON ordersStates.order = acquiringOrders.Ref
-	|WHERE
-	|	acquiringOrders.Ref = &order
-	|	AND ordersStates.state in (VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected))");
-	
-	query.SetParameter("order", parameters.order);
-	
-	result = query.Execute();
-	
-	If Not result.IsEmpty() Then		
-		parametersNew = Service.getStructCopy(additionalParameters);
-		requestStruct = New Structure();
-		select = result.Select();
-		select.Next();		
-		If select.acquiringRequest = Enums.acquiringRequests.register Then			
-			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success,"payment","cancel"));
-			requestStruct.Insert("uid", XMLString(parameters.order));
-			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
-			paymentList = New Array();
-			For Each row In select.payments.Unload() Do
-				paymentListStruct = New Structure();
-				paymentListStruct.Insert("owner", XMLString(row.owner));
-				paymentListStruct.Insert("type", row.type);
-				paymentListStruct.Insert("amount", row.amount);
-				paymentListStruct.Insert("details", HTTP.decodeJSON(row.details, Enums.JSONValueTypes.structure));
-				paymentList.Add(paymentListStruct);
-			EndDo;
-			requestStruct.Insert("paymentList", paymentList);
-			parametersNew.Insert("requestName", "paymentBack");			
-		ElsIf select.acquiringRequest = Enums.acquiringRequests.binding Then
-			parametersNew.Insert("requestName", "paymentBack");
-		EndIf;
-		parametersNew.Insert("requestStruct", requestStruct);
-		Acquiring.delOrderToQueue(parameters.order);
-		General.executeRequestMethod(parametersNew);		
-		If parametersNew.errorDescription.result <> "" Then
-			Acquiring.addOrderToQueue(parameters.order, select.state);
-			parameters.Insert("errorCode", parametersNew.errorDescription.result);
-			parameters.Insert("response", parametersNew.errorDescription.description);	
-		EndIf;		
-	EndIf;	
-	
 EndProcedure
 
 Procedure unBindCard(parameters)
