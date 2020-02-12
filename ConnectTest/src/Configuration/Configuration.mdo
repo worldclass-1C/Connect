@@ -101,18 +101,19 @@
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
+  <commonModules>CommonModule.SmsMegalab</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.SmsNewProvider</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.internal</httpServices>
+  <httpServices>HTTPService.smsStatus</httpServices>
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
@@ -122,6 +123,7 @@
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseImgURL</constants>
+  <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>
   <constants>Constant.ImgStorage</constants>
   <catalogs>Catalog.accounts</catalogs>

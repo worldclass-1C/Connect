@@ -121,6 +121,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsStramedia.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.SmsGold Then
 		answer = SmsGold.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Megalab Then
+		answer = SmsMegalab.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -191,7 +193,41 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsGold.checkSmsStatus(parameters, answer);
 	EndIf;
 
-	Если answer.messageStatus = Enums.messageStatuses.delivered
+	checkSmsStatusContinuation(answer, parameters) ;
+
+EndProcedure
+
+Function FindMessageById(msg_id) Export
+	
+	Query = New Query;
+	Query.Text =
+		"SELECT
+		|	DATEDIFF(messagesId.message.registrationDate, &currentDate, Day) AS messageAge,
+		|	messagesId.message.Ref AS messageRef
+		|FROM
+		|	InformationRegister.messagesId AS messagesId
+		|WHERE
+		|	messagesId.id = &id";
+	
+	Query.SetParameter("currentDate", ToUniversalTime(CurrentDate()));
+	Query.SetParameter("id", msg_id);
+	
+	QueryResult = Query.Execute();
+	SelectionDetailRecords = QueryResult.Select();
+	
+	Answer = new Structure("messageRef, messageAge", Catalogs.messages.EmptyRef(), 0);
+	
+	While SelectionDetailRecords.Next() Do
+		Answer.Insert("messageRef", SelectionDetailRecords.messageRef);
+		Answer.Insert("messageAge", SelectionDetailRecords.messageAge);
+	EndDo;
+	
+Return  Answer;
+EndFunction
+
+Procedure checkSmsStatusContinuation(answer, parameters) Export
+
+	If answer.messageStatus = Enums.messageStatuses.delivered
 			Or parameters.messageAge > 2 Then
 		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToCheckStatus, parameters.message);
 	ElsIf answer.messageStatus = Enums.messageStatuses.notDelivered Then
@@ -494,3 +530,13 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	EndDo;
 
 EndProcedure
+
+Function GetMessageCallbackURL(SmsProvider) Export
+	MessageCallbackURL = "";
+	BaseMessageCallbackURL = Constants.BaseMessageCallbackURL.Get();
+	If BaseMessageCallbackURL = "" Then
+		Return MessageCallbackURL;
+	Else
+		Return BaseMessageCallbackURL + "/" + SmsProvider;
+	EndIf
+EndFunction

@@ -32,11 +32,33 @@
     <key>ru</key>
     <value>СМС провайдеры</value>
   </extendedListPresentation>
+  <enumValues uuid="672526f5-5130-4733-9b27-ccf66a698ad7">
+    <name>IDMkg</name>
+    <synonym>
+      <key>ru</key>
+      <value>IDM (kg)</value>
+    </synonym>
+    <comment>IDM.KG </comment>
+  </enumValues>
+  <enumValues uuid="0355c7ee-b57f-4ff1-a73a-f2f936d68d38">
+    <name>Megalab</name>
+    <synonym>
+      <key>ru</key>
+      <value>Megalab</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="2d014166-8ff4-4064-b9f1-95335f8909e8">
     <name>Rapporto</name>
     <synonym>
       <key>ru</key>
       <value>Rapporto</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="4eab35da-1e7b-429a-aac2-255dd80f9e6e">
+    <name>SmsGold</name>
+    <synonym>
+      <key>ru</key>
+      <value>SmsGold</value>
     </synonym>
   </enumValues>
   <enumValues uuid="4b877388-b683-4e87-a087-a3de679e98a0">
@@ -46,26 +68,11 @@
       <value>Smstraffic</value>
     </synonym>
   </enumValues>
-  <enumValues uuid="672526f5-5130-4733-9b27-ccf66a698ad7">
-    <name>IDMkg</name>
-    <synonym>
-      <key>ru</key>
-      <value>IDM (kg)</value>
-    </synonym>
-    <comment>IDM.KG </comment>
-  </enumValues>
   <enumValues uuid="d00dd0c2-9285-42d5-9cf9-6a6ff497675a">
     <name>Stramedia</name>
     <synonym>
       <key>ru</key>
       <value>Stramedia</value>
-    </synonym>
-  </enumValues>
-  <enumValues uuid="4eab35da-1e7b-429a-aac2-255dd80f9e6e">
-    <name>SmsGold</name>
-    <synonym>
-      <key>ru</key>
-      <value>SmsGold</value>
     </synonym>
   </enumValues>
 </mdclass:Enum>

@@ -110,3 +110,24 @@ Function binConcat(Val binaryData1, Val binaryData2)
 	res = memoryStream.CloseAndGetBinaryData();
 	Return res;
 EndFunction
+
+Function EncryptBase64(String, Encoding) Export
+	
+	TemporaryFileName = GetTempFileName();
+	
+	TextWriter = New TextWriter(TemporaryFileName, Encoding);
+	TextWriter.Write(String);
+	TextWriter.Close();
+	
+	BinaryData = Новый BinaryData(TemporaryFileName);
+	Result = Base64String(BinaryData);
+	If Лев(Result, 4) = "77u/" Then
+		Result = Сред(Result, 5);
+	EndIf; 
+	Result = StrReplace(Result, Chars.LF, "");
+	
+	DeleteFiles(TemporaryFileName);
+	
+	Return Result;
+	
+EndFunction

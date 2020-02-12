@@ -12,7 +12,7 @@
   </synonym>
   <synonym>
     <key>ru</key>
-    <value>Базовый URL</value>
+    <value>Базовый URL изображений</value>
   </synonym>
   <type>
     <types>String</types>
