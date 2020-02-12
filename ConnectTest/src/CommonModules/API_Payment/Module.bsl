@@ -253,7 +253,11 @@ Procedure unBindCard(parameters) Export
 			orderStruct.Insert("creditCard", select.creditCard);
 			orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.unbinding);
 			orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
-			answer = Acquiring.executeRequest("unBindCard", Acquiring.newOrder(orderStruct));
+			order = Acquiring.newOrder(orderStruct);
+			answer = Acquiring.executeRequest("unBindCard", order);
+			If answer.errorCode = "" Then		
+				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);				
+			EndIf;	
 			errorDescription = Service.getErrorDescription(language, answer.errorCode);
 		Else
 			errorDescription = Service.getErrorDescription(language, "");	
