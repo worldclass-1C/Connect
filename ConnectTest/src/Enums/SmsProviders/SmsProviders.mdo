@@ -32,6 +32,13 @@
     <key>ru</key>
     <value>СМС провайдеры</value>
   </extendedListPresentation>
+  <enumValues uuid="2d2f03ee-b6da-4b6e-897d-1b4a687a8497">
+    <name>IDigital</name>
+    <synonym>
+      <key>ru</key>
+      <value>IDigital</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="672526f5-5130-4733-9b27-ccf66a698ad7">
     <name>IDMkg</name>
     <synonym>

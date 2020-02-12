@@ -101,6 +101,7 @@
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
+  <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
