@@ -6,6 +6,6 @@ EndFunction
 
 Function checkSmsStatus(Request) Export
 
-	Return New HTTPServiceResponse(200);
+	Return New HTTPServiceResponse(500);
 
 EndFunction
