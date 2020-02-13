@@ -102,12 +102,8 @@
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
-<<<<<<< HEAD
-  <commonModules>CommonModule.SmsNewProvider</commonModules>
-=======
   <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
->>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect.git
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
