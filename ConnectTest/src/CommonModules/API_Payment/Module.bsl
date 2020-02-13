@@ -56,6 +56,7 @@ Procedure paymentPreparation(parameters) Export
 		struct.Insert("uid", XMLString(Acquiring.newOrder(orderStruct)));		
 		//@skip-warning
 		struct.Delete("docList");
+		Acquiring.creditCardsPreparation(struct.paymentOptions, parameters);
 	Else
 		struct = New Structure();				
 	EndIf;

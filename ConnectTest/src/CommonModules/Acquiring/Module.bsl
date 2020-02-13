@@ -18,9 +18,12 @@ Function newOrder(parameters) Export
 			EndIf;
 			If paymentOption.Property("cards") Then
 				For Each element In paymentOption.cards Do					
-					//@skip-warning
-					newRow = orderObject.cards.Add();
-					newRow.card = XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);					
+					cardRef	= XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);
+					If Not cardRef.IsEmpty() Then 
+						//@skip-warning
+						newRow = orderObject.cards.Add();
+						newRow.card = cardRef;
+					EndIf;										
 				EndDo;
 			EndIf;
 			If paymentOption.Property("deposits") Then
@@ -295,6 +298,31 @@ Function answerStruct()
 	answer.Insert("response", New Structure());	
 	Return answer;		
 EndFunction
+
+Procedure creditCardsPreparation(paymentOption, parameters) Export
+	If paymentOption.Property("cards") Then 
+		If paymentOption.cards.Count() > 0 Then
+			index = 0;
+			amount = 0;
+			For Each card In paymentOption.cards Do
+				If card.type = "none" Then					
+					amount = card.amount;
+					Break;	
+				EndIf;
+				index = index+1;
+			EndDo;
+			paymentOption.cards.Delete(index);
+			
+			cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
+			paymentOption.cards.insert(0, cardStruct);
+			
+			cardStruct = New Structure("type, name, uid, amount", "bankCard", "Bank card", "bankCard", amount);
+			paymentOption.cards.add(cardStruct);			
+		Else
+			paymentOption.Delete("cards");
+		EndIf;
+	EndIf;	
+EndProcedure
 
 Procedure addOrderToQueue(order, state) Export
 	record = InformationRegisters.acquiringOrdersQueue.CreateRecordManager();
