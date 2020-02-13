@@ -55,47 +55,49 @@ Procedure sendPush(parameters) Export
 
 	If parameters.deviceToken <> "" Then
 		
-//		If parameters.systemType = Enums.systemTypes.Android Then
-			HTTPConnection = New HTTPConnection("fcm.googleapis.com/fcm/send",,,,,,New OpenSSLSecureConnection());
-			
-			data = New Structure();
-			data.Insert("action", parameters.action);
+		If parameters.action <> "" And parameters.title = "" And parameters.text = "" Then
+			isNotBackgroundPush = False;
+		Else
+			isNotBackgroundPush = True;
+		EndIf;
+		
+		HTTPConnection = New HTTPConnection("fcm.googleapis.com/fcm/send", , , , , , New OpenSSLSecureConnection());
+		
+		data = New Structure();
+		data.Insert("action", parameters.action);
+		If isNotBackgroundPush Then
 			data.Insert("objectId", parameters.objectId);
 			data.Insert("objectType", parameters.objectType);
 			data.Insert("noteId", XMLString(parameters.message));
-			
-			body = New Structure();
-			body.Insert("title", parameters.title);			
+		EndIf;
+		
+		body = New Structure();
+		If isNotBackgroundPush Then
+			body.Insert("title", parameters.title);
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
-			body.Insert("badge", parameters.badge);			
-			body.Insert("data", data);
-			
-			messageParam = New Structure();			
-			messageParam.Insert("to", parameters.deviceToken);
-			If parameters.systemType = Enums.systemTypes.Android Then
-				messageParam.Insert("data", body);
-			Else	
-				messageParam.Insert("notification", body);			
-			EndIf;
-			
-			request = New HTTPRequest();
-			request.Headers.Insert("Content-Type", "application/json");
-			request.Headers.Insert("Authorization", "key=AAAA7ccmJw0:APA91bHVSb1GF1C9lUqet0gvrbT1fqbPmbU6Vy7VYpwBUBQmEVN8vF2E8WdxFdaKYOBJw5uagvFFGQF-ELc-VtMsr62gK1JiBsEixEQ6PpgLdUznExIJEtonsjSgezqjq4k_xC4UXA1l");
-			request.SetBodyFromString(HTTP.encodeJSON(messageParam), TextEncoding.UTF8);
-			
-			HTTPConnection.Post(request);			
-//		Else
-//			notification = New DeliverableNotification;
-//			notification.Title = parameters.title;
-//			notification.Text = parameters.text;
-//			notification.Badge = parameters.badge;
-//			notification.Recipients.Add(pushSubscriber(parameters.deviceToken, parameters.subscriberType));
-//			notification.Data = pushData(parameters.action, parameters.objectId, parameters.objectType, parameters.message);
-//
-//			DeliverableNotificationSend.Send(notification, GeneralReuse.getAuthorizationKey(parameters.systemType, parameters.certificate));
-//		EndIf;
-//		
+			body.Insert("badge", parameters.badge);
+		Else
+			body.Insert("sound", "");
+			body.Insert("content-available", True);	
+		EndIf;
+		body.Insert("data", data);
+
+		messageParam = New Structure();
+		messageParam.Insert("to", parameters.deviceToken);
+		If parameters.systemType = Enums.systemTypes.iOS Then
+			messageParam.Insert("notification", body);
+		Else
+			messageParam.Insert("data", body);
+		EndIf;
+
+		request = New HTTPRequest();
+		request.Headers.Insert("Content-Type", "application/json");
+		request.Headers.Insert("Authorization", "key=AAAA7ccmJw0:APA91bHVSb1GF1C9lUqet0gvrbT1fqbPmbU6Vy7VYpwBUBQmEVN8vF2E8WdxFdaKYOBJw5uagvFFGQF-ELc-VtMsr62gK1JiBsEixEQ6PpgLdUznExIJEtonsjSgezqjq4k_xC4UXA1l");
+		request.SetBodyFromString(HTTP.encodeJSON(messageParam), TextEncoding.UTF8);
+
+		HTTPConnection.Post(request);
+
 		If Not parameters.message.isEmpty() Then
 			logMassage(parameters.message, parameters.informationChannel, Enums.messageStatuses.sent, "", ToUniversalTime(CurrentDate()), parameters.token);
 		EndIf;
