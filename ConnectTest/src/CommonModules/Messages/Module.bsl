@@ -123,6 +123,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsGold.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Megalab Then
 		answer = SmsMegalab.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDigital Then
+		answer = SmsIDigital.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
