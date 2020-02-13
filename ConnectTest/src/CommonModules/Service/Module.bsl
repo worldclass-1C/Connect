@@ -314,7 +314,7 @@ Procedure informationSourceAlert() Export
 			
 EndProcedure
 
-Procedure ПроверитьАктуальностьТокенов() Export
+Procedure CheckTokenValid() Export
 	
 	//Проверка актуальности токенов для ОС Android	
 	пЗапрос	= Новый Запрос;

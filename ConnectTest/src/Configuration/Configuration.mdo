@@ -118,7 +118,7 @@
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
   <scheduledJobs>ScheduledJob.informationSourceAlert</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
+  <scheduledJobs>ScheduledJob.CheckTokenValid</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>

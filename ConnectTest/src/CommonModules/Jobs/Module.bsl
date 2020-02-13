@@ -32,8 +32,8 @@ Procedure alertSourceInformation() Export
 	Service.informationSourceAlert();
 EndProcedure
 
-Procedure ПроверитьАктуальностьТокенов() Export
-	Service.ПроверитьАктуальностьТокенов();
+Procedure CheckTokenValid() Export
+	Service.CheckTokenValid();
 EndProcedure
 
 Procedure CheckAcquiringStatus() Export
