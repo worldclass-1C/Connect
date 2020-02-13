@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b98c1acc-cfba-4fe8-a89c-c37085263383">
+  <name>SmsIDigital</name>
+  <synonym>
+    <key>en</key>
+    <value>Sms i digital</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>
