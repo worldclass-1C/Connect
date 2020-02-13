@@ -1,11 +1,11 @@
 Function sendSMS(parameters, answer) Export
-
+//test
 	Return answer;
 
 EndFunction
 
 Function checkSmsStatus(Request) Export
-
-	Return New HTTPServiceResponse(200);
+//test
+	Return New HTTPServiceResponse(500);
 
 EndFunction
