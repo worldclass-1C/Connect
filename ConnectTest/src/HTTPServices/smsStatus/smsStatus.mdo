@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:HTTPService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="091e5d96-cd11-4d0d-a83c-4ef51075c861">
+  <name>smsStatus</name>
+  <synonym>
+    <key>ru</key>
+    <value>Sms status</value>
+  </synonym>
+  <rootURL>smsStatus</rootURL>
+  <reuseSessions>AutoUse</reuseSessions>
+  <sessionMaxAge>300</sessionMaxAge>
+  <urlTemplates uuid="4e9862f6-df61-49a1-836e-19a1c2ca81ae">
+    <name>megalab</name>
+    <synonym>
+      <key>ru</key>
+      <value>Megalab</value>
+    </synonym>
+    <template>/*</template>
+    <methods uuid="2477c1f0-f441-4763-ac5a-45b4c9526f2d">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>megalabsPOST</handler>
+    </methods>
+  </urlTemplates>
+</mdclass:HTTPService>
