@@ -102,7 +102,12 @@
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
+<<<<<<< HEAD
   <commonModules>CommonModule.SmsNewProvider</commonModules>
+=======
+  <commonModules>CommonModule.SmsIDigital</commonModules>
+  <commonModules>CommonModule.SmsMegalab</commonModules>
+>>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect.git
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
@@ -114,16 +119,18 @@
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.internal</httpServices>
+  <httpServices>HTTPService.smsStatus</httpServices>
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
   <scheduledJobs>ScheduledJob.informationSourceAlert</scheduledJobs>
-  <scheduledJobs>ScheduledJob.ПроверкаАктуальностиТокенов</scheduledJobs>
+  <scheduledJobs>ScheduledJob.CheckTokenValid</scheduledJobs>
   <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <commonCommands>CommonCommand.uid</commonCommands>
   <constants>Constant.BaseImgURL</constants>
+  <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>
   <constants>Constant.ImgStorage</constants>
   <catalogs>Catalog.accounts</catalogs>

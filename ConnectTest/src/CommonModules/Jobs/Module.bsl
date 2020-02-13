@@ -32,8 +32,8 @@ Procedure alertSourceInformation() Export
 	Service.informationSourceAlert();
 EndProcedure
 
-Procedure ПроверитьАктуальностьТокенов() Export
-	Service.ПроверитьАктуальностьТокенов();
+Procedure CheckTokenValid() Export
+	Service.CheckTokenValid();
 EndProcedure
 
 Procedure CheckAcquiringStatus() Export
@@ -75,7 +75,11 @@ Procedure ProcessQueue() Export
 		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.register Then
 			Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
 		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
-			Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
+			If OrdersToProcess.orderState = Enums.acquiringOrderStates.success Then
+				Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
+			Else
+				Acquiring.delOrderToQueue(OrdersToProcess.order);
+			EndIf;
 		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.unbinding Then
 			Acquiring.executeRequest("unBindCardBack", OrdersToProcess.order, parameters);
 		EndIf;
@@ -93,7 +97,8 @@ Function GetOrdersToProcess()
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.deviceModel, """") AS deviceModel,
 	|	acquiringOrdersQueue.order.holding.tokenDefault AS tokenDefault,
 	|	acquiringOrdersQueue.order.holding as holding,
-	|	acquiringOrdersQueue.order.acquiringRequest AS acquiringRequest
+	|	acquiringOrdersQueue.order.acquiringRequest AS acquiringRequest,
+	|	acquiringOrdersQueue.orderState
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|WHERE

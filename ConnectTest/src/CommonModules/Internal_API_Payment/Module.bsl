@@ -63,7 +63,8 @@ Procedure bindCard(parameters, additionalParameters) Export
 	|	acquiringOrders.creditCard.autopayment AS autopayment,
 	|	acquiringOrders.creditCard.expiryDate AS expiryDate,
 	|	acquiringOrders.creditCard.ownerName AS ownerName,
-	|	acquiringOrders.creditCard.paymentSystem AS paymentSystem
+	|	acquiringOrders.creditCard.paymentSystem AS paymentSystem,
+	|	acquiringOrders.creditCard.Description AS Description
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|WHERE
@@ -77,13 +78,15 @@ Procedure bindCard(parameters, additionalParameters) Export
 		select = result.Select();
 		select.Next();				
 		requestStruct.Insert("uid", 								XMLString(select.creditCard));
-		requestStruct.Insert("userId", 							XMLString(select.userId));
+		requestStruct.Insert("owner", 							XMLString(select.userId));
 	    requestStruct.Insert("acquiringBank", 			select.acquiringBank);
+	    requestStruct.Insert("description", 				select.Description);
 	    requestStruct.Insert("autopayment", 			select.autopayment);
-	    requestStruct.Insert("expiryDate", 					select.expiryDate);
+	    requestStruct.Insert("expiryDate", 					String(Month(select.expiryDate))+"/"+String(Right(Year(select.expiryDate),2)));
 	    requestStruct.Insert("ownerName",				select.ownerName);
 	    requestStruct.Insert("paymentSystem",		String(select.paymentSystem));
-	    
+	    parametersNew.Insert("requestName",        "paymentBindCardBack");
+	    parametersNew.Insert("requestStruct", 	requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
@@ -100,6 +103,8 @@ Procedure unBindCard(parameters, additionalParameters) Export
 		parametersNew = Service.getStructCopy(additionalParameters);
 		requestStruct = New Structure();
 		requestStruct.Insert("uid", XMLString(parameters.order.creditCard));
+		parametersNew.Insert("requestName",    "paymentUnBindCardBack");
+	    parametersNew.Insert("requestStruct", 	requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
