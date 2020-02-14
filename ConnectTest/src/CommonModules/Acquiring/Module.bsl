@@ -302,28 +302,30 @@ Function answerStruct()
 EndFunction
 
 Procedure creditCardsPreparation(paymentOption, parameters) Export
-	If paymentOption.Property("cards") Then 
-		If paymentOption.cards.Count() > 0 Then
-			index = 0;
-			amount = 0;
-			For Each card In paymentOption.cards Do
-				If card.type = "none" Then					
-					amount = card.amount;
-					Break;	
+	For Each elementOfArray  in paymentOption do
+			If elementOfArray.Property("cards") Then 
+				If elementOfArray.cards.Count() > 0 Then
+					index = 0;
+					amount = 0;
+					For Each card In elementOfArray.cards Do
+						If card.type = "none" Then					
+							amount = card.amount;
+							Break;	
+						EndIf;
+						index = index+1;
+					EndDo;
+					elementOfArray.cards.Delete(index);
+					
+					cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
+					elementOfArray.cards.insert(0, cardStruct);
+					
+					cardStruct = New Structure("type, name, uid, amount", "bankCard", "Bank card", "bankCard", amount);
+					elementOfArray.cards.add(cardStruct);			
+				Else
+					elementOfArray.Delete("cards");
 				EndIf;
-				index = index+1;
-			EndDo;
-			paymentOption.cards.Delete(index);
-			
-			cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
-			paymentOption.cards.insert(0, cardStruct);
-			
-			cardStruct = New Structure("type, name, uid, amount", "bankCard", "Bank card", "bankCard", amount);
-			paymentOption.cards.add(cardStruct);			
-		Else
-			paymentOption.Delete("cards");
-		EndIf;
-	EndIf;	
+			EndIf;	
+	EndDo;
 EndProcedure
 
 Procedure addOrderToQueue(order, state) Export
