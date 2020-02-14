@@ -77,16 +77,19 @@ Procedure sendPush(parameters) Export
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
 			body.Insert("badge", parameters.badge);
-		Else
-			body.Insert("sound", "");
-			body.Insert("content-available", True);	
 		EndIf;
 		body.Insert("data", data);
 
 		messageParam = New Structure();
 		messageParam.Insert("to", parameters.deviceToken);
-		If parameters.systemType = Enums.systemTypes.iOS Then
-			messageParam.Insert("notification", body);
+		If parameters.systemType = Enums.systemTypes.iOS Then			
+			If isNotBackgroundPush Then
+				messageParam.Insert("notification", body);
+			Else				
+				messageParam.Insert("data", body);
+				messageParam.Insert("priority", "high");
+				messageParam.Insert("content_available", True);
+			EndIf;
 		Else
 			messageParam.Insert("data", body);
 		EndIf;
