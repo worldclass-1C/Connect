@@ -12,18 +12,20 @@ Function newOrder(parameters) Export
 	If parameters.Property("paymentOptions") Then
 		For Each paymentOption In parameters.paymentOptions Do
 			If paymentOption.Property("owner") Then
-				owner = XMLValue(TypeOf("CatalogRef.users"), paymentOption.owner.uid);
+				owner = XMLValue(Type("CatalogRef.users"), paymentOption.owner.uid);
 			Else
 				owner = Catalogs.users.EmptyRef();
 			EndIf;
 			If paymentOption.Property("cards") Then
 				For Each element In paymentOption.cards Do					
-					cardRef	= XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);
-					If Not cardRef.IsEmpty() Then 
-						//@skip-warning
-						newRow = orderObject.cards.Add();
-						newRow.card = cardRef;
-					EndIf;										
+					If element.uid <> "" Then
+						cardRef = XMLValue(Type("CatalogRef.creditCards"), element.uid);
+						If Not cardRef.IsEmpty() Then
+							//@skip-warning
+							newRow = orderObject.cards.Add();
+							newRow.card = cardRef;
+						EndIf;
+					EndIf;
 				EndDo;
 			EndIf;
 			If paymentOption.Property("deposits") Then
@@ -136,7 +138,7 @@ Function newCard(parameters)
 		creditCard.expiryDate = parameters.expiryDate;
 		creditCard.ownerName = parameters.ownerName;
 		creditCard.Description = parameters.description;
-		creditCard.paymentSystem = Acquiring.paymentSystem(left(creditCard.Description, 2));
+		creditCard.paymentSystem = Acquiring.paymentSystem(left(parameters.paymentSystem, 2));
 		creditCard.registrationDate = ToUniversalTime(CurrentDate());
 		creditCard.Write();
 		Return creditCard.Ref;
@@ -300,28 +302,44 @@ Function answerStruct()
 EndFunction
 
 Procedure creditCardsPreparation(paymentOption, parameters) Export
-	If paymentOption.Property("cards") Then 
-		If paymentOption.cards.Count() > 0 Then
-			index = 0;
-			amount = 0;
-			For Each card In paymentOption.cards Do
-				If card.type = "none" Then					
-					amount = card.amount;
-					Break;	
+	For Each elementOfArray  in paymentOption do
+			If elementOfArray.Property("cards") Then 
+				If elementOfArray.cards.Count() > 0 Then
+					index = 0;
+					amount = 0;
+					For Each card In elementOfArray.cards Do
+						If card.type = "none" Then					
+							amount = card.amount;
+							Break;	
+						EndIf;
+						index = index+1;
+					EndDo;
+					elementOfArray.cards.Delete(index);
+					SystemType = Enums.systemTypes.EmptyRef();
+					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
+						SystemType = parameters.tokenContext.systemType;
+					EndIf;
+					Language = ?(parameters.Property("language"), parameters.language, Catalogs.languages.EmptyRef());
+					If Not SystemType = Enums.systemTypes.EmptyRef() Then
+						If SystemType = Enums.systemTypes.iOS Then
+							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
+							elementOfArray.cards.insert(0, cardStruct);
+						ElsIf SystemType = Enums.systemTypes.Android Then
+							cardStruct = New Structure("type, name, uid, amount", "googlePay", "Google Pay", "googlePay", amount);
+							elementOfArray.cards.insert(0, cardStruct);
+						EndIf;
+					EndIf;
+					PaymentSystemDescription = "Bank card";
+					If not Language = Catalogs.languages.EmptyRef() Then
+						PaymentSystemDescription = NStr("ru='Банковская карта';en='Bank card'", Language.Code);
+					EndIf;
+					cardStruct = New Structure("type, name, uid, amount", "bankCard", PaymentSystemDescription, "bankCard", amount);
+					elementOfArray.cards.add(cardStruct);			
+				Else
+					elementOfArray.Delete("cards");
 				EndIf;
-				index = index+1;
-			EndDo;
-			paymentOption.cards.Delete(index);
-			
-			cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
-			paymentOption.cards.insert(0, cardStruct);
-			
-			cardStruct = New Structure("type, name, uid, amount", "bankCard", "Bank card", "bankCard", amount);
-			paymentOption.cards.add(cardStruct);			
-		Else
-			paymentOption.Delete("cards");
-		EndIf;
-	EndIf;	
+			EndIf;	
+	EndDo;
 EndProcedure
 
 Procedure addOrderToQueue(order, state) Export
