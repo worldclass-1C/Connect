@@ -146,6 +146,7 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.cardAuthInfo.expiration + "01")));
 		creditCardStruct.Insert("ownerName", response.cardAuthInfo.cardholderName);
 		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
+		creditCardStruct.Insert("paymentSystem", response.cardAuthInfo.maskedPan);
 	Else
 		creditCardStruct.Insert("bindingId", "");					
 	EndIf; 
