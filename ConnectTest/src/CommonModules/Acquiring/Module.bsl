@@ -12,13 +12,13 @@ Function newOrder(parameters) Export
 	If parameters.Property("paymentOptions") Then
 		For Each paymentOption In parameters.paymentOptions Do
 			If paymentOption.Property("owner") Then
-				owner = XMLValue(TypeOf("CatalogRef.users"), paymentOption.owner.uid);
+				owner = XMLValue(Type("CatalogRef.users"), paymentOption.owner.uid);
 			Else
 				owner = Catalogs.users.EmptyRef();
 			EndIf;
 			If paymentOption.Property("cards") Then
 				For Each element In paymentOption.cards Do					
-					cardRef	= XMLValue(TypeOf("CatalogRef.creditCards"), element.uid);
+					cardRef	= XMLValue(Type("CatalogRef.creditCards"), element.uid);
 					If Not cardRef.IsEmpty() Then 
 						//@skip-warning
 						newRow = orderObject.cards.Add();
