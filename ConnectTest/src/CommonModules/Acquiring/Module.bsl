@@ -315,11 +315,25 @@ Procedure creditCardsPreparation(paymentOption, parameters) Export
 						index = index+1;
 					EndDo;
 					elementOfArray.cards.Delete(index);
-					
-					cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
-					elementOfArray.cards.insert(0, cardStruct);
-					
-					cardStruct = New Structure("type, name, uid, amount", "bankCard", "Bank card", "bankCard", amount);
+					SystemType = Enums.systemTypes.EmptyRef();
+					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
+						SystemType = parameters.tokenContext.systemType;
+					EndIf;
+					Language = ?(parameters.Property("language"), parameters.language, Catalogs.languages.EmptyRef());
+					If Not SystemType = Enums.systemTypes.EmptyRef() Then
+						If SystemType = Enums.systemTypes.iOS Then
+							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
+							elementOfArray.cards.insert(0, cardStruct);
+						ElsIf SystemType = Enums.systemTypes.Android Then
+							cardStruct = New Structure("type, name, uid, amount", "googlePay", "Google Pay", "googlePay", amount);
+							elementOfArray.cards.insert(0, cardStruct);
+						EndIf;
+					EndIf;
+					PaymentSystemDescription = "Bank card";
+					If not Language = Catalogs.languages.EmptyRef() Then
+						PaymentSystemDescription = NStr("ru='Банковская карта';en='Bank card'", Language.Code);
+					EndIf;
+					cardStruct = New Structure("type, name, uid, amount", "bankCard", PaymentSystemDescription, "bankCard", amount);
 					elementOfArray.cards.add(cardStruct);			
 				Else
 					elementOfArray.Delete("cards");
