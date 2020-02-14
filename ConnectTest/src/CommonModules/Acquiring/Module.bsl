@@ -18,12 +18,14 @@ Function newOrder(parameters) Export
 			EndIf;
 			If paymentOption.Property("cards") Then
 				For Each element In paymentOption.cards Do					
-					cardRef	= XMLValue(Type("CatalogRef.creditCards"), element.uid);
-					If Not cardRef.IsEmpty() Then 
-						//@skip-warning
-						newRow = orderObject.cards.Add();
-						newRow.card = cardRef;
-					EndIf;										
+					If element.uid <> "" Then
+						cardRef = XMLValue(Type("CatalogRef.creditCards"), element.uid);
+						If Not cardRef.IsEmpty() Then
+							//@skip-warning
+							newRow = orderObject.cards.Add();
+							newRow.card = cardRef;
+						EndIf;
+					EndIf;
 				EndDo;
 			EndIf;
 			If paymentOption.Property("deposits") Then
