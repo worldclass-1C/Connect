@@ -302,7 +302,7 @@ Function answerStruct()
 EndFunction
 
 Procedure creditCardsPreparation(paymentOption, parameters) Export
-	If paymentOption.Property("cards") Then 
+	If TypeOf(paymentOption) = Type("Structure") And paymentOption.Property("cards") Then 
 		If paymentOption.cards.Count() > 0 Then
 			index = 0;
 			amount = 0;
