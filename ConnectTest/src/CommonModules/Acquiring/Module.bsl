@@ -138,7 +138,7 @@ Function newCard(parameters)
 		creditCard.expiryDate = parameters.expiryDate;
 		creditCard.ownerName = parameters.ownerName;
 		creditCard.Description = parameters.description;
-		creditCard.paymentSystem = Acquiring.paymentSystem(left(creditCard.Description, 2));
+		creditCard.paymentSystem = Acquiring.paymentSystem(left(parameters.paymentSystem, 2));
 		creditCard.registrationDate = ToUniversalTime(CurrentDate());
 		creditCard.Write();
 		Return creditCard.Ref;
