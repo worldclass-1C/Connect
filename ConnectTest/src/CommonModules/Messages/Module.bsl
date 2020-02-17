@@ -75,7 +75,7 @@ Function sendPush(parameters) Export
 		
 		body = New Structure();
 		body.Insert("data", data);
-		If isNotBackgroundPush Then
+		If isNotBackgroundPush Then			
 			body.Insert("title", parameters.title);
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
@@ -88,7 +88,7 @@ Function sendPush(parameters) Export
 			If isNotBackgroundPush Then
 				messageParam.Insert("notification", body);
 			Else				
-				messageParam.Insert("data", body);
+				messageParam.Insert("data", data);
 				messageParam.Insert("priority", "high");
 				messageParam.Insert("content_available", True);
 			EndIf;
