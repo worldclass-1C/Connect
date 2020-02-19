@@ -61,7 +61,7 @@ Function getRequiredParameters(requestName)
 	ElsIF requestName = "payment" Then
 		Return "uid";
 	ElsIF requestName = "paymentstatus" Then
-		Return "orderId";
+		Return "uid";
 	ElsIF requestName = "unbindcard" Then
 		Return "uid";	
 	ElsIF requestName = "addusertotoken" Then

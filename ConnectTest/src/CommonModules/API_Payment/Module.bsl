@@ -100,7 +100,19 @@ Procedure payment(parameters) Export
 		|	NOT &cardIsFilled");
 
 	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
-	card = ?(requestStruct.Property("card") and not requestStruct.card = Undefined, XMLValue(Type("CatalogRef.creditCards"), requestStruct.card), Catalogs.creditCards.EmptyRef());
+	card = Catalogs.creditCards.EmptyRef();
+	isApplePay = false;
+	isGooglePay = false;
+	If requestStruct.Property("card") and not requestStruct.card = Undefined Then
+		If requestStruct.card = "applePay" Then
+			isApplePay = true;
+		ElsIf requestStruct.card = "googlePay" Then
+			isGooglePay = true;
+		Else
+			card = XMLValue(Type("CatalogRef.creditCards"), requestStruct.card);
+		EndIf;
+	EndIf;
+	owner = ?(requestStruct.Property("owner") and not requestStruct.owner = Undefined, XMLValue(Type("CatalogRef.users"), requestStruct.owner), Catalogs.users.EmptyRef());
 	query.SetParameter("order", order);
 	query.SetParameter("card", card);
 	query.SetParameter("cardIsFilled", ValueIsFilled(card));
@@ -113,35 +125,84 @@ Procedure payment(parameters) Export
 	If orderResult.IsEmpty() Then
 		errorDescription = Service.getErrorDescription(language, "acquiringOrderFind");
 	EndIf;
-
+	
+	If owner.IsEmpty() Then
+		errorDescription = Service.getErrorDescription(language, "userNotfound");
+	EndIf;
+	
+	orderObject = order.GetObject();
+	
+	If isApplePay or isGooglePay  Then
+		If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
+				SystemType = parameters.tokenContext.systemType;
+		EndIf;
+	EndIf;
+	
 	//Проверяем есть ли указанная карта, в списке доступных карт
 	If errorDescription.result = "" Then
 		If results[1].IsEmpty() Then
 			errorDescription = Service.getErrorDescription(language, "acquiringCard");
 		ElsIf ValueIsFilled(card) Then
-			orderObject = order.GetObject();
 			orderObject.creditCard = card;
+		ElsIf isApplePay Then 
+			If SystemType = Enums.systemTypes.iOS Then
+				orderObject.acquiringRequest = enums.acquiringRequests.applePay;
+			Else
+				errorDescription = Service.getErrorDescription(language, "acquiringCard");
+			EndIf;
+		ElsIf isGooglePay Then
+			 If SystemType = Enums.systemTypes.Android Then
+			 	orderObject.acquiringRequest = enums.acquiringRequests.googlePay;
+			 Else
+			 	errorDescription = Service.getErrorDescription(language, "acquiringCard");
+			 EndIf;
 		EndIf;
 	EndIf;
 
 	//Проверяем есть ли оплата авансами
 	If errorDescription.result = "" Then
-
+		If requestStruct.Property("deposits") and not requestStruct.deposits = Undefined Then
+			For Each deposit In requestStruct.deposits Do
+				newRow = orderObject.payments.Add();
+				newRow.owner = owner;
+				newRow.type = deposit.type;
+				newRow.amount = deposit.paymentAmount;			
+				newRow.details = HTTP.encodeJSON(deposit);	
+			EndDo;
+		EndIf;
+		If orderObject <> Undefined Then
+			orderObject.Write();
+		EndIf;
+		answer = Acquiring.executeRequest("process", order, parameters);
+		If not answer.errorCode = "" Then 
+			errorDescription = Service.getErrorDescription(language, answer.errorCode);
+			orderObject.payments.Clear();				
+		EndIf;
 	EndIf;
+	
 	//Отправляем в запрос в банк на оставшуюся сумму
 	If errorDescription.result = "" Then
 		If orderObject <> Undefined Then
 			orderObject.Write();
 		EndIf;
-		answer = Acquiring.executeRequest("send", order);
-		If answer.errorCode = "" Then
-			struct.Insert("orderId", answer.orderId);
-			struct.Insert("formUrl", answer.formUrl);
-			struct.Insert("returnUrl", answer.returnUrl);
-			struct.Insert("failUrl", answer.failUrl);
-			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
-		Else
-			errorDescription = Service.getErrorDescription(language, answer.errorCode);
+		struct.Insert("uid", XMLString(order));
+		aquiringAmount = order.acquiringAmount - order.payments.Total("amount");
+		If aquiringAmount = 0 
+		    Or isApplePay 
+		    Or isGooglePay Then
+			struct.Insert("amount", aquiringAmount);
+			Acquiring.changeOrderState(order, Enums.acquiringOrderStates.send);
+		Else 
+			answer = Acquiring.executeRequest("send", order);
+			If answer.errorCode = "" Then
+				struct.Insert("orderId", answer.orderId);
+				struct.Insert("formUrl", answer.formUrl);
+				struct.Insert("returnUrl", answer.returnUrl);
+				struct.Insert("failUrl", answer.failUrl);
+				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
+			Else
+				errorDescription = Service.getErrorDescription(language, answer.errorCode);
+			EndIf;	
 		EndIf;
 	EndIf;
 
@@ -159,34 +220,54 @@ Procedure paymentStatus(parameters) Export
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	struct = New Structure();
-	
-	answer = Acquiring.findOrder(requestStruct.orderId);
+	query = New Query("SELECT
+	|	acquiringOrders.Ref AS order,
+	|	acquiringOrders.acquiringRequest,
+	|	ISNULL(ordersStates.state, VALUE(enum.acquiringOrderStates.EmptyRef)) AS state,
+	|	ISNULL(acquiringOrderIdentifiers.Presentation, """") AS orderId
+	|FROM
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
+	|		ON acquiringOrders.Ref = ordersStates.order
+	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|		ON acquiringOrders.Ref = acquiringOrderIdentifiers.Owner
+	|WHERE
+	|	acquiringOrders.Ref = &order");
+
+	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
+	query.SetParameter("order", order);
+	result = query.Execute();
 	struct.Insert("result", "fail");
-	If answer = Undefined Then
+	If result.IsEmpty() Then
 		parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringConnection"));
 	Else
-		If answer.state = Enums.acquiringOrderStates.send Then
-			response = Acquiring.executeRequest("check", answer.order);
+		selection = result.Select();
+	    selection.Next();
+		If selection.state = Enums.acquiringOrderStates.send Then
+			response = Acquiring.executeRequest("check", order, requestStruct);
 			If response = Undefined Then
 				parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
 			Else				
 				//parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
 				If response.errorCode = "" Then
 					struct.Insert("result", "ok");
-					Acquiring.addOrderToQueue(answer.order, Enums.acquiringOrderStates.success);					
-					Acquiring.executeRequestBackground("process", answer.order, parameters);
+					Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);					
+					answerKPO = Acquiring.executeRequest("process", order, parameters);
+					If answerKPO = Undefined or not answerKPO.errorCode = "" Then
+						struct.Insert("description", Service.getErrorDescription(language, "system"));					
+					EndIf;
 				EndIf;
 			EndIf;
-		ElsIf answer.state = Enums.acquiringOrderStates.rejected Then		
+		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		
 			//parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
-		ElsIf answer.state = Enums.acquiringOrderStates.EmptyRef() Then
+		ElsIf selection.state = Enums.acquiringOrderStates.EmptyRef() Then
 			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
 		Else
 			struct.Insert("result", "ok");
 		EndIf;
 	EndIf;
 	If struct.result = "fail" Then
-		Acquiring.addOrderToQueue(answer.order, Enums.acquiringOrderStates.rejected);
+		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));			

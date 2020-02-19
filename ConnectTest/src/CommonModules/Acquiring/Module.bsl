@@ -108,7 +108,7 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		If requestName = "send" Then
 			sendOrder(parameters);
 		ElsIf requestName = "check" Then
-			checkOrder(parameters);
+			checkOrder(parameters, additionalParameters);
 		ElsIf requestName = "unBindCard" Then
 			unBindCard(parameters);
 		ElsIf requestName = "reverse" Then
@@ -138,7 +138,7 @@ Function newCard(parameters)
 		creditCard.expiryDate = parameters.expiryDate;
 		creditCard.ownerName = parameters.ownerName;
 		creditCard.Description = parameters.description;
-		creditCard.paymentSystem = Acquiring.paymentSystem(left(parameters.paymentSystem, 2));
+		creditCard.paymentSystem = Acquiring.paymentSystem(parameters.paymentSystemCode);
 		creditCard.registrationDate = ToUniversalTime(CurrentDate());
 		creditCard.Write();
 		Return creditCard.Ref;
@@ -151,10 +151,19 @@ Function orderDetails(order)
 			
 	query = New Query();
 	query.text = "SELECT
+	|	SUM(acquiringOrderspayments.amount) AS amount
+	|INTO TemporaryDepositAmount
+	|FROM
+	|	Catalog.acquiringOrders.payments AS acquiringOrderspayments
+	|WHERE
+	|	acquiringOrderspayments.Ref = &order
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
 	|	acquiringOrders.Ref AS order,
 	|	acquiringOrderIdentifiers.Ref AS orderId,
 	|	acquiringOrders.Code AS orderNumber,
-	|	acquiringOrders.acquiringAmount AS acquiringAmount,
+	|	acquiringOrders.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
 	|	acquiringOrders.user AS bindingUser,
 	|	acquiringOrders.creditCard,
 	|	ISNULL(acquiringOrders.creditCard.owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
@@ -251,9 +260,13 @@ Function orderDetails(order)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	|		ON acquiringOrders.holding = holdingConnection.holding
 	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef),
+	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|WHERE
-	|	acquiringOrders.ref = &order";
+	|	acquiringOrders.ref = &order
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TemporaryDepositAmount";
 
 	query.SetParameter("order", order);	
 	result = query.Execute();
@@ -319,8 +332,7 @@ Procedure creditCardsPreparation(paymentOption, parameters) Export
 					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
 						SystemType = parameters.tokenContext.systemType;
 					EndIf;
-					Language = ?(parameters.Property("language"), parameters.language, Catalogs.languages.EmptyRef());
-					If Not SystemType = Enums.systemTypes.EmptyRef() Then
+					If Not SystemType.IsEmpty() Then
 						If SystemType = Enums.systemTypes.iOS Then
 							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
 							elementOfArray.cards.insert(0, cardStruct);
@@ -330,9 +342,8 @@ Procedure creditCardsPreparation(paymentOption, parameters) Export
 						EndIf;
 					EndIf;
 					PaymentSystemDescription = "Bank card";
-					If not Language = Catalogs.languages.EmptyRef() Then
-						PaymentSystemDescription = NStr("ru='Банковская карта';en='Bank card'", Language.Code);
-					EndIf;
+					PaymentSystemDescription = NStr("ru='Банковская карта';en='Bank card'", parameters.languageCode);
+				
 					cardStruct = New Structure("type, name, uid, amount", "bankCard", PaymentSystemDescription, "bankCard", amount);
 					elementOfArray.cards.add(cardStruct);			
 				Else
@@ -385,10 +396,15 @@ Procedure sendOrder(parameters)
 	EndIf;
 EndProcedure
 
-Procedure checkOrder(parameters) 
+Procedure checkOrder(parameters, additionalParameters) 
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.checkOrder(parameters);
+		If parameters.order.acquiringRequest = enums.acquiringRequests.applePay
+	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
+			AcquiringSberbank.checkOrderAppleGoogle(parameters, additionalParameters);
+		Else
+			 AcquiringSberbank.checkOrder(parameters);
+		EndIf;
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
@@ -446,7 +462,7 @@ Procedure deactivateCard(creditCard)
 	creditCardObject.Write();	
 EndProcedure
 
-Procedure changeOrderState(order, state)
+Procedure changeOrderState(order, state) Export
 	record = InformationRegisters.ordersStates.CreateRecordManager();
 	record.order = order;
 	record.state = state;

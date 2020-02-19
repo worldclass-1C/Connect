@@ -10,9 +10,10 @@ Procedure sendOrder(parameters) Export
 	requestParametrs.Add("failUrl=" + parameters.failUrl);
 	requestParametrs.Add("pageView=DESKTOP");
 	
-	If ValueIsFilled(parameters.bindingId) Then
+	If ValueIsFilled(parameters.creditCard) Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
-		requestParametrs.Add("bindingId=" + parameters.bindingId);
+		requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
+		//requestParametrs.Add("features=AUTO_PAYMENT");
 	ElsIf parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 	EndIf;
@@ -82,6 +83,59 @@ Procedure checkOrder(parameters) Export
 		
 EndProcedure
 
+Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
+			
+	requestBody = New Structure();
+	requestBody.Insert("merchant" , parameters.user);
+	//requestBody.Insert("password", parameters.password);
+	//requestBody.Insert("orderId" ,XMLString(parameters.orderId));
+	requestBody.Insert("orderNumber" , parameters.orderNumber);
+	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
+	
+	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
+		amount =  parameters.order.acquiringAmount - parameters.order.payments.Total("amount");	
+		requestBody.Insert("amount", amount*100);	
+		requestBody.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
+		requestBody.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
+	EndIf;
+		
+	requestURL = New Array();
+	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
+		requestURL.Add("/payment/google/payment.do");
+	ElsIf (True) Then
+		 requestURL.Add("/payment/applepay/payment.do");
+	EndIf;
+	
+	//requestURL.Add(StrConcat(requestParametrs, "&"));
+	
+	URL = StrConcat(requestURL, "");
+	parameters.Insert("requestBody", URL);	
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	
+	
+	requestHTTP = New HTTPRequest(URL);
+	requestHTTP.Headers.Insert("Content-Type", "application/json");
+	requestHTTP.SetBodyFromString(HTTP.encodeJSON(requestBody), TextEncoding.UTF8);
+	answerHTTP = ConnectionHTTP.Post(requestHTTP);
+	
+	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+	parameters.Insert("response", answerStruct);
+	If answerStruct.success = true Then									
+			parameters.Insert("errorCode", "");
+			orderObject = parameters.order.GetObject();
+			newRow = orderObject.payments.Add();
+			newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+			newRow.type = "card";
+			newRow.amount = parameters.acquiringAmount;			
+			newRow.details = prepareDetails(answerStruct);			
+			orderObject.Write();
+	Else
+		parameters.Insert("result", "fail");
+		parameters.Insert("errorCode", "rejected");		
+	EndIf;		
+		
+EndProcedure
+
 Procedure reverseOrder(parameters) Export
 			
 	requestParametrs = New Array();
@@ -146,7 +200,7 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.cardAuthInfo.expiration + "01")));
 		creditCardStruct.Insert("ownerName", response.cardAuthInfo.cardholderName);
 		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
-		creditCardStruct.Insert("paymentSystem", response.cardAuthInfo.maskedPan);
+		creditCardStruct.Insert("paymentSystemCode", left(response.cardAuthInfo.maskedPan,2));
 	Else
 		creditCardStruct.Insert("bindingId", "");					
 	EndIf; 

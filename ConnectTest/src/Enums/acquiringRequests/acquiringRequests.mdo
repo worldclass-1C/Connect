@@ -60,4 +60,18 @@
       <value>Отвязка карты</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="6c3c8f19-898b-499b-9587-c5c04034fa86">
+    <name>applePay</name>
+    <synonym>
+      <key>en</key>
+      <value>Apple pay</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2bbb2a81-08c8-40c7-937b-ed22fd2eef9b">
+    <name>googlePay</name>
+    <synonym>
+      <key>en</key>
+      <value>Google pay</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>
