@@ -20,22 +20,6 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <dataLockControlMode>Managed</dataLockControlMode>
-  <resources uuid="be4dbfe9-a941-4136-9b44-1a2953e34df2">
-    <name>cacheInformation</name>
-    <synonym>
-      <key>en</key>
-      <value>Cache information</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Информация кэша</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.cacheInformations</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </resources>
   <dimensions uuid="ecc9ed8f-9bea-4291-9630-8459f23df71f">
     <name>user</name>
     <synonym>
@@ -81,6 +65,22 @@
     </synonym>
     <type>
       <types>CatalogRef.cacheTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </dimensions>
+  <dimensions uuid="232c0c49-42dd-46a8-a02d-4f4b23c8f822">
+    <name>cacheInformation</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache information</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Информация кэша</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cacheInformations</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

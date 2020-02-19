@@ -25,7 +25,9 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "userprofile" Then 
 			API_Info.userProfile(parameters);
 //		ElsIf parameters.requestName = "usersummary" Then 
-//			API_Info.userSummary(parameters);	
+//			API_Info.userSummary(parameters);
+		ElsIf parameters.requestName = "usercache" Then 
+			API_Info.userCache(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then
 			API_List.gymList(parameters);

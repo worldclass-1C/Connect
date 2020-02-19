@@ -382,6 +382,7 @@ Procedure userProfile(parameters) Export
 EndProcedure
 
 Procedure userSummary(parameters) Export
+	
 	tokenContext = parameters.tokenContext;
 	
 	query = New Query("SELECT
@@ -412,3 +413,63 @@ Procedure userSummary(parameters) Export
 	
 EndProcedure
 
+Procedure userCache(parameters) Export
+	
+	tokenContext = parameters.tokenContext;
+	requestStruct = parameters.requestStruct;
+	
+	query = New Query("SELECT
+	|	cacheTypes.Ref AS cacheType
+	|INTO TT_cacheType
+	|FROM
+	|	Catalog.cacheTypes AS cacheTypes
+	|WHERE
+	|	cacheTypes.Description IN(&Descriptions)
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	cacheIndex.cacheType.Description AS cacheType,
+	|	cacheIndex.cacheInformation AS cacheInformation,
+	|	cacheIndex.cacheInformation.startRotation AS startRotation,
+	|	cacheIndex.cacheInformation.endRotation AS endRotation
+	|INTO TT_CacheInformation
+	|FROM
+	|	TT_cacheType AS TT_cacheType
+	|		LEFT JOIN InformationRegister.cacheIndex AS cacheIndex
+	|		ON TT_cacheType.cacheType = cacheIndex.cacheType
+	|			AND (cacheIndex.user = &user)
+	|			AND (cacheIndex.chain = &chain)
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT_CacheInformation.cacheType AS cacheType,
+	|	TT_CacheInformation.cacheInformation.data AS data
+	|FROM
+	|	TT_CacheInformation AS TT_CacheInformation
+	|WHERE
+	|	TT_CacheInformation.startRotation <= &CurrentTime
+	|	AND TT_CacheInformation.endRotation >= &CurrentTime
+	|TOTALS BY
+	|	cacheType");
+	
+	query.SetParameter("chain", tokenContext.chain);
+	query.SetParameter("user", Catalogs.users.EmptyRef());
+	query.SetParameter("currentTime", ToUniversalTime(CurrentDate()));
+	query.SetParameter("descriptions", requestStruct);
+	
+	struct = New Structure();
+	selectCacheType = query.Execute().Select(QueryResultIteration.ByGroups);
+	While selectCacheType.Next() Do
+		cacheArray	= new Array();
+		select = selectCacheType.Select();
+		While select.Next() Do
+			cacheArray.Add(HTTP.decodeJSON(select.data));
+		EndDo;
+		struct.Insert(selectCacheType.cacheType, cacheArray);
+	EndDo;
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
+EndProcedure

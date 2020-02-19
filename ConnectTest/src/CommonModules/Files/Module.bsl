@@ -8,7 +8,7 @@ Procedure createHoldingDirectory(holdingCode) Export
 		CreateDirectory(holdingPath + "\services");
 		CreateDirectory(holdingPath + "\users");
 		CreateDirectory(holdingPath + "\employees");
-		CreateDirectory(holdingPath + "\cache");			
+		CreateDirectory(holdingPath + "\cache");					
 	EndIf;	
 EndProcedure
 
