@@ -51,8 +51,10 @@ Function pushData(action = "", objectId = "", objectType = "",
 	Return HTTP.encodeJSON(struct);
 EndFunction
 
-Procedure sendPush(parameters) Export
-
+Function sendPush(parameters) Export
+	
+	pushStatus = Enums.messageStatuses.notSent;
+	
 	If parameters.deviceToken <> "" Then
 		
 		If parameters.action <> "" And parameters.title = "" And parameters.text = "" Then
@@ -72,21 +74,24 @@ Procedure sendPush(parameters) Export
 		EndIf;
 		
 		body = New Structure();
-		If isNotBackgroundPush Then
+		body.Insert("data", data);
+		If isNotBackgroundPush Then			
 			body.Insert("title", parameters.title);
 			body.Insert("sound", "default");
 			body.Insert("text", parameters.text);
 			body.Insert("badge", parameters.badge);
-		Else
-			body.Insert("sound", "");
-			body.Insert("content-available", True);	
-		EndIf;
-		body.Insert("data", data);
+		EndIf;		
 
 		messageParam = New Structure();
 		messageParam.Insert("to", parameters.deviceToken);
-		If parameters.systemType = Enums.systemTypes.iOS Then
-			messageParam.Insert("notification", body);
+		If parameters.systemType = Enums.systemTypes.iOS Then			
+			If isNotBackgroundPush Then
+				messageParam.Insert("notification", body);
+			Else				
+				messageParam.Insert("data", data);
+				messageParam.Insert("priority", "high");
+				messageParam.Insert("content_available", True);
+			EndIf;
 		Else
 			messageParam.Insert("data", body);
 		EndIf;
@@ -96,18 +101,27 @@ Procedure sendPush(parameters) Export
 		request.Headers.Insert("Authorization", "key=AAAA7ccmJw0:APA91bHVSb1GF1C9lUqet0gvrbT1fqbPmbU6Vy7VYpwBUBQmEVN8vF2E8WdxFdaKYOBJw5uagvFFGQF-ELc-VtMsr62gK1JiBsEixEQ6PpgLdUznExIJEtonsjSgezqjq4k_xC4UXA1l");
 		request.SetBodyFromString(HTTP.encodeJSON(messageParam), TextEncoding.UTF8);
 
-		HTTPConnection.Post(request);
+		response = HTTPConnection.Post(request);		
+		If response.StatusCode = 200 Then
+			answerBody = response.GetBodyAsString();
+			If answerBody.Property("success") And answerBody.success = 1 Then
+				pushStatus = Enums.messageStatuses.sent;
+			EndIf;
+		EndIf;
+				
+	EndIf;
 
-		If Not parameters.message.isEmpty() Then
-			logMassage(parameters.message, parameters.informationChannel, Enums.messageStatuses.sent, "", ToUniversalTime(CurrentDate()), parameters.token);
+	If parameters.Property("message") And Not parameters.message.isEmpty() Then		
+		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToSend, parameters.message);
+		logMassage(parameters.message, parameters.informationChannel, pushStatus, "", ToUniversalTime(CurrentDate()), parameters.token);
+		If pushStatus = Enums.messageStatuses.notSent Then
+			useNextInformationChannel(parameters.message, parameters.informationChannel);
 		EndIf;
 	EndIf;
-
-	If Not parameters.message.isEmpty() Then
-		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToSend, parameters.message);
-	EndIf;
-
-EndProcedure
+	
+	Return pushStatus; 
+	
+EndFunction
 
 Procedure sendSMS(parameters) Export
 
