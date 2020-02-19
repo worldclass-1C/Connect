@@ -45,7 +45,6 @@ Procedure CheckAcquiringStatus() Export
 		Else
 			If response.errorCode = "" Then
 				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.success);
-				Acquiring.executeRequestBackground("process", OrdersToCheck.order);
 			Else
 				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);
 			EndIf;

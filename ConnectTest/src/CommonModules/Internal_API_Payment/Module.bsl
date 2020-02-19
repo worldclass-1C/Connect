@@ -9,14 +9,14 @@ Procedure processOrder(parameters, additionalParameters) Export
 	|		amount AS amount,
 	|		details AS details) AS payments,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
-	|	ordersStates.state
+	|	isnull(ordersStates.state, value(Enum.acquiringOrderStates.emptyRef)) AS state
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
 	|		ON ordersStates.order = acquiringOrders.Ref
 	|WHERE
 	|	acquiringOrders.Ref = &order
-	|	AND ordersStates.state in (VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected))");
+	|	AND isnull(ordersStates.state, value(Enum.acquiringOrderStates.emptyRef)) in (VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected), value(Enum.acquiringOrderStates.emptyRef))");
 	
 	query.SetParameter("order", parameters.order);
 	
@@ -27,8 +27,10 @@ Procedure processOrder(parameters, additionalParameters) Export
 		requestStruct = New Structure();
 		select = result.Select();
 		select.Next();		
-		If select.acquiringRequest = Enums.acquiringRequests.register Then			
-			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success,"payment","cancel"));
+		If select.acquiringRequest = Enums.acquiringRequests.register
+		   or  select.acquiringRequest = Enums.acquiringRequests.applePay
+		   or select.acquiringRequest = Enums.acquiringRequests.googlePay Then			
+			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty(),"reserve",""))));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array();
