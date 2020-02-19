@@ -20,5 +20,6 @@
   <content>Catalog.languages</content>
   <content>Catalog.errorDescriptions</content>
   <content>Catalog.segments</content>
-  <subsystems>accounts</subsystems>
+  <subsystems>Accounts</subsystems>
+  <subsystems>Cache</subsystems>
 </mdclass:Subsystem>

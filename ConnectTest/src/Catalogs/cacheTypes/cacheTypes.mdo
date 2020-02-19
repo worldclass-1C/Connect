@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bc89946f-991f-4bcd-9fd8-6f75f2c09bc6">
+  <producedTypes>
+    <objectType typeId="ee70b01b-8724-4f55-a5a9-81aef481d01f" valueTypeId="a26091d1-d51c-49c6-9194-4ef0281262db"/>
+    <refType typeId="d8add7db-981b-4bb4-b346-cd0c690ec3e2" valueTypeId="06e1e575-25b9-4580-95ac-679f46e02146"/>
+    <selectionType typeId="e16dc23c-96eb-4222-add7-e68f032e96de" valueTypeId="5bbc7253-a70d-402c-a80a-5442a2d32dca"/>
+    <listType typeId="1d9ec75c-7e00-49c1-af84-9830b914c127" valueTypeId="59b087a2-f569-4adc-b039-544fd9cecd0d"/>
+    <managerType typeId="d76c62b0-04bc-4e2d-9446-e6ee8e6ed7a8" valueTypeId="5bfd6dc6-66a4-49c2-906e-436e6366887b"/>
+  </producedTypes>
+  <name>cacheTypes</name>
+  <synonym>
+    <key>en</key>
+    <value>Cache types</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Виды кэша</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.cacheTypes.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.cacheTypes.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

@@ -137,6 +137,8 @@
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
   <catalogs>Catalog.banners</catalogs>
+  <catalogs>Catalog.cacheInformations</catalogs>
+  <catalogs>Catalog.cacheTypes</catalogs>
   <catalogs>Catalog.cacheValuesTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>
@@ -189,6 +191,7 @@
   <informationRegisters>InformationRegister.acquiringOrdersQueue</informationRegisters>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
   <informationRegisters>InformationRegister.bannersOfUsers</informationRegisters>
+  <informationRegisters>InformationRegister.cacheIndex</informationRegisters>
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
   <informationRegisters>InformationRegister.gymsEmployees</informationRegisters>

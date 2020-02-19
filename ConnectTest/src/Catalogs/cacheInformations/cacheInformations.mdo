@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="85193d97-86d4-4d93-9b55-4f2bcf27ec55">
+  <producedTypes>
+    <objectType typeId="a2a9f5d9-f943-4c58-a492-bf1564c2f9a2" valueTypeId="b261445d-4c6f-444b-8403-45ef02ecc896"/>
+    <refType typeId="619f0028-4da5-4c99-823b-27c2deaf4441" valueTypeId="8d4024cd-4094-4e68-838f-fd74406aa512"/>
+    <selectionType typeId="e9c3d878-fe41-4fb6-be9b-b030b81de2f5" valueTypeId="38cf46bc-bd6d-4764-9a87-244e3f3bc00b"/>
+    <listType typeId="665be064-b0bb-40bc-8e82-007edf80bb46" valueTypeId="bf664809-2efc-46a7-ad35-50fd8949f14a"/>
+    <managerType typeId="7efee1e1-9ec9-4e36-a76b-dcf36df3b20b" valueTypeId="c34e9b5e-0005-4681-97f3-0d06033220b9"/>
+  </producedTypes>
+  <name>cacheInformations</name>
+  <synonym>
+    <key>en</key>
+    <value>Cache informations</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Информация кэша</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.cacheInformations.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.cacheInformations.Form.ListForm</defaultListForm>
+  <attributes uuid="f3d54b99-6597-457a-9460-237421cd20ae">
+    <name>cacheType</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вид кэша</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cacheTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="b08fff1e-f0e5-48dc-a38c-d9d6b9a60d8c">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="c9d09161-115c-4db2-a6a6-103dc58f8f8c">
+    <name>data</name>
+    <synonym>
+      <key>en</key>
+      <value>Data</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Данные</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="be74700b-eea1-4231-9cfc-a487db0ba7fc">
+    <name>endRotation</name>
+    <synonym>
+      <key>en</key>
+      <value>End rotation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Окончание ротации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="53e2bde5-1831-4263-8429-c8fe15ceb25f">
+    <name>startRotation</name>
+    <synonym>
+      <key>en</key>
+      <value>Start rotation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Начало ротации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="71ec8c0f-8b4a-4ea6-867f-9d81b652e9b7">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="84a07562-2f09-4c5a-a64a-db7abfc596f6">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="5202b419-aa95-4951-9765-ce72432d8e22">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
