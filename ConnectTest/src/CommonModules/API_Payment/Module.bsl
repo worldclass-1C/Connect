@@ -108,7 +108,7 @@ Procedure payment(parameters) Export
 			isApplePay = true;
 		ElsIf requestStruct.card = "googlePay" Then
 			isGooglePay = true;
-		Else
+		ElsIf requestStruct.card <> "bankCard" Then
 			card = XMLValue(Type("CatalogRef.creditCards"), requestStruct.card);
 		EndIf;
 	EndIf;
