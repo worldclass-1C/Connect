@@ -47,7 +47,9 @@ Procedure block(token) Export
 	tokenObject = token.GetObject();
 	tokenObject.lockDate = ToUniversalTime(CurrentDate());
 	tokenObject.Write();	
-	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), tokenObject.user);
+	If not token.user.IsEmpty() Then
+		ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), token.user);
+	EndIf;
 EndProcedure
 
 Procedure editProperty(val token, struct) Export

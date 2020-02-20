@@ -103,7 +103,7 @@ Function sendPush(parameters) Export
 
 		response = HTTPConnection.Post(request);		
 		If response.StatusCode = 200 Then
-			answerBody = response.GetBodyAsString();
+			answerBody = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);
 			If answerBody.Property("success") And answerBody.success = 1 Then
 				pushStatus = Enums.messageStatuses.sent;
 			EndIf;

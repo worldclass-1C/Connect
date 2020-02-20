@@ -316,131 +316,108 @@ EndProcedure
 
 Procedure CheckTokenValid() Export
 	
-	//Проверка актуальности токенов для ОС Android	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ 
-	             	  |	Токены.Ссылка КАК token,
-	             	  |	РАЗНОСТЬДАТ(ЕСТЬNULL(ЗарегистрированныеУстройства.recordDate, ДАТАВРЕМЯ(1, 1, 1)), &ТекущаяДата, ДЕНЬ) КАК АктуальностьЗаписи,
-	             	  |	ЕСТЬNULL(ЗарегистрированныеУстройства.deviceToken, """") КАК deviceToken,
-	             	  |	""GCM"" КАК ТипПодписчика,
-	             	  |	Токены.chain КАК chain,
-	             	  |	Токены.appType КАК appType,
-	             	  |	Токены.systemType КАК systemType
-	             	  |ПОМЕСТИТЬ ВТ
-	             	  |ИЗ
-	             	  |	Справочник.tokens КАК Токены
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.registeredDevices КАК ЗарегистрированныеУстройства
-	             	  |		ПО (ЗарегистрированныеУстройства.token = Токены.Ссылка)
-	             	  |ГДЕ
-	             	  |	Токены.lockDate = ДАТАВРЕМЯ(1, 1, 1)
-	             	  |	И Токены.systemType = ЗНАЧЕНИЕ(Перечисление.systemTypes.Android)
-	             	  |;
-	             	  |
-	             	  |////////////////////////////////////////////////////////////////////////////////
-	             	  |ВЫБРАТЬ ПЕРВЫЕ 100
-	             	  |	ЕСТЬNULL(СертификатПриложенияДляСети.certificate, СертификатПриложенияОбщий.certificate) КАК certificate,
-	             	  |	ВТ.token КАК token,
-	             	  |	ВТ.deviceToken КАК deviceToken,
-	             	  |	ВТ.ТипПодписчика КАК ТипПодписчика,
-	             	  |	ВТ.systemType КАК systemType
-	             	  |ИЗ
-	             	  |	ВТ КАК ВТ
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияДляСети
-	             	  |		ПО ВТ.chain = СертификатПриложенияДляСети.chain
-	             	  |			И ВТ.appType = СертификатПриложенияДляСети.appType
-	             	  |			И ВТ.systemType = СертификатПриложенияДляСети.systemType
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.appCertificates КАК СертификатПриложенияОбщий
-	             	  |		ПО (СертификатПриложенияОбщий.chain = ЗНАЧЕНИЕ(Справочник.chains.ПустаяСсылка))
-	             	  |			И ВТ.appType = СертификатПриложенияОбщий.appType
-	             	  |			И ВТ.systemType = СертификатПриложенияОбщий.systemType
-	             	  |ГДЕ
-	             	  |	ВТ.АктуальностьЗаписи > 7";
+	query	= New Query();
+	query.text	= "SELECT
+	|	tokens.Ref AS token,
+	|	tokens.deviceToken AS deviceToken,
+	|	CASE
+	|		WHEN tokens.systemType = VALUE(Enum.systemTypes.Android)
+	|			THEN ""GCM""
+	|		ELSE ""APNS""
+	|	END AS SubscriberType,
+	|	tokens.chain AS chain,
+	|	tokens.appType AS appType,
+	|	tokens.systemType AS systemType
+	|INTO ВТ
+	|FROM
+	|	Catalog.tokens AS tokens
+	|WHERE
+	|	tokens.lockDate = DATETIME(1, 1, 1)
+	|	AND tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -7)
+	|	AND tokens.appType = VALUE(enum.appTypes.Customer)
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	tokens.Ref AS token,
+	|	tokens.deviceToken AS deviceToken,
+	|	NULL,
+	|	NULL,
+	|	NULL,
+	|	NULL
+	|FROM
+	|	Catalog.tokens AS tokens
+	|WHERE
+	|	tokens.lockDate = DATETIME(1, 1, 1)
+	|	AND tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -30)
+	|	AND tokens.appType = VALUE(enum.appTypes.Web)
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	ВТ.token AS token,
+	|	ВТ.deviceToken AS deviceToken,
+	|	ВТ.SubscriberType AS SubscriberType,
+	|	ВТ.systemType AS systemType,
+	|	ISNULL(appCertificates.certificate, appCertificatesCommon.certificate) AS certificate,
+	|	ВТ.appType AS appType
+	|FROM
+	|	ВТ AS ВТ
+	|		LEFT JOIN InformationRegister.appCertificates AS appCertificates
+	|		ON ВТ.chain = appCertificates.chain
+	|		AND ВТ.appType = appCertificates.appType
+	|		AND ВТ.systemType = appCertificates.systemType
+	|		LEFT JOIN InformationRegister.appCertificates AS appCertificatesCommon
+	|		ON appCertificatesCommon.chain = VALUE(Справочник.chains.ПустаяСсылка)
+	|		AND ВТ.appType = appCertificatesCommon.appType
+	|		AND ВТ.systemType = appCertificatesCommon.systemType";
 	
-	пЗапрос.УстановитьПараметр("ТекущаяДата", УниверсальноеВремя(ТекущаяДата()));
-	
-	РезультатЗапроса	= пЗапрос.Выполнить();
-	ТаблицаПоиска		= РезультатЗапроса.Выгрузить();
-	Выборка				= РезультатЗапроса.Выбрать();	
-	
-	Уведомление	= Неопределено;
-	Сч			= 0;
-	
-	Пока Выборка.Следующий() Цикл
+	query.SetParameter("currentTime", ToUniversalTime(CurrentDate()));
 		
-		If Выборка.deviceToken = "" Then
-			Token.block(Выборка.Токен);			
-		ElsIf Выборка.deviceToken <> "" Then
-			If Уведомление = Неопределено Then
-				Уведомление	= Новый ДоставляемоеУведомление;	
-			EndIf;						
-			Уведомление.Получатели.Добавить(Messages.pushSubscriber(Выборка.ТокенУстройства, Выборка.ТипПодписчика));			
-			Сч	= Сч + 1;
+	select = query.Execute().Select();
+		
+	While select.Next() Do
+		If select.deviceToken <> "" and select.appType = enums.appTypes.Customer Then
+			pushStruct = New Structure();
+			pushStruct.Insert("title", "");
+			pushStruct.Insert("text", "");
+			pushStruct.Insert("action", "registerDevice");
+			pushStruct.Insert("objectId", "");
+			pushStruct.Insert("objectType", "");
+			pushStruct.Insert("noteId", "");
+			pushStruct.Insert("deviceToken", select.deviceToken);
+			pushStruct.Insert("SubscriberType", select.SubscriberType);
+			pushStruct.Insert("title", "");
+			pushStruct.Insert("Badge", 0);
+			pushStruct.Insert("systemType", select.systemType);
+			pushStruct.Insert("certificate", select.certificate);
+			pushStruct.Insert("token", select.token);
+			pushStruct.Insert("informationChannel", "");
+		    pushStruct.Insert("message", Catalogs.messages.EmptyRef());
+		    pushStatus = Messages.sendPush(pushStruct);
+		    If pushStatus <> Enums.messageStatuses.sent Then
+		    	Token.block(select.token);
+		    EndIf;
+		Else
+			Token.block(select.token);
 		EndIf;
-		
-		Если Сч = 10 Тогда 
-			Сч = 0;
-			Уведомление.Данные				= Messages.pushData("registerDevice");
-			Уведомление.title			= "";
-			Уведомление.text				= "registerDevice";
-					
-			ИсключенныеПолучатели	= Новый Массив;			
-			ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.getAuthorizationKey(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
-						
-			Если ИсключенныеПолучатели.Количество() > 0 Тогда				
-				Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
-					НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
-					Если НайденаяСтрока <> Неопределено Тогда						
-						Token.block(НайденаяСтрока.Токен);
-						ТаблицаПоиска.Удалить(НайденаяСтрока);
-					EndIf;					
-				КонецЦикла;				
-			EndIf;			
-			Уведомление	= Неопределено;			
-		EndIf;
-		
-	КонецЦикла;			
-			
-	Если Уведомление <> Неопределено Тогда
-		Уведомление.Данные				= Messages.pushData("registerDevice");
-		Уведомление.title			= "";
-		Уведомление.text				= "registerDevice";
-		//Уведомление.ЗвуковоеОповещение	= ЗвуковоеОповещение.ПоУмолчанию;
-		
-		ИсключенныеПолучатели	= Новый Массив;			
-		ОтправкаДоставляемыхУведомлений.Отправить(Уведомление, GeneralReuse.getAuthorizationKey(Выборка.ОперационнаяСистема, Выборка.Сертификат), ИсключенныеПолучатели);
-		
-		Если ИсключенныеПолучатели.Количество() > 0 Тогда				
-			Для Каждого ИсключаемыйПолучатель Из ИсключенныеПолучатели Цикл
-				НайденаяСтрока	= ТаблицаПоиска.Найти(ИсключаемыйПолучатель, "deviceToken");					
-				Если НайденаяСтрока <> Неопределено Тогда					
-					Token.block(НайденаяСтрока.Токен);
-					ТаблицаПоиска.Удалить(НайденаяСтрока);
-				EndIf;					
-			КонецЦикла;				
-		EndIf;			
-		Уведомление	= Неопределено;
-	EndIf;
-	
-	
-	//Проверка актуальности токенов для ОС iOS	
-	
-	
+   EndDo;	
 	
 	//Блокируем Token в МП тренера по уволенным сотрудникам	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text = "ВЫБРАТЬ
-	                |	Токены.Ссылка КАК token
-	                |ИЗ
-	                |	Справочник.tokens КАК Токены
-	                |ГДЕ
-	                |	Токены.appType = ЗНАЧЕНИЕ(Перечисление.appTypes.Employee)
-	                |	И Токены.lockDate = ДАТАВРЕМЯ(1, 1, 1)
-	                |	И Токены.account.userType <> ""employee""";
+	query	= New Query;
+	query.text = "select
+	|	tokens.ref as token
+	|from
+	|	Catalog.tokens as tokens
+	|where
+	|	tokens.appType = value(Enum.appTypes.Employee)
+	|	И tokens.lockDate = datetime(1, 1, 1)
+	|	И tokens.user.userType <> ""employee""";
 	
-	Выборка	= пЗапрос.Выполнить().Выбрать();
-	Пока Выборка.Следующий() Цикл
-		Token.block(Выборка.Токен);
-	КонецЦикла;		
+	select	= query.Execute().Select();
+	While select.Next() do
+		Token.block(select.token);
+	endDo;		
 	
 EndProcedure
 
