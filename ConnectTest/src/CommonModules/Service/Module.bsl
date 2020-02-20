@@ -333,7 +333,11 @@ Procedure CheckTokenValid() Export
 	|	Catalog.tokens AS tokens
 	|WHERE
 	|	tokens.lockDate = DATETIME(1, 1, 1)
-	|	AND tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -7)
+	|	AND CASE
+	|		WHEN tokens.changeDate = DATETIME(1, 1, 1)
+	|			THEN tokens.createDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -7)
+	|		ELSE tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -7)
+	|	END
 	|	AND tokens.appType = VALUE(enum.appTypes.Customer)
 	|
 	|UNION ALL
@@ -349,10 +353,13 @@ Procedure CheckTokenValid() Export
 	|	Catalog.tokens AS tokens
 	|WHERE
 	|	tokens.lockDate = DATETIME(1, 1, 1)
-	|	AND tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -30)
+	|	AND CASE
+	|		WHEN tokens.changeDate = DATETIME(1, 1, 1)
+	|			THEN tokens.createDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -30)
+	|		ELSE tokens.changeDate < DATEADD(BEGINOFPERIOD(&currentTime, day), day, -30)
+	|	END
 	|	AND tokens.appType = VALUE(enum.appTypes.Web)
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	ВТ.token AS token,
