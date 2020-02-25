@@ -213,18 +213,21 @@ Procedure logRequest(parameters) Export
 		+ """Body"":" + Chars.LF
 		+ ?(parameters.requestName = "imagePOST", "", parameters.requestBody);
 
-	If parameters.compressAnswer Then
-		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
-	Else
-		record.requestBody = requestBody;
-	EndIf;
-	If Not parameters.notSaveAnswer Or parameters.isError Or parameters.underControl Then
-		If parameters.compressAnswer Then
-			record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
-		Else
-			record.responseBody = ?(parameters.isError, parameters.errorDescription.description, parameters.answerBody);
-		EndIf;
-	EndIf;
+	record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
+	record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
+	
+//	If parameters.compressAnswer Then
+//		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
+//	Else
+//		record.requestBody = requestBody;
+//	EndIf;
+//	If Not parameters.notSaveAnswer Or parameters.isError Or parameters.underControl Then
+//		If parameters.compressAnswer Then
+//			record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
+//		Else
+//			record.responseBody = ?(parameters.isError, parameters.errorDescription.description, parameters.answerBody);
+//		EndIf;
+//	EndIf;
 	record.Write();
 EndProcedure
 
