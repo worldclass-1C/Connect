@@ -418,6 +418,14 @@ Procedure userCache(parameters) Export
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
 	
+	cacheTypesDescriptions = New Array();
+	
+	If requestStruct.page = "homePage" Then
+		cacheTypesDescriptions.Add("banners");	
+	ElsIf requestStruct.page = "personalPage" Then
+		cacheTypesDescriptions.Add("");
+	EndIf;	
+	
 	query = New Query("SELECT
 	|	cacheTypes.Ref AS cacheType
 	|INTO TT_cacheType
@@ -457,7 +465,7 @@ Procedure userCache(parameters) Export
 	query.SetParameter("chain", tokenContext.chain);
 	query.SetParameter("user", Catalogs.users.EmptyRef());
 	query.SetParameter("currentTime", ToUniversalTime(CurrentDate()));
-	query.SetParameter("descriptions", requestStruct);
+	query.SetParameter("descriptions", cacheTypesDescriptions);
 	
 	struct = New Structure();
 	selectCacheType = query.Execute().Select(QueryResultIteration.ByGroups);
