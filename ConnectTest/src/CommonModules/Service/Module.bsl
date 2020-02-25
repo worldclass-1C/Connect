@@ -208,7 +208,9 @@ Procedure logRequest(parameters) Export
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
 	record.isError = parameters.isError;
-
+	record.brand = Enums.brandTypes[parameters.brand];
+	record.ipAddress = parameters.ipAddress;
+	
 	requestBody = """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF
 		+ """Body"":" + Chars.LF
 		+ ?(parameters.requestName = "imagePOST", "", parameters.requestBody);

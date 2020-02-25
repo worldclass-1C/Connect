@@ -4,19 +4,20 @@ Function processRequest(request, requestName = "", synch = False) Export
 	dateInMilliseconds = CurrentUniversalDateInMilliseconds();
 
 	parameters = New Structure();
-	parameters.Insert("url", request.BaseURL + request.RelativeURL);
+	parameters.Insert("url", request.BaseURL + request.RelativeURL);		
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
 	parameters.Insert("languageCode", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
 	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
+	parameters.Insert("ipAddress", HTTP.getRequestHeader(request, "ClientIP"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
 	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));	
 	parameters.Insert("notSaveAnswer", False);
 	parameters.Insert("compressAnswer", False);
 	parameters.Insert("underControl", False);
 	parameters.Insert("answerBody", "");	
-	
+			
 	If Not ValueIsFilled(parameters.language) Then
 		parameters.Insert("languageCode", "en");
 		parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
@@ -33,7 +34,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 	EndIf;			
 	If requestName = "imagePOST" Then
 		parameters.Insert("requestBody", request.GetBodyAsBinaryData());
-		parameters.Insert("headers", request.Headers);		
+		parameters.Insert("headers", request.Headers);				
 	Else
 		parameters.Insert("requestBody", request.GetBodyAsString());
 		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure,,synch));
@@ -218,7 +219,10 @@ Function getRequestStructure(request, holding) Export
 EndFunction
 
 Function getRequestHeader(request, key) Export
-	value	= request.Headers.Get(Title(key));
+	value	= request.Headers.Get(key);
+	If value = Undefined Then
+		value	= request.Headers.Get(Title(key));
+	EndIf;
 	If value = Undefined Then
 		value	= request.Headers.Get(Lower(key));
 	EndIf;

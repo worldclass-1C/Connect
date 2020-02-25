@@ -149,22 +149,21 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.logs.Form.ListForm</defaultListForm>
-  <attributes uuid="66c7b7e8-56e7-40f9-9335-10523bca2a71">
-    <name>user</name>
+  <attributes uuid="53fa60a4-5788-4444-9cb1-7c2cb3b832b0">
+    <name>brand</name>
     <synonym>
       <key>en</key>
-      <value>User</value>
+      <value>Brand</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Учетная запись</value>
+      <value>Бренд</value>
     </synonym>
     <type>
-      <types>CatalogRef.users</types>
+      <types>EnumRef.brandTypes</types>
     </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="6224b22a-5106-47ff-8637-8d695160f917">
     <name>duration</name>
@@ -186,6 +185,25 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="f44b2694-f700-428c-9953-54236a28803c">
+    <name>ipAddress</name>
+    <synonym>
+      <key>en</key>
+      <value>IP address</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>IP адрес</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>15</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <attributes uuid="89a5017a-1025-4c28-ae36-ce7d43a53919">
     <name>isError</name>
@@ -337,6 +355,23 @@
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+  </attributes>
+  <attributes uuid="66c7b7e8-56e7-40f9-9335-10523bca2a71">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Учетная запись</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <indexing>Index</indexing>
   </attributes>
   <forms uuid="da16c9ed-e010-4ac9-9250-259dd7256051">
