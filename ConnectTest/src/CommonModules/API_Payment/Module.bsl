@@ -290,7 +290,7 @@ Procedure bindCard(parameters) Export
 	order = Acquiring.newOrder(orderStruct);
 	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
-		struct.Insert("orderId", answer.orderId);
+		struct.Insert("uid", XMLString(order));
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
 		struct.Insert("failUrl", answer.failUrl);	
