@@ -136,7 +136,6 @@
   <catalogs>Catalog.acquiringOrders</catalogs>
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
-  <catalogs>Catalog.banners</catalogs>
   <catalogs>Catalog.cacheInformations</catalogs>
   <catalogs>Catalog.cacheTypes</catalogs>
   <catalogs>Catalog.cacheValuesTypes</catalogs>
@@ -190,7 +189,6 @@
   <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>
   <informationRegisters>InformationRegister.acquiringOrdersQueue</informationRegisters>
   <informationRegisters>InformationRegister.appCertificates</informationRegisters>
-  <informationRegisters>InformationRegister.bannersOfUsers</informationRegisters>
   <informationRegisters>InformationRegister.cacheIndex</informationRegisters>
   <informationRegisters>InformationRegister.classMembers</informationRegisters>
   <informationRegisters>InformationRegister.currentAppVersions</informationRegisters>
