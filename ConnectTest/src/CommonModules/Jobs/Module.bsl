@@ -61,6 +61,8 @@ Function GetOrdersToCheck()
 	|WHERE
 	|	acquiringOrdersQueue.orderState = VALUE(Enum.acquiringOrderStates.send)
 	|	AND acquiringOrdersQueue.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|	AND
+	|	NOT acquiringOrdersQueue.order IS NULL
 	|ORDER BY
 	|	acquiringOrdersQueue.registrationDate";
 	Query.Parameters.Insert("CurrentDate", ToUniversalTime(CurrentDate()));
@@ -102,6 +104,8 @@ Function GetOrdersToProcess()
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|WHERE
 	|	acquiringOrdersQueue.orderState <> VALUE(Enum.acquiringOrderStates.send)
+	|	AND
+	|	NOT acquiringOrdersQueue.order IS NULL
 	|ORDER BY
 	|	acquiringOrdersQueue.registrationDate";
 	Return Query.Execute().Select();
