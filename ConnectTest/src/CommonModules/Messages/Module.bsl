@@ -110,8 +110,8 @@ Function sendPush(parameters) Export
 		EndIf;
 				
 	EndIf;
-
-	If parameters.Property("message") And Not parameters.message.isEmpty() Then		
+				  	
+	If Not parameters.message.isEmpty() Then		
 		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToSend, parameters.message);
 		logMassage(parameters.message, parameters.informationChannel, pushStatus, "", ToUniversalTime(CurrentDate()), parameters.token);
 		If pushStatus = Enums.messageStatuses.notSent Then
