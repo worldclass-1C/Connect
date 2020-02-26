@@ -186,22 +186,6 @@ Procedure productList(parameters) Export
 	|WHERE
 	|	gymsProducts.productDirection = &productDirection
 	|	AND gymsProducts.gym = &gym
-	|
-	|UNION ALL
-	|
-	|SELECT DISTINCT
-	|	classesSchedule.product,
-	|	VALUE(Enum.productDirections.fitness)
-	|FROM
-	|	Catalog.classesSchedule AS classesSchedule
-	|WHERE
-	|	classesSchedule.gym = &gym
-	|	AND classesSchedule.active
-	|	AND
-	|	NOT classesSchedule.isPrePaid
-	|	AND &productDirection = VALUE(Enum.productDirections.fitness)
-	|	AND classesSchedule.period BETWEEN DATEADD(BEGINOFPERIOD(&CurrentDate, Day), Day,
-	|		-14) AND DATEADD(ENDOFPERIOD(&CurrentDate, day), Day, 14)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -233,8 +217,8 @@ Procedure productList(parameters) Export
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
-	|	ISNULL(productsMapping.uid,"""") AS uid ,
-	|	ISNULL(productsMapping.entryType,"""") AS entryType
+	|	ISNULL(productsMapping.uid, """") AS uid,
+	|	ISNULL(productsMapping.entryType, """") AS entryType
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
