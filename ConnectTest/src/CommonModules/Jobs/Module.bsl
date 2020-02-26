@@ -121,3 +121,19 @@ Function GetParametersToProcessOrder(DataSelect)
 	Parameters.Insert("tokenContext", TokenContext);
 	Return Parameters;
 EndFunction
+
+Procedure ClearHistory() Export
+	query = New Query();
+	query.Text = "SELECT TOP 100
+	|	logs.Ref
+	|FROM
+	|	Catalog.logs AS logs
+	|WHERE
+	|	logs.period < DATEADD(&currentDate, Month, -6)";
+	query.SetParameter("currentDate", ToUniversalTime(CurrentDate()));
+	selection = query.Execute().Select();
+	While selection.Next() Do
+		objectLog = selection.ref.GetObject();
+		objectLog.Delete();
+	EndDo;
+EndProcedure
