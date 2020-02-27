@@ -212,8 +212,14 @@ Procedure productList(parameters) Export
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product");
-
-	query.SetParameter("productDirection", XMLValue(Type("EnumRef.productDirections"), requestStruct.direction));
+	
+    Try
+    	productDirection =XMLValue(Type("EnumRef.productDirections"), requestStruct.direction);
+    Except
+    	productDirection = enums.productDirections.EmptyRef();
+    EndTry;
+  
+	query.SetParameter("productDirection", productDirection);
 	query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId));
 	query.SetParameter("language", language);
 	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
