@@ -55,8 +55,9 @@ EndProcedure
 
 Procedure gymList(parameters) Export
 
-	requestStruct = parameters.requestStruct;	
-	authorized = ValueIsFilled(parameters.tokenContext.user);
+	requestStruct = parameters.requestStruct;
+	tokenContext = parameters.tokenContext;	
+	authorized = ValueIsFilled(tokenContext.user);
 	language = parameters.language;
 	gymArray = New Array();
 	
@@ -67,7 +68,8 @@ Procedure gymList(parameters) Export
 	EndIf;
 
 	If errorDescription.result = "" Then
-		query = New Query("SELECT
+		query = New Query();
+		queryTextPart1 = "SELECT
 		|	gyms.Ref,
 		|	gyms.latitude,
 		|	gyms.longitude,
@@ -114,9 +116,18 @@ Procedure gymList(parameters) Export
 		|	NOT gyms.DeletionMark
 		|	AND gyms.chain.code = &chainCode
 		|	AND gyms.startDate <= &currentTime
-		|	AND gyms.endDate >= &currentTime
-		|	AND gyms.type <> VALUE(Enum.gymTypes.outdoor)");
-
+		|	AND gyms.endDate >= &currentTime";
+		
+		queryTextPart2 = "AND gyms.type <> VALUE(Enum.gymTypes.outdoor)";
+		
+		queryTextArray = New Array();
+		queryTextArray.Add(queryTextPart1);
+		If tokenContext.appType <> Enums.appTypes.Employee Then
+			queryTextArray.Add(queryTextPart2);
+		EndIf; 
+		
+		query.Text = StrConcat(queryTextArray, " ");
+		
 		query.SetParameter("chainCode", requestStruct.chain);
 		query.SetParameter("language", language);
 		query.SetParameter("currentTime", parameters.currentTime);		

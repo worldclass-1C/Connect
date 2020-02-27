@@ -110,8 +110,8 @@ Function sendPush(parameters) Export
 		EndIf;
 				
 	EndIf;
-
-	If parameters.Property("message") And Not parameters.message.isEmpty() Then		
+				  	
+	If Not parameters.message.isEmpty() Then		
 		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToSend, parameters.message);
 		logMassage(parameters.message, parameters.informationChannel, pushStatus, "", ToUniversalTime(CurrentDate()), parameters.token);
 		If pushStatus = Enums.messageStatuses.notSent Then
@@ -461,17 +461,8 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
 	|	ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef)) AS token,
 	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
-	|	tokens.chain AS chain,
-	|	tokens.appType AS appType,
-	|	tokens.systemType AS systemType,
-	|	messages.Ref.user AS user,
-	|	CASE
-	|		WHEN tokens.systemType = VALUE(Enum.systemTypes.Android)
-	|			THEN ""GCM""
-	|		WHEN tokens.systemType = VALUE(Enum.systemTypes.iOS)
-	|			THEN ""APNS""
-	|		ELSE """"
-	|	END AS subscriberType
+	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)) AS systemType,
+	|	messages.Ref.user AS user
 	|INTO TT
 	|FROM
 	|	Catalog.messages.Changes AS messages
@@ -481,6 +472,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
+	|	AND messages.Ref.appType = &appType
 	|ORDER BY
 	|	messages.Ref.priority
 	|;
@@ -493,6 +485,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT AS TT
 	|		LEFT JOIN Catalog.messages AS messages
 	|		ON TT.user = Messages.user
+	|		AND Messages.appType = &appType
 	|		LEFT JOIN Catalog.messages.channelPriorities AS messagesChannelPriorities
 	|		ON Messages.Ref = messagesChannelPriorities.Ref
 	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogs
@@ -512,23 +505,13 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT.objectId AS objectId,
 	|	TT.objectType AS objectType,
 	|	TT.nodeMessagesToSend AS nodeMessagesToSend,
-	|	TT.systemType AS systemType,
-	|	TT.subscriberType AS subscriberType,
 	|	TT.deviceToken AS deviceToken,
 	|	TT.token AS token,
+	|	TT.systemType AS systemType,
 	|	&informationChannel AS informationChannel,
-	|	ISNULL(chainAppCertificates.certificate, appCertificates.certificate) AS certificate,
 	|	ISNULL(unreadMessages.count, 0) AS badge
 	|FROM
 	|	TT AS TT
-	|		LEFT JOIN InformationRegister.appCertificates AS chainAppCertificates
-	|		ON TT.chain = chainAppCertificates.chain
-	|		AND TT.appType = chainAppCertificates.appType
-	|		AND TT.systemType = chainAppCertificates.systemType
-	|		LEFT JOIN InformationRegister.appCertificates AS appCertificates
-	|		ON appCertificates.chain = VALUE(Catalog.chains.EmptyRef)
-	|		AND TT.appType = appCertificates.appType
-	|		AND TT.systemType = appCertificates.systemType
 	|		LEFT JOIN TT_unreadMessages AS unreadMessages
 	|		ON TT.user = unreadMessages.user";
 
