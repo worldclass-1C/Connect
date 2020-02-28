@@ -74,7 +74,11 @@ Procedure ProcessQueue() Export
 	While OrdersToProcess.Next() Do
 		parameters = GetParametersToProcessOrder(OrdersToProcess);
 		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.register Then
-			Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+			If OrdersToProcess.try < 3 then
+				Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+			Else
+				Acquiring.delOrderToQueue(OrdersToProcess.order);
+			EndIf;
 		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
 			If OrdersToProcess.orderState = Enums.acquiringOrderStates.success Then
 				Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
@@ -97,17 +101,29 @@ Function GetOrdersToProcess()
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.user.userCode, """") AS userCode,
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.deviceModel, """") AS deviceModel,
 	|	acquiringOrdersQueue.order.holding.tokenDefault AS tokenDefault,
-	|	acquiringOrdersQueue.order.holding as holding,
+	|	acquiringOrdersQueue.order.holding AS holding,
 	|	acquiringOrdersQueue.order.acquiringRequest AS acquiringRequest,
-	|	acquiringOrdersQueue.orderState
+	|	acquiringOrdersQueue.orderState,
+	|	COUNT(DISTINCT isnull(acquiringLogs.Ref,0)) AS try
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
+	|		LEFT JOIN Catalog.acquiringLogs AS acquiringLogs
+	|		ON acquiringOrdersQueue.order = acquiringLogs.order
+	|		AND acquiringLogs.requestName = ""process""
+	|		AND
+	|		NOT acquiringLogs.isError
 	|WHERE
 	|	acquiringOrdersQueue.orderState <> VALUE(Enum.acquiringOrderStates.send)
 	|	AND
 	|	NOT acquiringOrdersQueue.order IS NULL
-	|ORDER BY
-	|	acquiringOrdersQueue.registrationDate";
+	|GROUP BY
+	|	acquiringOrdersQueue.order,
+	|	acquiringOrdersQueue.order.holding.tokenDefault,
+	|	acquiringOrdersQueue.order.holding,
+	|	acquiringOrdersQueue.order.acquiringRequest,
+	|	acquiringOrdersQueue.orderState,
+	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
+	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef))";
 	Return Query.Execute().Select();
 EndFunction
 
