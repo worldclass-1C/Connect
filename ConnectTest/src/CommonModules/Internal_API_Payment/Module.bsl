@@ -47,7 +47,12 @@ Procedure processOrder(parameters, additionalParameters) Export
 		EndIf;
 		parametersNew.Insert("requestStruct", requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
-		General.executeRequestMethod(parametersNew);		
+		dateInMilliseconds = CurrentUniversalDateInMilliseconds();
+		General.executeRequestMethod(parametersNew);
+		parametersNew.Insert("duration", CurrentUniversalDateInMilliseconds()
+		- DateInMilliseconds);
+		parametersNew.Insert("isError", parametersNew.errorDescription.result <> "");
+		Service.logRequestBackground(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, select.state);
 			parameters.Insert("errorCode", parametersNew.errorDescription.result);
