@@ -2,6 +2,7 @@
 Function processRequest(request, requestName = "", synch = False) Export
 
 	parameters = New Structure();
+	parameters.Insert("internalRequestMethod", False);
 	parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);		
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));

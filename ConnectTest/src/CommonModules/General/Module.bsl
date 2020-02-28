@@ -1,11 +1,13 @@
 
 Procedure executeRequestMethod(parameters) Export
 	
-	If Not parameters.Property("dateInMilliseconds") Then
+	If parameters.internalRequestMethod Then
 		parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
-		saveLogs = True;
-	Else
-		saveLogs = False;
+		If parameters.Property("requestStruct") Then
+			parameters.Insert("requestBody", HTTP.encodeJSON(parameters.requestStruct));
+		Else
+			parameters.Insert("requestBody", "");	
+		EndIf;
 	EndIf;
 	
 	parameters.Insert("errorDescription", Check.requestParameters(parameters));	
@@ -86,7 +88,7 @@ Procedure executeRequestMethod(parameters) Export
 		EndIf;
 	EndIf;
 	
-	If saveLogs Then
+	If parameters.internalRequestMethod Then
 		parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
 		- parameters.dateInMilliseconds);
 		parameters.Insert("isError", parameters.errorDescription.result <> "");

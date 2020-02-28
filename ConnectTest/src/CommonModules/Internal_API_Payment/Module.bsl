@@ -46,6 +46,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 			parametersNew.Insert("requestName", "paymentBack");			
 		EndIf;
 		parametersNew.Insert("requestStruct", requestStruct);
+		parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
 		If parametersNew.errorDescription.result <> "" Then
