@@ -2007,7 +2007,7 @@
 		</right>
 	</object>
 	<object>
-		<name>AccumulationRegister.ПоказателиПользователей</name>
+		<name>AccumulationRegister.UsersValues</name>
 		<right>
 			<name>Update</name>
 			<value>false</value>
@@ -2029,7 +2029,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Document.РегистраторДвижений</name>
+		<name>Document.RegisterRecorder</name>
 		<right>
 			<name>Insert</name>
 			<value>false</value>

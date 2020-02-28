@@ -46,19 +46,19 @@ Function getRecorder(day, reportPeriod)
 	query.Text	= "ВЫБРАТЬ
 	|	РегистраторДвижений.Ссылка КАК Ref
 	|ИЗ
-	|	Документ.РегистраторДвижений КАК РегистраторДвижений
+	|	Документ.RegisterRecorder КАК РегистраторДвижений
 	|ГДЕ
 	|	РегистраторДвижений.Дата = &day
-	|	И РегистраторДвижений.ПериодОтчета = &reportPeriod";
+	|	И РегистраторДвижений.ReportPeriod = &reportPeriod";
 	
 	query.SetParameter("day", begOfDay);
 	query.SetParameter("reportPeriod", reportPeriod);
 	queryResult	= query.Execute();
 		
 	If queryResult.IsEmpty() Then
-		docObject				= Documents.РегистраторДвижений.CreateDocument();
+		docObject				= Documents.RegisterRecorder.CreateDocument();
 		docObject.Date			= begOfDay;
-		docObject.ПериодОтчета	= reportPeriod;		
+		docObject.ReportPeriod	= reportPeriod;		
 		docObject.Write();
 		Return docObject.Ref;
 	Else
@@ -433,333 +433,343 @@ Procedure CheckTokenValid() Export
 	
 EndProcedure
 
-Процедура РассчитатьПоказатели() Экспорт
+Procedure CalcValues() Export
 	
 	//Расчет показателей по дням
-	Дни				= Новый Массив;
-	ПредыдущийДень	= НачалоДня(УниверсальноеВремя(ТекущаяДата()) - 86400);
+	Days				= New Array;
+	previousDay	= BegOfDay(ToUniversalTime(CurrentDate()) - 86400);
 	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ ПЕРВЫЕ 1
-	             	  |	РегистраторДвижений.Дата КАК ДеньРасчетаПоказателей
-	             	  |ИЗ
-	             	  |	Документ.РегистраторДвижений КАК РегистраторДвижений
-	             	  |ГДЕ
-	             	  |	РегистраторДвижений.ПериодОтчета = ЗНАЧЕНИЕ(Перечисление.reportPeriods.day)
-	             	  |
-	             	  |УПОРЯДОЧИТЬ ПО
-	             	  |	ДеньРасчетаПоказателей УБЫВ";
+	Query	= New query;
+	Query.text	= "select TOP 1
+	|	RegisterRecorder.Date КАК CalcDay
+	|from
+	|	Document.RegisterRecorder AS RegisterRecorder
+	|where
+	|	RegisterRecorder.ReportPeriod = Value(Enum.reportPeriods.day)
+	|ORDER BY
+	|	CalcDay DESC";
 	
-	РезультатЗапроса	= пЗапрос.Выполнить();
-	Если РезультатЗапроса.Пустой() Тогда
-		Дни.Добавить(ПредыдущийДень);
+	Result	= Query.Execute();
+	If Result.IsEmpty() then
+		Days.Add(previousDay);
 	Else
-		Выборка	= РезультатЗапроса.Выбрать();
-		Выборка.Следующий();
-		ДеньРасчетаПоказателей	= Выборка.ДеньРасчетаПоказателей;
-		Пока ДеньРасчетаПоказателей < ПредыдущийДень Цикл
-			ДеньРасчетаПоказателей	= ДеньРасчетаПоказателей + 86400; 
-			Дни.Добавить(ДеньРасчетаПоказателей);
-		КонецЦикла;		
+		Selection	= Result.Select();
+		Selection.Next();
+		CalcDay	= Selection.CalcDay;
+		While CalcDay < previousDay do
+			CalcDay	= CalcDay + 86400; 
+			Days.Add(CalcDay);
+		enddo;		
 	EndIf;	
 	
-	Service.РассчитатьПоказателиПоДням(Дни);	
+	Service.CalcDaysValues(Days);	
 	
 	//Расчет показателей по месяцам
-	Месяцы			= Новый Массив;
-	ТекущийМесяц	= НачалоМесяца(УниверсальноеВремя(ТекущаяДата()));	
+	Months			= New Array;
+	CurrentMonth	= BegOfMonth(ToUniversalTime(CurrentDate()));	
 	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ ПЕРВЫЕ 1
-	             	  |	РегистраторДвижений.Дата КАК МесяцРасчетаПоказателей,
-	             	  |	РегистраторДвижений.Ссылка КАК Ссылка
-	             	  |ИЗ
-	             	  |	Документ.РегистраторДвижений КАК РегистраторДвижений
-	             	  |ГДЕ
-	             	  |	РегистраторДвижений.ПериодОтчета = ЗНАЧЕНИЕ(Перечисление.reportPeriods.month)
-	             	  |
-	             	  |УПОРЯДОЧИТЬ ПО
-	             	  |	МесяцРасчетаПоказателей УБЫВ";
+	Query	= New query;
+	Query.text	= "select top 1
+	|	RegisterRecorder.date КАК CalcMonth,
+	|	RegisterRecorder.ref КАК ref
+	|from
+	|	Document.RegisterRecorder КАК RegisterRecorder
+	|where
+	|	RegisterRecorder.ReportPeriod = Value(Enum.reportPeriods.month)
+	|ORDER BY
+	|	CalcMonth desc";
 	
-	РезультатЗапроса = пЗапрос.Выполнить();
-	Если РезультатЗапроса.Пустой() Тогда		
-		Месяцы.Добавить(ТекущийМесяц);
+	Result	= Query.Execute();
+	Если Result.IsEmpty() Тогда		
+		Months.Add(CurrentMonth);
 	Else
-		Выборка	= РезультатЗапроса.Выбрать();
-		Выборка.Следующий();
-		МесяцРасчетаПоказателей	= Выборка.МесяцРасчетаПоказателей;		
-		Месяцы.Добавить(МесяцРасчетаПоказателей);		
-		Пока МесяцРасчетаПоказателей < ТекущийМесяц Цикл
-			МесяцРасчетаПоказателей	= ДобавитьМесяц(МесяцРасчетаПоказателей, 1);
-			Месяцы.Добавить(МесяцРасчетаПоказателей);
+		Selection	= Result.Select();
+		Selection.Next();
+		CalcMonth	= Selection.CalcMonth;		
+		Months.Add(CalcMonth);		
+		Пока CalcMonth < CurrentMonth Цикл
+			CalcMonth	= AddMonth(CalcMonth, 1);
+			Months.Add(CalcMonth);
 		КонецЦикла;		
 	EndIf;	
 	
-	Service.РассчитатьПоказателиПоМесяцам(Месяцы);
+	Service.CalcMonthsValues(Months);
 	
-КонецПроцедуры	
+EndProcedure	
 	
-Процедура РассчитатьПоказателиПоДням(Дни) Экспорт
-	Для Каждого День Из Дни Цикл
-		РассчитатьПоказателиЗаДень(День);	
-	КонецЦикла;
-КонецПроцедуры
+Procedure CalcDaysValues(Days) Export
+	For Each  Day in Days do
+		CalcDayValue(Day);	
+	EndDo;
+EndProcedure
 
-Процедура РассчитатьПоказателиЗаДень(День) Экспорт
+Procedure CalcDayValue(Day) Export
 	
-	Набор	= РегистрыНакопления.ПоказателиПользователей.СоздатьНаборЗаписей();
-	Набор.Отбор.Регистратор.Установить(GetRecorder(День, Enums.reportPeriods.day));
+	RecordSet	= AccumulationRegisters.UsersValues.CreateRecordSet();
+	RecordSet.Filter.Recorder.Set(GetRecorder(Day, Enums.reportPeriods.day));
 	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ
-	             	  |	Logs.period КАК period,
-	             	  |	Logs.requestName КАК requestName,
-	             	  |	Logs.token КАК token,
-	             	  |	Logs.token.account КАК account,
-	             	  |	Logs.token.holding КАК holding,
-	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
-	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
-	             	  |ИЗ
-	             	  |	Справочник.logs КАК Logs
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО Logs.token.appType = АналитикиПриложений.appType
-	             	  |			И Logs.token.systemType = АналитикиПриложений.systemType
-	             	  |ГДЕ
-	             	  |	Logs.period МЕЖДУ &ДатаНачала И &ДатаОкончания
-	             	  |	И НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
-	             	  |;
-	             	  |
-	             	  |////////////////////////////////////////////////////////////////////////////////
-	             	  |ВЫБРАТЬ
-	             	  |	ВТ_ИсторияЗапросов.period КАК period,
-	             	  |	РАЗНОСТЬДАТ(ВТ_ИсторияЗапросов.period, МИНИМУМ(ЕСТЬNULL(ВТ_ИсторияЗапросов1.period, &Завтра)), МИНУТА) КАК Дельта,
-	             	  |	ВТ_ИсторияЗапросов.requestName КАК requestName,
-	             	  |	ВТ_ИсторияЗапросов.token КАК token,
-	             	  |	ВТ_ИсторияЗапросов.account КАК account,
-	             	  |	ВТ_ИсторияЗапросов.holding КАК holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений КАК АналитикаПриложений
-	             	  |ПОМЕСТИТЬ ВТ_Сеансы
-	             	  |ИЗ
-	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов1
-	             	  |		ПО ВТ_ИсторияЗапросов.token = ВТ_ИсторияЗапросов1.token
-	             	  |			И ВТ_ИсторияЗапросов.period < ВТ_ИсторияЗапросов1.period
-	             	  |ГДЕ
-	             	  |	ВТ_ИсторияЗапросов.token <> ЗНАЧЕНИЕ(Справочник.tokens.ПустаяСсылка)
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_ИсторияЗапросов.period,
-	             	  |	ВТ_ИсторияЗапросов.requestName,
-	             	  |	ВТ_ИсторияЗапросов.token,
-	             	  |	ВТ_ИсторияЗапросов.account,
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
-	             	  |;
-	             	  |
-	             	  |////////////////////////////////////////////////////////////////////////////////
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала КАК period,
-	             	  |	ВТ_Сеансы.holding КАК holding,
-	             	  |	ВТ_Сеансы.АналитикаПриложений КАК АналитикаПриложений,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Сеансов) КАК Показатель,
-	             	  |	&ПериодОтчета КАК ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_Сеансы.token) КАК quantity
-	             	  |ИЗ
-	             	  |	ВТ_Сеансы КАК ВТ_Сеансы
-	             	  |ГДЕ
-	             	  |	ВТ_Сеансы.Дельта > 30
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_Сеансы.holding,
-	             	  |	ВТ_Сеансы.АналитикаПриложений
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Регистраций),
-	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account)
-	             	  |ИЗ
-	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
-	             	  |ГДЕ
-	             	  |	ВТ_ИсторияЗапросов.account.registrationDate МЕЖДУ &ДатаНачала И &ДатаОкончания
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.АктивныхПользователей),
-	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account)
-	             	  |ИЗ
-	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.ЗаписейНаСобытие),
-	             	  |	&ПериодОтчета,
-	             	  |	СУММА(ВЫБОР
-	             	  |			КОГДА ВТ_ИсторияЗапросов.requestName = ""employeeAddChangeBooking""
-	             	  |				ТОГДА 1
-	             	  |			Else 0
-	             	  |		КОНЕЦ)
-	             	  |ИЗ
-	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
-	             	  |
-	             	  |ИМЕЮЩИЕ
-	             	  |	СУММА(ВЫБОР
-	             	  |			КОГДА ВТ_ИсторияЗапросов.requestName = ""employeeAddChangeBooking""
-	             	  |				ТОГДА 1
-	             	  |			Else 0
-	             	  |		КОНЕЦ) > 0
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	Токены.holding,
-	             	  |	АналитикиПриложений.Ссылка,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Пользователей),
-	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ Токены.account)
-	             	  |ИЗ
-	             	  |	Справочник.tokens КАК Токены
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО Токены.appType = АналитикиПриложений.appType
-	             	  |			И Токены.systemType = АналитикиПриложений.systemType
-	             	  |ГДЕ
-	             	  |	НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
-	             	  |	И Токены.lockDate = ДАТАВРЕМЯ(1, 1, 1)
-	             	  |	И Токены.createDate <= &ДатаОкончания
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	Токены.holding,
-	             	  |	АналитикиПриложений.Ссылка";
+	Query	= New query;
+	Query.text	= "SELECT
+	|	Logs.period AS period,
+	|	Logs.requestName AS requestName,
+	|	Logs.token AS token,
+	|	Logs.token.account AS account,
+	|	Logs.token.holding AS holding,
+	|	appAnalytics.ref AS appAnalytics,
+	|	Logs.brand
+	|INTO TemporaryHistory
+	|FROM
+	|	Catalog.logs AS Logs
+	|		LEFT JOIN Catalog.appAnalytics AS appAnalytics
+	|		ON Logs.token.appType = appAnalytics.appType
+	|		AND Logs.token.systemType = appAnalytics.systemType
+	|WHERE
+	|	Logs.period BETWEEN &BeginDate AND &EndDate
+	|	AND
+	|	NOT appAnalytics.ref IS NULL
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TemporaryHistory.period AS period,
+	|	DATEDIFF(TemporaryHistory.period, MAX(ISNULL(TemporaryHistory1.period, &tomorrow)), minute) AS delta,
+	|	TemporaryHistory.requestName AS requestName,
+	|	TemporaryHistory.token AS token,
+	|	TemporaryHistory.account AS account,
+	|	TemporaryHistory.holding AS holding,
+	|	TemporaryHistory.appAnalytics AS appAnalytics,
+	|	TemporaryHistory.brand
+	|INTO TemporarySessions
+	|FROM
+	|	TemporaryHistory AS TemporaryHistory
+	|		LEFT JOIN TemporaryHistory AS TemporaryHistory1
+	|		ON TemporaryHistory.token = TemporaryHistory1.token
+	|		AND TemporaryHistory.period < TemporaryHistory1.period
+	|WHERE
+	|	TemporaryHistory.token <> VALUE(Catalog.tokens.emptyRef)
+	|GROUP BY
+	|	TemporaryHistory.period,
+	|	TemporaryHistory.requestName,
+	|	TemporaryHistory.token,
+	|	TemporaryHistory.account,
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	TemporaryHistory.brand
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	&BeginDate AS period,
+	|	TemporarySessions.holding AS holding,
+	|	TemporarySessions.appAnalytics AS appAnalytics,
+	|	VALUE(Enum.analyticValues.Sessions) AS analyticValue,
+	|	&ReportPeriod AS ReportPeriod,
+	|	COUNT(DISTINCT TemporarySessions.token) AS count,
+	|	TemporarySessions.brand
+	|FROM
+	|	TemporarySessions AS TemporarySessions
+	|WHERE
+	|	TemporarySessions.delta > 30
+	|GROUP BY
+	|	TemporarySessions.holding,
+	|	TemporarySessions.appAnalytics,
+	|	VALUE(Enum.analyticValues.Sessions),
+	|	TemporarySessions.brand
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(Enum.analyticValues.registrations),
+	|	&ReportPeriod,
+	|	COUNT(DISTINCT TemporaryHistory.account),
+	|	TemporaryHistory.brand
+	|FROM
+	|	TemporaryHistory AS TemporaryHistory
+	|WHERE
+	|	TemporaryHistory.account.registrationDate BETWEEN &BeginDate AND &EndDate
+	|GROUP BY
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(Enum.analyticValues.registrations),
+	|	TemporaryHistory.brand
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(enum.analyticValues.activeUsers),
+	|	&ReportPeriod,
+	|	COUNT(DISTINCT TemporaryHistory.account),
+	|	TemporaryHistory.brand
+	|FROM
+	|	TemporaryHistory AS TemporaryHistory
+	|GROUP BY
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(enum.analyticValues.activeUsers),
+	|	TemporaryHistory.brand
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(enum.analyticValues.events),
+	|	&ReportPeriod,
+	|	SUM(CASE
+	|		WHEN TemporaryHistory.requestName = ""employeeAddChangeBooking""
+	|			THEN 1
+	|		ELSE 0
+	|	END),
+	|	TemporaryHistory.brand
+	|FROM
+	|	TemporaryHistory AS TemporaryHistory
+	|GROUP BY
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(enum.analyticValues.events),
+	|	TemporaryHistory.brand
+	|HAVING
+	|	SUM(CASE
+	|		WHEN TemporaryHistory.requestName = ""employeeAddChangeBooking""
+	|			THEN 1
+	|		ELSE 0
+	|	END) > 0
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	tokens.holding,
+	|	appAnalytics.ref,
+	|	VALUE(enum.analyticValues.users),
+	|	&ReportPeriod,
+	|	COUNT(DISTINCT tokens.account),
+	|	tokens.chain.brand
+	|FROM
+	|	Catalog.tokens AS tokens
+	|		LEFT JOIN catalog.appAnalytics AS appAnalytics
+	|		ON tokens.appType = appAnalytics.appType
+	|		AND tokens.systemType = appAnalytics.systemType
+	|WHERE
+	|	NOT appAnalytics.ref IS NULL
+	|	AND tokens.lockDate = DATETIME(1, 1, 1)
+	|	AND tokens.createDate <= &EndDate
+	|GROUP BY
+	|	tokens.holding,
+	|	appAnalytics.ref,
+	|	VALUE(enum.analyticValues.users),
+	|	tokens.chain.brand";
 	
-	пЗапрос.УстановитьПараметр("ДатаНачала", НачалоДня(День));
-	пЗапрос.УстановитьПараметр("ДатаОкончания", КонецДня(День));
-	пЗапрос.УстановитьПараметр("Завтра", КонецДня(День) + 86400);
-	пЗапрос.УстановитьПараметр("ПериодОтчета", Enums.reportPeriods.day);
-	Набор.Загрузить(пЗапрос.Выполнить().Выгрузить());
-	Набор.Записать();
+	Query.SetParameter("BeginDate", BegOfDay(Day));
+	Query.SetParameter("EndDate", EndOfDay(Day));
+	Query.SetParameter("tomorrow", EndOfDay(Day) + 86400);
+	Query.SetParameter("ReportPeriod", Enums.reportPeriods.day);
+	RecordSet.Load(Query.Execute().Unload());
+	RecordSet.Write();
 		
-КонецПроцедуры
+EndProcedure
 
-Процедура РассчитатьПоказателиПоМесяцам(Месяцы) Экспорт
-	Для Каждого Месяц Из Месяцы Цикл
-		РассчитатьПоказателиЗаМесяц(Месяц);	
-	КонецЦикла;
-КонецПроцедуры
+Procedure CalcMonthsValues(Months) Export
+	For Each Month in Months do
+		CalcMonthValue(Month);	
+	EndDo;
+EndProcedure
 
-Процедура РассчитатьПоказателиЗаМесяц(Месяц) Экспорт
+Procedure CalcMonthValue(Month) Export
 	
-	Набор	= РегистрыНакопления.ПоказателиПользователей.СоздатьНаборЗаписей();
-	Набор.Отбор.Регистратор.Установить(GetRecorder(Месяц, Enums.reportPeriods.month));
+	RecordSet	= AccumulationRegisters.UsersValues.CreateRecordSet();
+	RecordSet.Filter.Recorder.Set(GetRecorder(Month, Enums.reportPeriods.month));
 	
-	пЗапрос	= Новый Запрос;
-	пЗапрос.text	= "ВЫБРАТЬ
-	             	  |	Logs.period КАК period,
-	             	  |	Logs.requestName КАК requestName,
-	             	  |	Logs.token КАК token,
-	             	  |	Logs.token.account КАК account,
-	             	  |	Logs.token.holding КАК holding,
-	             	  |	АналитикиПриложений.Ссылка КАК АналитикаПриложений
-	             	  |ПОМЕСТИТЬ ВТ_ИсторияЗапросов
-	             	  |ИЗ
-	             	  |	Справочник.logs КАК Logs
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО Logs.token.appType = АналитикиПриложений.appType
-	             	  |			И Logs.token.systemType = АналитикиПриложений.systemType
-	             	  |ГДЕ
-	             	  |	Logs.period МЕЖДУ &ДатаНачала И &ДатаОкончания
-	             	  |	И НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
-	             	  |;
-	             	  |
-	             	  |////////////////////////////////////////////////////////////////////////////////
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала КАК period,
-	             	  |	ВТ_ИсторияЗапросов.holding КАК holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений КАК АналитикаПриложений,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.АктивныхПользователей) КАК Показатель,
-	             	  |	&ПериодОтчета КАК ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ ВТ_ИсторияЗапросов.account) КАК quantity
-	             	  |ИЗ
-	             	  |	ВТ_ИсторияЗапросов КАК ВТ_ИсторияЗапросов
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	ВТ_ИсторияЗапросов.holding,
-	             	  |	ВТ_ИсторияЗапросов.АналитикаПриложений
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	Токены.holding,
-	             	  |	АналитикиПриложений.Ссылка,
-	             	  |	ЗНАЧЕНИЕ(Перечисление.Показатели.Пользователей),
-	             	  |	&ПериодОтчета,
-	             	  |	quantity(РАЗЛИЧНЫЕ Токены.account)
-	             	  |ИЗ
-	             	  |	Справочник.tokens КАК Токены
-	             	  |		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.appAnalytics КАК АналитикиПриложений
-	             	  |		ПО Токены.appType = АналитикиПриложений.appType
-	             	  |			И Токены.systemType = АналитикиПриложений.systemType
-	             	  |ГДЕ
-	             	  |	НЕ АналитикиПриложений.Ссылка ЕСТЬ NULL
-	             	  |	И Токены.lockDate = ДАТАВРЕМЯ(1, 1, 1)
-	             	  |	И Токены.createDate <= &ДатаОкончания
-	             	  |
-	             	  |СГРУППИРОВАТЬ ПО
-	             	  |	Токены.holding,
-	             	  |	АналитикиПриложений.Ссылка
-	             	  |
-	             	  |ОБЪЕДИНИТЬ ВСЕ
-	             	  |
-	             	  |ВЫБРАТЬ
-	             	  |	&ДатаНачала,
-	             	  |	ПоказателиПользователейОбороты.holding,
-	             	  |	ПоказателиПользователейОбороты.АналитикаПриложений,
-	             	  |	ПоказателиПользователейОбороты.Показатель,
-	             	  |	&ПериодОтчета,
-	             	  |	ПоказателиПользователейОбороты.КоличествоОборот
-	             	  |ИЗ
-	             	  |	РегистрНакопления.ПоказателиПользователей.Обороты(
-	             	  |			&ДатаНачала,
-	             	  |			&ДатаОкончания,
-	             	  |			,
-	             	  |			ПериодОтчета = &ПериодОтчетаДень
-	             	  |				И Показатель <> ЗНАЧЕНИЕ(Перечисление.Показатели.АктивныхПользователей)
-	             	  |				И Показатель <> ЗНАЧЕНИЕ(Перечисление.Показатели.Пользователей)) КАК ПоказателиПользователейОбороты";
+	Query	= New query;
+	Query.text	=  "SELECT
+	|	Logs.period AS period,
+	|	Logs.requestName AS requestName,
+	|	Logs.token AS token,
+	|	Logs.token.account AS account,
+	|	Logs.token.holding AS holding,
+	|	appAnalytics.ref AS appAnalytics,
+	|	Logs.brand
+	|INTO TemporaryHistory
+	|FROM
+	|	Catalog.logs AS Logs
+	|		LEFT JOIN Catalog.appAnalytics AS appAnalytics
+	|		ON Logs.token.appType = appAnalytics.appType
+	|		AND Logs.token.systemType = appAnalytics.systemType
+	|WHERE
+	|	Logs.period BETWEEN &BeginDate AND &EndDate
+	|	AND
+	|	NOT appAnalytics.ref IS NULL
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	&BeginDate AS period,
+	|	TemporaryHistory.holding AS holding,
+	|	TemporaryHistory.appAnalytics AS appAnalytics,
+	|	VALUE(enum.analyticValues.activeUsers) AS analyticValue,
+	|	&ReportPeriod AS ReportPeriod,
+	|	COUNT(DISTINCT TemporaryHistory.account) AS count,
+	|	TemporaryHistory.brand
+	|FROM
+	|	TemporaryHistory AS TemporaryHistory
+	|GROUP BY
+	|	TemporaryHistory.holding,
+	|	TemporaryHistory.appAnalytics,
+	|	VALUE(enum.analyticValues.activeUsers),
+	|	TemporaryHistory.brand
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	tokens.holding,
+	|	appAnalytics.ref,
+	|	VALUE(enum.analyticValues.users),
+	|	&ReportPeriod,
+	|	COUNT(DISTINCT tokens.account),
+	|	tokens.chain.brand
+	|FROM
+	|	Catalog.tokens AS tokens
+	|		LEFT JOIN Catalog.appAnalytics AS appAnalytics
+	|		ON tokens.appType = appAnalytics.appType
+	|		AND tokens.systemType = appAnalytics.systemType
+	|WHERE
+	|	NOT appAnalytics.ref IS NULL
+	|	AND tokens.lockDate = DATETIME(1, 1, 1)
+	|	AND tokens.createDate <= &EndDate
+	|GROUP BY
+	|	tokens.holding,
+	|	appAnalytics.ref,
+	|	VALUE(enum.analyticValues.users),
+	|	tokens.chain.brand
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&BeginDate,
+	|	UsersValues.holding,
+	|	UsersValues.appAnalytics,
+	|	UsersValues.analytic,
+	|	&ReportPeriod,
+	|	UsersValues.countTurnover,
+	|	UsersValues.brand
+	|FROM
+	|	AccumulationRegister.UsersValues.Turnovers(&BeginDate, &EndDate,, ReportPeriod = &ReportPeriodDay
+	|	AND analyticValue <> VALUE(enum.analyticValues.activeUsers)
+	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues";
 	
-	пЗапрос.УстановитьПараметр("ДатаНачала", НачалоМесяца(Месяц));
-	пЗапрос.УстановитьПараметр("ДатаОкончания", КонецМесяца(Месяц));	
-	пЗапрос.УстановитьПараметр("ПериодОтчета", Enums.reportPeriods.month);
-	пЗапрос.УстановитьПараметр("ПериодОтчетаДень", Enums.reportPeriods.day);
-	Набор.Загрузить(пЗапрос.Выполнить().Выгрузить());
-	Набор.Записать();
+	Query.SetParameter("BeginDate", BegOfMonth(Month));
+	Query.SetParameter("EndDate", EndOfMonth(Month));	
+	Query.SetParameter("ReportPeriod", Enums.reportPeriods.month);
+	Query.SetParameter("ReportPeriodDay", Enums.reportPeriods.day);
+	RecordSet.Load(Query.Execute().Unload());
+	RecordSet.Write();
 		
-КонецПроцедуры
+EndProcedure
 
 
 

@@ -8,20 +8,20 @@
     <recordKeyType typeId="e031e02e-a1da-442e-bd87-3740e9cd5f73" valueTypeId="5b89c9c1-7b98-41fc-ade7-83d7c1a07f3b"/>
     <recordType typeId="837d307e-01e9-454b-a82a-f3ddb7a7b13e" valueTypeId="1a70ec1d-24af-4798-9cfe-acaa16879018"/>
   </producedTypes>
-  <name>ПоказателиПользователей</name>
+  <name>UsersValues</name>
   <synonym>
     <key>ru</key>
-    <value>Показатели пользователей</value>
+    <value>Users values</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <registerType>Turnovers</registerType>
   <dataLockControlMode>Managed</dataLockControlMode>
   <enableTotalsSplitting>true</enableTotalsSplitting>
   <resources uuid="bd3dc672-f37e-442d-b21a-9614fc2c3918">
-    <name>Количество</name>
+    <name>count</name>
     <synonym>
       <key>ru</key>
-      <value>Количество</value>
+      <value>Count</value>
     </synonym>
     <type>
       <types>Number</types>
@@ -49,10 +49,10 @@
     <useInTotals>true</useInTotals>
   </dimensions>
   <dimensions uuid="edaa79bb-154b-407d-9a1f-aa83ed7f95c9">
-    <name>АналитикаПриложений</name>
+    <name>appAnalytics</name>
     <synonym>
       <key>ru</key>
-      <value>Аналитика приложений</value>
+      <value>App analytics</value>
     </synonym>
     <type>
       <types>CatalogRef.appAnalytics</types>
@@ -63,10 +63,10 @@
     <useInTotals>true</useInTotals>
   </dimensions>
   <dimensions uuid="34036b5a-e8a1-45fd-8c52-a59b08ffb20b">
-    <name>ПериодОтчета</name>
+    <name>reportPeriod</name>
     <synonym>
       <key>ru</key>
-      <value>Период отчета</value>
+      <value>Report period</value>
     </synonym>
     <type>
       <types>EnumRef.reportPeriods</types>
@@ -77,13 +77,13 @@
     <useInTotals>true</useInTotals>
   </dimensions>
   <dimensions uuid="79297dde-e353-4fb3-ab91-0bb32685f70c">
-    <name>Показатель</name>
+    <name>analyticValue</name>
     <synonym>
       <key>ru</key>
-      <value>Показатель</value>
+      <value>Analytic value</value>
     </synonym>
     <type>
-      <types>EnumRef.Показатели</types>
+      <types>EnumRef.analyticValues</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
@@ -92,16 +92,28 @@
     <useInTotals>true</useInTotals>
   </dimensions>
   <dimensions uuid="469e231b-e0a6-4730-8a6a-16a5293be6f8">
-    <name>Аналитика</name>
+    <name>analytic</name>
     <synonym>
       <key>ru</key>
-      <value>Аналитика</value>
+      <value>Analytic</value>
     </synonym>
     <type>
       <types>CatalogRef.analytics</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="ac1217c2-7e1a-40db-a2f1-ceea36d6c33c">
+    <name>brand</name>
+    <synonym>
+      <key>en</key>
+      <value>brand</value>
+    </synonym>
+    <type>
+      <types>EnumRef.brandTypes</types>
+    </type>
     <fullTextSearch>Use</fullTextSearch>
     <useInTotals>true</useInTotals>
   </dimensions>

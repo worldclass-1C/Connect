@@ -121,7 +121,7 @@
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
   <scheduledJobs>ScheduledJob.informationSourceAlert</scheduledJobs>
   <scheduledJobs>ScheduledJob.CheckTokenValid</scheduledJobs>
-  <scheduledJobs>ScheduledJob.РасчетПоказателей</scheduledJobs>
+  <scheduledJobs>ScheduledJob.CalcValues</scheduledJobs>
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <scheduledJobs>ScheduledJob.clearHistory</scheduledJobs>
@@ -161,11 +161,12 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
-  <documents>Document.РегистраторДвижений</documents>
+  <documents>Document.RegisterRecorder</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderStates</enums>
   <enums>Enum.acquiringProviders</enums>
   <enums>Enum.acquiringRequests</enums>
+  <enums>Enum.analyticValues</enums>
   <enums>Enum.appTypes</enums>
   <enums>Enum.brandTypes</enums>
   <enums>Enum.gymTypes</enums>
@@ -181,7 +182,6 @@
   <enums>Enum.roomTypes</enums>
   <enums>Enum.SmsProviders</enums>
   <enums>Enum.systemTypes</enums>
-  <enums>Enum.Показатели</enums>
   <reports>Report.applicationVersions</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
@@ -206,5 +206,5 @@
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
-  <accumulationRegisters>AccumulationRegister.ПоказателиПользователей</accumulationRegisters>
+  <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
 </mdclass:Configuration>

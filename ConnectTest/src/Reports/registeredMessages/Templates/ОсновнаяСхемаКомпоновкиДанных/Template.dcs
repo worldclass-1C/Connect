@@ -7,50 +7,38 @@
 	<dataSet xsi:type="DataSetQuery">
 		<name>НаборДанных1</name>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Задача</dataPath>
-			<field>Задача</field>
+			<dataPath>channel</dataPath>
+			<field>channel</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>task</dataPath>
+			<field>task</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Задача</v8:content>
+					<v8:lang>en</v8:lang>
+					<v8:content>Task</v8:content>
 				</v8:item>
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>КаналИнформирования</dataPath>
-			<field>КаналИнформирования</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Канал информирования</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Количество</dataPath>
-			<field>Количество</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Количество</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>message</dataPath>
+			<field>message</field>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
-		<query>ВЫБРАТЬ
-	ТИПЗНАЧЕНИЯ(СообщенияИзменения.Узел.Ссылка) КАК Задача,
-	СообщенияИзменения.Узел.КаналИнформирования КАК КаналИнформирования,
-	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ СообщенияИзменения.Ссылка) КАК Количество
-ИЗ
-	Справочник.messages.Изменения КАК СообщенияИзменения
-
-СГРУППИРОВАТЬ ПО
-	ТИПЗНАЧЕНИЯ(СообщенияИзменения.Узел.Ссылка),
-	СообщенияИзменения.Узел.КаналИнформирования</query>
+		<query>SELECT
+	COUNT(DISTINCT messagesChanges.Ref) AS message,
+	messageschannelPriorities.channel,
+	VALUETYPE(messagesChanges.Node.Ref) AS task
+FROM
+	Catalog.messages.Changes AS messagesChanges,
+	Catalog.messages.channelPriorities AS messageschannelPriorities
+GROUP BY
+	messageschannelPriorities.channel,
+	VALUETYPE(messagesChanges.Node.Ref)</query>
 	</dataSet>
 	<totalField>
-		<dataPath>Количество</dataPath>
-		<expression>Сумма(Количество)</expression>
+		<dataPath>message</dataPath>
+		<expression>Sum(message)</expression>
 	</totalField>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -58,7 +46,7 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Количество</dcsset:field>
+					<dcsset:field>message</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:outputParameters>
@@ -70,7 +58,7 @@
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:groupItems>
 					<dcsset:item xsi:type="dcsset:GroupItemField">
-						<dcsset:field>Задача</dcsset:field>
+						<dcsset:field>task</dcsset:field>
 						<dcsset:groupType>Items</dcsset:groupType>
 						<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 						<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
@@ -86,7 +74,7 @@
 				<dcsset:item xsi:type="dcsset:StructureItemGroup">
 					<dcsset:groupItems>
 						<dcsset:item xsi:type="dcsset:GroupItemField">
-							<dcsset:field>КаналИнформирования</dcsset:field>
+							<dcsset:field>channel</dcsset:field>
 							<dcsset:groupType>Items</dcsset:groupType>
 							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>

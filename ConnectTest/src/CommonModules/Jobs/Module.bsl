@@ -24,8 +24,8 @@ Procedure checkSmsStatus() Export
 	EndDo;
 EndProcedure 
 
-Procedure РассчитатьПоказатели() Export
-	Service.РассчитатьПоказатели();
+Procedure CalcValues() Export
+	Service.CalcValues();
 EndProcedure
 
 Procedure alertSourceInformation() Export

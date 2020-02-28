@@ -7,13 +7,13 @@
     <listType typeId="eed35e6c-51dc-4271-8b61-769bc1c0ceee" valueTypeId="e22de6f4-1b9c-4325-b0f5-ddbc03212a3c"/>
     <managerType typeId="8bb5c5a5-f361-4f4b-9adf-4ee476ef554d" valueTypeId="d9b0fb60-ca5c-44b7-8fa1-8b15fa35f959"/>
   </producedTypes>
-  <name>РегистраторДвижений</name>
+  <name>RegisterRecorder</name>
   <synonym>
     <key>ru</key>
-    <value>Регистратор движений</value>
+    <value>Register recorder</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Document.РегистраторДвижений.StandardAttribute.Number</inputByString>
+  <inputByString>Document.RegisterRecorder.StandardAttribute.Number</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
@@ -23,14 +23,14 @@
   <numberAllowedLength>Variable</numberAllowedLength>
   <checkUnique>true</checkUnique>
   <autonumbering>true</autonumbering>
-  <registerRecords>AccumulationRegister.ПоказателиПользователей</registerRecords>
+  <registerRecords>AccumulationRegister.UsersValues</registerRecords>
   <postInPrivilegedMode>true</postInPrivilegedMode>
   <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
   <attributes uuid="17fe0ee2-8c62-4e0f-b9cc-4da3f23ad885">
-    <name>ПериодОтчета</name>
+    <name>ReportPeriod</name>
     <synonym>
       <key>ru</key>
-      <value>Период отчета</value>
+      <value>Report period</value>
     </synonym>
     <type>
       <types>EnumRef.reportPeriods</types>
