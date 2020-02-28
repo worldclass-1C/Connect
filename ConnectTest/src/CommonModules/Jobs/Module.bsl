@@ -74,7 +74,7 @@ Procedure ProcessQueue() Export
 	While OrdersToProcess.Next() Do
 		parameters = GetParametersToProcessOrder(OrdersToProcess);
 		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.register Then
-			If OrdersToProcess.try < 3 then
+			If OrdersToProcess.try < 30 then
 				Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
 			Else
 				Acquiring.delOrderToQueue(OrdersToProcess.order);
