@@ -1,9 +1,8 @@
 
 Function processRequest(request, requestName = "", synch = False) Export
 
-	dateInMilliseconds = CurrentUniversalDateInMilliseconds();
-
 	parameters = New Structure();
+	parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);		
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
@@ -48,7 +47,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 	EndIf;	
 
 	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
-		- DateInMilliseconds);
+		- parameters.dateInMilliseconds);
 	parameters.Insert("isError", parameters.errorDescription.result <> "");
 
 	If Not synch Then

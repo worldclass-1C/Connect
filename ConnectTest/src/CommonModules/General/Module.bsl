@@ -1,6 +1,13 @@
 
 Procedure executeRequestMethod(parameters) Export
 	
+	If Not parameters.Property("dateInMilliseconds") Then
+		parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
+		saveLogs = True;
+	Else
+		saveLogs = False;
+	EndIf;
+	
 	parameters.Insert("errorDescription", Check.requestParameters(parameters));	
 	
 	If parameters.errorDescription.result = "" Then
@@ -77,6 +84,13 @@ Procedure executeRequestMethod(parameters) Export
 		Else
 			executeExternalRequest(parameters);
 		EndIf;
+	EndIf;
+	
+	If saveLogs Then
+		parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
+		- parameters.dateInMilliseconds);
+		parameters.Insert("isError", parameters.errorDescription.result <> "");
+		Service.logRequestBackground(parameters);	
 	EndIf;
 			
 EndProcedure
