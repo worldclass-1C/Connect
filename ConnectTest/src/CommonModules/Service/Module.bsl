@@ -43,13 +43,13 @@ Function getRecorder(day, reportPeriod)
 	begOfDay	= BegOfDay(day);
 
 	query	= New Query();
-	query.Text	= "ВЫБРАТЬ
-	|	РегистраторДвижений.Ссылка КАК Ref
-	|ИЗ
-	|	Документ.RegisterRecorder КАК РегистраторДвижений
-	|ГДЕ
-	|	РегистраторДвижений.Дата = &day
-	|	И РегистраторДвижений.ReportPeriod = &reportPeriod";
+	query.Text	= "Select
+	|	RegisterRecorder.Ссылка as Ref
+	|from
+	|	Document.RegisterRecorder as RegisterRecorder
+	|where
+	|	RegisterRecorder.Дата = &day
+	|	and RegisterRecorder.ReportPeriod = &reportPeriod";
 	
 	query.SetParameter("day", begOfDay);
 	query.SetParameter("reportPeriod", reportPeriod);
