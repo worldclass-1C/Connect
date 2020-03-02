@@ -138,6 +138,7 @@ Function GetParametersToProcessOrder(DataSelect)
 	TokenContext.Insert("timeZone", DataSelect.timeZone);
 	TokenContext.Insert("appType", DataSelect.deviceModel);
 	TokenContext.Insert("holding",DataSelect.holding);
+	TokenContext.Insert("token",Catalogs.tokens.EmptyRef());
 	Parameters.Insert("tokenContext", TokenContext);
 	Return Parameters;
 EndFunction

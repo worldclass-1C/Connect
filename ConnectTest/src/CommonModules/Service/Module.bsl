@@ -199,7 +199,6 @@ Procedure logAcquiringBackground(parameters) Export
 EndProcedure
 	
 Procedure logRequest(parameters) Export
-	requestBodyArray = New Array();
 	record = Catalogs.logs.CreateItem();
 	record.period = ToUniversalTime(CurrentDate());
 	If parameters.Property("tokenContext") Then
@@ -209,16 +208,12 @@ Procedure logRequest(parameters) Export
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
 	record.isError = parameters.isError;
-	If Not parameters.internalRequestMethod Then
-		record.brand = Enums.brandTypes[parameters.brand];
-		record.ipAddress = parameters.ipAddress;
-		requestBodyArray.Add("""Headers"":");
-		requestBodyArray.Add(parameters.headersJSON);
-	EndIf;	
-	requestBodyArray.Add("""Body"":");
-	requestBodyArray.Add(?(parameters.requestName = "imagePOST", "", parameters.requestBody)); 
-		
-	requestBody = StrConcat(requestBodyArray, Chars.LF);
+	record.brand = Enums.brandTypes[parameters.brand];
+	record.ipAddress = parameters.ipAddress;
+	
+	requestBody = """Headers"":" + Chars.LF + parameters.headersJSON + Chars.LF
+		+ """Body"":" + Chars.LF
+		+ ?(parameters.requestName = "imagePOST", "", parameters.requestBody);
 
 	record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
 	record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));

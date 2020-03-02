@@ -87,7 +87,8 @@ Procedure bindCard(parameters, additionalParameters) Export
 	    requestStruct.Insert("autopayment", 			select.autopayment);
 	    requestStruct.Insert("expiryDate", 					String(Month(select.expiryDate))+"/"+String(Right(Year(select.expiryDate),2)));
 	    requestStruct.Insert("ownerName",				select.ownerName);
-	    requestStruct.Insert("paymentSystem",		String(select.paymentSystem));
+	    requestStruct.Insert("paymentSystem",		String(select.paymentSystem));	   
+	 	parametersNew.Insert("internalRequestMethod", True);
 	    parametersNew.Insert("requestName",        "paymentBindCardBack");
 	    parametersNew.Insert("requestStruct", 	requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
@@ -108,6 +109,7 @@ Procedure unBindCard(parameters, additionalParameters) Export
 		requestStruct.Insert("uid", XMLString(parameters.order.creditCard));
 		parametersNew.Insert("requestName",    "paymentUnBindCardBack");
 	    parametersNew.Insert("requestStruct", 	requestStruct);
+	    parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
 		If parametersNew.errorDescription.result <> "" Then
