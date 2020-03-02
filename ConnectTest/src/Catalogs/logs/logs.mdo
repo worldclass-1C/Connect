@@ -260,26 +260,6 @@
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
-  <attributes uuid="aa15891c-a5a7-4325-9736-7dd62e84d0e4">
-    <name>requestBody</name>
-    <synonym>
-      <key>en</key>
-      <value>Request body</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Тело запроса</value>
-    </synonym>
-    <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>1000</length>
-      </stringQualifiers>
-    </type>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-  </attributes>
   <attributes uuid="c5f83540-b0c9-4215-88f5-6ca09b4e0753">
     <name>requestName</name>
     <synonym>
@@ -319,21 +299,21 @@
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
-  <attributes uuid="52115f00-6d27-4a1d-a21b-3cdefb4ffe38">
-    <name>responseBody</name>
+  <attributes uuid="7e280f7f-7e9c-40b7-ae65-f1547bdf0d83">
+    <name>statusCode</name>
     <synonym>
       <key>en</key>
-      <value>Response body</value>
+      <value>Status code</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Тело ответа</value>
+      <value>Код состояния</value>
     </synonym>
     <type>
-      <types>String</types>
-      <stringQualifiers>
-        <length>1000</length>
-      </stringQualifiers>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

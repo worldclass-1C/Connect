@@ -3,7 +3,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 
 	parameters = New Structure();
 	parameters.Insert("internalRequestMethod", False);
-	parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
+	General.executeRequestMethodStart(parameters);
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);		
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
@@ -13,23 +13,21 @@ Function processRequest(request, requestName = "", synch = False) Export
 	parameters.Insert("ipAddress", HTTP.getRequestHeader(request, "ClientIP"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
 	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));	
-	parameters.Insert("notSaveAnswer", False);
-	parameters.Insert("compressAnswer", False);
-	parameters.Insert("underControl", False);
-	parameters.Insert("answerBody", "");	
+	parameters.Insert("answerBody", "");
+	parameters.Insert("statusCode", 200);		
+	parameters.Insert("error", "");
 			
 	If Not ValueIsFilled(parameters.language) Then
 		parameters.Insert("languageCode", "en");
 		parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
-	EndIf;
-	parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language));
+	EndIf;	
 
 	If Not ValueIsFilled(parameters.requestName) Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "requestError"));	
+		parameters.Insert("error", "requestError");	
 	ElsIf Not ValueIsFilled(parameters.brand) Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "brandError"));
+		parameters.Insert("error", "brandError");
 	EndIf;
-	If parameters.errorDescription.result = "" Then		
+	If parameters.error = "" Then		
 		Check.legality(request, parameters);
 	EndIf;			
 	If requestName = "imagePOST" Then
@@ -39,21 +37,34 @@ Function processRequest(request, requestName = "", synch = False) Export
 		parameters.Insert("requestBody", request.GetBodyAsString());
 		parameters.Insert("requestStruct", HTTP.decodeJSON(parameters.requestBody, Enums.JSONValueTypes.structure,,synch));
 	EndIf;
-	If parameters.errorDescription.result = "" Then	
+	If parameters.error = "" Then	
 		Try
 			General.executeRequestMethod(parameters);
 		Except
-			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "system", ErrorDescription()));
+			parameters.Insert("error", "system");
+			parameters.Insert("answerBody", ErrorDescription());
 		EndTry;
 	EndIf;	
 
-	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
-		- parameters.dateInMilliseconds);
-	parameters.Insert("isError", parameters.errorDescription.result <> "");
-
-	If Not synch Then
-		Service.logRequestBackground(parameters);
-	EndIf;
+	General.executeRequestMethodEnd(parameters, synch);
+//	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
+//		- parameters.dateInMilliseconds);	
+//	parameters.Insert("isError", parameters.error <> "");	
+//	If parameters.isError Then		
+//		If parameters.error = "noValidRequest"
+//				or parameters.error = "tokenExpired" Then
+//			parameters.Insert("statusCode", 401);			
+//		Else
+//			parameters.Insert("statusCode", 403);			
+//		EndIf;
+//		If parameters.error <> "system" Then
+//			parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));
+//		EndIf
+//	EndIf;
+//	
+//	If Not synch Then
+//		Service.logRequestBackground(parameters);
+//	EndIf;
 
 	Return HTTP.prepareResponse(parameters);
 
@@ -131,16 +142,9 @@ Function prepareRequestBody(parameters) Export
 EndFunction
 
 Function prepareResponse(parameters) Export
-	If parameters.errorDescription.result <> "" Then
-		parameters.Insert("answerBody", HTTP.encodeJSON(parameters.errorDescription));
-		If parameters.errorDescription.result = "noValidRequest"
-				or parameters.errorDescription.result = "tokenExpired" Then
-			response = New HTTPServiceResponse(401);
-		Else
-			response = New HTTPServiceResponse(403);
-		EndIf;
-	Else
-		response = New HTTPServiceResponse(200);
+	response = New HTTPServiceResponse(parameters.statusCode);
+	If parameters.error = "system" Then		
+		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));		
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
 	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");

@@ -15,15 +15,15 @@ Function getFromExternalSystem(val parameters, val parametrName,
 	parametersNew.Insert("requestName", "userProfile");
 	parametersNew.requestStruct.Insert(parametrName, parametrValue);
 	
-	tokenContext = parametersNew.tokenContext;
-	language = parametersNew.language;
-	errorDescription = parametersNew.errorDescription;	
+	tokenContext = parametersNew.tokenContext;	
+	error = parametersNew.error;	
 	authKey = parametersNew.authKey;
 	userProfile = Users.initProfileStruct();
 	userList = New Array();		
 	
 	General.executeRequestMethod(parametersNew);
-	If parametersNew.errorDescription.result = "" Then
+	error = parametersNew.error;
+	If error = "" Then
 		answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
 		If answerStruct.Count() = 1 Then
 			If account = Undefined Then
@@ -46,13 +46,11 @@ Function getFromExternalSystem(val parameters, val parametrName,
 				Token.editProperty(tokenContext.token, New Structure("account", account));
 			EndIf;			
 		Else
-			errorDescription = Service.getErrorDescription(language, "passwordNotCorrect"); //Хотя такого быть не должно									
+			error = "passwordNotCorrect"; //Хотя такого быть не должно									
 		EndIf;
-	Else
-		errorDescription = parametersNew.errorDescription;
 	EndIf;
 
-	Return New Structure("response, errorDescription", New Structure("userProfile, userList, token", userProfile, userList, authKey), errorDescription);
+	Return New Structure("response, error", New Structure("userProfile, userList, token", userProfile, userList, authKey), error);
 
 EndFunction
 

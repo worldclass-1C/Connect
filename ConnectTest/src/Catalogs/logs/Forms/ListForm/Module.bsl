@@ -2,9 +2,9 @@
 &AtServerNoContext
 Function getResponseBody(log)		
 	CompressedBinaryData	= log.request.Get();
-	request	= ?(CompressedBinaryData = Undefined, log.requestBody, XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());	
+	request	= ?(CompressedBinaryData = Undefined, "", XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());	
 	CompressedBinaryData	= log.response.Get();
-	response	=  ?(CompressedBinaryData = Undefined, log.responseBody, XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());
+	response	=  ?(CompressedBinaryData = Undefined, "", XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());
 	Return New Structure("request, response", request, response);
 EndFunction
 

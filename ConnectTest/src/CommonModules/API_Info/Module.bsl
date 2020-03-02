@@ -4,14 +4,10 @@ Procedure gymInfo(parameters) Export
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	gymStruct = New Structure();
-	
-	errorDescription = Service.getErrorDescription(language);
-	
-	If Not requestStruct.Property("uid") Then
-		errorDescription = Service.getErrorDescription(language, "gymError");
-	EndIf;
-
-	If errorDescription.result = "" Then
+		
+	If Not requestStruct.Property("uid") Then	
+		parameters.Insert("error", "gymError");
+	Else
 		query = New Query();
 		query.Text = "SELECT TOP 1
 		|	gyms.Ref,
@@ -107,10 +103,7 @@ Procedure gymInfo(parameters) Export
 		
 	EndIf;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(gymStruct));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymStruct));		
 	
 EndProcedure
 
@@ -120,13 +113,9 @@ Procedure employeeInfo(parameters) Export
 	language = parameters.language;
 	struct = New Structure();
 	
-	errorDescription = Service.getErrorDescription(language);
-
-	If Not requestStruct.Property("uid") Then
-		errorDescription = Service.getErrorDescription(language, "stuff");
-	EndIf;
-
-	If errorDescription.result = "" Then
+	If Not requestStruct.Property("uid") Then		
+		parameters.Insert("error", "stuff");
+	Else
 		query = New Query("SELECT
 		|	employees.Ref AS employee,
 		|	employees.firstName,
@@ -231,9 +220,6 @@ Procedure employeeInfo(parameters) Export
 	EndIf;
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);
-	parameters.Insert("errorDescription", errorDescription);
 		
 EndProcedure
 
@@ -368,9 +354,7 @@ Procedure productInfo(parameters) Export
 	EndDo;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(productStruct));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);	
-
+	
 EndProcedure
 
 Procedure accountProfile(parameters) Export
