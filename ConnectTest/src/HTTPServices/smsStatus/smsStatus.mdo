@@ -9,12 +9,12 @@
   <reuseSessions>AutoUse</reuseSessions>
   <sessionMaxAge>300</sessionMaxAge>
   <urlTemplates uuid="4e9862f6-df61-49a1-836e-19a1c2ca81ae">
-    <name>megalab</name>
+    <name>Megalab</name>
     <synonym>
       <key>ru</key>
       <value>Megalab</value>
     </synonym>
-    <template>/megalab</template>
+    <template>/Megalab</template>
     <methods uuid="2477c1f0-f441-4763-ac5a-45b4c9526f2d">
       <name>POST</name>
       <synonym>
