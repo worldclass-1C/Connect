@@ -67,9 +67,8 @@ EndProcedure
 
 Procedure payment(parameters) Export
 
-	requestStruct = parameters.requestStruct;
-	language = parameters.language;
-	errorDescription = Service.getErrorDescription(language);
+	requestStruct = parameters.requestStruct;	
+	error = "";
 	struct = New Structure();
 
 	query = New Query("SELECT
@@ -123,11 +122,9 @@ Procedure payment(parameters) Export
 	orderResult = results[0];
 
 	If orderResult.IsEmpty() Then
-		errorDescription = Service.getErrorDescription(language, "acquiringOrderFind");
-	EndIf;
-	
-	If owner.IsEmpty() Then
-		errorDescription = Service.getErrorDescription(language, "userNotfound");
+		error = "acquiringOrderFind";
+	ElsIf owner.IsEmpty() Then
+		error = "userNotfound";
 	EndIf;
 	
 	orderObject = order.GetObject();
@@ -139,28 +136,28 @@ Procedure payment(parameters) Export
 	EndIf;
 	
 	//Проверяем есть ли указанная карта, в списке доступных карт
-	If errorDescription.result = "" Then
+	If error = "" Then
 		If results[1].IsEmpty() Then
-			errorDescription = Service.getErrorDescription(language, "acquiringCard");
+			error = "acquiringCard";
 		ElsIf ValueIsFilled(card) Then
 			orderObject.creditCard = card;
 		ElsIf isApplePay Then 
 			If SystemType = Enums.systemTypes.iOS Then
 				orderObject.acquiringRequest = enums.acquiringRequests.applePay;
 			Else
-				errorDescription = Service.getErrorDescription(language, "acquiringCard");
+				error = "acquiringCard";
 			EndIf;
 		ElsIf isGooglePay Then
 			 If SystemType = Enums.systemTypes.Android Then
 			 	orderObject.acquiringRequest = enums.acquiringRequests.googlePay;
 			 Else
-			 	errorDescription = Service.getErrorDescription(language, "acquiringCard");
+			 	error = "acquiringCard";
 			 EndIf;
 		EndIf;
 	EndIf;
 
 	//Проверяем есть ли оплата авансами
-	If errorDescription.result = "" Then
+	If error = "" Then
 		If requestStruct.Property("deposits") and not requestStruct.deposits = Undefined Then
 			For Each deposit In requestStruct.deposits Do
 				newRow = orderObject.payments.Add();
@@ -175,13 +172,13 @@ Procedure payment(parameters) Export
 		EndIf;
 		answer = Acquiring.executeRequest("process", order, parameters);
 		If not answer.errorCode = "" Then 
-			errorDescription = Service.getErrorDescription(language, answer.errorCode);
+			error = answer.errorCode;
 			orderObject.payments.Clear();				
 		EndIf;
 	EndIf;
 	
 	//Отправляем в запрос в банк на оставшуюся сумму
-	If errorDescription.result = "" Then
+	If error = "" Then
 		If orderObject <> Undefined Then
 			orderObject.Write();
 		EndIf;
@@ -201,24 +198,24 @@ Procedure payment(parameters) Export
 				struct.Insert("failUrl", answer.failUrl);
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
 			Else
-				errorDescription = Service.getErrorDescription(language, answer.errorCode);
+				error = answer.errorCode;
 			EndIf;	
 		EndIf;
 	EndIf;
 
-     If errorDescription.result <> "" Then
-     	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
-     EndIf;
+    If error <> "" Then
+    	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+    EndIf;
      
 //	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("error", error);
 	
 EndProcedure
 
 Procedure paymentStatus(parameters) Export
-	requestStruct = parameters.requestStruct;
-	language = parameters.language;
+	
+	requestStruct = parameters.requestStruct;	
 	struct = New Structure();
 	query = New Query("SELECT
 	|	acquiringOrders.Ref AS order,
@@ -239,29 +236,29 @@ Procedure paymentStatus(parameters) Export
 	result = query.Execute();
 	struct.Insert("result", "fail");
 	If result.IsEmpty() Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringConnection"));
+		parameters.Insert("error", "acquiringConnection");
 	Else
 		selection = result.Select();
 	    selection.Next();
 		If selection.state = Enums.acquiringOrderStates.send Then
 			response = Acquiring.executeRequest("check", order, requestStruct);
 			If response = Undefined Then
-				parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderCheck"));
+				parameters.Insert("error", "acquiringOrderCheck");
 			Else				
-				//parameters.Insert("errorDescription", Service.getErrorDescription(language, response.errorCode));
+				//parameters.Insert("error", response.errorCode);
 				If response.errorCode = "" Then
 					struct.Insert("result", "ok");
 					Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);					
 					answerKPO = Acquiring.executeRequest("process", order, parameters);
-					If answerKPO = Undefined or not answerKPO.errorCode = "" Then
-						struct.Insert("description", Service.getErrorDescription(language, "system"));					
+					If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
+						parameters.Insert("error", "system");					
 					EndIf;
 				EndIf;
 			EndIf;
 		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		
-			//parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderRejected"));			
+			//parameters.Insert("error", "acquiringOrderRejected");			
 		ElsIf selection.state = Enums.acquiringOrderStates.EmptyRef() Then
-			parameters.Insert("errorDescription", Service.getErrorDescription(language, "acquiringOrderFind"));
+			parameters.Insert("error", "acquiringOrderFind");
 		Else
 			struct.Insert("result", "ok");
 		EndIf;
@@ -270,14 +267,14 @@ Procedure paymentStatus(parameters) Export
 		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
 	EndIf;
 	
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));			
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+				
 EndProcedure
 
 Procedure bindCard(parameters) Export
 	
 	requestStruct = parameters.requestStruct;
-	tokenContext = parameters.tokenContext;
-	language = parameters.language;
+	tokenContext = parameters.tokenContext;	
 	struct = New Structure();
 	struct.Insert("result", "ok");
 	
@@ -297,15 +294,14 @@ Procedure bindCard(parameters) Export
 		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);				
 	EndIf;	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", Service.getErrorDescription(language, answer.errorCode));
+	parameters.Insert("error", answer.errorCode);
 			
 EndProcedure
 
 Procedure unBindCard(parameters) Export
 	
 	requestStruct = parameters.requestStruct;
-	tokenContext = parameters.tokenContext;
-	language = parameters.language;
+	tokenContext = parameters.tokenContext;	
 	struct = New Structure();
 	struct.Insert("result", "ok");
 	
@@ -323,8 +319,8 @@ Procedure unBindCard(parameters) Export
 	
 	result = query.Execute();
 	
-	If result.IsEmpty() Then
-		errorDescription = Service.getErrorDescription(language, "acquiringCreditCard");
+	If result.IsEmpty() Then		
+		parameters.Insert("error", "acquiringCreditCard");
 	Else
 		select = result.Select();
 		select.Next();
@@ -339,13 +335,11 @@ Procedure unBindCard(parameters) Export
 			answer = Acquiring.executeRequest("unBindCard", order);
 			If answer.errorCode = "" Then		
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);				
-			EndIf;	
-			errorDescription = Service.getErrorDescription(language, answer.errorCode);
-		Else
-			errorDescription = Service.getErrorDescription(language, "");	
+			EndIf;			
+			parameters.Insert("error", answer.errorCode);
 		EndIf;
 	EndIf;
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 			
 EndProcedure

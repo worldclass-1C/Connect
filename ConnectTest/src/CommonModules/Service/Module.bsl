@@ -70,8 +70,7 @@ Function getRecorder(day, reportPeriod)
 EndFunction 
 
 Function canSendSms(language, phone) Export
-
-	errorDescription	= Service.getErrorDescription(language);
+	
 	universalTime		= ToUniversalTime(CurrentDate());
 	
 	query	= New Query();
@@ -106,13 +105,13 @@ Function canSendSms(language, phone) Export
 		selection = queryResult.Select();
 		selection.Next();		
 		If selection.quantity > 3 Then
-			errorDescription	= Service.getErrorDescription(language, "limitExceeded");
+			Return "limitExceeded";
 		ElsIf selection.minutesPassed < 15 Then
-			errorDescription	= Service.getErrorDescription(language, "messageCanNotSent");
+			Return "messageCanNotSent";
 		EndIf;				
 	EndIf;
 	
-	Return errorDescription;
+	Return "";
 
 EndFunction 
 
@@ -208,6 +207,7 @@ Procedure logRequest(parameters) Export
 	EndIf;
 	record.requestName = parameters.requestName;
 	record.duration = parameters.duration;
+	record.statusCode = parameters.statusCode;
 	record.isError = parameters.isError;
 	If Not parameters.internalRequestMethod Then
 		record.brand = Enums.brandTypes[parameters.brand];
@@ -222,19 +222,7 @@ Procedure logRequest(parameters) Export
 
 	record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
 	record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
-	
-//	If parameters.compressAnswer Then
-//		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
-//	Else
-//		record.requestBody = requestBody;
-//	EndIf;
-//	If Not parameters.notSaveAnswer Or parameters.isError Or parameters.underControl Then
-//		If parameters.compressAnswer Then
-//			record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
-//		Else
-//			record.responseBody = ?(parameters.isError, parameters.errorDescription.description, parameters.answerBody);
-//		EndIf;
-//	EndIf;
+		
 	record.Write();
 EndProcedure
 

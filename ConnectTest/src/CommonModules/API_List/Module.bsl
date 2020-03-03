@@ -5,13 +5,9 @@ Procedure employeeList(parameters) Export
 	language = parameters.language;
 	employeeArray = New Array();
 	
-	errorDescription = Service.getErrorDescription(language);
-
-	If Not requestStruct.Property("uid") Then
-		errorDescription = Service.getErrorDescription(language, "gym");
-	EndIf;
-
-	If errorDescription.result = "" Then
+	If Not requestStruct.Property("uid") Then		
+		parameters.Insert("error", "gymError");
+	Else
 		query = New Query("SELECT
 		|	gymsEmployees.employee,
 		|	ISNULL(employeestranslation.firstName, gymsEmployees.employee.firstName) AS firstName,
@@ -46,10 +42,7 @@ Procedure employeeList(parameters) Export
 		EndDo;
 	EndIf;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(employeeArray));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(employeeArray));	
 	
 EndProcedure
 
@@ -59,15 +52,11 @@ Procedure gymList(parameters) Export
 	tokenContext = parameters.tokenContext;	
 	authorized = ValueIsFilled(tokenContext.user);
 	language = parameters.language;
-	gymArray = New Array();
-	
-	errorDescription = Service.getErrorDescription(language);
+	gymArray = New Array();	
 
-	If Not requestStruct.Property("chain") Then
-		errorDescription = Service.getErrorDescription(language, "chainCodeError");
-	EndIf;
-
-	If errorDescription.result = "" Then
+	If Not requestStruct.Property("chain") Then		
+		parameters.Insert("error", "chainCodeError");
+	Else	 
 		query = New Query();
 		queryTextPart1 = "SELECT
 		|	gyms.Ref,
@@ -163,10 +152,7 @@ Procedure gymList(parameters) Export
 		EndDo;
 	EndIf;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));	
 	
 EndProcedure
 
@@ -277,9 +263,7 @@ Procedure productList(parameters) Export
 		productArray.add(productStruct);
 	EndDo;
 
-	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));
-	parameters.Insert("notSaveAnswer", True);
-	parameters.Insert("compressAnswer", True);	
+	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		
 
 EndProcedure
 
@@ -348,7 +332,6 @@ Procedure chainList(parameters) Export
 	EndDo;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(array));
-	parameters.Insert("notSaveAnswer", True);
 
 EndProcedure
 
@@ -374,8 +357,7 @@ Procedure countryCodeList(parameters) Export
 		array.add(answer);
 	EndDo;
 	
-	parameters.Insert("answerBody", HTTP.encodeJSON(array));
-	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("answerBody", HTTP.encodeJSON(array));	
 	
 EndProcedure
 
@@ -401,8 +383,7 @@ Procedure cancellationReasonsList(parameters) Export
 		array.add(struct);
 	EndDo;
 		
-	parameters.Insert("answerBody", HTTP.encodeJSON(array));
-	parameters.Insert("notSaveAnswer", True);
+	parameters.Insert("answerBody", HTTP.encodeJSON(array));	
 
 EndProcedure
 

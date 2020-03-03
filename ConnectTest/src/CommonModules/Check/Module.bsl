@@ -16,21 +16,21 @@ Function password(token, password, language) Export
 
 	queryResult = query.Execute();
 	If queryResult.isEmpty() Then
-		Return New Structure("phone, errorDescription", "", Service.getErrorDescription(language, "passwordRequired"));
+		Return New Structure("phone, error", "", "passwordRequired");
 	Else
 		select = queryResult.Select();
 		select.Next();
 		If ToUniversalTime(CurrentDate())
 				- select.recordDate > 900 Then
 			Account.delPassword(token);
-			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordExpired"));
+			Return New Structure("phone, error", select.phone, "passwordExpired");
 		ElsIf select.inputCount > 2 Then  	
-			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordExpired"));			
+			Return New Structure("phone, error", select.phone, "passwordExpired");			
 		ElsIf select.password = password Then			
-			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language));
+			Return New Structure("phone, error", select.phone, "");
 		Else
 			Account.incPasswordInputCount(token);
-			Return New Structure("phone, errorDescription", select.phone, Service.getErrorDescription(language, "passwordNotCorrect"));			
+			Return New Structure("phone, error", select.phone, "passwordNotCorrect");			
 		EndIf;
 	EndIf;
 
@@ -41,17 +41,18 @@ Function requestParameters(parameters) Export
 		If parameter <> "" Then
 			If Not parameters.requestStruct.Property(parameter)
 					Or Not ValueIsFilled(parameters.requestStruct[parameter]) Then
-				Return Service.getErrorDescription(parameters.language, parameter
-					+ "Error");
+				Return parameter + "Error";
 			EndIf;
 		EndIf;
 	EndDo;
-	Return Service.getErrorDescription(parameters.language);
+	Return "";
 EndFunction
 
 Function getRequiredParameters(requestName)
 	If requestName = "config" Then
 		Return "appType,systemType";
+	ElsIF requestName = "gymschedule" Then
+		Return "gymList,startDate,endDate";	
 	ElsIf requestName = "signin" Then
 		Return "phone,chainCode";
 	ElsIF requestName = "confirmphone" Then
@@ -109,28 +110,27 @@ Procedure legality(request, parameters) Export
 			requestBody = request.GetBodyAsString();
 			requestStruct = HTTP.decodeJSON(requestBody);			
 			If TypeOf(requestStruct) <> Type("Structure") Then
-				parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
+				parameters.Insert("error", "noValidRequest");
 			Else
 				requestStruct.Property("timeStamp", timeStamp);
 				requestStruct.Property("hash", hash);
 				If Not ValueIsFilled(timeStamp) Or Not ValueIsFilled(hash) Then
-					parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
+					parameters.Insert("error", "noValidRequest");
 //				ElsIf (ToUniversalTime(CurrentDate()) - Date("19700101"))
 //						- timeStamp > 300 Then
-//					parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));
+//					parameters.Insert("error", "noValidRequest");
 				Else
-					parameters.Insert("errorDescription", Crypto.checkHasp(parameters.language, timeStamp, hash));
+					parameters.Insert("error", Crypto.checkHasp(timeStamp, hash));
 				EndIf;
 			EndIf;
 		EndIf;
 	Else
 		tokenContext = TokenReuse.getContext(parameters.authKey);
 		If tokenContext.token.IsEmpty() Then
-			parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noValidRequest"));			
+			parameters.Insert("error", "noValidRequest");			
 		Else
 			parameters.Insert("tokenContext", tokenContext);
-			parameters.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenContext.timezone));
-			parameters.Insert("underControl", tokenContext.underControl);
+			parameters.Insert("currentTime", ToLocalTime(ToUniversalTime(CurrentDate()), tokenContext.timezone));			
 		EndIf;
 	EndIf;
 EndProcedure

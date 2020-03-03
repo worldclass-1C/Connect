@@ -1,15 +1,15 @@
 
-Function checkHasp(language, timeStamp, hash) Export
+Function checkHasp(timeStamp, hash) Export
 	template = GetCommonTemplate("Connect");
 	If TypeOf(template) = Type("TextDocument") Then
 		word = template.GetText();		
 		timeKey = StrReplace(Service.getAmountOfNumbers(timeStamp), Chars.NBSp, "");		
 		hmac = hmac(word + timeKey, word, HashFunction.SHA256);
 		If hmac = hash Then
-			Return Service.getErrorDescription(language);									
+			Return "";									
 		EndIf;
 	EndIf;
-	Return Service.getErrorDescription(language, "noValidRequest");
+	Return "noValidRequest";
 EndFunction
 
 Function hmac(_secretKey, _text, hashFunc)

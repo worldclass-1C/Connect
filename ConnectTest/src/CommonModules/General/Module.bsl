@@ -2,17 +2,12 @@
 Procedure executeRequestMethod(parameters) Export
 	
 	If parameters.internalRequestMethod Then
-		parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
-		If parameters.Property("requestStruct") Then
-			parameters.Insert("requestBody", HTTP.encodeJSON(parameters.requestStruct));
-		Else
-			parameters.Insert("requestBody", "");	
-		EndIf;
+		General.executeRequestMethodStart(parameters);
 	EndIf;
 	
-	parameters.Insert("errorDescription", Check.requestParameters(parameters));	
+	parameters.Insert("error", Check.requestParameters(parameters));	
 	
-	If parameters.errorDescription.result = "" Then
+	If parameters.error = "" Then
 		If parameters.requestName = "chainlist" Then
 			API_List.chainList(parameters);
 		ElsIf parameters.requestName = "countrycodelist" Then 
@@ -89,10 +84,7 @@ Procedure executeRequestMethod(parameters) Export
 	EndIf;
 	
 	If parameters.internalRequestMethod Then
-		parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
-		- parameters.dateInMilliseconds);
-		parameters.Insert("isError", parameters.errorDescription.result <> "");
-		Service.logRequestBackground(parameters);	
+		General.executeRequestMethodEnd(parameters);	
 	EndIf;
 			
 EndProcedure
@@ -103,14 +95,40 @@ Procedure executeRequestMethodBackground(parameters) Export
 	BackgroundJobs.Execute("General.executeRequestMethod", array, New UUID());
 EndProcedure
 
+Procedure executeRequestMethodStart(parameters) Export
+	parameters.Insert("dateInMilliseconds", CurrentUniversalDateInMilliseconds());
+	If parameters.Property("requestStruct") Then
+		parameters.Insert("requestBody", HTTP.encodeJSON(parameters.requestStruct));
+	Else
+		parameters.Insert("requestBody", "");	
+	EndIf;		
+EndProcedure
+
+Procedure executeRequestMethodEnd(parameters, synch = False) Export	
+	parameters.Insert("duration", CurrentUniversalDateInMilliseconds()
+		- parameters.dateInMilliseconds);	
+	parameters.Insert("isError", parameters.error <> "");	
+	If parameters.isError Then		
+		If parameters.error = "noValidRequest"
+				or parameters.error = "tokenExpired" Then
+			parameters.Insert("statusCode", 401);			
+		Else
+			parameters.Insert("statusCode", 403);			
+		EndIf;
+		If parameters.error <> "system" Then
+			parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));
+		EndIf
+	EndIf;	
+	If Not synch Then
+		Service.logRequestBackground(parameters);
+	EndIf;		
+EndProcedure
+
 Procedure config(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;	
-	brand = parameters.brand;
-	language = parameters.language;
-	errorDescription = parameters.ErrorDescription;
-
+	
 	struct = New Structure();
 
 	query = New Query();
@@ -141,7 +159,7 @@ Procedure config(parameters)
 	|WHERE
 	|	tokens.Ref = &token";
 
-	query.SetParameter("brand", Enums.brandTypes[brand]);
+	query.SetParameter("brand", Enums.brandTypes[parameters.brand]);
 	query.SetParameter("appType", Enums.appTypes[requestStruct.appType]);
 	query.SetParameter("systemType", Enums.systemTypes[requestStruct.systemType]);
 	query.SetParameter("token", tokenContext.token);
@@ -162,8 +180,8 @@ Procedure config(parameters)
 	If not queryResult.IsEmpty() Then		
 		selection = queryResult.Select();
 		selection.Next();
-		If ValueIsFilled(selection.lockDate) And selection.lockDate < ToUniversalTime(CurrentDate()) Then
-			errorDescription = Service.getErrorDescription(language, "tokenExpired");	
+		If ValueIsFilled(selection.lockDate) And selection.lockDate < ToUniversalTime(CurrentDate()) Then				
+			parameters.Insert("error", "tokenExpired");
 		Else
 			tokenStruct = New Structure();
 			tokenStruct.Insert("appType", selection.appType);
@@ -183,10 +201,9 @@ Procedure config(parameters)
 			struct.Insert("tokenInfo", tokenStruct);
 		EndIf;
 	EndIf;
-
+	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
-
+	
 EndProcedure
 
 Procedure registerDevice(parameters)
@@ -207,7 +224,7 @@ Procedure registerDevice(parameters)
 	
 	queryResult = query.Execute();
 	If queryResult.IsEmpty() Then
-		parameters.Insert("errorDescription", Service.getErrorDescription(parameters.language, "noChainCode"));
+		parameters.Insert("error", "noChainCode");
 	Else		
 		select = queryResult.Select();
 		select.Next();
@@ -247,8 +264,7 @@ Procedure signIn(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
-	language = parameters.language;
-	errorDescription = parameters.errorDescription;
+	language = parameters.language;	
 
 	struct = New Structure();
 
@@ -271,10 +287,10 @@ Procedure signIn(parameters)
 				changeStruct = New Structure("chain, holding", chain, chain.holding);
 				Token.editProperty(tokenContext.token, changeStruct);
 			EndIf;
-		Else
-			errorDescription = Service.getErrorDescription(language, "chainCodeError");
+		Else			
+			parameters.Insert("error", "chainCodeError");
 		EndIf;
-		If errorDescription.result = "" Then
+		If parameters.error = "" Then
 			tempCode = Account.tempPassword();
 			informationChannels = New Array();
 			informationChannels.Add(Enums.informationChannels.sms);
@@ -297,8 +313,7 @@ Procedure signIn(parameters)
 		EndIf;
 	EndIf;
 
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 
 EndProcedure
 
@@ -311,9 +326,9 @@ Procedure confirmPhone(parameters)
 	struct = New Structure();
 	
 	answer = Check.password(tokenContext.token, requestStruct.password, language);
-	errorDescription = answer.errorDescription;
+	error = answer.error;
 
-	If errorDescription.result = "" Then
+	If error = "" Then
 		queryUser = New Query("SELECT
 		|	accounts.Ref AS account,
 		|	ISNULL(users.Ref, VALUE(Catalog.users.EmptyRef)) AS user
@@ -331,7 +346,7 @@ Procedure confirmPhone(parameters)
 		If queryUserResult.isEmpty() Then
 			answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone);
 			struct = answerStruct.response;
-			errorDescription = answerStruct.errorDescription; 
+			error = answerStruct.error; 
 		Else
 			select = queryUserResult.Select();
 			select.Next();
@@ -347,16 +362,16 @@ Procedure confirmPhone(parameters)
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;
-				errorDescription = answerStruct.errorDescription;
+				error = answerStruct.error;
 			EndIf;		
 		EndIf;
-		If errorDescription.result = "" Then
+		If error = "" Then
 			Account.delPassword(tokenContext.token);
 		EndIf;
 	EndIf;
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("error", error);
 
 EndProcedure
 
@@ -375,7 +390,7 @@ Procedure addUserToToken(parameters)
 	EndIf;
 	answerStruct.response.Delete("userList");
 	parameters.Insert("answerBody", HTTP.encodeJSON(answerStruct.response));
-	parameters.Insert("errorDescription", answerStruct.errorDescription);
+	parameters.Insert("error", answerStruct.error);
 EndProcedure
 
 Procedure signOut(parameters)
@@ -567,19 +582,16 @@ EndProcedure
 Procedure executeExternalRequest(parameters)
 	
 	tokenContext = parameters.tokenContext;
-	language = parameters.language;
-	errorDescription = Service.getErrorDescription(language);
+	language = parameters.language;		
 	answerBody = "";
-
+	
 	query = New Query();
 	query.text = "SELECT
 	|	matchingRequestsInformationSources.performBackground AS performBackground,
 	|	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
 	|	matchingRequestsInformationSources.HTTPRequestType AS HTTPRequestType,
 	|	matchingRequestsInformationSources.Attribute AS Attribute,
-	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
-	|	matchingRequestsInformationSources.notSaveAnswer AS notSaveAnswer,
-	|	matchingRequestsInformationSources.compressAnswer AS compressAnswer,
+	|	matchingRequestsInformationSources.staffOnly AS staffOnly,	
 	|	matchingRequestsInformationSources.mockServerMode AS mockServerMode,
 	|	holdingsConnectionsInformationSources.URL AS URL,
 	|	holdingsConnectionsInformationSources.server AS server,
@@ -615,23 +627,21 @@ Procedure executeExternalRequest(parameters)
 	query.SetParameter("requestName", parameters.requestName);
 	queryResult = query.Execute();
 
-	If queryResult.IsEmpty() Then
-		errorDescription	= Service.getErrorDescription(language, "noUrl");
+	If queryResult.IsEmpty() Then		
+		parameters.Insert("error", "noUrl");
 	Else		
 		select = queryResult.Select();
 		select.Next();
-		parameters.Insert("notSaveAnswer", select.notSaveAnswer);
-		parameters.Insert("compressAnswer", select.compressAnswer);
 		If select.staffOnly
-				And tokenContext.userType <> "employee" Then
-			errorDescription = Service.getErrorDescription(language, "staffOnly");
+				And tokenContext.userType <> "employee" Then			
+			parameters.Insert("error", "staffOnly");
 		Else
 			If select.mockServerMode Then
 				answerBody = select.defaultResponse;	
-			Else
+			Else				
 				performBackground = select.performBackground;
 				arrayBJ = New Array();
-				statusCode = 200;
+				statusCode = 200;				
 				If select.HTTPRequestType = Enums.HTTPRequestTypes.GET Then
 					requestBody = "";
 					parametersFromURL = StrReplace(parameters.URL, GeneralReuse.getBaseURL(), "");
@@ -674,19 +684,18 @@ Procedure executeExternalRequest(parameters)
 				If statusCode <> 200 Then
 					If statusCode = 403 Then
 						HTTPResponseStruct = HTTP.decodeJSON(answerBody);
-						If HTTPResponseStruct.Property("result") Then
-							errorDescription = Service.getErrorDescription(language, HTTPResponseStruct.result, HTTPResponseStruct.description);
+						If HTTPResponseStruct.Property("result") Then							
+							parameters.Insert("error", HTTPResponseStruct.result);
 						EndIf;
-					Else
-						errorDescription = Service.getErrorDescription(language, "system", answerBody);
+					Else						
+						parameters.Insert("error", "system");
 					EndIf;
 				EndIf;
 			EndIf;
 		EndIf;		
 	EndIf;
 
-	parameters.Insert("answerBody", answerBody);
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", answerBody);		
 
 EndProcedure
 
@@ -703,11 +712,10 @@ Procedure sendMessage(parameters)
 	requestStruct = parameters.requestStruct;
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
-	struct = New Structure();
-	errorDescription = Service.getErrorDescription(language);
+	struct = New Structure();	
 
-	If Not requestStruct.Property("messages") Then
-		errorDescription = Service.getErrorDescription(language, "noMessages");
+	If Not requestStruct.Property("messages") Then		
+		parameters.Insert("error", "noMessages");
 	Else
 		For Each message In requestStruct.messages Do
 			messageStruct = New Structure();
@@ -749,8 +757,8 @@ Procedure sendMessage(parameters)
 			
 			sendImmediately = ?(message.Property("sendImmediately"), message.sendImmediately, False);
 			If messageStruct.phone = ""
-					And messageStruct.user.GetObject() = Undefined Then
-				errorDescription = Service.getErrorDescription(language, "phoneError");		
+					And messageStruct.user.GetObject() = Undefined Then				
+				parameters.Insert("error", "phoneError");		
 			//ElsIf messageStruct.user = messageStruct.token.user Then
 			Else
 				Messages.newMessage(messageStruct, sendImmediately);
@@ -759,8 +767,7 @@ Procedure sendMessage(parameters)
 	EndIf;
 
 	struct.Insert("result", "Ok");
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	
 EndProcedure
 
@@ -768,14 +775,12 @@ Procedure imagePOST(parameters)
 	
 	requestBody = parameters.requestBody;
 	tokenContext = parameters.tokenContext;
-	headers = parameters.headers;
-	language = parameters.language;
+	headers = parameters.headers;	
 	
 	struct = New Structure();
-	errorDescription = Service.getErrorDescription(language);
-
-	If TypeOf(requestBody) <> Type("BinaryData") Then
-		errorDescription = Service.getErrorDescription(language, "noBinaryData");
+	
+	If TypeOf(requestBody) <> Type("BinaryData") Then		
+		parameters.Insert("error", "noBinaryData");
 	Else
 		pathStruct = Files.getPath(headers["objectName"], tokenContext.holding.code);
 		fileName = Files.pathConcat("" + New UUID(), headers["extension"]);
@@ -783,8 +788,7 @@ Procedure imagePOST(parameters)
 		struct.Insert("result", Files.pathConcat(pathStruct.URL, fileName, "/"));
 	EndIf;
 
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	parameters.Insert("errorDescription", errorDescription);
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	
 EndProcedure
 
