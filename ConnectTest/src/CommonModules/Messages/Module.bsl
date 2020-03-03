@@ -270,15 +270,25 @@ EndProcedure
 
 Procedure logMassage(message, informationChannel, messageStatus, error,
 		recordDate = Undefined, token = Undefined) Export
-	record = InformationRegisters.messagesLogs.CreateRecordManager();
-	record.period = ToUniversalTime(CurrentDate());
-	record.message = message;
-	record.informationChannel = informationChannel;
-	record.messageStatus = messageStatus;
-	record.error = error;
-	record.recordDate = ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
-	record.token = token;
-	record.Write();
+//	record = InformationRegisters.messagesLogs.CreateRecordManager();
+//	record.period = ToUniversalTime(CurrentDate());
+//	record.message = message;
+//	record.informationChannel = informationChannel;
+//	record.messageStatus = messageStatus;
+//	record.error = error;
+//	record.recordDate = ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
+//	record.token = token;
+//	record.Write();
+	record = Documents.messageLogs.CreateDocument();
+	record.date								= ToUniversalTime(CurrentDate());
+	record.message							= message;
+	record.token								= token;
+	record.messageStatus				= messageStatus;
+	record.error 								= error;
+	record.informationChannel	= informationChannel;
+	record.recordDate 					= ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
+	record.Write(DocumentWriteMode.Posting);
+	
 EndProcedure
 
 Procedure addMessageId(message, informationChannel, id) Export
@@ -476,26 +486,21 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|ORDER BY
 	|	messages.Ref.priority
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT.user AS user,
-	|	COUNT(DISTINCT messages.Ref) AS count
-	|INTO TT_unreadMessages
+	|	pushStatusBalance.user,
+	|	pushStatusBalance.amountBalance
+	|INTO TTunread
 	|FROM
-	|	TT AS TT
-	|		LEFT JOIN Catalog.messages AS messages
-	|		ON TT.user = Messages.user
-	|		AND Messages.appType = &appType
-	|		LEFT JOIN Catalog.messages.channelPriorities AS messagesChannelPriorities
-	|		ON Messages.Ref = messagesChannelPriorities.Ref
-	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogs
-	|		ON Messages.Ref = messagesLogs.message
-	|WHERE
-	|	messagesChannelPriorities.channel = &informationChannel
-	|	AND ISNULL(messagesLogs.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|GROUP BY
-	|	TT.user
+	|	AccumulationRegister.pushStatus.Balance(, informationChannel = &informationChannel
+	|	AND user IN
+	|		(SELECT
+	|			TT.user
+	|		FROM
+	|			TT AS TT)) AS pushStatusBalance
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.message AS message,
@@ -509,11 +514,19 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT.token AS token,
 	|	TT.systemType AS systemType,
 	|	&informationChannel AS informationChannel,
-	|	ISNULL(unreadMessages.count, 0) AS badge
+	|	ISNULL(TTunread.amountBalance, 0) AS badge
 	|FROM
 	|	TT AS TT
-	|		LEFT JOIN TT_unreadMessages AS unreadMessages
-	|		ON TT.user = unreadMessages.user";
+	|		LEFT JOIN TTunread AS TTunread
+	|		ON TTunread.user = TT.user
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TT
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TTunread";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
 	query.SetParameter("holding", holding);

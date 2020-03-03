@@ -162,6 +162,7 @@
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
   <documents>Document.RegisterRecorder</documents>
+  <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>
   <enums>Enum.acquiringOrderStates</enums>
   <enums>Enum.acquiringProviders</enums>
@@ -207,4 +208,5 @@
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.usersStates</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
+  <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
 </mdclass:Configuration>

@@ -398,52 +398,88 @@ Procedure notificationList(parameters) Export
 	
 	query = New Query();
 	query.text	= "SELECT TOP 20
-	|	messages.Ref AS message,
-	|	messages.registrationDate AS registrationDate,
-	|	messages.title,
-	|	messages.text,
-	|	messages.objectId,
-	|	messages.objectType
-	|INTO TT_messages
+	|	pushStatusBalanceAndTurnovers.user,
+	|	pushStatusBalanceAndTurnovers.message,
+	|	pushStatusBalanceAndTurnovers.amountExpense
+	|INTO TTMessages
 	|FROM
-	|	Catalog.messages AS messages
-	|WHERE
-	|	messages.user = &user
-	|	AND messages.registrationDate < &registrationDate
-	|	AND messages.appType = &appType
+	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Period,, user = &user
+	|	AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
 	|ORDER BY
-	|	registrationDate DESC
+	|	pushStatusBalanceAndTurnovers.Period DESC
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT_messages.message,
-	|	TT_messages.registrationDate AS registrationDate,
-	|	TT_messages.title,
-	|	TT_messages.text,
-	|	TT_messages.objectId,
-	|	TT_messages.objectType,
-	|	MAX(CASE
-	|		WHEN messagesLogsSliceLast.messageStatus = VALUE(Enum.messageStatuses.read)
+	|	messages.Ref as message,
+	|	messages.objectId as objectId,
+	|	messages.objectType as objectType,
+	|	messages.registrationDate as registrationDate,
+	|	messages.text as text,
+	|	messages.title as title,
+	|	CASE
+	|		WHEN TTMessages.amountExpense > 0
 	|			THEN TRUE
 	|		ELSE FALSE
-	|	END) AS read
+	|	END AS read
 	|FROM
-	|	TT_messages AS TT_messages
-	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogsSliceLast
-	|		ON TT_messages.message = messagesLogsSliceLast.message
-	|GROUP BY
-	|	TT_messages.message,
-	|	TT_messages.registrationDate,
-	|	TT_messages.title,
-	|	TT_messages.text,
-	|	TT_messages.objectId,
-	|	TT_messages.objectType
-	|ORDER BY
-	|	registrationDate DESC";
-
-	query.SetParameter("registrationDate", registrationDate);
+	|	TTMessages AS TTMessages
+	|		INNER JOIN Catalog.messages AS messages
+	|		ON TTMessages.message = messages.Ref";
+	query.SetParameter("eOfPeriod", registrationDate);
 	query.SetParameter("user", tokenContext.user);
-	query.SetParameter("appType", tokenContext.appType);
+	query.SetParameter("informationChannel", ?(tokenContext.appType = enums.appTypes.Customer, 
+   																					enums.informationChannels.pushCustomer,
+   																						?(tokenContext.appType = enums.appTypes.Employee, 
+   																							enums.informationChannels.pushEmployee, 
+   																								enums.informationChannels.EmptyRef())));
+//	query = New Query();
+//	query.text	= "SELECT TOP 20
+//	|	messages.Ref AS message,
+//	|	messages.registrationDate AS registrationDate,
+//	|	messages.title,
+//	|	messages.text,
+//	|	messages.objectId,
+//	|	messages.objectType
+//	|INTO TT_messages
+//	|FROM
+//	|	Catalog.messages AS messages
+//	|WHERE
+//	|	messages.user = &user
+//	|	AND messages.registrationDate < &registrationDate
+//	|	AND messages.appType = &appType
+//	|ORDER BY
+//	|	registrationDate DESC
+//	|;
+//	|////////////////////////////////////////////////////////////////////////////////
+//	|SELECT
+//	|	TT_messages.message,
+//	|	TT_messages.registrationDate AS registrationDate,
+//	|	TT_messages.title,
+//	|	TT_messages.text,
+//	|	TT_messages.objectId,
+//	|	TT_messages.objectType,
+//	|	MAX(CASE
+//	|		WHEN messagesLogsSliceLast.messageStatus = VALUE(Enum.messageStatuses.read)
+//	|			THEN TRUE
+//	|		ELSE FALSE
+//	|	END) AS read
+//	|FROM
+//	|	TT_messages AS TT_messages
+//	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogsSliceLast
+//	|		ON TT_messages.message = messagesLogsSliceLast.message
+//	|GROUP BY
+//	|	TT_messages.message,
+//	|	TT_messages.registrationDate,
+//	|	TT_messages.title,
+//	|	TT_messages.text,
+//	|	TT_messages.objectId,
+//	|	TT_messages.objectType
+//	|ORDER BY
+//	|	registrationDate DESC";
+//
+//	query.SetParameter("registrationDate", registrationDate);
+//	query.SetParameter("user", tokenContext.user);
+//	query.SetParameter("appType", tokenContext.appType);
 
 	select = query.Execute().Select();
 	While select.Next() Do
