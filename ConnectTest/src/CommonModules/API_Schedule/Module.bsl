@@ -7,14 +7,19 @@ Procedure gymSchedule(parameters) Export
 
 	query = New Query();
 	textSelectGyms = "SELECT
-		|	gyms.chain
+		|	gyms.chain,
+		|	MAX(CASE
+		|		WHEN gyms.type = VALUE(Enum.gymTypes.studio)
+		|				THEN FALSE
+		|		ELSE TRUE
+		|	END) AS canAddOutdoor
 		|INTO TemporaryChains
 		|FROM
 		|	Catalog.gyms AS gyms
 		|WHERE
 		|	gyms.Ref IN (&gymList)
 		|GROUP BY
-		|	gyms.chain
+		|	gyms.chain		
 		|;
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT
@@ -34,6 +39,7 @@ Procedure gymSchedule(parameters) Export
 		|		INNER JOIN TemporaryChains AS TemporaryChains
 		|		ON gyms.chain = TemporaryChains.chain
 		|		AND gyms.type = VALUE(Enum.gymTypes.Outdoor)
+		|		AND TemporaryChains.canAddOutdoor
 		|
 		|;
 		|////////////////////////////////////////////////////////////////////////////////";
