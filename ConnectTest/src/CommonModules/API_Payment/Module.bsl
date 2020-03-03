@@ -34,7 +34,7 @@ Procedure paymentPreparation(parameters) Export
 	parametersNew = Service.getStructCopy(parameters);
 	parametersNew.Insert("requestName", "paymentPreparationBack");		
 	General.executeRequestMethod(parametersNew);
-	If parametersNew.errorDescription.result = "" Then
+	If parametersNew.error = "" Then
 		struct = HTTP.decodeJSON(parametersNew.answerBody, Enums.JSONValueTypes.structure);
 		orderStruct = New Structure();
 		If requestStruct.Property("customerId") And requestStruct.customerId <> "" Then
@@ -61,7 +61,7 @@ Procedure paymentPreparation(parameters) Export
 		struct = New Structure();				
 	EndIf;
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-	parameters.Insert("errorDescription", parametersNew.errorDescription);
+	parameters.Insert("error", parametersNew.error);
 		
 EndProcedure
 

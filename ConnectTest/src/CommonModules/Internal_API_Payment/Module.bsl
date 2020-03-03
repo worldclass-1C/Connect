@@ -49,10 +49,10 @@ Procedure processOrder(parameters, additionalParameters) Export
 		parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
-		If parametersNew.errorDescription.result <> "" Then
+		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, select.state);
-			parameters.Insert("errorCode", parametersNew.errorDescription.result);
-			parameters.Insert("response", parametersNew.errorDescription.description);	
+			parameters.Insert("errorCode", parametersNew.error);
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
 		EndIf;		
 	EndIf;	
 	
@@ -93,11 +93,11 @@ Procedure bindCard(parameters, additionalParameters) Export
 	    parametersNew.Insert("requestStruct", 	requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
-		If parametersNew.errorDescription.result <> "" Then
+		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
-			parameters.Insert("errorCode", parametersNew.errorDescription.result);
-			parameters.Insert("response", parametersNew.errorDescription.description);	
-		EndIf;		
+			parameters.Insert("errorCode", parametersNew.error);
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
+		EndIf;
 	EndIf;	
 EndProcedure
 
@@ -112,10 +112,10 @@ Procedure unBindCard(parameters, additionalParameters) Export
 	    parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);		
-		If parametersNew.errorDescription.result <> "" Then
+		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
-			parameters.Insert("errorCode", parametersNew.errorDescription.result);
-			parameters.Insert("response", parametersNew.errorDescription.description);	
+			parameters.Insert("errorCode", parametersNew.error);
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
 		EndIf;	
 	EndIf;
 	
