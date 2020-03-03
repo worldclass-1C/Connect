@@ -44,11 +44,11 @@ Function getRecorder(day, reportPeriod)
 
 	query	= New Query();
 	query.Text	= "Select
-	|	RegisterRecorder.Ссылка as Ref
+	|	RegisterRecorder.ref as Ref
 	|from
 	|	Document.RegisterRecorder as RegisterRecorder
 	|where
-	|	RegisterRecorder.Дата = &day
+	|	RegisterRecorder.date = &day
 	|	and RegisterRecorder.ReportPeriod = &reportPeriod";
 	
 	query.SetParameter("day", begOfDay);

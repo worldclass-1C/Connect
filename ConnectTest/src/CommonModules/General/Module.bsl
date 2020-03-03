@@ -405,54 +405,110 @@ Procedure readNotification(parameters)
 	Else
 		informationChannel = Enums.informationChannels.EmptyRef();
 	EndIf;
-
+	
 	query = New Query();
 	query.text = "SELECT
-	|	messages.Ref AS message
+	|	pushStatusBalance.message,
+	|	pushStatusBalance.amountBalance
+	|INTO TemporaryTableMessages
 	|FROM
-	|	Catalog.messages AS messages
-	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
-	|		ON messages.Ref = messagesLogsSliceLast.message
+	|	AccumulationRegister.pushStatus.Balance(, user = &user
+	|	AND informationChannel = &informationChannel) AS pushStatusBalance
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TemporaryTableMessages.message as message
+	|FROM
+	|	TemporaryTableMessages AS TemporaryTableMessages
 	|WHERE
-	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	AND Messages.user = &user
-	|	AND Messages.appType = &appType";
-
+	|	TemporaryTableMessages.amountBalance > 0
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TemporaryTableMessages";
+	
 	query.SetParameter("user", tokenContext.user);
-	query.SetParameter("appType", tokenContext.appType);
-
+	query.SetParameter("informationChannel", informationChannel);
+		
 	queryResult = query.Execute();
 	If Not queryResult.IsEmpty() Then
 		select = queryResult.Select();
 		unReadMessagesCount = select.Count();		
 		If message.IsEmpty() Then
 			While select.Next() Do
-				record = InformationRegisters.messagesLogs.CreateRecordManager();
-				record.period				= ToUniversalTime(CurrentDate());
-				record.message				= select.message;
-				record.token				= tokenContext.token;
-				record.recordDate			= record.period;
-				record.messageStatus		= Enums.messageStatuses.read;
+				record = Documents.messageLogs.CreateDocument();
+				record.date								= ToUniversalTime(CurrentDate());
+				record.recordDate						= record.date;
+				record.message							= select.message;
+				record.token								= tokenContext.token;
+				record.messageStatus				= Enums.messageStatuses.read;
 				record.informationChannel	= informationChannel;
-				record.Write();
+				record.Write(DocumentWriteMode.Posting);
 			EndDo;
 			unReadMessagesCount = 0;
 		Else
 			If select.FindNext(New Structure("message", message)) Then
-				record = InformationRegisters.messagesLogs.CreateRecordManager();
-				record.period				= ToUniversalTime(CurrentDate());
-				record.message 				= message;
-				record.token 				= tokenContext.token;
-				record.recordDate 			= record.period;
-				record.messageStatus 		= Enums.messageStatuses.read;
+				record = Documents.messageLogs.CreateDocument();
+				record.date								= ToUniversalTime(CurrentDate());
+				record.recordDate						= record.date;
+				record.message							= select.message;
+				record.token								= tokenContext.token;
+				record.messageStatus				= Enums.messageStatuses.read;
 				record.informationChannel	= informationChannel;
-				record.Write();
-				unReadMessagesCount 		= unReadMessagesCount - 1;
+				record.Write(DocumentWriteMode.Posting);
+				unReadMessagesCount 		   = unReadMessagesCount - 1;
 			EndIf;
 		EndIf;
 	Else
 		unReadMessagesCount = 0;
-	EndIf;
+	EndIf;	
+	
+//	query = New Query();
+//	query.text = "SELECT
+//	|	messages.Ref AS message
+//	|FROM
+//	|	Catalog.messages AS messages
+//	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
+//	|		ON messages.Ref = messagesLogsSliceLast.message
+//	|WHERE
+//	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
+//	|	AND Messages.user = &user
+//	|	AND Messages.appType = &appType";
+//
+//	query.SetParameter("user", tokenContext.user);
+//	query.SetParameter("appType", tokenContext.appType);
+//
+//	queryResult = query.Execute();
+//	If Not queryResult.IsEmpty() Then
+//		select = queryResult.Select();
+//		unReadMessagesCount = select.Count();		
+//		If message.IsEmpty() Then
+//			While select.Next() Do
+//				record = InformationRegisters.messagesLogs.CreateRecordManager();
+//				record.period				= ToUniversalTime(CurrentDate());
+//				record.message				= select.message;
+//				record.token				= tokenContext.token;
+//				record.recordDate			= record.period;
+//				record.messageStatus		= Enums.messageStatuses.read;
+//				record.informationChannel	= informationChannel;
+//				record.Write();
+//			EndDo;
+//			unReadMessagesCount = 0;
+//		Else
+//			If select.FindNext(New Structure("message", message)) Then
+//				record = InformationRegisters.messagesLogs.CreateRecordManager();
+//				record.period				= ToUniversalTime(CurrentDate());
+//				record.message 				= message;
+//				record.token 				= tokenContext.token;
+//				record.recordDate 			= record.period;
+//				record.messageStatus 		= Enums.messageStatuses.read;
+//				record.informationChannel	= informationChannel;
+//				record.Write();
+//				unReadMessagesCount 		= unReadMessagesCount - 1;
+//			EndIf;
+//		EndIf;
+//	Else
+//		unReadMessagesCount = 0;
+//	EndIf;
 
 	struct.Insert("result", "Ok");
 	struct.Insert("quantity", unReadMessagesCount);
@@ -465,25 +521,44 @@ Procedure unReadNotificationCount(parameters)
 
 	tokenContext = parameters.tokenContext;
 	struct = New Structure();
-
-	query = New Query();
-	query.text = "SELECT
-	|	COUNT(messages.Ref) AS count
-	|FROM
-	|	Catalog.messages AS messages
-	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
-	|		ON messages.Ref = messagesLogsSliceLast.message
-	|WHERE
-	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
-	|	AND Messages.user = &user
-	|	AND Messages.appType = &appType";
-
-	query.SetParameter("user", tokenContext.user);
-	query.SetParameter("appType", tokenContext.appType);
-
-	select = query.Execute().Select();
-	select.Next();
-	struct.Insert("quantity", select.count);
+    query = New Query();
+    query.text = "SELECT
+    |	pushStatusBalance.user,
+    |	pushStatusBalance.amountBalance
+    |FROM
+    |	AccumulationRegister.pushStatus.Balance(, user = &user
+    |	AND informationChannel = &informationChannel) AS pushStatusBalance";
+   query.SetParameter("user", tokenContext.user);
+   query.SetParameter("informationChannel", ?(tokenContext.appType = enums.appTypes.Customer, 
+   																					enums.informationChannels.pushCustomer,
+   																						?(tokenContext.appType = enums.appTypes.Employee, 
+   																							enums.informationChannels.pushEmployee, 
+   																								enums.informationChannels.EmptyRef())));
+//	query = New Query();
+//	query.text = "SELECT
+//	|	COUNT(messages.Ref) AS count
+//	|FROM
+//	|	Catalog.messages AS messages
+//	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast КАК messagesLogsSliceLast
+//	|		ON messages.Ref = messagesLogsSliceLast.message
+//	|WHERE
+//	|	ISNULL(messagesLogsSliceLast.messageStatus, VALUE(Enum.messageStatuses.EmptyRef)) <> VALUE(Enum.messageStatuses.read)
+//	|	AND Messages.user = &user
+//	|	AND Messages.appType = &appType";
+//
+//	query.SetParameter("user", tokenContext.user);
+//	query.SetParameter("appType", tokenContext.appType);
+//
+	result = query.Execute();
+	if not result.IsEmpty() then
+		select =result.Select();
+		select.Next();
+		count = select.amountBalance;
+	Else
+		count = 0;
+	EndIf;
+		
+	struct.Insert("quantity", count);
 
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 
