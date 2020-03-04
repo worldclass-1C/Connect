@@ -2,8 +2,12 @@
 <mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e404622f-b2d0-4dc3-ab6d-9923349d6c88">
   <name>uid</name>
   <synonym>
-    <key>ru</key>
+    <key>en</key>
     <value>uid</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>ГУИД</value>
   </synonym>
   <group>FormCommandBarImportant</group>
   <commandParameterType>

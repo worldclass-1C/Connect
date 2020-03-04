@@ -5,3 +5,7 @@ Function getCaption() Export
 	array.Add(InfoBaseConnectionString());
 	Return StrConcat(array, "; ");	
 EndFunction
+
+Function getRef(ref) Export	
+	Return Service.getRef(ref);		
+EndFunction
