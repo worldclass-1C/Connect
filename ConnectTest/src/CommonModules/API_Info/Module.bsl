@@ -231,20 +231,38 @@ Procedure productInfo(parameters) Export
 
 	query = New Query();
 	query.Text = "SELECT
+	|	&product AS product
+	|INTO TT1
+	|WHERE
+	|	&selectByProduct
+	|
+	|UNION ALL
+	|
+	|SELECT TOP 1
+	|	productsMapping.product
+	|FROM
+	|	InformationRegister.productsMapping AS productsMapping
+	|WHERE
+	|	productsMapping.uid = &entryListUid
+	|	And
+	|	NOT &selectByProduct
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT 
 	|	products.Ref AS product,
-	|	products.Description,
-	|	products.shortDescription,
-	|	products.fullDescription,
-	|	products.addDescription
+	|	products.Description AS Description,
+	|	products.shortDescription AS shortDescription,
+	|	products.fullDescription AS fullDescription,
+	|	products.addDescription AS addDescription
 	|INTO TT
 	|FROM
-	|	Catalog.products AS products
-	|WHERE
-	|	products.Ref = &product
+	|	TT1 AS TT1
+	|		LEFT JOIN Catalog.products AS products
+	|		ON (TT1.product = products.Ref)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT.product,
+	|	TT.product AS product,
 	|	ISNULL(productstranslation.description, TT.Description) AS description,
 	|	ISNULL(productstranslation.shortDescription, TT.shortDescription) AS shortDescription,
 	|	ISNULL(productstranslation.fullDescription, TT.fullDescription) AS fullDescription,
@@ -253,7 +271,7 @@ Procedure productInfo(parameters) Export
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.translation AS productstranslation
 	|		ON TT.product = productstranslation.Ref
-	|		AND productstranslation.language = &language
+	|		AND (productstranslation.language = &language)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
@@ -266,7 +284,7 @@ Procedure productInfo(parameters) Export
 	|		LEFT JOIN Catalog.products.tags AS productstags
 	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
 	|			ON productstags.tag = tagstranslation.Ref
-	|			AND tagstranslation.language = &language
+	|			AND (tagstranslation.language = &language)
 	|		ON TT.product = productstags.Ref
 	|WHERE
 	|	NOT productstags.Ref IS NULL
@@ -274,44 +292,53 @@ Procedure productInfo(parameters) Export
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
-	|	productsMapping.uid,
-	|	productsMapping.entryType
+	|	productsMapping.uid AS uid,
+	|	productsMapping.entryType AS entryType
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product
 	|WHERE
 	|	NOT productsMapping.uid IS NULL
-	|	AND productsMapping.uid in (&entryList)
+	|	AND productsMapping.uid IN (&entryList)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT.product,
-	|	productsphotos.URL
+	|	TT.product AS product,
+	|	productsphotos.URL AS URL
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.photos AS productsphotos
 	|		ON TT.product = productsphotos.Ref
 	|WHERE
 	|	NOT productsphotos.URL IS NULL";
-
+	
+	entryListUid = "";
 	If requestStruct.Property("entryList") And requestStruct.entryList.count() > 0 Then		
 		entryListArray = New Array();
 		For Each entryType In requestStruct.entryList Do
-			entryListArray.Add(entryType.uid);				
+			entryListArray.Add(entryType.uid);
+			entryListUid = entryType.uid;				
 		EndDo;		 
 		query.SetParameter("entryList", entryListArray);
 	Else
 		query.Text = StrReplace(query.Text, "AND productsMapping.uid in (&entryList)", "");		
 	EndIf;	
-	query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.uid));
+	If requestStruct.Property("uid") And StrLen(requestStruct.uid) = 36 Then
+		query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.uid));
+		query.SetParameter("selectByProduct", True);
+	Else
+		query.SetParameter("product", Catalogs.products.EmptyRef());
+		query.SetParameter("selectByProduct", False);	
+	EndIf;	
 	query.SetParameter("language", language);
+	query.SetParameter("entryListUid", entryListUid);
 	
 	results = query.ExecuteBatch();
-	select = results[1].Select();
-	selectTags = results[2].Select();
-	selectMapping = results[3].Select();
-	selectPhotos = results[4].Select();
+	select = results[2].Select();
+	selectTags = results[3].Select();
+	selectMapping = results[4].Select();
+	selectPhotos = results[5].Select();
 	
 	While select.Next() Do		
 		productStruct.Insert("uid", XMLString(select.product));		

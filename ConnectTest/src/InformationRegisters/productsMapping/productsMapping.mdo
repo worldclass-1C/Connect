@@ -93,6 +93,7 @@
         <length>36</length>
       </stringQualifiers>
     </type>
+    <indexing>Index</indexing>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
     <mainFilter>true</mainFilter>
