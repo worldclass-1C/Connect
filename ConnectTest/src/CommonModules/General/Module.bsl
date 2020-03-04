@@ -690,6 +690,8 @@ Procedure executeExternalRequest(parameters)
 					Else						
 						parameters.Insert("error", "system");
 					EndIf;
+				Else
+					DoInternalProcedures(parameters);
 				EndIf;
 			EndIf;
 		EndIf;		
@@ -808,3 +810,23 @@ Procedure imageDELETE(parameters)
 	
 EndProcedure
 
+Procedure DoInternalProcedures(parameters)
+	If parameters.requestName = "scheduleregistration" then
+		writeClassMember(parameters);
+	EndIf;
+EndProcedure
+
+Procedure writeClassMember(parameters)
+	If parameters.Property("requestStruct") and parameters.Property("tokenContext") then
+		record = InformationRegisters.classMembers.CreateRecordManager();
+		record.class = XMLValue(Type("CatalogRef.classesSchedule"), parameters.requestStruct.docID);
+		record.user  =  parameters.tokenContext.user;
+		if parameters.requestStruct.type = "reserve" then
+			record.registrationDate = ToUniversalTime(CurrentDate());
+			record.Write();
+		ElsIf parameters.requestStruct.type = "cancel" Then
+			 record.Read();
+			 record.Delete();
+		EndIf;
+	EndIf;
+endprocedure
