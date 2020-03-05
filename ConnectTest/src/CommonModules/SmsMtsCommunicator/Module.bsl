@@ -35,7 +35,7 @@ Function sendSMS(parameters, answer) Export
 
 			If XMLReader.NodeType = XMLNodeType.Text And CurrentPath = "MessageID" Then
 				answer.Insert("id", XMLReader.Value);
-				answer.Insert("messageStatus", "Отправлено");
+				answer.Insert("messageStatus", Enums.messageStatuses.sent);
 				CurrentPath = "";
 			EndIf;
 
