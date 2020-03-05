@@ -19,6 +19,7 @@
   <fullTextSearch>Use</fullTextSearch>
   <numberType>String</numberType>
   <numberAllowedLength>Variable</numberAllowedLength>
+  <defaultListForm>Document.messageLogs.Form.ListForm</defaultListForm>
   <registerRecords>AccumulationRegister.pushStatus</registerRecords>
   <postInPrivilegedMode>true</postInPrivilegedMode>
   <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
@@ -100,4 +101,33 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <forms uuid="c09b1a1d-4f45-40fa-883b-c577dd0a5733">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <commands uuid="2bf84f3a-8439-423e-88e5-57ddde6ae47a">
+    <name>showHistory</name>
+    <synonym>
+      <key>en</key>
+      <value>Show history</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>История сообщений</value>
+    </synonym>
+    <group>FormNavigationPanelGoTo</group>
+    <commandParameterType>
+      <types>CatalogRef.messages</types>
+    </commandParameterType>
+    <representation>Auto</representation>
+  </commands>
 </mdclass:Document>

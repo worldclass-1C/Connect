@@ -150,7 +150,16 @@ Procedure ClearHistory() Export
 	|FROM
 	|	Catalog.logs AS logs
 	|WHERE
-	|	logs.period < DATEADD(&currentDate, Month, -6)";
+	|	logs.period < DATEADD(&currentDate, Month, -6)
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	classesSchedule.Ref
+	|FROM
+	|	Catalog.classesSchedule AS classesSchedule
+	|WHERE
+	|	classesSchedule.period < DATEADD(&currentDate, Day, -30)";
 	query.SetParameter("currentDate", ToUniversalTime(CurrentDate()));
 	selection = query.Execute().Select();
 	While selection.Next() Do
