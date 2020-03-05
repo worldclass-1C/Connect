@@ -227,11 +227,18 @@ Procedure gymSchedule(parameters) Export
 		textConditionService = "AND classesSchedule.product = &product";
 		query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.serviceDescriptionId));
 	EndIf;
+	
+	If requestStruct.Property("docId")
+			And ValueIsFilled(requestStruct.docId) Then
+		textConditionDocId = "AND classesSchedule.ref = &docId";
+		query.SetParameter("docId", XMLValue(Type("CatalogRef.classesSchedule"), requestStruct.docId));
+	EndIf;
 
 	querryConditionArray = New Array();
 	querryConditionArray.Add(textCondition);
 	querryConditionArray.Add(textConditionEmployee);
 	querryConditionArray.Add(textConditionService);
+	querryConditionArray.Add(textConditionDocId);
 
 	querryTextArray = New Array();
 	querryTextArray.Add(textSelectGyms);
