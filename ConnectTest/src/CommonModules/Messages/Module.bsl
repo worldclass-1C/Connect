@@ -141,6 +141,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsMegalab.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDigital Then
 		answer = SmsIDigital.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
+		answer = SmsMtsCommunicator.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -209,6 +211,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsStramedia.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.SmsGold Then
 		answer = SmsGold.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
+		answer = SmsMtsCommunicator.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;

@@ -54,6 +54,13 @@
       <value>Megalab</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="5742ad5a-b3f6-4850-aa00-cb5d7ee69bd5">
+    <name>MTSComminicator</name>
+    <synonym>
+      <key>ru</key>
+      <value>MTSComminicator</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="2d014166-8ff4-4064-b9f1-95335f8909e8">
     <name>Rapporto</name>
     <synonym>
