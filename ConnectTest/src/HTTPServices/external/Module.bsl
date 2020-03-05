@@ -5,6 +5,10 @@ EndFunction
 
 Function ProcessRequestOPTIONS(Request)
 	parameters = New Structure();
+	
+	parameters.Insert("statusCode", 200);
+	parameters.Insert("error", "");
+		
 	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));
 	parameters.Insert("answerBody", "");
 	parameters.Insert("errorDescription", New Structure("result, description", "", ""));
