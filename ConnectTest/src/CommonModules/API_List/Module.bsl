@@ -403,19 +403,20 @@ Procedure notificationList(parameters) Export
 	|	pushStatusBalanceAndTurnovers.amountExpense
 	|INTO TTMessages
 	|FROM
-	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Period,, user = &user
+	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Record,, user = &user
 	|	AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
 	|ORDER BY
 	|	pushStatusBalanceAndTurnovers.Period DESC
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	messages.Ref as message,
-	|	messages.objectId as objectId,
-	|	messages.objectType as objectType,
-	|	messages.registrationDate as registrationDate,
-	|	messages.text as text,
-	|	messages.title as title,
+	|	messages.Ref AS message,
+	|	messages.objectId AS objectId,
+	|	messages.objectType AS objectType,
+	|	messages.registrationDate AS registrationDate,
+	|	messages.text AS text,
+	|	messages.title AS title,
 	|	CASE
 	|		WHEN TTMessages.amountExpense > 0
 	|			THEN TRUE
