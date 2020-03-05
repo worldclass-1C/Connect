@@ -322,7 +322,7 @@ Procedure productInfo(parameters) Export
 		EndDo;		 
 		query.SetParameter("entryList", entryListArray);
 	Else
-		query.Text = StrReplace(query.Text, "AND productsMapping.uid in (&entryList)", "");		
+		query.Text = StrReplace(query.Text, "AND productsMapping.uid IN (&entryList)", "");		
 	EndIf;	
 	If requestStruct.Property("uid") And StrLen(requestStruct.uid) = 36 Then
 		query.SetParameter("product", XMLValue(Type("CatalogRef.products"), requestStruct.uid));
