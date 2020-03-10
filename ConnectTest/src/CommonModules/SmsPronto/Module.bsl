@@ -1,50 +1,129 @@
+Function sendSMS(parameters, answer) Export
 
-Function sendSMS(parameters, answer) Export	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-	URL = "http2" + "?user=" + parameters.user + "&pass=" + parameters.password
-		+ "&number=" + parameters.phone + "&sender=" + parameters.senderName
-		+ "&text=" + parameters.text;
-	requestHTTP = New HTTPRequest(URL);
-	answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	answerBody = TrimAll(answerHTTP.GetBodyAsString());
-	Try
-		answer.Insert("id", answerBody);
-		answer.Insert("messageStatus", Enums.messageStatuses.sent);
-	Except
-		answer.Insert("error", answerBody);
-	EndTry;
+	JSONSecurity = New Structure;
+	JSONSecurity.Insert("login", XMLString(parameters.user));
+	JSONSecurity.Insert("password", XMLString(parameters.password));
+
+	MessageArray = New Array;
+	AbonentArray = New Array;
+	JSONMessage = New Structure;
+	JSONAbonent = New Structure;
+
+	JSONAbonent.Insert("phone", XMLString(parameters.phone));
+	JSONAbonent.Insert("number_sms", XMLString("1"));
+	AbonentArray.Add(JSONAbonent);
+
+	JSONMessage.Insert("type", XMLString("sms"));
+	JSONMessage.Insert("sender", XMLString(parameters.senderName));
+	JSONMessage.Insert("text", XMLString(parameters.text));
+	JSONMessage.Insert("name_delivery", XMLString("Шлюз"));
+	JSONMessage.Insert("abonent", AbonentArray);
+	MessageArray.Add(JSONMessage);
+
+	JSONValue = New Structure;
+	JSONValue.Insert("security", JSONSecurity);
+	JSONValue.Insert("type", XMLString("sms"));
+	JSONValue.Insert("message", MessageArray);
+
+	JSONWriter = New JSONWriter;
+	JSONWriter.SetString();
+	WriteJSON(JSONWriter, JSONValue);
+
+	JSONString = JSONWriter.Закрыть();
+
+	ssl = ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined);
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , 60, ssl);
+
+	Headers = New Map;
+	Headers.insert("Content-Type", "application/json; charset=utf-8");
+
+	requestHTTP = New HTTPRequest("/sendsmsjson.php", Headers);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+
+	answerBody = ConnectionHTTP.Post(requestHTTP);
+
+	If answerBody.КодСостояния = 200 Then
+		JSONReader = Новый JSONReader;
+		JSONReader.SetString(answerBody.GetBodyAsString());
+		JSONStructure = ReadJSON(JSONReader);
+		JSONReader.Закрыть();
+
+		If JSONStructure.Свойство("sms") Then
+			AnswerStructure = JSONStructure.sms[0];
+			If AnswerStructure.Свойство("error") Then
+				answer.Insert("error", AnswerStructure.error);
+			ElsIf AnswerStructure.Свойство("id_sms") Then
+				answer.Insert("id", AnswerStructure.id_sms);
+				answer.Insert("messageStatus", Enums.messageStatuses.sent);
+			EndIf;
+		ElsIf JSONStructure.Свойство("error") Then
+			answer.Insert("error", JSONStructure.error);
+		EndIf;
+	Else
+		answer.Insert("error", "Сбой при отрправке Messages 500 Internal Error");
+	Endif;
+
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+
 	Return answer;
 EndFunction
 
-Function checkSmsStatus(parameters, answer) Export	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-	URL = "http2" + "?user=" + parameters.user + "&pass=" + parameters.password
-		+ "&smsid=" + parameters.id;
-	requestHTTP = New HTTPRequest(URL);
-	answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	answerBody = TrimAll(answerHTTP.GetBodyAsString());
-	status = getMessageStatus(answerBody);
-	If TypeOf(status) = Type("EnumRef.messageStatuses") Then
-		answer.Insert("messageStatus", status);
-	Else
-		answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
-		answer.Insert("error", "Неизвестный статус");
-	EndIf;
-	answer.Insert("period", ToUniversalTime(CurrentDate()));
-	Return answer;	
-EndFunction
+Function checkSmsStatus(parameters, answer) Export
 
-Function getMessageStatus(status)
-	If status = "ENROUTE" Or status = "ACCEPTD" Then
-		Return Enums.messageStatuses.sent;
-	ElsIf status = "DELETED" Or status = "REJECTD" Then
-		Return Enums.messageStatuses.notSent;
-	ElsIf status = "DELIVRD" Then
-		Return Enums.messageStatuses.delivered;
-	ElsIf status = "EXPIRED" Or status = "UNDELIV" Or status = "UNKNOWN" Then
-		Return Enums.messageStatuses.notDelivered;
+	JSONSecurity = New Structure;
+	JSONSecurity.Insert("login", XMLString(parameters.user));
+	JSONSecurity.Insert("password", XMLString(parameters.password));
+
+	MessageIdArray = New Array;
+	MessageIdArray.Add(parameters.id);
+
+	JSONValue = New Structure;
+	JSONValue.Insert("security", JSONSecurity);
+	JSONValue.Insert("type", XMLString("state"));
+	JSONValue.Insert("get_state", MessageIdArray);
+
+	JSONWriter = New JSONWriter;
+	JSONWriter.SetString();
+	WriteJSON(JSONWriter, JSONValue);
+
+	JSONString = JSONWriter.Закрыть();
+
+	ssl = ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined);
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , 60, ssl);
+
+	Headers = New Map;
+	Headers.insert("Content-Type", "application/json; charset=utf-8");
+
+	requestHTTP = New HTTPRequest("/sendsmsjson.php", Headers);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+
+	answerBody = ConnectionHTTP.Post(requestHTTP);
+
+	If answerBody.StatusCode = 200 Then
+
+		JSONReader = Новый JSONReader;
+		JSONReader.SetString(answerBody.GetBodyAsString());
+		JSONStructure = ReadJSON(JSONReader);
+		JSONReader.Закрыть();
+
+		If JSONStructure.Свойство("state") Then
+			AnswerStructure = JSONStructure.state[0];
+
+			If AnswerStructure.state = "deliver" Then
+				answer.Insert("messageStatus", Enums.messageStatuses.delivered);
+			Else
+				answer.Insert("error", AnswerStructure.state);
+			EndIf;
+
+		ElsIf JSONStructure.Свойство("error") Then
+			answer.Insert("error", JSONStructure.error);
+		EndIf;
+
 	Else
-		Return status;
-	EndIf;
+		answer.Insert("error", "Сбой при отрправке Messages 500 Internal Error");
+	Endif;
+
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+
+	Return answer;
 EndFunction
