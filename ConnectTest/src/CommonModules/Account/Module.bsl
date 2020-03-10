@@ -12,7 +12,8 @@ Function getFromExternalSystem(val parameters, val parametrName,
 		val parametrValue, val account = Undefined) Export
 	
 	parametersNew = Service.getStructCopy(parameters);
-	parametersNew.Insert("requestName", "userProfile");
+	parametersNew.Insert("requestName", "userProfileBack");
+	parametersNew.Insert("internalRequestMethod", True);
 	parametersNew.requestStruct.Insert(parametrName, parametrValue);
 	
 	tokenContext = parametersNew.tokenContext;	

@@ -119,7 +119,7 @@ Procedure updateCache(val parameters) Export
 			record.user = tokenContext.user;
 			record.appType = tokenContext.appType;
 			record.cacheValuesType = select.cacheValuesType;
-			If parameters.errorDescription.result = "" Then
+			If parameters.error = "" Then
 				record.stateValue = StrReplace(parameters.answerBody, Chars.NBSp, "");
 			Else				
 				record.stateValue = HTTP.encodeJSON(HTTP.decodeJSON("", select.cacheDefaultValueType))
