@@ -53,7 +53,7 @@ Function sendSMS(parameters, answer) Export
 			If AnswerStructure.Свойство("error") Then
 				answer.Insert("error", AnswerStructure.error);
 			ElsIf AnswerStructure.Свойство("id_sms") Then
-				answer.Insert("id", AnswerStructure.id_sms);
+				answer.Insert("id", StrReplace(AnswerStructure.id_sms, " ",""));
 				answer.Insert("messageStatus", Enums.messageStatuses.sent);
 			EndIf;
 		ElsIf JSONStructure.Свойство("error") Then
