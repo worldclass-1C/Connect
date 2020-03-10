@@ -105,6 +105,7 @@
   <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
   <commonModules>CommonModule.SmsMtsCommunicator</commonModules>
+  <commonModules>CommonModule.SmsPronto</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>

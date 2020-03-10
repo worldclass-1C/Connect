@@ -61,6 +61,13 @@
       <value>MTSComminicator</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="407f2cc5-e365-4312-ad88-11cb7959a06b">
+    <name>Prontosms</name>
+    <synonym>
+      <key>ru</key>
+      <value>Prontosms</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="2d014166-8ff4-4064-b9f1-95335f8909e8">
     <name>Rapporto</name>
     <synonym>

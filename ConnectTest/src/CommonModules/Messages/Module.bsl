@@ -143,6 +143,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsIDigital.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
 		answer = SmsMtsCommunicator.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
+		answer = SmsPronto.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -213,6 +215,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsGold.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
 		answer = SmsMtsCommunicator.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
+		answer = SmsPronto.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;
