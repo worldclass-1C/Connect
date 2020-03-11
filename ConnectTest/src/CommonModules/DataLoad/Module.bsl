@@ -59,6 +59,7 @@ Function isUploadRequest(requestName) Export
 		Or requestName = "addtags"
 		Or requestName = "addcancelcauses"
 		Or requestName = "synchronization"
+		Or requestName = "addcache"
 	Then
 		Return True;	
 	Else
@@ -99,7 +100,9 @@ Function attributesStructure(val requestName)
 	ElsIf requestName = "addproducts" Then
 		Return Catalogs.products.attributesStructure();
 	ElsIf requestName = "addrooms" Then
-		Return Catalogs.rooms.attributesStructure();			
+		Return Catalogs.rooms.attributesStructure();
+	ElsIf requestName = "addcache" Then
+		Return Catalogs.cacheInformations.attributesStructure();
 	Else
 		Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "", "", "", getValueTable(), getValueTable(), New Structure());
 	EndIf;	 
@@ -163,8 +166,10 @@ Procedure fillRef(object, attribute, attributesStruct, requestParameter)
 			object[attribute.key] = Catalogs[refProperty.key].FindByCode(requestParameter[attribute.value][refProperty.value]);
 		ElsIf refProperty.key = "segments" Then
 			object[attribute.key] = Catalogs[refProperty.key].FindByDescription(requestParameter[attribute.value][refProperty.value]);				
+		ElsIf refProperty.key = "_complex" Then
+			object[attribute.key] = Catalogs[requestParameter[attribute.value].type].GetRef(New UUID(requestParameter[attribute.value].uid));
 		Else
-			object[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));			
+			object[attribute.key] = Catalogs[refProperty.key].GetRef(New UUID(requestParameter[attribute.value][refProperty.value]));
 		EndIf;
 	EndDo;	
 EndProcedure

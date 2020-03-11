@@ -693,6 +693,7 @@ Procedure executeExternalRequest(parameters)
 				Else
 					DoInternalProcedures(parameters);
 				EndIf;
+				parameters.Insert("statusCode", statusCode);
 			EndIf;
 		EndIf;		
 	EndIf;

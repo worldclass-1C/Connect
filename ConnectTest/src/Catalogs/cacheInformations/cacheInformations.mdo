@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="85193d97-86d4-4d93-9b55-4f2bcf27ec55">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="85193d97-86d4-4d93-9b55-4f2bcf27ec55">
   <producedTypes>
     <objectType typeId="a2a9f5d9-f943-4c58-a492-bf1564c2f9a2" valueTypeId="b261445d-4c6f-444b-8403-45ef02ecc896"/>
     <refType typeId="619f0028-4da5-4c99-823b-27c2deaf4441" valueTypeId="8d4024cd-4094-4e68-838f-fd74406aa512"/>
@@ -43,6 +43,9 @@
     <type>
       <types>CatalogRef.cacheTypes</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -59,6 +62,9 @@
     <type>
       <types>CatalogRef.chains</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -76,6 +82,11 @@
       <types>String</types>
       <stringQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -93,6 +104,9 @@
       <types>Date</types>
       <dateQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -110,6 +124,9 @@
       <types>Date</types>
       <dateQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -126,9 +143,61 @@
     <type>
       <types>CatalogRef.users</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="2edc061e-5f41-49ce-b72e-4f8182751804">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="d5b26334-057e-429d-85cc-a61eb8fa8094">
+    <producedTypes>
+      <objectType typeId="269bc537-f8d5-485e-b48d-0d2906486dcb" valueTypeId="04f19862-8036-49f0-8e59-0ae7f3414335"/>
+      <rowType typeId="941e06cb-9c8e-45ad-8d21-6309cd0cb442" valueTypeId="267923f8-1772-41de-9999-0c52d6afd525"/>
+    </producedTypes>
+    <name>Descriptions</name>
+    <synonym>
+      <key>en</key>
+      <value>Descriptions</value>
+    </synonym>
+    <attributes uuid="b8af13ac-4cf1-4382-b1b1-1ee1dbe8b2de">
+      <name>Description</name>
+      <synonym>
+        <key>en</key>
+        <value>Description</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.products</types>
+        <types>CatalogRef.employees</types>
+        <types>CatalogRef.cacheInformations</types>
+        <types>CatalogRef.rooms</types>
+        <types>CatalogRef.gyms</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <forms uuid="84a07562-2f09-4c5a-a64a-db7abfc596f6">
     <name>ItemForm</name>
     <synonym>
