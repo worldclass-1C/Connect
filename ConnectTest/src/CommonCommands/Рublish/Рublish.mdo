@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="546a51ea-bb62-424c-a26d-ccc24e4c3834">
+  <name>Рublish</name>
+  <synonym>
+    <key>en</key>
+    <value>Рublish</value>
+  </synonym>
+  <group>FormCommandBarImportant</group>
+  <commandParameterType>
+    <types>CatalogRef.chains</types>
+    <types>CatalogRef.cacheTypes</types>
+  </commandParameterType>
+  <representation>Auto</representation>
+  <shortcut></shortcut>
+</mdclass:CommonCommand>
