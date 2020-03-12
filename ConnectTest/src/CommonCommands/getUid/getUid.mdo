@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e404622f-b2d0-4dc3-ab6d-9923349d6c88">
-  <name>uid</name>
+  <name>getUid</name>
+  <synonym>
+    <key>en</key>
+    <value>Get uid</value>
+  </synonym>
   <synonym>
     <key>ru</key>
-    <value>uid</value>
+    <value>Получить ГУИД</value>
   </synonym>
   <group>FormCommandBarImportant</group>
   <commandParameterType>
@@ -17,6 +21,9 @@
     <types>CatalogRef.classesSchedule</types>
     <types>CatalogRef.creditCards</types>
     <types>CatalogRef.acquiringOrders</types>
+    <types>CatalogRef.rooms</types>
+    <types>CatalogRef.products</types>
+    <types>CatalogRef.tags</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>

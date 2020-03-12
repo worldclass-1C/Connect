@@ -100,6 +100,7 @@
   <commonModules>CommonModule.Jobs</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
   <commonModules>CommonModule.Service</commonModules>
+  <commonModules>CommonModule.ServiceClient</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
   <commonModules>CommonModule.SmsIDigital</commonModules>
@@ -127,8 +128,9 @@
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <scheduledJobs>ScheduledJob.clearHistory</scheduledJobs>
-  <commonCommands>CommonCommand.uid</commonCommands>
+  <commonCommands>CommonCommand.getUid</commonCommands>
   <commonCommands>CommonCommand.Рublish</commonCommands>
+  <commonCommands>CommonCommand.findByUid</commonCommands>
   <constants>Constant.BaseImgURL</constants>
   <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>

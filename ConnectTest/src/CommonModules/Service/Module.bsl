@@ -185,6 +185,10 @@ Function getStructCopy(val struct) Export
 	Return structNew;
 EndFunction
 
+Function getRef(uid, typeOfObject) Export	
+	Return XMLValue(typeOfObject, uid);		
+EndFunction
+
 Procedure logRequestBackground(parameters) Export
 	array	= New Array();
 	array.Add(parameters);
