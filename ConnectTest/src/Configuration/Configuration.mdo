@@ -126,7 +126,8 @@
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <scheduledJobs>ScheduledJob.clearHistory</scheduledJobs>
-  <commonCommands>CommonCommand.uid</commonCommands>
+  <commonCommands>CommonCommand.getUid</commonCommands>
+  <commonCommands>CommonCommand.findByUid</commonCommands>
   <constants>Constant.BaseImgURL</constants>
   <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>

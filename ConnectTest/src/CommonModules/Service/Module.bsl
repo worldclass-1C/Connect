@@ -185,8 +185,8 @@ Function getStructCopy(val struct) Export
 	Return structNew;
 EndFunction
 
-Function getRef(ref) Export	
-	Return XMLValue(Type("CatalogRef.gyms"), ref);		
+Function getRef(uid, typeOfObject) Export	
+	Return XMLValue(typeOfObject, uid);		
 EndFunction
 
 Procedure logRequestBackground(parameters) Export

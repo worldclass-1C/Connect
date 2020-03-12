@@ -6,6 +6,6 @@ Function getCaption() Export
 	Return StrConcat(array, "; ");	
 EndFunction
 
-Function getRef(ref) Export	
-	Return Service.getRef(ref);		
+Function getRef(uid, typeOfObject) Export	
+	Return Service.getRef(uid, typeOfObject);		
 EndFunction

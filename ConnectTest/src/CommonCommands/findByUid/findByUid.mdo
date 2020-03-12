@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="de341565-040f-492c-91dc-c397abceae53">
+  <name>findByUid</name>
+  <synonym>
+    <key>en</key>
+    <value>Find by uid</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Найти по ГУИД</value>
+  </synonym>
+  <group>FormCommandBarImportant</group>
+  <commandParameterType>
+    <types>CatalogRef.users</types>
+    <types>CatalogRef.gyms</types>
+    <types>CatalogRef.classesSchedule</types>
+    <types>CatalogRef.employees</types>
+    <types>CatalogRef.products</types>
+    <types>CatalogRef.rooms</types>
+    <types>CatalogRef.tags</types>
+    <types>CatalogRef.accounts</types>
+    <types>CatalogRef.acquiringOrders</types>
+    <types>CatalogRef.creditCards</types>
+    <types>CatalogRef.tokens</types>
+  </commandParameterType>
+  <representation>Auto</representation>
+</mdclass:CommonCommand>
