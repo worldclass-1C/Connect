@@ -269,6 +269,10 @@ from
 								<v8:lang>ru</v8:lang>
 								<v8:content>Сеансов пользователей</v8:content>
 							</v8:item>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Сеансов пользователей</v8:content>
+							</v8:item>
 						</dcscor:value>
 					</dcscor:item>
 				</dcsset:outputParameters>
@@ -335,6 +339,10 @@ from
 						<dcscor:value xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
+								<v8:content>Активных пользователей</v8:content>
+							</v8:item>
+							<v8:item>
+								<v8:lang>en</v8:lang>
 								<v8:content>Активных пользователей</v8:content>
 							</v8:item>
 						</dcscor:value>
@@ -405,6 +413,10 @@ from
 								<v8:lang>ru</v8:lang>
 								<v8:content>Уникальных пользователей</v8:content>
 							</v8:item>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Уникальных пользователей</v8:content>
+							</v8:item>
 						</dcscor:value>
 					</dcscor:item>
 				</dcsset:outputParameters>
@@ -471,6 +483,10 @@ from
 						<dcscor:value xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
+								<v8:content>Регистрация пользователей</v8:content>
+							</v8:item>
+							<v8:item>
+								<v8:lang>en</v8:lang>
 								<v8:content>Регистрация пользователей</v8:content>
 							</v8:item>
 						</dcscor:value>
