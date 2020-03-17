@@ -407,10 +407,10 @@ Procedure checkOrder(parameters, additionalParameters)
 		EndIf;
 	EndIf;
 	If parameters.errorCode = "" Then
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 			activateCard(parameters);
 		EndIf;
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
 	ElsIf parameters.errorCode = "rejected" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected); 	
 	EndIf;
