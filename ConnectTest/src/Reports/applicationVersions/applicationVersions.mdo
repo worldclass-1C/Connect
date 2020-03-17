@@ -15,10 +15,10 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <mainDataCompositionSchema>Report.applicationVersions.Template.ОсновнаяСхемаКомпоновкиДанных</mainDataCompositionSchema>
-  <templates uuid="0e1cd1a0-4dac-409d-bf24-962957cdc425">
+  <templates uuid="6403ba93-b131-4de0-bd10-d794a05a6180">
     <name>ОсновнаяСхемаКомпоновкиДанных</name>
     <synonym>
-      <key>ru</key>
+      <key>en</key>
       <value>Основная схема компоновки данных</value>
     </synonym>
     <templateType>DataCompositionSchema</templateType>
