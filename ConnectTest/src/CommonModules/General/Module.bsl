@@ -524,7 +524,7 @@ Procedure readNotification(parameters)
 //	Else
 //		unReadMessagesCount = 0;
 //	EndIf;
-
+unReadMessagesCount = 0;
 	struct.Insert("result", "Ok");
 	struct.Insert("quantity", unReadMessagesCount);
 	
