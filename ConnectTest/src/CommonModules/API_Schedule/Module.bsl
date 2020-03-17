@@ -262,6 +262,8 @@ Procedure gymSchedule(parameters) Export
 
 		classesScheduleStruct.Insert("docId", XMLString(select.doc));
 		classesScheduleStruct.Insert("date", XMLString(select.period));
+		classesScheduleStruct.Insert("startDate", XMLString(select.period));
+		classesScheduleStruct.Insert("endDate", XMLString(select.period + select.duration * 60));
 		classesScheduleStruct.Insert("isPreBooked", select.isPreBooked);
 		classesScheduleStruct.Insert("isPrePaid", select.isPrePaid);
 		classesScheduleStruct.Insert("onlyWithParents", select.onlyWithParents);

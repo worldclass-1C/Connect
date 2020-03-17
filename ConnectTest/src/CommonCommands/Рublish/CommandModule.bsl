@@ -20,7 +20,7 @@ Function CollectData(Data,arrHolding)
 	If ValueIsFilled(Data) Then
 		N = "";
 		If TypeOf(Data)=Type("CatalogRef.chains") Then
-			N = "СетиКлубов";
+			N = "chains";
 			arrHolding.Add(Data.holding);
 		ElsIf TypeOf(Data)=Type("CatalogRef.cacheTypes") Then
 			N = "ИменаКэша";
