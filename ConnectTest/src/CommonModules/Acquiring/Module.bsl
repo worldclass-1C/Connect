@@ -412,7 +412,9 @@ Procedure checkOrder(parameters, additionalParameters)
 		EndIf;
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
 	ElsIf parameters.errorCode = "rejected" Then
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected); 	
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
+	ElsIf parameters.errorCode = "send"  Then
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send); 	
 	EndIf;
 EndProcedure
 
