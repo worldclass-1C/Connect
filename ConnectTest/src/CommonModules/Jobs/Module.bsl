@@ -39,7 +39,12 @@ EndProcedure
 Procedure CheckAcquiringStatus() Export
 	OrdersToCheck = GetOrdersToCheck();
 	While OrdersToCheck.Next() Do
-		response = Acquiring.executeRequest("check", OrdersToCheck.order);
+		If OrdersToCheck.order.acquiringRequest = enums.acquiringRequests.applePay
+		or OrdersToCheck.order.acquiringRequest = enums.acquiringRequests.googlePay then
+			response = Undefined;
+		else
+			response = Acquiring.executeRequest("check", OrdersToCheck.order);
+		EndIf;
 		If response = Undefined Then
 			  Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);		
 		Else
