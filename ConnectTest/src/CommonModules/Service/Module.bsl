@@ -401,8 +401,7 @@ Procedure CheckTokenValid() Export
 			pushStruct.Insert("systemType", select.systemType);
 			pushStruct.Insert("certificate", select.certificate);
 			pushStruct.Insert("token", select.token);
-			pushStruct.Insert("informationChannel", "");
-		    pushStruct.Insert("message", Catalogs.messages.EmptyRef());
+			pushStruct.Insert("informationChannel", "");		    
 		    pushStatus = Messages.sendPush(pushStruct);
 		    If pushStatus <> Enums.messageStatuses.sent Then
 		    	Token.block(select.token);
