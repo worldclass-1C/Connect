@@ -487,6 +487,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		LEFT JOIN Catalog.tokens AS tokens
 	|		ON messages.Ref.user = tokens.user
 	|		AND messages.Ref.token <> tokens.Ref
+	|		AND tokens.appType = &appType
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
