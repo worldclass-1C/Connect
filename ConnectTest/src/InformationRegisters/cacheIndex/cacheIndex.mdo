@@ -82,6 +82,7 @@
     <type>
       <types>CatalogRef.cacheInformations</types>
     </type>
+    <denyIncompleteValues>true</denyIncompleteValues>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </dimensions>
