@@ -394,38 +394,55 @@ Procedure notificationList(parameters) Export
 
 	array = New Array();
 
-	registrationDate = ToUniversalTime(?(requestStruct.date = "", CurrentDate(), XMLValue(Type("Date"), requestStruct.date)));
+	If requestStruct.Property("date") And requestStruct.date <> "" Then
+		registrationDate = ToUniversalTime(XMLValue(Type("Date"), requestStruct.date));
+	Else
+		registrationDate = ToUniversalTime(CurrentDate());
+	EndIf;
 	
 	query = New Query();
-	query.text	= "SELECT TOP 20
-	|	pushStatusBalanceAndTurnovers.user,
-	|	pushStatusBalanceAndTurnovers.message,
-	|	pushStatusBalanceAndTurnovers.amountExpense
-	|INTO TTMessages
+	query.text	= "SELECT TOP 50	
+	|	pushStatusBalanceAndTurnovers.message AS message,	
+	|	pushStatusBalanceAndTurnovers.message.objectId AS objectId,
+	|	pushStatusBalanceAndTurnovers.message.objectType AS objectType,
+	|	pushStatusBalanceAndTurnovers.message.registrationDate AS registrationDate,
+	|	pushStatusBalanceAndTurnovers.message.text AS text,
+	|	pushStatusBalanceAndTurnovers.message.title AS title,
+	|	pushStatusBalanceAndTurnovers.amountReceipt AS amountReceipt
+	|INTO TT
 	|FROM
-	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Record,, user = &user
-	|	AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
+	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(
+	|			,
+	|			&eOfPeriod,
+	|			Record,
+	|			,
+	|			user = &user
+	|				AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
+	|
 	|ORDER BY
 	|	pushStatusBalanceAndTurnovers.Period DESC
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	messages.Ref AS message,
-	|	messages.objectId AS objectId,
-	|	messages.objectType AS objectType,
-	|	messages.registrationDate AS registrationDate,
-	|	messages.text AS text,
-	|	messages.title AS title,
+	|SELECT	
+	|	TT.message AS message,	
+	|	TT.objectId AS objectId,
+	|	TT.objectType AS objectType,
+	|	TT.registrationDate AS registrationDate,
+	|	TT.text AS text,
+	|	TT.title AS title,
 	|	CASE
-	|		WHEN TTMessages.amountExpense > 0
+	|		WHEN pushStatusBalance.amountBalance IS NULL
 	|			THEN TRUE
 	|		ELSE FALSE
 	|	END AS read
 	|FROM
-	|	TTMessages AS TTMessages
-	|		INNER JOIN Catalog.messages AS messages
-	|		ON TTMessages.message = messages.Ref";
+	|	TT AS TT
+	|		LEFT JOIN AccumulationRegister.pushStatus.Balance AS pushStatusBalance
+	|		ON (pushStatusBalance.user = &user)
+	|			AND (TT.message = pushStatusBalance.message)
+	|			AND (pushStatusBalance.informationChannel = &informationChannel)";
+	
 	query.SetParameter("eOfPeriod", registrationDate);
 	query.SetParameter("user", tokenContext.user);
 	query.SetParameter("informationChannel", ?(tokenContext.appType = enums.appTypes.Customer, 
@@ -433,54 +450,6 @@ Procedure notificationList(parameters) Export
    																						?(tokenContext.appType = enums.appTypes.Employee, 
    																							enums.informationChannels.pushEmployee, 
    																								enums.informationChannels.EmptyRef())));
-//	query = New Query();
-//	query.text	= "SELECT TOP 20
-//	|	messages.Ref AS message,
-//	|	messages.registrationDate AS registrationDate,
-//	|	messages.title,
-//	|	messages.text,
-//	|	messages.objectId,
-//	|	messages.objectType
-//	|INTO TT_messages
-//	|FROM
-//	|	Catalog.messages AS messages
-//	|WHERE
-//	|	messages.user = &user
-//	|	AND messages.registrationDate < &registrationDate
-//	|	AND messages.appType = &appType
-//	|ORDER BY
-//	|	registrationDate DESC
-//	|;
-//	|////////////////////////////////////////////////////////////////////////////////
-//	|SELECT
-//	|	TT_messages.message,
-//	|	TT_messages.registrationDate AS registrationDate,
-//	|	TT_messages.title,
-//	|	TT_messages.text,
-//	|	TT_messages.objectId,
-//	|	TT_messages.objectType,
-//	|	MAX(CASE
-//	|		WHEN messagesLogsSliceLast.messageStatus = VALUE(Enum.messageStatuses.read)
-//	|			THEN TRUE
-//	|		ELSE FALSE
-//	|	END) AS read
-//	|FROM
-//	|	TT_messages AS TT_messages
-//	|		LEFT JOIN InformationRegister.messagesLogs.SliceLast AS messagesLogsSliceLast
-//	|		ON TT_messages.message = messagesLogsSliceLast.message
-//	|GROUP BY
-//	|	TT_messages.message,
-//	|	TT_messages.registrationDate,
-//	|	TT_messages.title,
-//	|	TT_messages.text,
-//	|	TT_messages.objectId,
-//	|	TT_messages.objectType
-//	|ORDER BY
-//	|	registrationDate DESC";
-//
-//	query.SetParameter("registrationDate", registrationDate);
-//	query.SetParameter("user", tokenContext.user);
-//	query.SetParameter("appType", tokenContext.appType);
 
 	select = query.Execute().Select();
 	While select.Next() Do
