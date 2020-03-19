@@ -532,8 +532,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TTunread";
 
-	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);
-	query.SetParameter("holding", holding);
+	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);	
 	query.SetParameter("informationChannel", informationChannel);
 
 	If informationChannel = Enums.informationChannels.pushEmployee Then
@@ -542,7 +541,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 		query.SetParameter("appType", Enums.appTypes.Customer);
 	EndIf;
 
-	selectMessage = query.Execute().Select();
+	selectMessage = query.Execute().Select(QueryResultIteration.ByGroups);
 
 	While selectMessage.Next() Do		
 		pushStatus = enums.messageStatuses.notSent;
