@@ -110,15 +110,7 @@ Function sendPush(parameters) Export
 		EndIf;
 				
 	EndIf;
-				  	
-	If Not parameters.message.isEmpty() Then		
-		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToSend, parameters.message);
-		logMassage(parameters.message, parameters.informationChannel, pushStatus, "", ToUniversalTime(CurrentDate()), parameters.token);
-		If pushStatus = Enums.messageStatuses.notSent Then
-			useNextInformationChannel(parameters.message, parameters.informationChannel);
-		EndIf;
-	EndIf;
-	
+		
 	Return pushStatus; 
 	
 EndFunction
@@ -528,6 +520,9 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT AS TT
 	|		LEFT JOIN TTunread AS TTunread
 	|		ON TTunread.user = TT.user
+	|TOTALS
+	|BY
+	|	message
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -547,15 +542,20 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 		query.SetParameter("appType", Enums.appTypes.Customer);
 	EndIf;
 
-	selection = query.Execute().Select();
+	selectMessage = query.Execute().Select();
 
-	While selection.Next() Do
-		If selection.deviceToken = "" Then
-			ExchangePlans.DeleteChangeRecords(selection.nodeMessagesToSend, selection.message);
-			useNextInformationChannel(selection.message, selection.informationChannel);
-			logMassage(selection.message, selection.informationChannel, Enums.messageStatuses.notSent, "", ToUniversalTime(CurrentDate()), selection.token);
-		Else
-			Messages.sendPush(selection);
+	While selectMessage.Next() Do		
+		pushStatus = enums.messageStatuses.notSent;
+		selectDevice = selectMessage.Select();
+		While selectDevice.Next() Do
+			If selectDevice.deviceToken <> "" And Messages.sendPush(selectDevice) = enums.messageStatuses.sent Then
+				pushStatus = enums.messageStatuses.sent;
+			EndIf;
+		EndDo;		
+		ExchangePlans.DeleteChangeRecords(nodeMessagesToSend, selectMessage.message);
+		logMassage(selectMessage.message, informationChannel, pushStatus, "", ToUniversalTime(CurrentDate()));		
+		If pushStatus = enums.messageStatuses.notSent Then			
+			useNextInformationChannel(selectMessage.message, informationChannel);
 		EndIf;
 	EndDo;
 
