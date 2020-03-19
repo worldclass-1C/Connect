@@ -143,8 +143,9 @@ EndFunction
 
 Function prepareResponse(parameters) Export
 	response = New HTTPServiceResponse(parameters.statusCode);
-	If parameters.error = "system" Then		
-		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));		
+	If parameters.error = "system" Then	
+		Texts = String(parameters.requestName)+chars.LF+parameters.requestBody+chars.LF+parameters.statusCode+chars.LF+parameters.answerBody;	
+		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error,,Texts)));		
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
 	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");

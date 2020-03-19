@@ -52,7 +52,8 @@ Procedure processOrder(parameters, additionalParameters) Export
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, select.state);
 			parameters.Insert("errorCode", parametersNew.error);
-			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
+			Texts = String(parametersNew.requestName)+chars.LF+parametersNew.requestBody+chars.LF+parametersNew.statusCode+chars.LF+parametersNew.answerBody;
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error,,Texts));	
 		EndIf;		
 	EndIf;	
 	
@@ -96,7 +97,8 @@ Procedure bindCard(parameters, additionalParameters) Export
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
 			parameters.Insert("errorCode", parametersNew.error);
-			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
+			Texts = String(parametersNew.requestName)+chars.LF+parametersNew.requestBody+chars.LF+parametersNew.statusCode+chars.LF+parametersNew.answerBody;
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error,,Texts));	
 		EndIf;
 	EndIf;	
 EndProcedure
@@ -115,7 +117,8 @@ Procedure unBindCard(parameters, additionalParameters) Export
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
 			parameters.Insert("errorCode", parametersNew.error);
-			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error));	
+			Texts = String(parametersNew.requestName)+chars.LF+parametersNew.requestBody+chars.LF+parametersNew.statusCode+chars.LF+parametersNew.answerBody;
+			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error,,Texts));	
 		EndIf;	
 	EndIf;
 	

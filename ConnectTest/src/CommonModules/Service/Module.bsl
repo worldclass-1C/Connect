@@ -1,11 +1,13 @@
 Function getErrorDescription(language, erroeCode = "",
-		description = "") Export
+		description = "", Texts) Export
 
 	errorDescription = New Structure("result, description", erroeCode, description);
 
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
-		|	errorDescriptionstranslation.description
+		|	errorDescriptionstranslation.description,
+		|	errorDescriptions.mailRecipients.(
+		|		Mail)
 		|FROM
 		|	Catalog.errorDescriptions AS errorDescriptions
 		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
@@ -17,7 +19,9 @@ Function getErrorDescription(language, erroeCode = "",
 		|UNION ALL
 		|
 		|SELECT
-		|	errorDescriptionstranslation.description
+		|	errorDescriptionstranslation.description,
+		|	errorDescriptions.mailRecipients.(
+		|		Mail)
 		|FROM
 		|	Catalog.errorDescriptions AS errorDescriptions
 		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
@@ -30,13 +34,23 @@ Function getErrorDescription(language, erroeCode = "",
 		query.SetParameter("language", language);
 		select = query.Execute().Select();
 		select.Next();
-		errorDescription.Insert("description", select.description);		
-
+		errorDescription.Insert("description", select.description);	
+		Mails = select.mailRecipients.Unload();	
+		If Mails.Count()>0 then
+			SendServiceMailBackground(Texts,Mails.UnloadColumn("Mail"));
+		EndIf;
 	EndIf;
 
 	Return errorDescription;
 
 EndFunction
+
+Procedure SendServiceMailBackground(Texts, MailArray) Export
+	array	= New Array();
+	array.Add(Texts);
+	array.Add(MailArray);
+	BackgroundJobs.Execute("General.SendServiceMail", array, New UUID());
+EndProcedure
 
 Function getRecorder(day, reportPeriod)
 

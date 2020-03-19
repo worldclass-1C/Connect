@@ -116,7 +116,8 @@ Procedure executeRequestMethodEnd(parameters, synch = False) Export
 			parameters.Insert("statusCode", 403);			
 		EndIf;
 		If parameters.error <> "system" Then
-			parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));
+			Texts = String(parameters.requestName)+chars.LF+parameters.requestBody+chars.LF+parameters.statusCode+chars.LF+parameters.answerBody;
+			parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error,,Texts)));
 		EndIf
 	EndIf;	
 	If Not synch Then
@@ -831,3 +832,50 @@ Procedure writeClassMember(parameters)
 		EndIf;
 	EndIf;
 endprocedure
+
+Procedure SendMale(parameters) Export
+	MailMessage = NewMail(parameters.MailFrom, parameters.MailTo, parameters.Subject, parameters.Texts, parameters.Attachments);
+	MailProfile = GetNewMailProfile();
+	Mail = New InternetMail;
+	Try
+		Mail.Logon(MailProfile);
+		Mail.Send(MailMessage);
+		Mail.Logoff();
+	Except
+		// TODO:
+	EndTry;
+EndProcedure
+
+Function NewMail(MailFrom, MailTo, Subject, Texts, Attachments)
+	NewMail = New InternetMailMessage;
+	NewMail.From.Address = MailFrom;
+	For each Mail in MailTo do
+		NewMail.To.add(Mail);
+	EndDo;
+	NewMail.Subject = Subject;
+	NewMail.Texts.Add(Texts);
+	If not Attachments = Undefined then
+		for each Attachment In Attachments do
+			NewMail.Attachments.Add(Attachment.File, Attachment.Name)
+		EndDo;
+	EndIf;
+	return NewMail;
+EndFunction
+
+Function GetNewMailProfile()
+	MailProfile = New InternetMailProfile;
+	MailProfile.SMTPServerAddress = "cas.wcfc.local";
+	MailProfile.SMTPAuthentication = SMTPAuthenticationMode.None;
+	MailProfile.SMTPPort = 25;
+	return MailProfile;
+EndFunction
+
+Procedure SendServiceMail(Texts, MailArray) Export
+	Parameters = New Structure;
+	Parameters.Insert("MailFrom","1c_kpo@wclass.ru");
+	Parameters.Insert("MailTo", MailArray);
+	Parameters.Insert("Attachments", Undefined);
+	Parameters.Insert("Subject", "Ошибка коннект");
+	Parameters.Insert("Texts", Texts);	
+	SendMale(Parameters);
+EndProcedure
