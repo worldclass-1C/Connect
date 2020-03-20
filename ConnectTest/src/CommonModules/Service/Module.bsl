@@ -201,7 +201,7 @@ EndFunction
 
 Function getRef(uid, typeOfObject, arrayValues = Undefined) Export
 	If not arrayValues = Undefined Then
-		If arrayValues.Find(uid) Then	
+		If not arrayValues.Find(uid) = Undefined Then	
 			Return XMLValue(typeOfObject, uid);	
 		Else
 				Return Undefined;
