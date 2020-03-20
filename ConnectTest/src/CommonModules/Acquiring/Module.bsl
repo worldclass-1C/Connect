@@ -240,7 +240,16 @@ Function orderDetails(order)
 	|			THEN gymConnection.connection.UseOSAuthentication
 	|		ELSE holdingConnection.connection.UseOSAuthentication
 	|	END AS UseOSAuthentication,
-	|	"""" AS errorDescription
+	|	"""" AS errorDescription,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection.merchantPay
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection.merchantPay
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection.merchantPay
+	|		ELSE holdingConnection.connection.merchantPay
+	|	END AS merchantPay
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -302,6 +311,7 @@ Function answerStruct()
 	answer.Insert("port", 0);
 	answer.Insert("user", "");
 	answer.Insert("password", "");
+	answer.Insert("merchantPay", "");
 	answer.Insert("timeout", 0);
 	answer.Insert("secureConnection", False);
 	answer.Insert("UseOSAuthentication", False);
@@ -314,7 +324,8 @@ Function answerStruct()
 	Return answer;		
 EndFunction
 
-Procedure creditCardsPreparation(paymentOption, parameters) Export
+Procedure creditCardsPreparation(paymentOption, parameters, order) Export
+	orderParams = orderDetails(order);
 	For Each elementOfArray  in paymentOption do
 			If elementOfArray.Property("cards") Then 
 				If elementOfArray.cards.Count() > 0 Then
@@ -332,7 +343,7 @@ Procedure creditCardsPreparation(paymentOption, parameters) Export
 					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
 						SystemType = parameters.tokenContext.systemType;
 					EndIf;
-					If Not SystemType.IsEmpty() Then
+					If (Not SystemType.IsEmpty()) and ValueIsFilled(orderParams.merchantPay) Then
 						If SystemType = Enums.systemTypes.iOS Then
 							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
 							elementOfArray.cards.insert(0, cardStruct);
