@@ -88,7 +88,7 @@ EndProcedure
 Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 			
 	requestBody = New Structure();
-	requestBody.Insert("merchant" , parameters.user);
+	requestBody.Insert("merchant" , parameters.merchantPay);
 	//requestBody.Insert("password", parameters.password);
 	//requestBody.Insert("orderId" ,XMLString(parameters.orderId));
 	//requestBody.Insert("orderNumber" , parameters.orderNumber);
