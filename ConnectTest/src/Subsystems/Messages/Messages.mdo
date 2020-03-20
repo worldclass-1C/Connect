@@ -16,4 +16,5 @@
   <content>ExchangePlan.messagesToSend</content>
   <content>ExchangePlan.messagesToCheckStatus</content>
   <content>InformationRegister.messagesId</content>
+  <content>Document.messageLogs</content>
 </mdclass:Subsystem>
