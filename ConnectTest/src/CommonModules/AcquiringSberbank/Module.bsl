@@ -91,8 +91,8 @@ Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 	requestBody.Insert("merchant" , parameters.merchantPay);
 	//requestBody.Insert("password", parameters.password);
 	//requestBody.Insert("orderId" ,XMLString(parameters.orderId));
-	//requestBody.Insert("orderNumber" , parameters.orderNumber);
-	requestBody.Insert("orderNumber" , XMLString(parameters.order));
+	requestBody.Insert("orderNumber" , parameters.orderNumber);
+	//requestBody.Insert("orderNumber" , XMLString(parameters.order));
 	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then

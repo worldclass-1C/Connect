@@ -210,12 +210,14 @@ Procedure productList(parameters) Export
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product");
 	
-    Try
-    	productDirection =XMLValue(Type("EnumRef.productDirections"), requestStruct.direction);
-    Except
-    	productDirection = enums.productDirections.EmptyRef();
-    EndTry;
-  
+    arrayValues = New Array;
+    arrayValues.Add("fitness");
+    arrayValues.Add("spa");
+    productDirection =service.getRef(requestStruct.direction,Type("EnumRef.productDirections"), arrayValues);
+   If productDirection = Undefined then
+   	   productDirection = enums.productDirections.EmptyRef();
+   EndIf;
+     
 	query.SetParameter("productDirection", productDirection);
 	query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId));
 	query.SetParameter("language", language);
@@ -300,11 +302,11 @@ Procedure chainList(parameters) Export
 
 	query.SetParameter("language", language);
 	
-	If brand = "" or Enums.brandTypes[brand] = Enums.brandTypes.None Then
+	If brand = Undefined or brand = Enums.brandTypes.None Then
 		query.Text = StrReplace(query.Text, "AND chain.brand = &brand", "");
 		nameTogetherChain = True;
 	Else
-		query.SetParameter("brand", Enums.brandTypes[brand]);
+		query.SetParameter("brand", brand);
 		nameTogetherChain = False;
 	EndIf;
 

@@ -199,7 +199,14 @@ Function getStructCopy(val struct) Export
 	Return structNew;
 EndFunction
 
-Function getRef(uid, typeOfObject) Export	
+Function getRef(uid, typeOfObject, arrayValues = Undefined) Export
+	If not arrayValues = Undefined Then
+		If arrayValues.Find(uid) Then	
+			Return XMLValue(typeOfObject, uid);	
+		Else
+				Return Undefined;
+		EndIf;
+	EndIf;
 	Return XMLValue(typeOfObject, uid);		
 EndFunction
 
@@ -228,7 +235,7 @@ Procedure logRequest(parameters) Export
 	record.statusCode = parameters.statusCode;
 	record.isError = parameters.isError;
 	If Not parameters.internalRequestMethod Then
-		record.brand = Enums.brandTypes[parameters.brand];
+		record.brand = parameters.brand;
 		record.ipAddress = parameters.ipAddress;
 		requestBodyArray.Add("""Headers"":");
 		requestBodyArray.Add(parameters.headersJSON);
