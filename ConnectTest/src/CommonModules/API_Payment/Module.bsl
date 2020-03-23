@@ -52,11 +52,12 @@ Procedure paymentPreparation(parameters) Export
 		orderStruct.Insert("acquiringAmount", struct.paymentAmount);
 		orderStruct.Insert("orders", struct.docList);
 		orderStruct.Insert("paymentOptions", struct.paymentOptions);
+		order = Acquiring.newOrder(orderStruct);
 		//@skip-warning
-		struct.Insert("uid", XMLString(Acquiring.newOrder(orderStruct)));		
+		struct.Insert("uid", XMLString(order));		
 		//@skip-warning
 		struct.Delete("docList");
-		Acquiring.creditCardsPreparation(struct.paymentOptions, parameters);
+		Acquiring.creditCardsPreparation(struct.paymentOptions, parameters,order);
 	Else
 		struct = New Structure();				
 	EndIf;

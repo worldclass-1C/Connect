@@ -171,76 +171,121 @@ Function orderDetails(order)
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.acquiringProvider
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.acquiringProvider
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.acquiringProvider
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.acquiringProvider
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.acquiringProvider
 	|		ELSE holdingConnection.connection.acquiringProvider
 	|	END AS acquiringProvider,
 	|	ISNULL(CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.server
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.server
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.server
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.server
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.server
 	|		ELSE holdingConnection.connection.server
 	|	END, """") AS server,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.port
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.port
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.port
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.port
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.port
 	|		ELSE holdingConnection.connection.port
 	|	END AS port,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.user
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.user
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.user
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.user
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.user
 	|		ELSE holdingConnection.connection.user
 	|	END AS user,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.password
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.password
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.password
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.password
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.password
 	|		ELSE holdingConnection.connection.password
 	|	END AS password,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.timeout
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.timeout
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.timeout
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.timeout
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.timeout
 	|		ELSE holdingConnection.connection.timeout
 	|	END AS timeout,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.secureConnection
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.secureConnection
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.secureConnection
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.secureConnection
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.secureConnection
 	|		ELSE holdingConnection.connection.secureConnection
 	|	END AS secureConnection,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.UseOSAuthentication
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.UseOSAuthentication
 	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
 	|			THEN AcquiringProviderConnection.connection.UseOSAuthentication
 	|		WHEN NOT gymConnection.connection IS NULL
 	|			THEN gymConnection.connection.UseOSAuthentication
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.UseOSAuthentication
 	|		ELSE holdingConnection.connection.UseOSAuthentication
 	|	END AS UseOSAuthentication,
-	|	"""" AS errorDescription
+	|	"""" AS errorDescription,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection.merchantPay
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.merchantPay
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection.merchantPay
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection.merchantPay
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.merchantPay
+	|		ELSE holdingConnection.connection.merchantPay
+	|	END AS merchantPay
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -260,7 +305,15 @@ Function orderDetails(order)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	|		ON acquiringOrders.holding = holdingConnection.holding
 	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef),
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
+	|		ON acquiringOrders.holding = gymConnection.holding
+	|		AND acquiringOrders.gym.chain = gymConnection.chain
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
+	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym.chain = gymAcquiringProviderConnection.chain
+	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|WHERE
 	|	acquiringOrders.ref = &order
@@ -302,6 +355,7 @@ Function answerStruct()
 	answer.Insert("port", 0);
 	answer.Insert("user", "");
 	answer.Insert("password", "");
+	answer.Insert("merchantPay", "");
 	answer.Insert("timeout", 0);
 	answer.Insert("secureConnection", False);
 	answer.Insert("UseOSAuthentication", False);
@@ -314,7 +368,8 @@ Function answerStruct()
 	Return answer;		
 EndFunction
 
-Procedure creditCardsPreparation(paymentOption, parameters) Export
+Procedure creditCardsPreparation(paymentOption, parameters, order) Export
+	orderParams = orderDetails(order);
 	For Each elementOfArray  in paymentOption do
 			If elementOfArray.Property("cards") Then 
 				If elementOfArray.cards.Count() > 0 Then
@@ -332,7 +387,7 @@ Procedure creditCardsPreparation(paymentOption, parameters) Export
 					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
 						SystemType = parameters.tokenContext.systemType;
 					EndIf;
-					If Not SystemType.IsEmpty() Then
+					If (Not SystemType.IsEmpty()) and ValueIsFilled(orderParams.merchantPay) Then
 						If SystemType = Enums.systemTypes.iOS Then
 							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
 							elementOfArray.cards.insert(0, cardStruct);

@@ -160,7 +160,7 @@ Procedure config(parameters)
 	|WHERE
 	|	tokens.Ref = &token";
 
-	query.SetParameter("brand", Enums.brandTypes[parameters.brand]);
+	query.SetParameter("brand",parameters.brand);
 	query.SetParameter("appType", Enums.appTypes[requestStruct.appType]);
 	query.SetParameter("systemType", Enums.systemTypes[requestStruct.systemType]);
 	query.SetParameter("token", tokenContext.token);

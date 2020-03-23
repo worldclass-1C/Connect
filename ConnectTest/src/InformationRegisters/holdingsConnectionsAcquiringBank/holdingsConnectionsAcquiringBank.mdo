@@ -124,6 +124,19 @@
     <master>true</master>
     <mainFilter>true</mainFilter>
   </dimensions>
+  <dimensions uuid="4a0a5a43-db58-4b17-8765-a9e281fc9b1a">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
   <dimensions uuid="38dcc15f-f45b-404d-b7c9-1bd11a7e5895">
     <name>gym</name>
     <synonym>
