@@ -210,9 +210,7 @@ Procedure productList(parameters) Export
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product");
 	
-    arrayValues = New Array;
-    arrayValues.Add("fitness");
-    arrayValues.Add("spa");
+  
     productDirection =service.getRef(requestStruct.direction,Type("EnumRef.productDirections"), GetProductDirectionsArray());
    If productDirection = Undefined then
    	   productDirection = enums.productDirections.EmptyRef();
