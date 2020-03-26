@@ -9,12 +9,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
 	parameters.Insert("languageCode", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
-	arrayValues = new array;
-	arrayValues.Add("worldclass");
-	arrayValues.Add("fizkult");
-	arrayValues.Add("ufc");
-	arrayValues.Add("none");
-	parameters.Insert("brand", Service.getRef(HTTP.getRequestHeader(request, "brand"),Type("EnumRef.brandTypes"), arrayValues));
+	parameters.Insert("brand", Service.getRef(HTTP.getRequestHeader(request, "brand"),Type("EnumRef.brandTypes"), GetBrandArray()));
 	parameters.Insert("ipAddress", HTTP.getRequestHeader(request, "ClientIP"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
 	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));	
@@ -73,6 +68,11 @@ Function processRequest(request, requestName = "", synch = False) Export
 
 	Return HTTP.prepareResponse(parameters);
 
+EndFunction
+
+Function GetBrandArray()
+	brandsStr = "worldclass fizkult ufc none";
+	Return StrSplit(brandsStr, " ");
 EndFunction
 
 Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False, isXDTOSerializer = False) Export	

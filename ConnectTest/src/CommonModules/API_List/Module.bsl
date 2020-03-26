@@ -213,7 +213,7 @@ Procedure productList(parameters) Export
     arrayValues = New Array;
     arrayValues.Add("fitness");
     arrayValues.Add("spa");
-    productDirection =service.getRef(requestStruct.direction,Type("EnumRef.productDirections"), arrayValues);
+    productDirection =service.getRef(requestStruct.direction,Type("EnumRef.productDirections"), GetProductDirectionsArray());
    If productDirection = Undefined then
    	   productDirection = enums.productDirections.EmptyRef();
    EndIf;
@@ -268,6 +268,11 @@ Procedure productList(parameters) Export
 	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		
 
 EndProcedure
+
+Function GetProductDirectionsArray()
+	ProductDirections = "fitness spa";
+	Return StrSplit(ProductDirections, " ");
+EndFunction
 
 Procedure chainList(parameters) Export
 
