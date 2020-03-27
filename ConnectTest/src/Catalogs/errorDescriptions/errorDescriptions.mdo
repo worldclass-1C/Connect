@@ -108,4 +108,30 @@
     </attributes>
     <use>ForFolderAndItem</use>
   </tabularSections>
+  <tabularSections uuid="a41d7bb7-b6ce-476a-9679-8e5e14b7ac59">
+    <producedTypes>
+      <objectType typeId="87383dd8-0747-4aa4-a12b-20a03a39a4fb" valueTypeId="a65334c8-1c83-4b0c-9fe5-8f7ecb1d7264"/>
+      <rowType typeId="1da75404-c384-4ef8-b937-ec5f77454d32" valueTypeId="d4be3fcf-4e7a-48b4-973e-50ff464d0ca0"/>
+    </producedTypes>
+    <name>mailRecipients</name>
+    <synonym>
+      <key>en</key>
+      <value>Mail recipients</value>
+    </synonym>
+    <attributes uuid="79b97b75-304b-46ee-88d4-8a8723f4185e">
+      <name>Mail</name>
+      <synonym>
+        <key>en</key>
+        <value>Mail</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
 </mdclass:Catalog>

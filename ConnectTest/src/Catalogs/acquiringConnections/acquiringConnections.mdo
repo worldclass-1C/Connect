@@ -203,6 +203,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="e10d374c-0b13-44e0-86a2-25387888d396">
+    <name>merchantPay</name>
+    <synonym>
+      <key>en</key>
+      <value>Merchant pay</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="129a90d1-dd71-4bb1-afcf-5b5655649f7d">
     <name>ListForm</name>
     <synonym>

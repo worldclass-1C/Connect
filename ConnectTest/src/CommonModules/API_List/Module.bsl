@@ -210,12 +210,12 @@ Procedure productList(parameters) Export
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product");
 	
-    Try
-    	productDirection =XMLValue(Type("EnumRef.productDirections"), requestStruct.direction);
-    Except
-    	productDirection = enums.productDirections.EmptyRef();
-    EndTry;
   
+    productDirection =service.getRef(requestStruct.direction,Type("EnumRef.productDirections"), GetProductDirectionsArray());
+   If productDirection = Undefined then
+   	   productDirection = enums.productDirections.EmptyRef();
+   EndIf;
+     
 	query.SetParameter("productDirection", productDirection);
 	query.SetParameter("gym", XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId));
 	query.SetParameter("language", language);
@@ -267,6 +267,11 @@ Procedure productList(parameters) Export
 
 EndProcedure
 
+Function GetProductDirectionsArray()
+	ProductDirections = "fitness spa";
+	Return StrSplit(ProductDirections, " ");
+EndFunction
+
 Procedure chainList(parameters) Export
 
 	language = parameters.language;
@@ -300,11 +305,11 @@ Procedure chainList(parameters) Export
 
 	query.SetParameter("language", language);
 	
-	If brand = "" or Enums.brandTypes[brand] = Enums.brandTypes.None Then
+	If brand = Undefined or brand = Enums.brandTypes.None Then
 		query.Text = StrReplace(query.Text, "AND chain.brand = &brand", "");
 		nameTogetherChain = True;
 	Else
-		query.SetParameter("brand", Enums.brandTypes[brand]);
+		query.SetParameter("brand", brand);
 		nameTogetherChain = False;
 	EndIf;
 
@@ -401,31 +406,32 @@ Procedure notificationList(parameters) Export
 	EndIf;
 	
 	query = New Query();
-	query.text	= "SELECT TOP 50	
-	|	pushStatusBalanceAndTurnovers.message AS message,	
+	query.text	= "SELECT TOP 50
+	|	pushStatusBalanceAndTurnovers.message AS message,
 	|	pushStatusBalanceAndTurnovers.message.objectId AS objectId,
 	|	pushStatusBalanceAndTurnovers.message.objectType AS objectType,
 	|	pushStatusBalanceAndTurnovers.message.registrationDate AS registrationDate,
 	|	pushStatusBalanceAndTurnovers.message.text AS text,
 	|	pushStatusBalanceAndTurnovers.message.title AS title,
-	|	pushStatusBalanceAndTurnovers.amountReceipt AS amountReceipt
+	|	SUM(pushStatusBalanceAndTurnovers.amountReceipt) AS amountReceipt
 	|INTO TT
 	|FROM
-	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(
-	|			,
-	|			&eOfPeriod,
-	|			Record,
-	|			,
-	|			user = &user
-	|				AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
-	|
+	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Record,, user = &user
+	|	AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
+	|GROUP BY
+	|	pushStatusBalanceAndTurnovers.message,
+	|	pushStatusBalanceAndTurnovers.message.objectId,
+	|	pushStatusBalanceAndTurnovers.message.objectType,
+	|	pushStatusBalanceAndTurnovers.message.registrationDate,
+	|	pushStatusBalanceAndTurnovers.message.text,
+	|	pushStatusBalanceAndTurnovers.message.title,
+	|	pushStatusBalanceAndTurnovers.Period
 	|ORDER BY
 	|	pushStatusBalanceAndTurnovers.Period DESC
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT	
-	|	TT.message AS message,	
+	|SELECT
+	|	TT.message AS message,
 	|	TT.objectId AS objectId,
 	|	TT.objectType AS objectType,
 	|	TT.registrationDate AS registrationDate,
@@ -440,8 +446,8 @@ Procedure notificationList(parameters) Export
 	|	TT AS TT
 	|		LEFT JOIN AccumulationRegister.pushStatus.Balance AS pushStatusBalance
 	|		ON (pushStatusBalance.user = &user)
-	|			AND (TT.message = pushStatusBalance.message)
-	|			AND (pushStatusBalance.informationChannel = &informationChannel)";
+	|		AND (TT.message = pushStatusBalance.message)
+	|		AND (pushStatusBalance.informationChannel = &informationChannel)";
 	
 	query.SetParameter("eOfPeriod", registrationDate);
 	query.SetParameter("user", tokenContext.user);

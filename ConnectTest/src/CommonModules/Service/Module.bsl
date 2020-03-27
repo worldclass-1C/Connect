@@ -1,11 +1,13 @@
 Function getErrorDescription(language, erroeCode = "",
-		description = "") Export
+		description = "", Texts) Export
 
 	errorDescription = New Structure("result, description", erroeCode, description);
 
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
-		|	errorDescriptionstranslation.description
+		|	errorDescriptionstranslation.description,
+		|	errorDescriptions.mailRecipients.(
+		|		Mail)
 		|FROM
 		|	Catalog.errorDescriptions AS errorDescriptions
 		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
@@ -17,7 +19,9 @@ Function getErrorDescription(language, erroeCode = "",
 		|UNION ALL
 		|
 		|SELECT
-		|	errorDescriptionstranslation.description
+		|	errorDescriptionstranslation.description,
+		|	errorDescriptions.mailRecipients.(
+		|		Mail)
 		|FROM
 		|	Catalog.errorDescriptions AS errorDescriptions
 		|		LEFT JOIN Catalog.errorDescriptions.translation AS errorDescriptionstranslation
@@ -30,13 +34,23 @@ Function getErrorDescription(language, erroeCode = "",
 		query.SetParameter("language", language);
 		select = query.Execute().Select();
 		select.Next();
-		errorDescription.Insert("description", select.description);		
-
+		errorDescription.Insert("description", select.description);	
+		Mails = select.mailRecipients.Unload();	
+		If Mails.Count()>0 then
+			SendServiceMailBackground(Texts,Mails.UnloadColumn("Mail"));
+		EndIf;
 	EndIf;
 
 	Return errorDescription;
 
 EndFunction
+
+Procedure SendServiceMailBackground(Texts, MailArray) Export
+	array	= New Array();
+	array.Add(Texts);
+	array.Add(MailArray);
+	BackgroundJobs.Execute("General.SendServiceMail", array, New UUID());
+EndProcedure
 
 Function getRecorder(day, reportPeriod)
 
@@ -185,7 +199,14 @@ Function getStructCopy(val struct) Export
 	Return structNew;
 EndFunction
 
-Function getRef(uid, typeOfObject) Export	
+Function getRef(uid, typeOfObject, arrayValues = Undefined) Export
+	If not arrayValues = Undefined Then
+		If not arrayValues.Find(uid) = Undefined Then	
+			Return XMLValue(typeOfObject, uid);	
+		Else
+				Return Undefined;
+		EndIf;
+	EndIf;
 	Return XMLValue(typeOfObject, uid);		
 EndFunction
 
@@ -214,7 +235,7 @@ Procedure logRequest(parameters) Export
 	record.statusCode = parameters.statusCode;
 	record.isError = parameters.isError;
 	If Not parameters.internalRequestMethod Then
-		record.brand = Enums.brandTypes[parameters.brand];
+		record.brand = parameters.brand;
 		record.ipAddress = parameters.ipAddress;
 		requestBodyArray.Add("""Headers"":");
 		requestBodyArray.Add(parameters.headersJSON);
@@ -401,7 +422,8 @@ Procedure CheckTokenValid() Export
 			pushStruct.Insert("systemType", select.systemType);
 			pushStruct.Insert("certificate", select.certificate);
 			pushStruct.Insert("token", select.token);
-			pushStruct.Insert("informationChannel", "");		    
+			pushStruct.Insert("informationChannel", "");
+			pushStruct.Insert("message", Catalogs.messages.EmptyRef());		    
 		    pushStatus = Messages.sendPush(pushStruct);
 		    If pushStatus <> Enums.messageStatuses.sent Then
 		    	Token.block(select.token);

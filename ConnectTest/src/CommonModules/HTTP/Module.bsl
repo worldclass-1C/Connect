@@ -9,7 +9,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 	parameters.Insert("requestName", ?(requestName = "", HTTP.getRequestHeader(request, "request"), requestName));	
 	parameters.Insert("languageCode", HTTP.getRequestHeader(request, "language"));
 	parameters.Insert("language", GeneralReuse.getLanguage(parameters.languageCode));
-	parameters.Insert("brand", HTTP.getRequestHeader(request, "brand"));
+	parameters.Insert("brand", Service.getRef(HTTP.getRequestHeader(request, "brand"),Type("EnumRef.brandTypes"), GetBrandArray()));
 	parameters.Insert("ipAddress", HTTP.getRequestHeader(request, "ClientIP"));
 	parameters.Insert("authKey", HTTP.getRequestHeader(request, "auth-key"));
 	parameters.Insert("origin", HTTP.getRequestHeader(request, "origin"));	
@@ -68,6 +68,11 @@ Function processRequest(request, requestName = "", synch = False) Export
 
 	Return HTTP.prepareResponse(parameters);
 
+EndFunction
+
+Function GetBrandArray()
+	brandsStr = "worldclass fizkult ufc none";
+	Return StrSplit(brandsStr, " ");
 EndFunction
 
 Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False, isXDTOSerializer = False) Export	
@@ -143,8 +148,9 @@ EndFunction
 
 Function prepareResponse(parameters) Export
 	response = New HTTPServiceResponse(parameters.statusCode);
-	If parameters.error = "system" Then		
-		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error)));		
+	If parameters.error = "system" Then	
+		Texts = String(parameters.requestName)+chars.LF+parameters.requestBody+chars.LF+parameters.statusCode+chars.LF+parameters.answerBody;	
+		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error,,Texts)));		
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
 	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");
@@ -241,6 +247,8 @@ Function inTheWhiteList(origin) Export
 		Or origin = "https://stoplight.io" 
 		Or origin = "https://tilda.cc"
 		Or origin = "https://ufcgymrussia.ru"
+		Or origin = "https://worldclass.ru"
+		Or origin = "https://project1205002.tilda.ws"
 		Or origin = "https://localhost:55555" 
 	Then
 		Return True;

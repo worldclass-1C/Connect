@@ -88,10 +88,11 @@ EndProcedure
 Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 			
 	requestBody = New Structure();
-	requestBody.Insert("merchant" , parameters.user);
+	requestBody.Insert("merchant" , parameters.merchantPay);
 	//requestBody.Insert("password", parameters.password);
 	//requestBody.Insert("orderId" ,XMLString(parameters.orderId));
 	requestBody.Insert("orderNumber" , parameters.orderNumber);
+	//requestBody.Insert("orderNumber" , XMLString(parameters.order));
 	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
@@ -103,21 +104,22 @@ Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 		
 	requestURL = New Array();
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
-		requestURL.Add("/payment/google/payment.do");
-	ElsIf (True) Then
-		 requestURL.Add("/payment/applepay/payment.do");
+		Connection = "/payment/google/payment.do";
+	ElsIf parameters.order.acquiringRequest = enums.acquiringRequests.applePay Then
+		 Connection ="/payment/applepay/payment.do";
 	EndIf;
-	
-	//requestURL.Add(StrConcat(requestParametrs, "&"));
+	Body = HTTP.encodeJSON(requestBody);
+	requestURL.Add(Connection);
+	requestURL.Add(Body);
 	
 	URL = StrConcat(requestURL, "");
 	parameters.Insert("requestBody", URL);	
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	
 	
-	requestHTTP = New HTTPRequest(URL);
+	requestHTTP = New HTTPRequest(Connection);
 	requestHTTP.Headers.Insert("Content-Type", "application/json");
-	requestHTTP.SetBodyFromString(HTTP.encodeJSON(requestBody), TextEncoding.UTF8);
+	requestHTTP.SetBodyFromString(Body, TextEncoding.UTF8);
 	answerHTTP = ConnectionHTTP.Post(requestHTTP);
 	
 	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		

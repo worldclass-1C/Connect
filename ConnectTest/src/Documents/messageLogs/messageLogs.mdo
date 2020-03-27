@@ -20,6 +20,7 @@
   <numberType>String</numberType>
   <numberAllowedLength>Variable</numberAllowedLength>
   <defaultListForm>Document.messageLogs.Form.ListForm</defaultListForm>
+  <realTimePosting>Deny</realTimePosting>
   <registerRecords>AccumulationRegister.pushStatus</registerRecords>
   <postInPrivilegedMode>true</postInPrivilegedMode>
   <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
