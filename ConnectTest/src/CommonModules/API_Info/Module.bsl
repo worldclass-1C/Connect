@@ -424,6 +424,22 @@ Procedure userSummary(parameters) Export
 	
 EndProcedure
 
+Procedure userSummaryCache(parameters) Export
+	
+	arrTypes = New Array();
+	tps = Catalogs.cacheTypes;
+	arrTypes.Add(tps.Bonuses); arrTypes.Add(tps.Membership);
+	arrTypes.Add(tps.PersonalAccount); arrTypes.Add(tps.RentCells);
+	arrTypes.Add(tps.ServicePackages); arrTypes.Add(tps.UnpaidServices);
+
+	//без контекста chain
+	struct = Cache.GetCache(parameters,New Structure("user,cacheTypes",
+												parameters.tokenContext.user,
+												arrTypes));
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+	
+EndProcedure
+
 Procedure userCache(parameters) Export
 	
 	tokenContext = parameters.tokenContext;

@@ -28,8 +28,10 @@ Procedure executeRequestMethod(parameters) Export
 			API_Info.accountProfile(parameters);	
 		ElsIf parameters.requestName = "userprofile" Then 
 			API_Info.userProfile(parameters);
-//		ElsIf parameters.requestName = "usersummary" Then 
-//			API_Info.userSummary(parameters);
+		ElsIf parameters.requestName = "usersummarycache" Then 
+			API_Info.usersummarycache(parameters);
+		//ElsIf parameters.requestName = "usersummary" Then 
+		//	API_Info.usersummary(parameters);
 		ElsIf parameters.requestName = "usercache" Then 
 			API_Info.userCache(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"

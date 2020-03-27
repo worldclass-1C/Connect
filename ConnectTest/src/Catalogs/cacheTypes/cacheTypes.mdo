@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bc89946f-991f-4bcd-9fd8-6f75f2c09bc6">
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bc89946f-991f-4bcd-9fd8-6f75f2c09bc6">
   <producedTypes>
     <objectType typeId="ee70b01b-8724-4f55-a5a9-81aef481d01f" valueTypeId="a26091d1-d51c-49c6-9194-4ef0281262db"/>
     <refType typeId="d8add7db-981b-4bb4-b346-cd0c690ec3e2" valueTypeId="06e1e575-25b9-4580-95ac-679f46e02146"/>
@@ -32,6 +32,50 @@
   <checkUnique>true</checkUnique>
   <autonumbering>true</autonumbering>
   <defaultPresentation>AsDescription</defaultPresentation>
+  <predefined>
+    <items id="6c720d26-2f6e-4ee1-b3d4-d192aec7de10">
+      <name>PersonalAccount</name>
+      <description>Personal account</description>
+      <code xsi:type="core:StringValue">
+        <value>000000001</value>
+      </code>
+    </items>
+    <items id="7d27af24-813b-4513-abc9-298064ecc83d">
+      <name>Membership</name>
+      <description>Membership</description>
+      <code xsi:type="core:StringValue">
+        <value>000000002</value>
+      </code>
+    </items>
+    <items id="ba4be5c6-d2e9-46ea-8089-e176b07df8d9">
+      <name>ServicePackages</name>
+      <description>Service packages</description>
+      <code xsi:type="core:StringValue">
+        <value>000000003</value>
+      </code>
+    </items>
+    <items id="2b7ba7ec-6de2-4e33-aea0-7e97798fde4c">
+      <name>UnpaidServices</name>
+      <description>Unpaid services</description>
+      <code xsi:type="core:StringValue">
+        <value>000000004</value>
+      </code>
+    </items>
+    <items id="ed06ee9f-d77e-4ed3-b68f-59c81f86684e">
+      <name>RentCells</name>
+      <description>Rent cells</description>
+      <code xsi:type="core:StringValue">
+        <value>000000005</value>
+      </code>
+    </items>
+    <items id="104cfd83-d8e5-4c59-b065-ad9f671323af">
+      <name>Bonuses</name>
+      <description>Bonuses</description>
+      <code xsi:type="core:StringValue">
+        <value>000000006</value>
+      </code>
+    </items>
+  </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.cacheTypes.Form.ItemForm</defaultObjectForm>

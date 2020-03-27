@@ -329,69 +329,6 @@
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
   </tabularSections>
-  <tabularSections uuid="431cada3-040c-4b7f-98e0-d16f5c8a5ca8">
-    <producedTypes>
-      <objectType typeId="260d6329-bca4-4ad3-8ca0-9de2f7799fb7" valueTypeId="6ba9677c-7d3b-4bee-9ddc-0f486ad390f5"/>
-      <rowType typeId="9897209f-f50b-4a61-a9bf-ac0973e73408" valueTypeId="3acfdecc-ad4c-4813-a565-7306892b923d"/>
-    </producedTypes>
-    <name>cacheValuesTypes</name>
-    <synonym>
-      <key>en</key>
-      <value>Cache values types</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Значения кэша</value>
-    </synonym>
-    <attributes uuid="b66f497f-3c1d-4dab-bd6f-44183aad37ec">
-      <name>cacheValuesType</name>
-      <synonym>
-        <key>en</key>
-        <value>Cache values type</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Значение кеша</value>
-      </synonym>
-      <type>
-        <types>CatalogRef.cacheValuesTypes</types>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="5c585ec8-bb72-409e-8fc4-e7c9b654590c">
-      <name>isUsed</name>
-      <synonym>
-        <key>en</key>
-        <value>Used</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Используется</value>
-      </synonym>
-      <type>
-        <types>Boolean</types>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-    <attributes uuid="c870a78c-67a1-4ac8-800e-bfa48539aac5">
-      <name>isUpdated</name>
-      <synonym>
-        <key>en</key>
-        <value>Updated</value>
-      </synonym>
-      <synonym>
-        <key>ru</key>
-        <value>Обновляется</value>
-      </synonym>
-      <type>
-        <types>Boolean</types>
-      </type>
-      <dataHistory>Use</dataHistory>
-      <fullTextSearch>Use</fullTextSearch>
-    </attributes>
-  </tabularSections>
   <forms uuid="99c6115b-56cc-4155-9181-de5eaed5d9a3">
     <name>ChoiceForm</name>
     <synonym>
