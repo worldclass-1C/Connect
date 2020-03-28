@@ -248,8 +248,11 @@ Function inTheWhiteList(origin) Export
 		Or origin = "https://tilda.cc"
 		Or origin = "https://ufcgymrussia.ru"
 		Or origin = "https://worldclass.ru"
+		Or origin = "https://online.worldclass.ru"
 		Or origin = "https://project1205002.tilda.ws"
-		Or origin = "https://localhost:55555" 
+		Or origin = "https://localhost:55555"
+		Or origin = "https://localhost"
+		Or origin = "https://online.worldclass.ru" 
 	Then
 		Return True;
 	Else
