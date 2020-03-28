@@ -1,86 +1,114 @@
 //Params - Структура, с ключами
 //			user 
 //			chain
-//			cacheType
+//			cacheTypes - массив cacheTypes
+
+Function GetCache(parameters, struсRequest) Export
 	
-Function GetCache(Params) Export
-	res = "";
-	strucSeek = New Structure("user,chain,date,cacheType", 
-						Catalogs.users.EmptyRef(),
-						Catalogs.chains.EmptyRef(),
-						CurrentUniversalDate(),);
-	FillPropertyValues(strucSeek, Params);
-	
-	If ValueIsFilled(strucSeek.cacheType) Then
+	strucSeek = New Structure("user,chain,date,cacheTypes", Catalogs.users.EmptyRef(), Catalogs.chains.EmptyRef(),
+		CurrentUniversalDate(), );
+	FillPropertyValues(strucSeek, struсRequest);
+
+	If ValueIsFilled(strucSeek.cacheTypes) Then
 		Query = New Query(TextQuery());
 		For Each KeyVal In strucSeek Do
-			Query.SetParameter(KeyVal.Key,  KeyVal.Value);
+			Query.SetParameter(KeyVal.Key, KeyVal.Value);
 		EndDo;
-		arrRes = New Array;
+		strucRes = New Structure();;
 		resQuery = Query.ExecuteBatch();
-		select = resQuery[1].Select();
+		common = resQuery[1].Unload();
 		tabDescriptions = resQuery[2].Unload();
-		
-		While select.Next() Do
-			data =select.data;
-			struct = HTTP.decodeJSON(data);
-			
-			arrDesc = New Array();
-			For Each found In 	tabDescriptions.FindRows(New Structure("Ref", select.Ref)) Do
-				If TypeOf(found.Description)=Type("CatalogRef.cacheInformations") Then
-					If Not found.data="" and Not found.data="{}" Then
-						arrDesc.Add(HTTP.decodeJSON(found.data));
+
+		//emptyTypes = New Array;
+
+		For Each cachetype In strucSeek.cacheTypes Do
+			FoundRows = common.FindRows(New Structure("cacheType", cachetype));
+			If FoundRows.Count() = 0 Then
+				//TODO нужно решить, сразу посылать в фоне при нахождении
+				//или собрать и синхронно запросить данные
+				//возможно в зависимости от типа cachetype
+				//	пока сделал в фоне
+				//emptyTypes.Add(XMLString(cachetype));
+				arrParams = New Array();
+				arrParams.Add(parameters);
+				arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, cachetype));
+				BackgroundJobs.Execute("Cache.AskCache",arrParams )
+			Else
+				arrRes = New Array;
+				For Each FoundRow In FoundRows Do
+					data =FoundRow.data;
+					struct = HTTP.decodeJSON(data);
+					arrDesc = New Array;
+					For Each found In tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)) Do
+						If TypeOf(found.Description) = Type("CatalogRef.cacheInformations") Then
+							If Not found.data = "" And Not found.data = "{}" Then
+								arrDesc.Add(HTTP.decodeJSON(found.data));
+							EndIf
+						Else
+							//TODO: тут нужно собрать структуру по описаниям разного типа
+						EndIf
+					EndDo;
+					If arrDesc.Count() > 0 Then
+						struct.Insert("desc", arrDesc);
+					EndIf;
+					If struct.Count() > 0 Then
+						arrRes.Add(struct);
 					EndIf	
-				Else
-					//TODO: тут нужно собрать структуру по описаниям разного типа
-				EndIf;		
-			EndDo;
-			If arrDesc.Count()>0 Then
-				struct.Insert("desc", arrDesc);	
-			EndIf;
-			If struct.Count()>0 Then
-				arrRes.Add(struct);
+				EndDo;
+				strucRes.Insert(cachetype.PredefinedDataName, arrRes)
 			EndIf
-		EndDo;
-		
-		If arrRes.Count()=1  Then
-			res = arrRes[0];
-		ElsIf arrRes.Count()>1 Then
-			res = arrRes
-		EndIf
-	EndIf;					
-	
-	Return HTTP.encodeJSON(res);
+		EndDo
+	EndIf;
+
+	Return HTTP.encodeJSON(strucRes);
 EndFunction
+
+Procedure AskCache(parameters, struсRequest) Export
+	For Each KeyVal In struсRequest Do
+		struсRequest[KeyVal.Key] = XMLString(KeyVal.Value)
+	EndDo;
+	
+	General.executeRequestMethod(
+		New Structure("requestName,requestStruct,internalRequestMethod,tokenContext,language,authKey,languageCode",
+				"AskCache",
+				struсRequest,
+				True,
+				//New Structure("holding,appType,timezone,token,user,", parameters.holding, "API"),
+				//New Structure("appType,timezone,token,user,", "API"),
+				parameters.tokenContext,
+				parameters.language,
+				parameters.authKey,
+				parameters.language.Code));
+EndProcedure
 
 Function TextQuery()
 	Return "SELECT
-		|	cacheIndex.cacheInformation AS Ref,
-		|	cacheIndex.cacheInformation.data AS data
-		|INTO tabCI
-		|FROM
-		|	InformationRegister.cacheIndex AS cacheIndex
-		|WHERE
-		|	cacheIndex.user = &user
-		|	AND cacheIndex.chain = &chain
-		|	AND cacheIndex.cacheType = &cacheType
-		|	AND &date between cacheIndex.cacheInformation.startRotation AND cacheIndex.cacheInformation.endRotation
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|select
-		|	*
-		|from
-		|	tabCI
-		|;
-		|////////////////////////////////////////////////////////////////////////////////
-		|SELECT
-		|	cacheInformationsDescriptions.Ref AS Ref,
-		|	cacheInformationsDescriptions.Description,
-		|	cacheInformationsDescriptions.Description.data AS data
-		|FROM
-		|	tabCI AS tabCI
-		|		LEFT JOIN Catalog.cacheInformations.Descriptions AS cacheInformationsDescriptions
-		|		ON cacheInformationsDescriptions.Ref = tabCI.Ref"
-	
+		   |	CI.cacheType,
+		   |	CI.cacheInformation AS Ref,
+		   |	CI.cacheInformation.data AS data
+		   |INTO tabCI
+		   |FROM
+		   |	InformationRegister.cacheIndex AS CI
+		   |WHERE
+		   |	CI.user = &user
+		   |	AND CI.chain = &chain
+		   |	AND CI.cacheType in (&cacheTypes)
+		   |	AND &date between CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
+		   |;
+		   |////////////////////////////////////////////////////////////////////////////////
+		   |select
+		   |	*
+		   |from
+		   |	tabCI
+		   |;
+		   |////////////////////////////////////////////////////////////////////////////////
+		   |SELECT
+		   |	dscr.Ref AS Ref,
+		   |	dscr.Description,
+		   |	dscr.Description.data AS data
+		   |FROM
+		   |	tabCI AS tabCI
+		   |		INNER JOIN Catalog.cacheInformations.Descriptions AS dscr
+		   |		ON dscr.Ref = tabCI.Ref"
+
 EndFunction
