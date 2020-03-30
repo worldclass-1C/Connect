@@ -1,4 +1,11 @@
-
+&AtServerNoContext
+Function getResponseBody(log)		
+	CompressedBinaryData	= log.request.Get();
+	request	= ?(CompressedBinaryData = Undefined, "", XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());	
+	CompressedBinaryData	= log.response.Get();
+	response	=  ?(CompressedBinaryData = Undefined, "", XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());
+	Return New Structure("request, response", request, response);
+EndFunction
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
@@ -10,3 +17,14 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		element.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
 	EndIf;
 EndProcedure
+
+&AtClient
+Procedure ListOnActivateRow(Item)
+	CurrentRow	= Items.List.CurrentRow;
+	If CurrentRow <> Undefined Then
+		answer		= getResponseBody(CurrentRow);
+		request		= answer.request;
+		response	= answer.response;
+	EndIf;
+EndProcedure
+

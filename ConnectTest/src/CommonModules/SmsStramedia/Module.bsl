@@ -21,7 +21,9 @@ Function sendSMS(parameters, answer) Export
 		answer.Insert("id", decodeStruct.ID);
 		answer.Insert("messageStatus", Enums.messageStatuses.sent);
 	EndIf;	
-	answer.Insert("period", ToUniversalTime(CurrentDate()));	
+	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs(headers, parametersStr, answerBody);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);	
 	Return answer;	
 EndFunction
 

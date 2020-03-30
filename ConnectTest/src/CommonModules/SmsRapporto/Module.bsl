@@ -1,6 +1,5 @@
-
 Function sendSMS(parameters, answer) Export
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	URL = "" + parameters.user + "?serviceId=" + parameters.user + "&pass="
 		+ parameters.password + "&clientId=" + parameters.phone + "&message="
 		+ parameters.text + "&source=" + parameters.senderName;
@@ -8,22 +7,26 @@ Function sendSMS(parameters, answer) Export
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
 	answerArray = StrSplit(answerBody, Chars.LF);
-	try			
+	try
 		If answerArray.Count() > 0 And answerArray[0] = "OK" Then
 			answer.Insert("id", answerArray[2]);
 			answer.Insert("messageStatus", Enums.messageStatuses.sent);
 		Else
-			answer.Insert("error", answerBody);								
+			answer.Insert("error", answerBody);
 		EndIf;
 	Except
 		answer.Insert("error", answerBody);
 	EndTry;
+	
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs("", URL, answerBody);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
+	
 	Return answer;
 EndFunction
 
 Function _sendSMS(parameters, answer) Export
-	ConnectionHTTP = New HTTPConnection(parameters.server,,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	ConnectionHTTP = New HTTPConnection(parameters.server, , , , , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	URL = "world_class?msisdn=" + parameters.phone + "&message="
 		+ parameters.text;
 	requestHTTP = New HTTPRequest(URL);
@@ -38,12 +41,13 @@ Function _sendSMS(parameters, answer) Export
 		answer.Insert("error", answerBody);
 	EndTry;
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+
 	Return answer;
 EndFunction
 
 Function checkSmsStatus(parameters, answer) Export
 
-	ConnectionHTTP = New HTTPConnection(parameters.server,, , , , parameters.timeout, ?(True, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	ConnectionHTTP = New HTTPConnection(parameters.server, , , , , parameters.timeout, ?(True, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	URL = "dlr?id=" + parameters.id + "&serviceId=" + parameters.user + "&pass="
 		+ parameters.password;
 	requestHTTP = New HTTPRequest(URL);
@@ -63,20 +67,20 @@ Function checkSmsStatus(parameters, answer) Export
 			EndIf;
 
 			If XMLReader.NodeType = XMLNodeType.Text Then
-				If currentPath = "status" Then					
+				If currentPath = "status" Then
 					status = getMessageStatus(XMLReader.Value);
 					currentPath = "";
 				EndIf;
 			EndIf;
-		EndDo;		
+		EndDo;
 		If TypeOf(status) = Type("EnumRef.messageStatuses") Then
 			answer.Insert("messageStatus", status);
 		Else
 			answer.Insert("messageStatus", Enums.messageStatuses.notDelivered);
 			answer.Insert("error", answerBody);
-		EndIf;		
+		EndIf;
 	Else
-		answer.Insert("messageStatus", Enums.messageStatuses.undefined);		
+		answer.Insert("messageStatus", Enums.messageStatuses.undefined);
 	EndIf;
 
 	Return answer;
@@ -93,7 +97,7 @@ Function getMessageStatus(status)
 	ElsIf status = "5" Then
 		Return Enums.messageStatuses.notDelivered;
 	ElsIf status = "9" Then
-		Return Enums.messageStatuses.read;		
+		Return Enums.messageStatuses.read;
 	Else
 		Return status;
 	EndIf;

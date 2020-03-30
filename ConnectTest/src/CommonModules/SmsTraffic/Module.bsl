@@ -49,6 +49,8 @@ Function sendSMS(parameters, answer) Export
 	EndIf;
 	
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs("", URL, answerBody);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
 	
 	Return answer;	
 	

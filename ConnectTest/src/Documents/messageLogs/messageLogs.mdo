@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="46218835-9851-4a45-9565-371f4a3cc0f2">
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="46218835-9851-4a45-9565-371f4a3cc0f2">
   <producedTypes>
     <objectType typeId="8e045447-e27f-42ae-9965-0cb53cb32057" valueTypeId="f08e74d6-a439-49ba-9d5c-7ce0403194bb"/>
     <refType typeId="4f75f6f8-23e8-4010-b77c-2452a363707f" valueTypeId="0b87f230-8d69-4b08-aacc-7f35bab52d3b"/>
@@ -24,30 +24,6 @@
   <registerRecords>AccumulationRegister.pushStatus</registerRecords>
   <postInPrivilegedMode>true</postInPrivilegedMode>
   <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
-  <attributes uuid="a2c80a40-3b3e-4491-9c52-9039b85f8d45">
-    <name>informationChannel</name>
-    <synonym>
-      <key>en</key>
-      <value>Information channel</value>
-    </synonym>
-    <type>
-      <types>EnumRef.informationChannels</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
-  <attributes uuid="83852d0b-864e-4909-8c0c-91c0962e67e0">
-    <name>messageStatus</name>
-    <synonym>
-      <key>en</key>
-      <value>Message status</value>
-    </synonym>
-    <type>
-      <types>EnumRef.messageStatuses</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="3c2511e3-8ca7-4060-9592-15bb86a5fed0">
     <name>error</name>
     <synonym>
@@ -63,14 +39,14 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="f9be6118-c0ca-4bf5-96ba-6f82420322a8">
-    <name>token</name>
+  <attributes uuid="a2c80a40-3b3e-4491-9c52-9039b85f8d45">
+    <name>informationChannel</name>
     <synonym>
       <key>en</key>
-      <value>Token</value>
+      <value>Information channel</value>
     </synonym>
     <type>
-      <types>CatalogRef.tokens</types>
+      <types>EnumRef.informationChannels</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
@@ -87,6 +63,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="83852d0b-864e-4909-8c0c-91c0962e67e0">
+    <name>messageStatus</name>
+    <synonym>
+      <key>en</key>
+      <value>Message status</value>
+    </synonym>
+    <type>
+      <types>EnumRef.messageStatuses</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="2b548e44-e600-4869-b790-2a01a1eb7e34">
     <name>recordDate</name>
     <synonym>
@@ -98,6 +86,52 @@
       <dateQualifiers>
         <dateFractions>Date</dateFractions>
       </dateQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="72b70962-a2b2-49f8-8124-9a20f729905b">
+    <name>request</name>
+    <synonym>
+      <key>en</key>
+      <value>Request</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Запрос</value>
+    </synonym>
+    <type>
+      <types>ValueStorage</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="3cc61df8-1733-4998-8276-8d857ee73507">
+    <name>response</name>
+    <synonym>
+      <key>en</key>
+      <value>Response</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ответ</value>
+    </synonym>
+    <type>
+      <types>ValueStorage</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="f9be6118-c0ca-4bf5-96ba-6f82420322a8">
+    <name>token</name>
+    <synonym>
+      <key>en</key>
+      <value>Token</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.tokens</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

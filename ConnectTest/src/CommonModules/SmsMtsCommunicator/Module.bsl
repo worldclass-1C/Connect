@@ -17,6 +17,7 @@ Function sendSMS(parameters, answer) Export
 	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
 
 	answerBody = ConnectionHTTP.Post(requestHTTP);
+	answerString = "";
 
 	If answerBody.StatusCode = 200 Then
 
@@ -46,6 +47,8 @@ Function sendSMS(parameters, answer) Export
 	Endif;
 
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs(Headers, JSONString, answerString);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
 
 	Return answer;
 

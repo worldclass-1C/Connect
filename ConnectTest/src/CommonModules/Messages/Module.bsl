@@ -148,7 +148,7 @@ Procedure sendSMS(parameters) Export
 		useNextInformationChannel(parameters.message, Enums.informationChannels.sms);
 	EndIf;
 
-	logMassage(parameters.message, Enums.informationChannels.sms, answer.messageStatus, answer.error, answer.period);
+	logMassage(parameters.message, Enums.informationChannels.sms, answer.messageStatus, answer.error, answer.period,,answer.AnswerResponseBodyForLogs);
 
 EndProcedure
 
@@ -269,7 +269,7 @@ Procedure useNextInformationChannel(message, channel)
 EndProcedure
 
 Procedure logMassage(message, informationChannel, messageStatus, error,
-		recordDate = Undefined, token = Undefined) Export
+		recordDate = Undefined, token = Undefined, AnswerResponseBodyForLogs = Undefined) Export
 //	record = InformationRegisters.messagesLogs.CreateRecordManager();
 //	record.period = ToUniversalTime(CurrentDate());
 //	record.message = message;
@@ -280,13 +280,17 @@ Procedure logMassage(message, informationChannel, messageStatus, error,
 //	record.token = token;
 //	record.Write();
 	record = Documents.messageLogs.CreateDocument();
-	record.date								= ToUniversalTime(CurrentDate());
-	record.message							= message;
-	record.token								= token;
-	record.messageStatus				= messageStatus;
-	record.error 								= error;
+	record.date					= ToUniversalTime(CurrentDate());
+	record.message				= message;
+	record.token				= token;
+	record.messageStatus		= messageStatus;
+	record.error 				= error;
 	record.informationChannel	= informationChannel;
-	record.recordDate 					= ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
+	record.recordDate 			= ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
+	If AnswerResponseBodyForLogs <> Undefined Then
+		record.request 	= New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(AnswerResponseBodyForLogs.requestBody, New Deflation(9)))));
+		record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(AnswerResponseBodyForLogs.answerBody, 	New Deflation(9)))));
+	EndIf;
 	record.Write(DocumentWriteMode.Posting);
 	
 EndProcedure
@@ -568,4 +572,38 @@ Function GetMessageCallbackURL(SmsProvider) Export
 	Else
 		Return BaseMessageCallbackURL + "/" + SmsProvider;
 	EndIf
+EndFunction
+
+Function GetAnswerResponseBodyForLogs (Headers, JSONStringRequest, JSONStructureResponse) Export
+	
+	Parameters = New Structure();
+	
+	JSONWriter	= New JSONWriter;
+	JSONWriter.SetString();
+	WriteJSON(JSONWriter, Headers);
+	
+	JSONStringHeaders = JSONWriter.Закрыть();
+	
+	requestBodyArray = New Array();
+	requestBodyArray.Add("""Headers"":");
+	requestBodyArray.Add(JSONStringHeaders);
+	requestBodyArray.Add("""Body"":");
+	requestBodyArray.Add(JSONStringRequest); 
+	requestBody = StrConcat(requestBodyArray, Chars.LF);
+	
+	Parameters.Insert("requestBody", requestBody);
+	
+	If JSONStructureResponse <> "" Then
+		JSONWriter	= New JSONWriter;
+		JSONWriter.SetString();
+		WriteJSON(JSONWriter, JSONStructureResponse);
+		
+		JSONStringresponse = JSONWriter.Закрыть();
+		Parameters.Insert("answerBody", JSONStringresponse);
+	Else
+		Parameters.Insert("answerBody", "");
+	Endif;
+	
+	Return Parameters;
+
 EndFunction

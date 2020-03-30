@@ -41,6 +41,7 @@ Function sendSMS(parameters, answer) Export
 	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
 
 	answerBody = ConnectionHTTP.Post(requestHTTP);
+	JSONStructure = "";
 
 	If answerBody.КодСостояния = 200 Then
 		JSONReader = Новый JSONReader;
@@ -64,6 +65,8 @@ Function sendSMS(parameters, answer) Export
 	Endif;
 
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs(Headers, JSONString, JSONStructure);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
 
 	Return answer;
 EndFunction

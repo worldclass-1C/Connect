@@ -27,6 +27,8 @@ Function sendSMS(parameters, answer) Export
 		answer.Insert("error", "Сбой при отрправке Messages");
 	EndIf;
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs("", URL, answerBody);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
 	Return answer;
 EndFunction
 
