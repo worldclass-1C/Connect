@@ -517,6 +517,9 @@
         <userVisible>
           <common>true</common>
         </userVisible>
+        <dataPath xsi:type="form:DataPath">
+          <segments>Object.cacheValuesTypes</segments>
+        </dataPath>
         <titleLocation>None</titleLocation>
         <items xsi:type="form:FormField">
           <name>cacheValuesLineNumber</name>
@@ -526,6 +529,11 @@
           <userVisible>
             <common>true</common>
           </userVisible>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <paths xsi:type="form:DataPath">
+              <segments>Object.cacheValuesTypes.LineNumber</segments>
+            </paths>
+          </dataPath>
           <extendedTooltip>
             <name>cacheValuesLineNumberExtendedTooltip</name>
             <id>119</id>
@@ -551,10 +559,19 @@
             </userVisible>
             <autoFill>true</autoFill>
           </contextMenu>
+          <type>InputField</type>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:InputFieldExtInfo">
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <wrap>true</wrap>
+            <chooseType>true</chooseType>
+            <typeDomainEnabled>true</typeDomainEnabled>
+            <textEdit>true</textEdit>
+          </extInfo>
         </items>
         <items xsi:type="form:FormField">
           <name>cacheValuescacheValue</name>
@@ -564,6 +581,11 @@
           <userVisible>
             <common>true</common>
           </userVisible>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <paths xsi:type="form:DataPath">
+              <segments>Object.cacheValuesTypes.cacheValuesType</segments>
+            </paths>
+          </dataPath>
           <extendedTooltip>
             <name>cacheValuescacheValueExtendedTooltip</name>
             <id>122</id>
@@ -589,10 +611,19 @@
             </userVisible>
             <autoFill>true</autoFill>
           </contextMenu>
+          <type>InputField</type>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:InputFieldExtInfo">
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <wrap>true</wrap>
+            <chooseType>true</chooseType>
+            <typeDomainEnabled>true</typeDomainEnabled>
+            <textEdit>true</textEdit>
+          </extInfo>
         </items>
         <items xsi:type="form:FormField">
           <name>cacheValuesisUse</name>
@@ -602,6 +633,11 @@
           <userVisible>
             <common>true</common>
           </userVisible>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <paths xsi:type="form:DataPath">
+              <segments>Object.cacheValuesTypes.isUsed</segments>
+            </paths>
+          </dataPath>
           <extendedTooltip>
             <name>cacheValuesisUseExtendedTooltip</name>
             <id>128</id>
@@ -627,10 +663,12 @@
             </userVisible>
             <autoFill>true</autoFill>
           </contextMenu>
+          <type>CheckBoxField</type>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
         </items>
         <items xsi:type="form:FormField">
           <name>cacheValuesisUpdated</name>
@@ -640,6 +678,11 @@
           <userVisible>
             <common>true</common>
           </userVisible>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <paths xsi:type="form:DataPath">
+              <segments>Object.cacheValuesTypes.isUpdated</segments>
+            </paths>
+          </dataPath>
           <extendedTooltip>
             <name>cacheValuesisUpdatedExtendedTooltip</name>
             <id>131</id>
@@ -665,10 +708,12 @@
             </userVisible>
             <autoFill>true</autoFill>
           </contextMenu>
+          <type>CheckBoxField</type>
           <editMode>Enter</editMode>
           <showInHeader>true</showInHeader>
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
         </items>
         <autoCommandBar>
           <name>cacheValuesCommandBar</name>
