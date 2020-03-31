@@ -428,9 +428,9 @@ Procedure userSummaryCache(parameters) Export
 	
 	arrTypes = New Array();
 	tps = Catalogs.cacheTypes;
-	arrTypes.Add(tps.Bonuses); arrTypes.Add(tps.Membership);
-	arrTypes.Add(tps.PersonalAccount); arrTypes.Add(tps.RentCells);
-	arrTypes.Add(tps.ServicePackages); arrTypes.Add(tps.UnpaidServices);
+	arrTypes.Add(tps.bonus); arrTypes.Add(tps.membershipList);
+	arrTypes.Add(tps.balance); arrTypes.Add(tps.rentedLokerList);
+	arrTypes.Add(tps.packageList); arrTypes.Add(tps.paymentPackage);
 
 	//без контекста chain
 	struct = Cache.GetCache(parameters,New Structure("user,cacheTypes",

@@ -138,39 +138,63 @@
   <checkUnique>true</checkUnique>
   <predefined>
     <items id="431e8916-d6ad-42d2-a27a-966b153a0916">
-      <name>Bonuses</name>
+      <name>bonus</name>
       <code xsi:type="core:StringValue">
-        <value>Bonuses</value>
+        <value>Bonus</value>
       </code>
     </items>
     <items id="6ffad23c-c08a-4258-96a2-0ea879168231">
-      <name>Membership</name>
+      <name>membershipList</name>
       <code xsi:type="core:StringValue">
-        <value>Membership</value>
+        <value>membershipList</value>
       </code>
     </items>
     <items id="af0c5149-9d91-483d-b187-c437396b0e99">
-      <name>PersonalAccount</name>
+      <name>balance</name>
       <code xsi:type="core:StringValue">
-        <value>PersonalAccount</value>
+        <value>balance</value>
       </code>
     </items>
     <items id="3be81e82-8606-4268-ac0b-d32e78e0c167">
-      <name>RentCells</name>
+      <name>rentedLokerList</name>
       <code xsi:type="core:StringValue">
-        <value>RentCells</value>
+        <value>rentedLokerList</value>
       </code>
     </items>
     <items id="5de50dd5-3c34-4db5-98ef-dc28c4d0f09b">
-      <name>ServicePackages</name>
+      <name>packageList</name>
       <code xsi:type="core:StringValue">
-        <value>ServicePackages</value>
+        <value>packageList</value>
       </code>
     </items>
     <items id="6c7629a8-6dca-44ac-9bda-28f6d7a56875">
-      <name>UnpaidServices</name>
+      <name>paymentPackage</name>
       <code xsi:type="core:StringValue">
-        <value>UnpaidServices</value>
+        <value>paymentPackage</value>
+      </code>
+    </items>
+    <items id="269d8113-c421-4377-a837-ae78bf4d3806">
+      <name>familyAccount</name>
+      <code xsi:type="core:StringValue">
+        <value>familyAccount</value>
+      </code>
+    </items>
+    <items id="91cc4611-3f5b-4e76-a21f-26f7cfc76e42">
+      <name>financialHistory</name>
+      <code xsi:type="core:StringValue">
+        <value>financialHistory</value>
+      </code>
+    </items>
+    <items id="d2866123-be43-4c4f-a32e-c3c87f38fe9e">
+      <name>support</name>
+      <code xsi:type="core:StringValue">
+        <value>support</value>
+      </code>
+    </items>
+    <items id="5910220e-98bd-4cfc-9ea6-a804e74d421b">
+      <name>banner</name>
+      <code xsi:type="core:StringValue">
+        <value>banner</value>
       </code>
     </items>
   </predefined>
