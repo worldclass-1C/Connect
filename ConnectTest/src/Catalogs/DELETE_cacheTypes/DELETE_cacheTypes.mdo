@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="bc89946f-991f-4bcd-9fd8-6f75f2c09bc6">
+  <producedTypes>
+    <objectType typeId="ee70b01b-8724-4f55-a5a9-81aef481d01f" valueTypeId="a26091d1-d51c-49c6-9194-4ef0281262db"/>
+    <refType typeId="d8add7db-981b-4bb4-b346-cd0c690ec3e2" valueTypeId="06e1e575-25b9-4580-95ac-679f46e02146"/>
+    <selectionType typeId="e16dc23c-96eb-4222-add7-e68f032e96de" valueTypeId="5bbc7253-a70d-402c-a80a-5442a2d32dca"/>
+    <listType typeId="1d9ec75c-7e00-49c1-af84-9830b914c127" valueTypeId="59b087a2-f569-4adc-b039-544fd9cecd0d"/>
+    <managerType typeId="d76c62b0-04bc-4e2d-9446-e6ee8e6ed7a8" valueTypeId="5bfd6dc6-66a4-49c2-906e-436e6366887b"/>
+  </producedTypes>
+  <name>DELETE_cacheTypes</name>
+  <synonym>
+    <key>en</key>
+    <value>DELETE cache types</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Виды кэша</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.DELETE_cacheTypes.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.DELETE_cacheTypes.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <predefined>
+    <items id="6c720d26-2f6e-4ee1-b3d4-d192aec7de10">
+      <name>PersonalAccount</name>
+      <description>Personal account</description>
+      <code xsi:type="core:StringValue">
+        <value>000000001</value>
+      </code>
+    </items>
+    <items id="7d27af24-813b-4513-abc9-298064ecc83d">
+      <name>Membership</name>
+      <description>Membership</description>
+      <code xsi:type="core:StringValue">
+        <value>000000002</value>
+      </code>
+    </items>
+    <items id="ba4be5c6-d2e9-46ea-8089-e176b07df8d9">
+      <name>ServicePackages</name>
+      <description>Service packages</description>
+      <code xsi:type="core:StringValue">
+        <value>000000003</value>
+      </code>
+    </items>
+    <items id="2b7ba7ec-6de2-4e33-aea0-7e97798fde4c">
+      <name>UnpaidServices</name>
+      <description>Unpaid services</description>
+      <code xsi:type="core:StringValue">
+        <value>000000004</value>
+      </code>
+    </items>
+    <items id="ed06ee9f-d77e-4ed3-b68f-59c81f86684e">
+      <name>RentCells</name>
+      <description>Rent cells</description>
+      <code xsi:type="core:StringValue">
+        <value>000000005</value>
+      </code>
+    </items>
+    <items id="104cfd83-d8e5-4c59-b065-ad9f671323af">
+      <name>Bonuses</name>
+      <description>Bonuses</description>
+      <code xsi:type="core:StringValue">
+        <value>000000006</value>
+      </code>
+    </items>
+  </predefined>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.DELETE_cacheTypes.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.DELETE_cacheTypes.Form.ListForm</defaultListForm>
+  <forms uuid="de19e003-9f8c-4217-9934-af38b28e8707">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="0a83471c-be15-4bb3-8d49-0390990a4473">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
