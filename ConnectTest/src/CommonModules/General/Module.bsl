@@ -32,8 +32,8 @@ Procedure executeRequestMethod(parameters) Export
 			API_Info.usersummarycache(parameters);
 		//ElsIf parameters.requestName = "usersummary" Then 
 		//	API_Info.usersummary(parameters);
-		ElsIf parameters.requestName = "usercache" Then 
-			API_Info.userCache(parameters);	
+		//ElsIf parameters.requestName = "usercache" Then 
+		//	API_Info.userCache(parameters);	
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then
 			API_List.gymList(parameters);
@@ -154,8 +154,8 @@ Procedure config(parameters)
 	|	REFPRESENTATION(tokens.systemType) AS systemType,
 	|	tokens.systemVersion AS systemVersion,
 	|	tokens.lockDate,
-	|	tokens.chain.cacheValuesTypes.(
-	|		cacheValuesType.Code AS section,
+	|	tokens.chain.cacheTypes.(
+	|		cacheType.Code AS section,
 	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.tokens AS tokens
@@ -361,7 +361,7 @@ Procedure confirmPhone(parameters)
 				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
 				parametersNew = Service.getStructCopy(parameters);
 				parametersNew.tokenContext.Insert("user", select.user);
-				Users.updateCache(parametersNew);				
+				//Users.updateCache(parametersNew);
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;

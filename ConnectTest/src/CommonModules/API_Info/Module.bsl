@@ -393,34 +393,34 @@ Procedure userProfile(parameters) Export
 EndProcedure
 
 Procedure userSummary(parameters) Export
-	
-	tokenContext = parameters.tokenContext;
-	
-	query = New Query("SELECT
-	|	chainscacheValues.cacheValuesType.Code AS cacheCode,
-	|	usersStates.stateValue AS cacheValue,
-	|	chainscacheValues.cacheValuesType.defaultValueType AS defaultValueType
-	|FROM
-	|	Catalog.chains.cacheValuesTypes AS chainscacheValues
-	|		LEFT JOIN InformationRegister.usersStates AS usersStates
-	|		ON chainscacheValues.cacheValuesType = usersStates.cacheValuesType
-	|		AND usersStates.user = &user
-	|		AND usersStates.appType = &appType
-	|WHERE
-	|	chainscacheValues.Ref = &chain
-	|	AND chainscacheValues.isUsed");
-	
-	query.SetParameter("chain", tokenContext.chain);
-	query.SetParameter("user", tokenContext.user);
-	query.SetParameter("appType", tokenContext.appType);
-	
-	struct = New Structure();
-	select = query.Execute().Select();
-	While select.Next() Do
-		struct.Insert(select.cacheCode, HTTP.decodeJSON(?(select.cacheValue = null, "", select.cacheValue), select.defaultValueType));
-	EndDo;
-		
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("answerBody", "metod not used");
+//	tokenContext = parameters.tokenContext;
+//	
+//	query = New Query("SELECT
+//	|	chainscacheValues.cacheType.Code AS cacheCode,
+//	|	usersStates.stateValue AS cacheValue,
+//	|	chainscacheValues.cacheType.defaultValueType AS defaultValueType
+//	|FROM
+//	|	Catalog.chains.cacheTypes AS chainscacheValues
+//	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+//	|		ON chainscacheValues.cacheType = usersStates.cacheType
+//	|		AND usersStates.user = &user
+//	|		AND usersStates.appType = &appType
+//	|WHERE
+//	|	chainscacheValues.Ref = &chain
+//	|	AND chainscacheValues.isUsed");
+//	
+//	query.SetParameter("chain", tokenContext.chain);
+//	query.SetParameter("user", tokenContext.user);
+//	query.SetParameter("appType", tokenContext.appType);
+//	
+//	struct = New Structure();
+//	select = query.Execute().Select();
+//	While select.Next() Do
+//		struct.Insert(select.cacheCode, HTTP.decodeJSON(?(select.cacheValue = null, "", select.cacheValue), select.defaultValueType));
+//	EndDo;
+//		
+//	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure
 
@@ -442,69 +442,69 @@ EndProcedure
 
 Procedure userCache(parameters) Export
 	
-	tokenContext = parameters.tokenContext;
-	requestStruct = parameters.requestStruct;
-	
-	cacheTypesDescriptions = New Array();
-	
-	If requestStruct.page = "homePage" Then
-		cacheTypesDescriptions.Add("banners");	
-	ElsIf requestStruct.page = "personalPage" Then
-		cacheTypesDescriptions.Add("");
-	EndIf;	
-	
-	query = New Query("SELECT
-	|	cacheTypes.Ref AS cacheType
-	|INTO TT_cacheType
-	|FROM
-	|	Catalog.cacheTypes AS cacheTypes
-	|WHERE
-	|	cacheTypes.Description IN(&Descriptions)
-	|;
-	|
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	cacheIndex.cacheType.Description AS cacheType,
-	|	cacheIndex.cacheInformation AS cacheInformation,
-	|	cacheIndex.cacheInformation.startRotation AS startRotation,
-	|	cacheIndex.cacheInformation.endRotation AS endRotation
-	|INTO TT_CacheInformation
-	|FROM
-	|	TT_cacheType AS TT_cacheType
-	|		LEFT JOIN InformationRegister.cacheIndex AS cacheIndex
-	|		ON TT_cacheType.cacheType = cacheIndex.cacheType
-	|			AND (cacheIndex.user = &user)
-	|			AND (cacheIndex.chain = &chain)
-	|;
-	|
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	TT_CacheInformation.cacheType AS cacheType,
-	|	TT_CacheInformation.cacheInformation.data AS data
-	|FROM
-	|	TT_CacheInformation AS TT_CacheInformation
-	|WHERE
-	|	TT_CacheInformation.startRotation <= &CurrentTime
-	|	AND TT_CacheInformation.endRotation >= &CurrentTime
-	|TOTALS BY
-	|	cacheType");
-	
-	query.SetParameter("chain", tokenContext.chain);
-	query.SetParameter("user", Catalogs.users.EmptyRef());
-	query.SetParameter("currentTime", ToUniversalTime(CurrentDate()));
-	query.SetParameter("descriptions", cacheTypesDescriptions);
-	
-	struct = New Structure();
-	selectCacheType = query.Execute().Select(QueryResultIteration.ByGroups);
-	While selectCacheType.Next() Do
-		cacheArray	= new Array();
-		select = selectCacheType.Select();
-		While select.Next() Do
-			cacheArray.Add(HTTP.decodeJSON(select.data));
-		EndDo;
-		struct.Insert(selectCacheType.cacheType, cacheArray);
-	EndDo;
-		
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+//	tokenContext = parameters.tokenContext;
+//	requestStruct = parameters.requestStruct;
+//	
+//	cacheTypesDescriptions = New Array();
+//	
+//	If requestStruct.page = "homePage" Then
+//		cacheTypesDescriptions.Add("banners");	
+//	ElsIf requestStruct.page = "personalPage" Then
+//		cacheTypesDescriptions.Add("");
+//	EndIf;	
+//	
+//	query = New Query("SELECT
+//	|	cacheTypes.Ref AS cacheType
+//	|INTO TT_cacheType
+//	|FROM
+//	|	Catalog.cacheTypes AS cacheTypes
+//	|WHERE
+//	|	cacheTypes.Description IN(&Descriptions)
+//	|;
+//	|
+//	|////////////////////////////////////////////////////////////////////////////////
+//	|SELECT
+//	|	cacheIndex.cacheType.Description AS cacheType,
+//	|	cacheIndex.cacheInformation AS cacheInformation,
+//	|	cacheIndex.cacheInformation.startRotation AS startRotation,
+//	|	cacheIndex.cacheInformation.endRotation AS endRotation
+//	|INTO TT_CacheInformation
+//	|FROM
+//	|	TT_cacheType AS TT_cacheType
+//	|		LEFT JOIN InformationRegister.cacheIndex AS cacheIndex
+//	|		ON TT_cacheType.cacheType = cacheIndex.cacheType
+//	|			AND (cacheIndex.user = &user)
+//	|			AND (cacheIndex.chain = &chain)
+//	|;
+//	|
+//	|////////////////////////////////////////////////////////////////////////////////
+//	|SELECT
+//	|	TT_CacheInformation.cacheType AS cacheType,
+//	|	TT_CacheInformation.cacheInformation.data AS data
+//	|FROM
+//	|	TT_CacheInformation AS TT_CacheInformation
+//	|WHERE
+//	|	TT_CacheInformation.startRotation <= &CurrentTime
+//	|	AND TT_CacheInformation.endRotation >= &CurrentTime
+//	|TOTALS BY
+//	|	cacheType");
+//	
+//	query.SetParameter("chain", tokenContext.chain);
+//	query.SetParameter("user", Catalogs.users.EmptyRef());
+//	query.SetParameter("currentTime", ToUniversalTime(CurrentDate()));
+//	query.SetParameter("descriptions", cacheTypesDescriptions);
+//	
+//	struct = New Structure();
+//	selectCacheType = query.Execute().Select(QueryResultIteration.ByGroups);
+//	While selectCacheType.Next() Do
+//		cacheArray	= new Array();
+//		select = selectCacheType.Select();
+//		While select.Next() Do
+//			cacheArray.Add(HTTP.decodeJSON(select.data));
+//		EndDo;
+//		struct.Insert(selectCacheType.cacheType, cacheArray);
+//	EndDo;
+//		
+//	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure

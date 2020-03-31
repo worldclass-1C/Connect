@@ -144,8 +144,8 @@
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
   <catalogs>Catalog.cacheInformations</catalogs>
+  <catalogs>Catalog.DELETE_cacheTypes</catalogs>
   <catalogs>Catalog.cacheTypes</catalogs>
-  <catalogs>Catalog.cacheValuesTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>
   <catalogs>Catalog.classesSchedule</catalogs>
@@ -212,7 +212,7 @@
   <informationRegisters>InformationRegister.providedServices</informationRegisters>
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
-  <informationRegisters>InformationRegister.usersStates</informationRegisters>
+  <informationRegisters>InformationRegister.DELETE_usersStates</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
   <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
 </mdclass:Configuration>

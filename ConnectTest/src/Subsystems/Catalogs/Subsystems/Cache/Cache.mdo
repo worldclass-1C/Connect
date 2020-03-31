@@ -11,8 +11,9 @@
   </synonym>
   <includeHelpInContents>true</includeHelpInContents>
   <includeInCommandInterface>true</includeInCommandInterface>
-  <content>Catalog.cacheTypes</content>
+  <content>Catalog.DELETE_cacheTypes</content>
   <content>Catalog.cacheInformations</content>
   <content>InformationRegister.cacheIndex</content>
+  <content>Catalog.cacheTypes</content>
   <parentSubsystem>Subsystem.Catalogs</parentSubsystem>
 </mdclass:Subsystem>

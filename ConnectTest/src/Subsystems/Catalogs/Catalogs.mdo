@@ -15,7 +15,6 @@
   <content>Catalog.holdings</content>
   <content>Catalog.timeZones</content>
   <content>Catalog.logs</content>
-  <content>Catalog.cacheValuesTypes</content>
   <content>Catalog.CountryCodes</content>
   <content>Catalog.languages</content>
   <content>Catalog.errorDescriptions</content>

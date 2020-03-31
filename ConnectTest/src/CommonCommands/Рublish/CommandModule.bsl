@@ -31,7 +31,14 @@ Function CollectData(Data,arrHolding)
 		
 		If N<>"" Then
 			arrEl = New Array;
-			arrEl.Add(New Structure("G,R",String(Data.UUID()),New Structure("Наименование",Data.Description)));
+			strucData = New Structure("Description,Code");
+			FillPropertyValues(strucData, Data);
+			For Each KeyVal In strucData Do
+				If Not ValueIsFilled(KeyVal.Value) Then
+					strucData.Delete(KeyVal.Key);
+				EndIf;
+			EndDo;
+			arrEl.Add(New Structure("G,R",String(Data.UUID()),strucData));
 	 		res = New Structure("N,E",N, arrEl); 
 		EndIf;
 	EndIf; 

@@ -289,8 +289,8 @@ Procedure chainList(parameters) Export
 	|	chain.phoneMask.CountryCode AS phoneMaskCountryCode,
 	|	chain.phoneMask.Description AS phoneMaskDescription,
 	|	chain.holding.Code AS holdingCode,
-	|	chain.cacheValuesTypes.(
-	|		cacheValuesType.Code AS section,
+	|	chain.cacheTypes.(
+	|		cacheType.Code AS section,
 	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.chains AS chain

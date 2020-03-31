@@ -370,7 +370,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.cacheValuesTypes</name>
+		<name>Catalog.cacheTypes</name>
 		<right>
 			<name>Delete</name>
 			<value>false</value>

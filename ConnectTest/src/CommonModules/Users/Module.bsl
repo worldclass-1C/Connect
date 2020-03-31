@@ -32,47 +32,49 @@ Function profile(user, appType) Export
 	|	Catalog.users AS users
 	|WHERE
 	|	users.Ref = &user
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	cacheValuesTypes.Code AS cacheCode,
-	|	cacheValuesTypes.Ref AS cacheValuesType,
-	|	&user AS user,
-	|	&appType AS appType
-	|INTO TT
-	|FROM
-	|	Catalog.cacheValuesTypes AS cacheValuesTypes
-	|WHERE
-	|	cacheValuesTypes.request = &requestName
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	TT.cacheCode AS cacheCode,
-	|	usersStates.stateValue AS cacheValue
-	|FROM
-	|	TT AS TT
-	|		LEFT JOIN InformationRegister.usersStates AS usersStates
-	|		ON TT.cacheValuesType = usersStates.cacheValuesType
-	|		AND TT.user = usersStates.user
-	|		AND TT.appType = usersStates.appType
-	|WHERE
-	|	NOT usersStates.stateValue IS NULL";
+//	|;
+//	|////////////////////////////////////////////////////////////////////////////////
+//	|SELECT
+//	|	cacheTypes.Code AS cacheCode,
+//	|	cacheTypes.Ref AS cacheType,
+//	|	&user AS user,
+//	|	&appType AS appType
+//	|INTO TT
+//	|FROM
+//	|	Catalog.cacheTypes AS cacheTypes
+//	|WHERE
+//	|	cacheTypes.request = &requestName
+//	|;
+//	|////////////////////////////////////////////////////////////////////////////////
+//	|SELECT
+//	|	TT.cacheCode AS cacheCode,
+//	|	usersStates.stateValue AS cacheValue
+//	|FROM
+//	|	TT AS TT
+//	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+//	|		ON TT.cacheType = usersStates.cacheValuesType
+//	|		AND TT.user = usersStates.user
+//	|		AND TT.appType = usersStates.appType
+//	|WHERE
+//	|	NOT usersStates.stateValue IS NULL
+|";
 	
 	query.SetParameter("user", user);
-	query.SetParameter("appType", appType);
-	query.SetParameter("requestName", "getUserProfile");
+//	query.SetParameter("appType", appType);
+//	query.SetParameter("requestName", "getUserProfile");
 	
-	queryResults = query.ExecuteBatch();
-	queryResult = queryResults[0];
-		
+//	queryResults = query.ExecuteBatch();
+//	queryResult = queryResults[0];
+	queryResult = query.Execute();
+	
 	If Not queryResult.IsEmpty() Then
 		select = queryResult.Select();
 		select.Next();
 		FillPropertyValues(struct, select);
-		cacheSelect = queryResults[2].Select();
-		While cacheSelect.Next() Do
-			struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));
-		EndDo;		
+//		cacheSelect = queryResults[2].Select();
+//		While cacheSelect.Next() Do
+//			struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));
+//		EndDo;		
 	EndIf;
 		
 	Return struct;
@@ -85,48 +87,48 @@ EndFunction
 
 Procedure updateCache(val parameters) Export
 		
-	tokenContext = parameters.tokenContext;
-		
-	query = New Query("SELECT
-	|	chainscacheValuesTypes.cacheValuesType As cacheValuesType,
-	|	chainscacheValuesTypes.cacheValuesType.code AS cacheValuesTypeCode,
-	|	chainscacheValuesTypes.cacheValuesType.defaultValueType AS cacheDefaultValueType,
-	|	ISNULL(usersStates.outdated, TRUE) AS outdated
-	|FROM
-	|	Catalog.chains.cacheValuesTypes AS chainscacheValuesTypes
-	|		LEFT JOIN InformationRegister.usersStates AS usersStates
-	|		ON chainscacheValuesTypes.cacheValuesType = usersStates.cacheValuesType
-	|		AND usersStates.user = &user
-	|		AND usersStates.appType = &appType
-	|WHERE
-	|	chainscacheValuesTypes.Ref = &chain
-	|	and ISNULL(usersStates.outdated, TRUE) = TRUE
-	|	AND chainscacheValuesTypes.isUsed
-	|	AND chainscacheValuesTypes.isUpdated");
-	
-	query.SetParameter("user", tokenContext.user);
-	query.SetParameter("appType", tokenContext.appType);
-	query.SetParameter("chain", tokenContext.chain);
-
-	result = query.Execute();
-
-	If Not result.IsEmpty() Then
-		select = result.Select();		
-		While select.Next() Do
-			parameters.Insert("requestName", "update" + select.cacheValuesTypeCode);
-			General.executeRequestMethod(parameters);
-			record = InformationRegisters.usersStates.CreateRecordManager();
-			record.user = tokenContext.user;
-			record.appType = tokenContext.appType;
-			record.cacheValuesType = select.cacheValuesType;
-			If parameters.error = "" Then
-				record.stateValue = StrReplace(parameters.answerBody, Chars.NBSp, "");
-			Else				
-				record.stateValue = HTTP.encodeJSON(HTTP.decodeJSON("", select.cacheDefaultValueType))
-			EndIf;
-			record.Write();
-		EndDo;		
-	EndIf;
+//	tokenContext = parameters.tokenContext;
+//		
+//	query = New Query("SELECT
+//	|	chainscacheTypes.cacheType As cacheType,
+//	|	chainscacheTypes.cacheType.code AS cacheValuesTypeCode,
+//	|	chainscacheTypes.cacheType.defaultValueType AS cacheDefaultValueType,
+//	|	ISNULL(usersStates.outdated, TRUE) AS outdated
+//	|FROM
+//	|	Catalog.chains.cacheTypes AS chainscacheTypes
+//	|		LEFT JOIN InformationRegister.usersStates AS usersStates
+//	|		ON chainscacheTypes.cacheType = usersStates.cacheValuesType
+//	|		AND usersStates.user = &user
+//	|		AND usersStates.appType = &appType
+//	|WHERE
+//	|	chainscacheTypes.Ref = &chain
+//	|	and ISNULL(usersStates.outdated, TRUE) = TRUE
+//	|	AND chainscacheTypes.isUsed
+//	|	AND chainscacheTypes.isUpdated");
+//	
+//	query.SetParameter("user", tokenContext.user);
+//	query.SetParameter("appType", tokenContext.appType);
+//	query.SetParameter("chain", tokenContext.chain);
+//
+//	result = query.Execute();
+//
+//	If Not result.IsEmpty() Then
+//		select = result.Select();		
+//		While select.Next() Do
+//			parameters.Insert("requestName", "update" + select.cacheValuesTypeCode);
+//			General.executeRequestMethod(parameters);
+//			record = InformationRegisters.usersStates.CreateRecordManager();
+//			record.user = tokenContext.user;
+//			record.appType = tokenContext.appType;
+//			record.cacheValuesType = select.cacheType;
+//			If parameters.error = "" Then
+//				record.stateValue = StrReplace(parameters.answerBody, Chars.NBSp, "");
+//			Else				
+//				record.stateValue = HTTP.encodeJSON(HTTP.decodeJSON("", select.cacheDefaultValueType))
+//			EndIf;
+//			record.Write();
+//		EndDo;		
+//	EndIf;
 	
 EndProcedure
 

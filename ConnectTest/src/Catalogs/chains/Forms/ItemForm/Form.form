@@ -518,7 +518,7 @@
           <common>true</common>
         </userVisible>
         <dataPath xsi:type="form:DataPath">
-          <segments>Object.cacheValuesTypes</segments>
+          <segments>Object.cacheTypes</segments>
         </dataPath>
         <titleLocation>None</titleLocation>
         <items xsi:type="form:FormField">
@@ -531,7 +531,7 @@
           </userVisible>
           <dataPath xsi:type="form:MultiLanguageDataPath">
             <paths xsi:type="form:DataPath">
-              <segments>Object.cacheValuesTypes.LineNumber</segments>
+              <segments>Object.cacheTypes.LineNumber</segments>
             </paths>
           </dataPath>
           <extendedTooltip>
@@ -583,7 +583,7 @@
           </userVisible>
           <dataPath xsi:type="form:MultiLanguageDataPath">
             <paths xsi:type="form:DataPath">
-              <segments>Object.cacheValuesTypes.cacheValuesType</segments>
+              <segments>Object.cacheTypes.cacheType</segments>
             </paths>
           </dataPath>
           <extendedTooltip>
@@ -635,7 +635,7 @@
           </userVisible>
           <dataPath xsi:type="form:MultiLanguageDataPath">
             <paths xsi:type="form:DataPath">
-              <segments>Object.cacheValuesTypes.isUsed</segments>
+              <segments>Object.cacheTypes.isUsed</segments>
             </paths>
           </dataPath>
           <extendedTooltip>
@@ -680,7 +680,7 @@
           </userVisible>
           <dataPath xsi:type="form:MultiLanguageDataPath">
             <paths xsi:type="form:DataPath">
-              <segments>Object.cacheValuesTypes.isUpdated</segments>
+              <segments>Object.cacheTypes.isUpdated</segments>
             </paths>
           </dataPath>
           <extendedTooltip>

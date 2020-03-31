@@ -36,8 +36,8 @@ Function getFromExternalSystem(val parameters, val parametrName,
 			userProfile = Users.profile(userArray[0], tokenContext.appType);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));			
 			authKey = XMLString(tokenContext.token) + tempPassword();			
-			parametersNew.tokenContext.Insert("user", userArray[0]);			
-			Users.updateCache(parametersNew);									
+			//parametersNew.tokenContext.Insert("user", userArray[0]);			
+			//Users.updateCache(parametersNew);									
 		ElsIf answerStruct.Count() > 1 Then			
 			For Each user In answerStruct Do
 				userList.Add(New Structure("name, uid", user.lastName + " "

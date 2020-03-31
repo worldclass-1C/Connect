@@ -41,7 +41,7 @@
       <value>Вид кэша</value>
     </synonym>
     <type>
-      <types>CatalogRef.cacheTypes</types>
+      <types>CatalogRef.DELETE_cacheTypes</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

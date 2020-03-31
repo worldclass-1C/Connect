@@ -334,27 +334,27 @@
       <objectType typeId="260d6329-bca4-4ad3-8ca0-9de2f7799fb7" valueTypeId="6ba9677c-7d3b-4bee-9ddc-0f486ad390f5"/>
       <rowType typeId="9897209f-f50b-4a61-a9bf-ac0973e73408" valueTypeId="3acfdecc-ad4c-4813-a565-7306892b923d"/>
     </producedTypes>
-    <name>cacheValuesTypes</name>
+    <name>cacheTypes</name>
     <synonym>
       <key>en</key>
-      <value>Cache values types</value>
+      <value>Cache types</value>
     </synonym>
     <synonym>
       <key>ru</key>
       <value>Значения кэша</value>
     </synonym>
     <attributes uuid="b66f497f-3c1d-4dab-bd6f-44183aad37ec">
-      <name>cacheValuesType</name>
+      <name>cacheType</name>
       <synonym>
         <key>en</key>
-        <value>Cache values type</value>
+        <value>Cache type</value>
       </synonym>
       <synonym>
         <key>ru</key>
         <value>Значение кеша</value>
       </synonym>
       <type>
-        <types>CatalogRef.cacheValuesTypes</types>
+        <types>CatalogRef.cacheTypes</types>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>

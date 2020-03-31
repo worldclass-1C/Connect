@@ -7,8 +7,8 @@
   </synonym>
   <group>FormCommandBarImportant</group>
   <commandParameterType>
-    <types>CatalogRef.cacheTypes</types>
     <types>CatalogRef.chains</types>
+    <types>CatalogRef.cacheTypes</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>
