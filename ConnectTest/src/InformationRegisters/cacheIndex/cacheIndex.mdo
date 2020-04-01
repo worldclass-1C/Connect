@@ -64,7 +64,7 @@
       <value>Вид кэша</value>
     </synonym>
     <type>
-      <types>CatalogRef.DELETE_cacheTypes</types>
+      <types>CatalogRef.cacheTypes</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
