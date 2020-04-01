@@ -60,7 +60,7 @@ Function GetCache(parameters, struсRequest) Export
 		EndDo
 	EndIf;
 
-	Return HTTP.encodeJSON(strucRes);
+	Return strucRes;
 EndFunction
 
 Procedure AskCache(parameters, struсRequest) Export
