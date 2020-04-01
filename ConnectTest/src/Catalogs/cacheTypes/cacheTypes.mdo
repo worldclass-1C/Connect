@@ -200,7 +200,7 @@
     <items id="547efa87-491c-4f4b-8946-b293ac70ecc9">
       <name>nearestService</name>
       <code xsi:type="core:StringValue">
-        <value>NearestService</value>
+        <value>nearestService</value>
       </code>
     </items>
     <items id="9718ef2d-25fa-49a9-b407-8392ee7d24a5">
