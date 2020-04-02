@@ -83,32 +83,36 @@ EndProcedure
 
 Function TextQuery()
 	Return "SELECT
-		   |	CI.cacheType,
-		   |	CI.cacheInformation AS Ref,
-		   |	CI.cacheInformation.data AS data
-		   |INTO tabCI
-		   |FROM
-		   |	InformationRegister.cacheIndex AS CI
-		   |WHERE
-		   |	CI.user = &user
-		   |	AND CI.chain = &chain
-		   |	AND CI.cacheType in (&cacheTypes)
-		   |	AND &date between CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
-		   |;
-		   |////////////////////////////////////////////////////////////////////////////////
-		   |select
-		   |	*
-		   |from
-		   |	tabCI
-		   |;
-		   |////////////////////////////////////////////////////////////////////////////////
-		   |SELECT
-		   |	dscr.Ref AS Ref,
-		   |	dscr.Description,
-		   |	dscr.Description.data AS data
-		   |FROM
-		   |	tabCI AS tabCI
-		   |		INNER JOIN Catalog.cacheInformations.Descriptions AS dscr
-		   |		ON dscr.Ref = tabCI.Ref"
+	|	CI.cacheType,
+	|	CI.cacheInformation AS Ref,
+	|	CI.cacheInformation.data AS data
+	|INTO tabCI
+	|FROM
+	|	InformationRegister.cacheIndex AS CI
+	|		LEFT JOIN Catalog.chains.cacheTypes AS CCT
+	|		ON CCT.Ref = CI.chain
+	|		AND CCT.cacheType = CI.cacheType
+	|WHERE
+	|	CI.user = &user
+	|	AND CI.chain = &chain
+	|	AND CI.cacheType in (&cacheTypes)
+	|	AND &date between CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
+	|	AND ISNULL(CCT.isUsed, FALSE)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|select
+	|	*
+	|from
+	|	tabCI
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	dscr.Ref AS Ref,
+	|	dscr.Description,
+	|	dscr.Description.data AS data
+	|FROM
+	|	tabCI AS tabCI
+	|		INNER JOIN Catalog.cacheInformations.Descriptions AS dscr
+	|		ON dscr.Ref = tabCI.Ref"
 
 EndFunction

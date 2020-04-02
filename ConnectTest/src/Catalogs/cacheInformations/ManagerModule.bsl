@@ -22,6 +22,7 @@ Function attributesStructure() Export
 
 	DataLoad.addRowInAttributesTable(attributesTable, "data", "data", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "user", "user", "ref");
+	DataLoad.addRowInAttributesTable(attributesTable, "holding", "holding", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "chain", "chain", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "cacheType", "cacheType", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "endRotation", "endRotation", "date");
@@ -44,9 +45,10 @@ Function attributesStructure() Export
 	mdStruct.Insert("rooms", New Structure("rooms", "uid"));
 	mdStruct.Insert("cacheType", New Structure("cacheTypes", "uid"));
 	mdStruct.Insert("chain", New Structure("chains", "uid"));
+	mdStruct.Insert("holding", New Structure("holdings", "uid"));
 
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct",
-		False, "cacheInformations", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
+		True, "cacheInformations", "catalog", "write", attributesTable, attributesTableForNewItem, mdStruct);
 
 EndFunction

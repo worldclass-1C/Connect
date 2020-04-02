@@ -168,6 +168,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="0fb72e6c-16f4-44eb-ab9f-cb8eb51a67d4">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="d5b26334-057e-429d-85cc-a61eb8fa8094">
     <producedTypes>
       <objectType typeId="269bc537-f8d5-485e-b48d-0d2906486dcb" valueTypeId="04f19862-8036-49f0-8e59-0ae7f3414335"/>

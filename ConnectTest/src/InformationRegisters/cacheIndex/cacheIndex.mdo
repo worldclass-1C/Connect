@@ -37,22 +37,6 @@
     <dataHistory>Use</dataHistory>
     <mainFilter>true</mainFilter>
   </dimensions>
-  <dimensions uuid="39ec6f8b-72a2-4fa5-af73-2c3cb8670bef">
-    <name>chain</name>
-    <synonym>
-      <key>en</key>
-      <value>Chain</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Сеть</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.chains</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </dimensions>
   <dimensions uuid="06f72c34-dde0-4f07-8c5d-1968a576f1b7">
     <name>cacheType</name>
     <synonym>
@@ -65,6 +49,35 @@
     </synonym>
     <type>
       <types>CatalogRef.cacheTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </dimensions>
+  <dimensions uuid="4065b79d-a794-45c2-ae9e-d77f2fde5af9">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="39ec6f8b-72a2-4fa5-af73-2c3cb8670bef">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
