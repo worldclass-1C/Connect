@@ -95,10 +95,7 @@ Function TextQuery()
 	|WHERE
 	|	CI.user = &user
 	|	AND CI.chain = &chain
-<<<<<<< HEAD
 	||	AND CI.holding = &holding
-=======
->>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect
 	|	AND CI.cacheType in (&cacheTypes)
 	|	AND &date between CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
 	|	AND ISNULL(CCT.isUsed, FALSE)
