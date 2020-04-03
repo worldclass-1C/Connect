@@ -111,9 +111,9 @@ Procedure gymList(parameters) Export
 		
 		queryTextArray = New Array();
 		queryTextArray.Add(queryTextPart1);
-		If tokenContext.appType <> Enums.appTypes.Employee Then
-			queryTextArray.Add(queryTextPart2);
-		EndIf; 
+		//If tokenContext.appType <> Enums.appTypes.Employee Then
+		//	queryTextArray.Add(queryTextPart2);
+		//EndIf; 
 		
 		query.Text = StrConcat(queryTextArray, " ");
 		
