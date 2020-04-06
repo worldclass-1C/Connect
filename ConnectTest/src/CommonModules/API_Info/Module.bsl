@@ -433,9 +433,10 @@ Procedure userSummaryCache(parameters) Export
 	arrTypes.Add(tps.packageList); arrTypes.Add(tps.paymentPackage);
 
 	//без контекста chain
-	struct = Cache.GetCache(parameters,New Structure("user,holding,cacheTypes",
+	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,cacheTypes",
 												parameters.tokenContext.user,
 												parameters.tokenContext.holding,
+												parameters.tokenContext.chain,
 												arrTypes));
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 	

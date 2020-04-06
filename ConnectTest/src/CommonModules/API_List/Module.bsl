@@ -7,9 +7,9 @@ Procedure employeeList(parameters) Export
 	If Not requestStruct.Property("uid") Then		
 		parameters.Insert("error", "gymError");
 	Else
-		employeeArray = getArrEmployees(New Structure("gym,byClub,language",
+		employeeArray = getArrEmployees(New Structure("gym,byArray,language",
 											XMLValue(Type("CatalogRef.gyms"), requestStruct.uid),
-											True,
+											False,
 											parameters.language));
 		
 	EndIf;
@@ -19,13 +19,13 @@ Procedure employeeList(parameters) Export
 EndProcedure
 
 Function getArrEmployees(params) Export
-	stucParams = New Structure("gym,byClub,arrEmployees,language",
+	stucParams = New Structure("gym,byArray,Array,language",
 											Catalogs.gyms.EmptyRef(),
-											False,
+											True,
 											New Array(),
 											Catalogs.languages.EmptyRef());
 	FillPropertyValues(stucParams, params);
-	employeeArray = New Array;
+	Res = ?(stucParams.byArray, New Map, New Array);
 	query = New Query("SELECT
 	|	gymsEmployees.employee,
 	|	ISNULL(employeestranslation.firstName, gymsEmployees.employee.firstName) AS firstName,
@@ -39,7 +39,7 @@ Function getArrEmployees(params) Export
 	|		ON gymsEmployees.employee = employeestranslation.Ref
 	|		AND employeestranslation.language = &language
 	|WHERE
-	|	&byClub
+	|	NOT &byArray
 	|	AND gymsEmployees.gym = &gym
 	|	AND gymsEmployees.employee.active
 	|
@@ -58,13 +58,13 @@ Function getArrEmployees(params) Export
 	|		ON employees.Ref = employeestranslation.Ref
 	|		AND employeestranslation.language = &language
 	|WHERE
-	|	NOT &byClub
-	|	AND employees.Ref IN (&arrEmployees)
+	|	 &byArray
+	|	AND employees.Ref IN (&Array)
 	|	AND employees.active");
 
 	query.SetParameter("gym", stucParams.gym);
-	query.SetParameter("byClub", stucParams.byClub);
-	query.SetParameter("arrEmployees", stucParams.arrEmployees);
+	query.SetParameter("byArray", stucParams.byArray);
+	query.SetParameter("Array", stucParams.Array);
 	query.SetParameter("language", stucParams.language);
 
 	select = query.Execute().Select();
@@ -78,10 +78,14 @@ Function getArrEmployees(params) Export
 		employeeStruct.Insert("photo", select.photo);
 		employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
 		employeeStruct.Insert("isMyCoach", False);
-		employeeArray.add(employeeStruct);
+		If stucParams.byArray Then
+			Res.Insert(select.employee,  HTTP.encodeJSON(employeeStruct))
+		Else
+			Res.add(employeeStruct);
+		EndIf
 	EndDo;
 		
-	Return 		employeeArray
+	Return 		Res
 EndFunction
 
 Procedure roomList(parameters) Export
@@ -108,16 +112,16 @@ Procedure roomList(parameters) Export
 EndProcedure
 
 Function  getArrRooms(params) Export
-	stucParams = New Structure("gym,byArray,arrRooms,language,type",
+	stucParams = New Structure("gym,byArray,Array,language,type",
 											Undefined,
 											True,
 											New Array(),
 											Catalogs.languages.EmptyRef(),
 											Undefined);
 	FillPropertyValues(stucParams, params);
+	Res = ?(stucParams.byArray, New Map, New Array);
 	
-	roomArray =New Array();
-		query = New Query("SELECT
+	query = New Query("SELECT
 		|	rooms.Ref,
 		|	rooms.type,
 		|	case
@@ -133,14 +137,14 @@ Function  getArrRooms(params) Export
 		|WHERE
 		|	case
 		|		when &byArray
-		|			then rooms.Ref in (&arrRooms)
+		|			then rooms.Ref in (&Array)
 		|		else rooms.gym = &gym AND rooms.type = &type
 		|	End");
 		
 		query.SetParameter("gym", stucParams.gym);
 		query.SetParameter("type", stucParams.type);
 		query.SetParameter("byArray", stucParams.byArray);
-		query.SetParameter("arrRooms", stucParams.arrRooms);
+		query.SetParameter("Array", stucParams.Array);
 		query.SetParameter("language", stucParams.language);
 		
 		select = query.Execute().Select();
@@ -151,10 +155,14 @@ Function  getArrRooms(params) Export
 			roomStruct.Insert("name", select.description);
 			roomStruct.Insert("type", XMLString(select.type));
 			
-			roomArray.add(roomStruct);
+			If stucParams.byArray Then
+				Res.Insert(select.Ref,  HTTP.encodeJSON(roomStruct))
+			Else
+				Res.add(roomStruct);
+			EndIf
 		EndDo;
 	
-	Return roomArray
+	Return Res
 EndFunction
 
 Procedure gymList(parameters) Export
@@ -166,9 +174,9 @@ Procedure gymList(parameters) Export
 	If Not requestStruct.Property("chain") Then		
 		parameters.Insert("error", "chainCodeError");
 	Else	 
-		gymArray = getArrGyms(New Structure("chainCode,byChain,language,currentTime,appType,authorized",
+		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized",
 											requestStruct.chain,
-											True,
+											False,
 											 parameters.language,
 											parameters.currentTime,
 											tokenContext.appType,
@@ -181,17 +189,18 @@ Procedure gymList(parameters) Export
 EndProcedure
 
 Function  getArrGyms(params) Export
-	stucParams = New Structure("chainCode,byChain,arrGyms,language,currentTime,appType,authorized",
+	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized",
 											"",
-											False,
+											True,
 											New Array(),
 											Catalogs.languages.EmptyRef(),
+											CurrentUniversalDate(),
 											,
 											False);
 	FillPropertyValues(stucParams, params);
 	
-	gymArray =New Array();
-		query = New Query("SELECT
+	Res = ?(stucParams.byArray, New Map, New Array);
+	query = New Query("SELECT
 		|	gyms.Ref,
 		|	gyms.latitude,
 		|	gyms.longitude,
@@ -235,7 +244,7 @@ Function  getArrGyms(params) Export
 		|		ON gymstranslation.Ref = gyms.Ref
 		|		AND gymstranslation.language = &language
 		|WHERE
-		|	&byChain
+		|	NOT &byArray
 		|	AND
 		|	NOT gyms.DeletionMark
 		|	AND gyms.chain.code = &chainCode
@@ -288,14 +297,14 @@ Function  getArrGyms(params) Export
 		|		ON gymstranslation.Ref = gyms.Ref
 		|		AND gymstranslation.language = &language
 		|WHERE
-		|	not &byChain
-		|	AND gyms.ref in (&arrGyms)
+		|	&byArray
+		|	AND gyms.ref in (&Array)
 		|	AND
 		|	NOT gyms.DeletionMark");
 		
 		query.SetParameter("chainCode", stucParams.chainCode);
-		query.SetParameter("byChain", stucParams.byChain);
-		query.SetParameter("arrGyms", stucParams.arrGyms);
+		query.SetParameter("byArray", stucParams.byArray);
+		query.SetParameter("Array", stucParams.Array);
 		query.SetParameter("language", stucParams.language);
 		query.SetParameter("currentTime", stucParams.currentTime);
 //		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
@@ -327,10 +336,14 @@ Function  getArrGyms(params) Export
 			segment.Insert("color", select.segmentColor);
 			gymStruct.Insert("segment", segment);			
 			
-			gymArray.add(gymStruct);
+			If stucParams.byArray Then
+				Res.Insert(select.Ref,  HTTP.encodeJSON(gymStruct))
+			Else
+				Res.add(gymStruct);
+			EndIf
 		EndDo;
 	
-	Return gymArray
+	Return Res
 EndFunction
 
 Procedure productList(parameters) Export
@@ -357,7 +370,7 @@ Procedure productList(parameters) Export
 EndProcedure
 
 Function  getArrProduct(params) Export
-	stucParams = New Structure("byArray,arrProduct, productDirection,language,gym",
+	stucParams = New Structure("byArray,Array, productDirection,language,gym",
 											True,
 											New Array(),
 											Undefined,
@@ -370,7 +383,7 @@ Function  getArrProduct(params) Export
 	
 	baseImgURL = GeneralReuse.getBaseImgURL();
 	
-	productArray =New Array();
+	Res = ?(stucParams.byArray, New Map, New Array);
 	
 	query = New Query("SELECT
 	|	gymsProducts.product,
@@ -392,7 +405,7 @@ Function  getArrProduct(params) Export
 	|	Catalog.products AS products
 	|Where
 	|	&byArray
-	|	AND products.Ref in (&arrProduct)
+	|	AND products.Ref in (&Array)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -435,7 +448,7 @@ Function  getArrProduct(params) Export
 	query.SetParameter("productDirection", stucParams.productDirection);
 	query.SetParameter("gym", stucParams.gym);	
 	query.SetParameter("byArray", stucParams.byArray);
-	query.SetParameter("arrProduct", stucParams.arrProduct);
+	query.SetParameter("Array", stucParams.Array);
 	query.SetParameter("language", stucParams.language);
 	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	
@@ -477,12 +490,14 @@ Function  getArrProduct(params) Export
 		EndDo;
 		productStruct.Insert("entryList", entryArray);
 		selectMapping.Reset();
-		
-		productArray.add(productStruct);
+		If stucParams.byArray Then
+			Res.Insert(select.product,  HTTP.encodeJSON(productStruct))
+		Else
+			Res.add(productStruct);
+		EndIf
 	EndDo;
 	
-	
-	Return productArray
+	Return Res
 EndFunction
 
 Function GetProductDirectionsArray()
