@@ -17,7 +17,7 @@ Function GetCache(parameters, struсRequest) Export
 		strucRes = New Structure();;
 		resQuery = Query.ExecuteBatch();
 		common = resQuery[1].Unload();
-		tabDescriptions = resQuery[2].Unload();
+		tabDescriptions = resQuery[3].Unload();
 
 		//emptyTypes = New Array;
 
@@ -95,7 +95,7 @@ Function TextQuery()
 	|WHERE
 	|	CI.user = &user
 	|	AND CI.chain = &chain
-	||	AND CI.holding = &holding
+	|	AND CI.holding = &holding
 	|	AND CI.cacheType in (&cacheTypes)
 	|	AND &date between CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
 	|	AND ISNULL(CCT.isUsed, FALSE)
@@ -111,9 +111,17 @@ Function TextQuery()
 	|	dscr.Ref AS Ref,
 	|	dscr.Description,
 	|	dscr.Description.data AS data
+	|INTO tabDesr
 	|FROM
 	|	tabCI AS tabCI
 	|		INNER JOIN Catalog.cacheInformations.Descriptions AS dscr
-	|		ON dscr.Ref = tabCI.Ref"
+	|		ON dscr.Ref = tabCI.Ref
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	*
+	|FROM
+	|	tabDesr"
 
 EndFunction
