@@ -295,12 +295,28 @@ Function  getArrGyms(params) Export
 		|	AND
 		|	NOT gyms.DeletionMark");
 		
+<<<<<<< HEAD
 		query.SetParameter("chainCode", stucParams.chainCode);
 		query.SetParameter("byChain", stucParams.byChain);
 		query.SetParameter("arrGyms", stucParams.arrGyms);
 		query.SetParameter("language", stucParams.language);
 		query.SetParameter("currentTime", stucParams.currentTime);
 		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
+=======
+		queryTextPart2 = "AND gyms.type <> VALUE(Enum.gymTypes.outdoor)";
+		
+		queryTextArray = New Array();
+		queryTextArray.Add(queryTextPart1);
+		//If tokenContext.appType <> Enums.appTypes.Employee Then
+		//	queryTextArray.Add(queryTextPart2);
+		//EndIf; 
+		
+		query.Text = StrConcat(queryTextArray, " ");
+		
+		query.SetParameter("chainCode", requestStruct.chain);
+		query.SetParameter("language", language);
+		query.SetParameter("currentTime", parameters.currentTime);		
+>>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect
 		
 		select = query.Execute().Select();
 
