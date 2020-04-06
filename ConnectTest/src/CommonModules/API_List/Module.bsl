@@ -241,8 +241,6 @@ Function  getArrGyms(params) Export
 		|	AND gyms.chain.code = &chainCode
 		|	AND gyms.startDate <= &currentTime
 		|	AND gyms.endDate >= &currentTime
-	//	|	AND (&IsAppEmployee
-	//	|	OR gyms.type <> VALUE(Enum.gymTypes.outdoor))
 		|
 		|union all
 		|
@@ -291,7 +289,7 @@ Function  getArrGyms(params) Export
 		|		AND gymstranslation.language = &language
 		|WHERE
 		|	not &byChain
-		|	AND gyms.ref in (arrGyms)
+		|	AND gyms.ref in (&arrGyms)
 		|	AND
 		|	NOT gyms.DeletionMark");
 		
