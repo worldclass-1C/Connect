@@ -429,7 +429,7 @@ Procedure userSummaryCache(parameters) Export
 	arrTypes = New Array();
 	tps = Catalogs.cacheTypes;
 	arrTypes.Add(tps.bonus); arrTypes.Add(tps.membershipList);
-	arrTypes.Add(tps.balance); arrTypes.Add(tps.rentedLokerList);
+	arrTypes.Add(tps.balance); arrTypes.Add(tps.rentedLockerList);
 	arrTypes.Add(tps.packageList); arrTypes.Add(tps.paymentPackage);
 	 
 	 commonCache(parameters,arrTypes);
