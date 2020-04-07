@@ -250,12 +250,12 @@ Procedure paymentStatus(parameters) Export
 				If response.errorCode = "" Then
 					struct.Insert("result", "ok");
 					Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);
-					If order.acquiringRequest = Enums.acquiringRequests.register then
-						answerKPO = Acquiring.executeRequest("process", order, parameters);
+					If order.acquiringRequest = Enums.acquiringRequests.unbinding then
+						answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
 					ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
 						answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
-					else 
-						answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
+					else
+						answerKPO = Acquiring.executeRequest("process", order, parameters);
 					EndIf;
 					If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
 						parameters.Insert("error", "system");					
