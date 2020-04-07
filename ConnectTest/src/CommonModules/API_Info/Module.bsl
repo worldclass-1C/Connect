@@ -444,10 +444,11 @@ Procedure commonCache(parameters,Types) Export
 		arrTypes = New Array();
 		arrTypes.Add(Types);
 	EndIf;	
-	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,cacheTypes",
+	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,languageCode,cacheTypes",
 												parameters.tokenContext.user,
 												parameters.tokenContext.holding,
 												parameters.tokenContext.chain,
+												parameters.languageCode,
 												arrTypes));
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));		
 EndProcedure

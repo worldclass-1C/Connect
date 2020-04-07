@@ -5,12 +5,12 @@
 
 Function GetCache(parameters, struсRequest) Export
 	
-	strucSeek = New Structure("user,chain,holding,date,language,cacheTypes", 
+	strucSeek = New Structure("user,chain,holding,date,languageCode,cacheTypes", 
 								Catalogs.users.EmptyRef(), 
 								Catalogs.chains.EmptyRef(),
 								Catalogs.holdings.EmptyRef(),
 								CurrentUniversalDate(), 
-								Catalogs.languages.EmptyRef(),
+								"",
 								);
 
 	FillPropertyValues(strucSeek, struсRequest);
@@ -47,7 +47,7 @@ Function GetCache(parameters, struсRequest) Export
 				BackgroundJobs.Execute("Cache.AskCache",arrParams )
 			Else
 				data = FoundRow.data;
-				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.language);
+				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode);
 				data_decode = HTTP.decodeJSON(data);
 				strucRes.Insert(FoundRow.PredefinedDataName,data_decode);
 			EndIf
@@ -66,7 +66,7 @@ Function GetCache(parameters, struсRequest) Export
 
 EndFunction
 
-Procedure DescriptionProcessing(data,arrDescr,language)
+Procedure DescriptionProcessing(data,arrDescr,languageCode)
 	
 	mapData = New Map;
 	mapData.Insert(Type("CatalogRef.rooms"),New Structure("Handler,Array","getArrRooms",New Array));
@@ -74,7 +74,9 @@ Procedure DescriptionProcessing(data,arrDescr,language)
 	mapData.Insert(Type("CatalogRef.products"),New Structure("Handler,Array","getArrProduct",New Array));
 	mapData.Insert(Type("CatalogRef.employees"),New Structure("Handler,Array","getArrEmployees",New Array));
 	
-	lang_Code = language.Code;
+	If Not ValueIsFilled(languageCode) Then
+		languageCode = "ru"
+	EndIf;
 	For Each found In arrDescr Do
 		typeDescr = TypeOf(found.Description);
 		If typeDescr = Type("CatalogRef.cacheInformations") Then
@@ -88,8 +90,8 @@ Procedure DescriptionProcessing(data,arrDescr,language)
 						strucData.Insert(KeyVal.Key,lKeyVal.Value)
 					EndDo;
 				ElsIf KeyVal.Value.Count()>1 Then
-					If KeyVal.Value.Property(lang_Code) Then
-						strucData.Insert(KeyVal.Key,KeyVal.Value[lang_Code])
+					If KeyVal.Value.Property(languageCode) Then
+						strucData.Insert(KeyVal.Key,KeyVal.Value[languageCode])
 					Else
 						strucData.Insert(KeyVal.Key,KeyVal.Value.ru) 
 					EndIf; 
