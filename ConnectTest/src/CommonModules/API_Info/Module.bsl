@@ -431,15 +431,25 @@ Procedure userSummaryCache(parameters) Export
 	arrTypes.Add(tps.bonus); arrTypes.Add(tps.membershipList);
 	arrTypes.Add(tps.balance); arrTypes.Add(tps.rentedLokerList);
 	arrTypes.Add(tps.packageList); arrTypes.Add(tps.paymentPackage);
+	 
+	 commonCache(parameters,arrTypes);
 
-	//без контекста chain
+EndProcedure
+	
+Procedure commonCache(parameters,Types) Export
+	
+	If TypeOf(Types)=Type("Array") Then
+		arrTypes = Types
+	Else 
+		arrTypes = New Array();
+		arrTypes.Add(Types);
+	EndIf;	
 	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,cacheTypes",
 												parameters.tokenContext.user,
 												parameters.tokenContext.holding,
 												parameters.tokenContext.chain,
 												arrTypes));
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));		
 EndProcedure
 
 Procedure userCache(parameters) Export
