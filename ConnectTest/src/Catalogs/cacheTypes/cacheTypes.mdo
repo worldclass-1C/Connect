@@ -140,7 +140,7 @@
     <items id="431e8916-d6ad-42d2-a27a-966b153a0916">
       <name>bonus</name>
       <code xsi:type="core:StringValue">
-        <value>Bonus</value>
+        <value>bonus</value>
       </code>
     </items>
     <items id="6ffad23c-c08a-4258-96a2-0ea879168231">
