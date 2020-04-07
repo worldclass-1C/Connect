@@ -155,12 +155,6 @@
         <value>balance</value>
       </code>
     </items>
-    <items id="3be81e82-8606-4268-ac0b-d32e78e0c167">
-      <name>rentedLokerList</name>
-      <code xsi:type="core:StringValue">
-        <value>rentedLokerList</value>
-      </code>
-    </items>
     <items id="5de50dd5-3c34-4db5-98ef-dc28c4d0f09b">
       <name>packageList</name>
       <code xsi:type="core:StringValue">
@@ -207,6 +201,12 @@
       <name>availableServices</name>
       <code xsi:type="core:StringValue">
         <value>availableServices</value>
+      </code>
+    </items>
+    <items id="3a590a65-afe4-479a-a585-b8454a1cebf8">
+      <name>rentedLockerList</name>
+      <code xsi:type="core:StringValue">
+        <value>rentedLockerList</value>
       </code>
     </items>
   </predefined>
