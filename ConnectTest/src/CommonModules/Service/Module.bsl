@@ -1,8 +1,11 @@
 Function getErrorDescription(language, erroeCode = "",
-		description = "", Texts) Export
+		description = "", Texts = "", mailRecipients = Undefined) Export
 
 	errorDescription = New Structure("result, description", erroeCode, description);
-
+	If mailRecipients = Undefined Then
+		mailRecipients = New Array(); 
+	EndIf;
+	
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
 		|	errorDescriptionstranslation.description,
@@ -32,15 +35,23 @@ Function getErrorDescription(language, erroeCode = "",
 		
 		query.SetParameter("erroeCode", erroeCode);
 		query.SetParameter("language", language);
-		select = query.Execute().Select();
-		select.Next();
-		errorDescription.Insert("description", select.description);	
-		Mails = select.mailRecipients.Unload();	
-		If Mails.Count()>0 then
-			SendServiceMailBackground(Texts,Mails.UnloadColumn("Mail"));
+		result = query.Execute();
+		If result.IsEmpty() Then
+			description = description;
+		Else	
+			select = result.Select();
+			select.Next();
+			description = select.description;
+			mailRecipients = select.mailRecipients.Unload().UnloadColumn("Mail");
 		EndIf;
+		errorDescription.Insert("description", select.description);		
+		
 	EndIf;
-
+	
+	If mailRecipients.Count()>0 then
+		SendServiceMailBackground(Texts, mailRecipients);
+	EndIf;
+	
 	Return errorDescription;
 
 EndFunction
