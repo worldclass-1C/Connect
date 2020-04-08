@@ -22,6 +22,9 @@
     <types>CatalogRef.acquiringOrders</types>
     <types>CatalogRef.creditCards</types>
     <types>CatalogRef.tokens</types>
+    <types>CatalogRef.cacheTypes</types>
+    <types>CatalogRef.cacheInformations</types>
+    <types>CatalogRef.chains</types>
   </commandParameterType>
   <representation>Auto</representation>
 </mdclass:CommonCommand>

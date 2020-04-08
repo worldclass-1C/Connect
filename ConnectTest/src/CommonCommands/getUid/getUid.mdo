@@ -24,6 +24,8 @@
     <types>CatalogRef.rooms</types>
     <types>CatalogRef.products</types>
     <types>CatalogRef.tags</types>
+    <types>CatalogRef.cacheTypes</types>
+    <types>CatalogRef.cacheInformations</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>
