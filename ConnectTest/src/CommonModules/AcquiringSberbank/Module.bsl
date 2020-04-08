@@ -67,11 +67,11 @@ Procedure checkOrder(parameters) Export
 			newRow.amount = parameters.acquiringAmount;			
 			newRow.details = prepareDetails(answerStruct);			
 			orderObject.Write();
-		ElsIf answerStruct.actionCode = -100 then
+		ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
 			parameters.Insert("errorCode", "send");
 			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);;
 		ElsIf answerStruct.actionCode = -1 Or answerStruct.actionCode = 1001 
-		   Or answerStruct.actionCode = 51018 Or answerStruct.actionCode = 151019 Then
+		   Or answerStruct.actionCode = 51018 Then
 			parameters.Insert("errorCode", "fail");
 			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
 		Else
