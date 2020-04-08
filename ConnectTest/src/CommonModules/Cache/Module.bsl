@@ -5,12 +5,13 @@
 
 Function GetCache(parameters, struсRequest) Export
 	
-	strucSeek = New Structure("user,chain,holding,date,languageCode,cacheTypes", 
+	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
 								Catalogs.users.EmptyRef(), 
 								Catalogs.chains.EmptyRef(),
 								Catalogs.holdings.EmptyRef(),
 								CurrentUniversalDate(), 
 								"",
+								Catalogs.languages.EmptyRef
 								);
 
 	FillPropertyValues(strucSeek, struсRequest);
@@ -47,7 +48,7 @@ Function GetCache(parameters, struсRequest) Export
 				BackgroundJobs.Execute("Cache.AskCache",arrParams )
 			Else
 				data = FoundRow.data;
-				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode);
+				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode,strucSeek.language);
 				data_decode = HTTP.decodeJSON(data);
 				strucRes.Insert(FoundRow.PredefinedDataName,data_decode);
 			EndIf
@@ -66,7 +67,7 @@ Function GetCache(parameters, struсRequest) Export
 
 EndFunction
 
-Procedure DescriptionProcessing(data,arrDescr,languageCode)
+Procedure DescriptionProcessing(data,arrDescr,languageCode,language)
 	
 	mapData = New Map;
 	mapData.Insert(Type("CatalogRef.rooms"),New Structure("Handler,Array","getArrRooms",New Array));
