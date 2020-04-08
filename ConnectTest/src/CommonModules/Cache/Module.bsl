@@ -12,11 +12,12 @@ Function GetCache(parameters, struсRequest) Export
 								CurrentUniversalDate(), 
 								"",
 								Catalogs.languages.EmptyRef(),
-								);
+								New Array);
 
 	FillPropertyValues(strucSeek, struсRequest);
-
-	If ValueIsFilled(strucSeek.cacheTypes) Then
+	Result ="";
+	
+	If strucSeek.cacheTypes.Count()>0 Then
 		Query = New Query(TextQuery());
 		For Each KeyVal In strucSeek Do
 			Query.SetParameter(KeyVal.Key, KeyVal.Value);
@@ -52,17 +53,16 @@ Function GetCache(parameters, struсRequest) Export
 				data_decode = HTTP.decodeJSON(data);
 				strucRes.Insert(FoundRow.PredefinedDataName,data_decode);
 			EndIf
-		EndDo
-	EndIf;
-	CounRes = strucRes.Count();
-	If CounRes=1 Then
-		For Each KeyVal In strucRes Do
-			Result = KeyVal.Value
 		EndDo;
-	Else //If CounRes>1 Then
-		Result = strucRes
-	EndIF;
-	
+		If strucRes.Count()=1 Then
+			For Each KeyVal In strucRes Do
+				Result = KeyVal.Value
+			EndDo;
+		Else 
+			Result = strucRes
+		EndIf;
+	EndIf;
+
 	Return Result;
 
 EndFunction

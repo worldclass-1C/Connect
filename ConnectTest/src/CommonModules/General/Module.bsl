@@ -28,16 +28,18 @@ Procedure executeRequestMethod(parameters) Export
 			API_Info.accountProfile(parameters);	
 		ElsIf parameters.requestName = "userprofile" Then 
 			API_Info.userProfile(parameters);
-		ElsIf parameters.requestName = "bannercache" Then 	
-			 API_Info.commonCache(parameters, Catalogs.cacheTypes.banner);
-		ElsIf parameters.requestName = "nearestservicecache" Then 	
-			 API_Info.commonCache(parameters, Catalogs.cacheTypes.nearestService);
-		ElsIf parameters.requestName = "availableservicescache" Then 	
-			 API_Info.commonCache(parameters, Catalogs.cacheTypes.availableServices);
-		ElsIf parameters.requestName = "paymentpackagecache" Then 	
-			 API_Info.commonCache(parameters, Catalogs.cacheTypes.paymentPackage);
-		ElsIf parameters.requestName = "usersummarycache" Then 
-			API_Info.usersummarycache(parameters);
+//		ElsIf parameters.requestName = "bannercache" Then 	
+//			 API_Info.commonCache(parameters, Catalogs.cacheTypes.banner);
+//		ElsIf parameters.requestName = "nearestservicecache" Then 	
+//			 API_Info.commonCache(parameters, Catalogs.cacheTypes.nearestService);
+//		ElsIf parameters.requestName = "availableservicescache" Then 	
+//			 API_Info.commonCache(parameters, Catalogs.cacheTypes.availableServices);
+//		ElsIf parameters.requestName = "paymentpackagecache" Then 	
+//			 API_Info.commonCache(parameters, Catalogs.cacheTypes.paymentPackage);
+//		ElsIf parameters.requestName = "usersummarycache" Then 
+//			API_Info.usersummarycache(parameters);
+		ElsIf parameters.requestName = "generalcache" Then 	
+			 API_Info.generalcache(parameters);
 		//ElsIf parameters.requestName = "usersummary" Then 
 		//	API_Info.usersummary(parameters);
 		//ElsIf parameters.requestName = "usercache" Then 
