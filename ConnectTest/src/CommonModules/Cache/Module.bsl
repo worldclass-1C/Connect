@@ -11,7 +11,7 @@ Function GetCache(parameters, struсRequest) Export
 								Catalogs.holdings.EmptyRef(),
 								CurrentUniversalDate(), 
 								"",
-								Catalogs.languages.EmptyRef
+								Catalogs.languages.EmptyRef(),
 								);
 
 	FillPropertyValues(strucSeek, struсRequest);
