@@ -5,17 +5,19 @@
 
 Function GetCache(parameters, struсRequest) Export
 	
-	strucSeek = New Structure("user,chain,holding,date,languageCode,cacheTypes", 
+	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
 								Catalogs.users.EmptyRef(), 
 								Catalogs.chains.EmptyRef(),
 								Catalogs.holdings.EmptyRef(),
 								CurrentUniversalDate(), 
 								"",
-								);
+								Catalogs.languages.EmptyRef(),
+								New Array);
 
 	FillPropertyValues(strucSeek, struсRequest);
-
-	If ValueIsFilled(strucSeek.cacheTypes) Then
+	Result ="";
+	
+	If strucSeek.cacheTypes.Count()>0 Then
 		Query = New Query(TextQuery());
 		For Each KeyVal In strucSeek Do
 			Query.SetParameter(KeyVal.Key, KeyVal.Value);
@@ -47,26 +49,25 @@ Function GetCache(parameters, struсRequest) Export
 				BackgroundJobs.Execute("Cache.AskCache",arrParams )
 			Else
 				data = FoundRow.data;
-				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode);
+				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode,strucSeek.language);
 				data_decode = HTTP.decodeJSON(data);
 				strucRes.Insert(FoundRow.PredefinedDataName,data_decode);
 			EndIf
-		EndDo
-	EndIf;
-	CounRes = strucRes.Count();
-	If CounRes=1 Then
-		For Each KeyVal In strucRes Do
-			Result = KeyVal.Value
 		EndDo;
-	Else //If CounRes>1 Then
-		Result = strucRes
-	EndIF;
-	
+		If strucRes.Count()=1 Then
+			For Each KeyVal In strucRes Do
+				Result = KeyVal.Value
+			EndDo;
+		Else 
+			Result = strucRes
+		EndIf;
+	EndIf;
+
 	Return Result;
 
 EndFunction
 
-Procedure DescriptionProcessing(data,arrDescr,languageCode)
+Procedure DescriptionProcessing(data,arrDescr,languageCode,language)
 	
 	mapData = New Map;
 	mapData.Insert(Type("CatalogRef.rooms"),New Structure("Handler,Array","getArrRooms",New Array));
