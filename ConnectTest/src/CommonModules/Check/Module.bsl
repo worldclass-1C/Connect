@@ -134,3 +134,14 @@ Procedure legality(request, parameters) Export
 		EndIf;
 	EndIf;
 EndProcedure
+
+Procedure ChangeProperty(val account, struct) Export
+	accountObject = account.GetObject();
+	If accountObject <> Undefined Then		
+		For Each element In struct Do
+			accountObject[element.key] = element.value;
+		EndDo;
+		accountObject.changeDate = ToUniversalTime(CurrentDate());
+		accountObject.Write();
+	EndIf;
+EndProcedure
