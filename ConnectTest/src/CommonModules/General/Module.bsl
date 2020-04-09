@@ -167,7 +167,7 @@ Procedure config(parameters)
 	|	tokens.systemVersion AS systemVersion,
 	|	tokens.lockDate,
 	|	tokens.chain.cacheTypes.(
-	|		cacheType.Code AS section,
+	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.tokens AS tokens
@@ -208,7 +208,7 @@ Procedure config(parameters)
 			tokenStruct.Insert("systemVersion", selection.systemVersion);			
 			availableSections = New Array();
 			For Each row In selection.availableSections.Unload() Do
-				If row.isUsed Then
+				If row.isUsed And ValueIsFilled(row.section) Then
 					availableSections.Add(row.section);
 				EndIf;
 			EndDo;

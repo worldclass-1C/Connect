@@ -523,7 +523,7 @@ Procedure chainList(parameters) Export
 	|	chain.phoneMask.Description AS phoneMaskDescription,
 	|	chain.holding.Code AS holdingCode,
 	|	chain.cacheTypes.(
-	|		cacheType.Code AS section,
+	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections
 	|FROM
 	|	Catalog.chains AS chain
@@ -561,7 +561,7 @@ Procedure chainList(parameters) Export
 		chainStruct.Insert("countryCode", New Structure("code, mask", select.phoneMaskCountryCode, select.phoneMaskDescription));		
 		availableSections = New Array();
 		For Each row In select.availableSections.Unload() Do
-			If row.isUsed Then
+			If row.isUsed And ValueIsFilled(row.section)  Then
 				availableSections.Add(row.section);	
 			EndIf;		
 		EndDo;
