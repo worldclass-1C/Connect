@@ -5,7 +5,7 @@ Function getErrorDescription(language, erroeCode = "",
 
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
-		|	errorDescriptionstranslation.description,
+		|	ISNULL(errorDescriptionstranslation.description, errorDescriptions.defaultDescription) AS description,
 		|	errorDescriptions.mailRecipients.(
 		|		Mail)
 		|FROM
@@ -19,7 +19,7 @@ Function getErrorDescription(language, erroeCode = "",
 		|UNION ALL
 		|
 		|SELECT
-		|	errorDescriptionstranslation.description,
+		|	ISNULL(errorDescriptionstranslation.description, errorDescriptions.defaultDescription) AS description,
 		|	errorDescriptions.mailRecipients.(
 		|		Mail)
 		|FROM

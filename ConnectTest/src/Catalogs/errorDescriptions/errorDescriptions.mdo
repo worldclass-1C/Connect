@@ -53,6 +53,21 @@
     <use>ForFolderAndItem</use>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="fa00c55a-60ac-4dc0-8a9f-30a8e6cd52fb">
+    <name>defaultDescription</name>
+    <synonym>
+      <key>ru</key>
+      <value>Default description</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>100</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="1aab5cf1-b42a-4fba-b2da-8a80cdf51c26">
     <producedTypes>
       <objectType typeId="d52f9ad9-ae5c-42b8-b662-18edc40e4d06" valueTypeId="c9534629-542a-4738-a767-ca93f0df8b02"/>
