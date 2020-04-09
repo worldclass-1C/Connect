@@ -183,3 +183,13 @@ Procedure delPassword(token) Export
 		record.Delete();
 	EndIf;
 EndProcedure
+
+Procedure ChangeProperty(val account, struct) Export
+	accountObject = account.GetObject();
+	If accountObject <> Undefined Then		
+		For Each element In struct Do
+			accountObject[element.key] = element.value;
+		EndDo;
+		accountObject.Write();
+	EndIf;
+EndProcedure

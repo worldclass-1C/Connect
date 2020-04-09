@@ -97,6 +97,12 @@ Procedure executeRequestMethod(parameters) Export
 		EndIf;
 	EndIf;
 	
+	If parameters.requestName = "changeProfile" and parameters.error = "" Then
+		If parameters.Property("tokenContext") then 
+			Account.ChangeProperty(parameters.tokenContext.account,New Structure("canUpdatePersonalData", false));
+		EndIf;
+	EndIf;
+	
 	If parameters.internalRequestMethod Then
 		General.executeRequestMethodEnd(parameters);	
 	EndIf;
@@ -368,9 +374,6 @@ Procedure confirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenContext.token, changeStruct);
-				If ValueIsFilled(select.account) and select.account.canUpdatePersonalData then
-					Account.ChangeProperty(New Structure("canUpdatePersonalData", false));
-				EndIf;
 				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType));
 				struct.Insert("userList", New Array());
 				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
