@@ -11,6 +11,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "email", "email", "string");
+	DataLoad.addRowInAttributesTable(attributesTable, "canUpdatePersonalData", "canUpdatePersonalData", "boolean");
 	
 	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", False, "accounts", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
 		
