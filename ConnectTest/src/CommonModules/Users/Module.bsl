@@ -27,7 +27,8 @@ Function profile(user, appType) Export
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
 	|	"""" AS rating,
-	|	users.owner.photo AS photo
+	|	users.owner.photo AS photo,
+	|	users.owner AS owner
 	|FROM
 	|	Catalog.users AS users
 	|WHERE
@@ -71,6 +72,7 @@ Function profile(user, appType) Export
 		select = queryResult.Select();
 		select.Next();
 		FillPropertyValues(struct, select);
+		struct.uid = XMLString(select.owner);
 //		cacheSelect = queryResults[2].Select();
 //		While cacheSelect.Next() Do
 //			struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));
@@ -82,7 +84,7 @@ Function profile(user, appType) Export
 EndFunction
 
 Function initProfileStruct() Export
-	Return New Structure("phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
+	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
 
 Procedure updateCache(val parameters) Export
