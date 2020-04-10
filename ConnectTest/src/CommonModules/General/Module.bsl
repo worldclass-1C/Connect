@@ -89,20 +89,16 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "imagePOST" Then 
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
-			imageDELETE(parameters);			
+			imageDELETE(parameters);
+		elsIf parameters.requestName = "changeprofile" then
+			changeProfile(parameters);			
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
 		Else
 			executeExternalRequest(parameters);
 		EndIf;
 	EndIf;
-	
-	If parameters.requestName = "changeProfile" and parameters.error = "" Then
-		If parameters.Property("tokenContext") then 
-			Account.ChangeProperty(parameters.tokenContext.account,New Structure("canUpdatePersonalData", false));
-		EndIf;
-	EndIf;
-	
+		
 	If parameters.internalRequestMethod Then
 		General.executeRequestMethodEnd(parameters);	
 	EndIf;
@@ -898,4 +894,21 @@ Procedure SendServiceMail(Texts, MailArray) Export
 	Parameters.Insert("Subject", "Ошибка коннект");
 	Parameters.Insert("Texts", Texts);	
 	SendMale(Parameters);
+EndProcedure
+
+Procedure changeProfile(parameters)
+	
+	tokenContext = parameters.tokenContext;
+	If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
+		executeExternalRequest(parameters);
+	Else
+		parameters.Insert("error", "system");
+	EndIf;
+	If parameters.error = "" Then
+		If ValueIsFilled(tokenContext.account) then
+			accountObj = tokenContext.account.GetObject();
+			accountObj.canUpdatePersonalData = false;
+			accountObj.Write();
+		EndIf;
+	EndIf;
 EndProcedure
