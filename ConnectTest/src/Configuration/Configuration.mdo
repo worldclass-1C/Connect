@@ -189,6 +189,7 @@
   <enums>Enum.roomTypes</enums>
   <enums>Enum.SmsProviders</enums>
   <enums>Enum.systemTypes</enums>
+  <enums>Enum.typeOfExternalRefs</enums>
   <reports>Report.applicationVersions</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>

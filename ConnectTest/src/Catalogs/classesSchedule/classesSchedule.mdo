@@ -420,6 +420,44 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <tabularSections uuid="ac3a4f81-bc73-4d5d-863a-7f85691594ce">
+    <producedTypes>
+      <objectType typeId="1fb4da9d-695c-4db8-a23a-16a3060888fb" valueTypeId="d7a2e60c-7d8e-4732-8cab-a838070e7d80"/>
+      <rowType typeId="fdbdce11-6d7c-4be7-9312-d138b01532b7" valueTypeId="eb9bacde-fb72-426d-93e7-73f124c60a5b"/>
+    </producedTypes>
+    <name>externalRefs</name>
+    <synonym>
+      <key>ru</key>
+      <value>External refs</value>
+    </synonym>
+    <attributes uuid="80baefb1-260c-4ffb-bc61-8344afbebf27">
+      <name>resoursType</name>
+      <synonym>
+        <key>ru</key>
+        <value>Resours type</value>
+      </synonym>
+      <type>
+        <types>EnumRef.typeOfExternalRefs</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="4aa659ee-4eb1-47ee-bcaa-d81ae8ba6fac">
+      <name>resourseRef</name>
+      <synonym>
+        <key>ru</key>
+        <value>Resourse ref</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>400</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
   <forms uuid="5d500f05-77af-4dd9-b864-b2129eab7a56">
     <name>ListForm</name>
     <synonym>
