@@ -900,8 +900,9 @@ Procedure changeProfile(parameters)
 	
 	tokenContext = parameters.tokenContext;
 	If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
+		parametersNew = Service.getStructCopy(parameters);
 		executeExternalRequest(parameters);	
-		Account.getFromExternalSystem(parameters, "uid", tokenContext.user);
+		Account.getFromExternalSystem(parametersNew, "uid", XMLString(tokenContext.user));
 	Else
 		parameters.Insert("error", "system");
 	EndIf;
