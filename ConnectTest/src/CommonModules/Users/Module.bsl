@@ -28,7 +28,7 @@ Function profile(user, appType) Export
 	|	users.registrationDate AS registrationDate,
 	|	"""" AS rating,
 	|	users.owner.photo AS photo,
-	|	users.owner AS owner
+	|	users.ref AS owner
 	|FROM
 	|	Catalog.users AS users
 	|WHERE
