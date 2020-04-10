@@ -900,7 +900,8 @@ Procedure changeProfile(parameters)
 	
 	tokenContext = parameters.tokenContext;
 	If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
-		executeExternalRequest(parameters);
+		executeExternalRequest(parameters);	
+		Account.getFromExternalSystem(parameters, "uid", tokenContext.user);
 	Else
 		parameters.Insert("error", "system");
 	EndIf;
