@@ -901,16 +901,10 @@ Procedure changeProfile(parameters)
 	tokenContext = parameters.tokenContext;
 	If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
 		parametersNew = Service.getStructCopy(parameters);
-		executeExternalRequest(parameters);	
+		executeExternalRequest(parameters);
+		parametersNew.Insert("requestStruct",new Structure());	
 		Account.getFromExternalSystem(parametersNew, "uid", XMLString(tokenContext.user));
 	Else
 		parameters.Insert("error", "system");
-	EndIf;
-	If parameters.error = "" Then
-		If ValueIsFilled(tokenContext.account) then
-			accountObj = tokenContext.account.GetObject();
-			accountObj.canUpdatePersonalData = false;
-			accountObj.Write();
-		EndIf;
 	EndIf;
 EndProcedure
