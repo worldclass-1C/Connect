@@ -201,106 +201,112 @@ Function  getArrGyms(params) Export
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
 	query = New Query("SELECT
-		|	gyms.Ref,
-		|	gyms.latitude,
-		|	gyms.longitude,
-		|	ISNULL(gyms.segment.Description, """") AS segment,
-		|	ISNULL(gyms.segment.color, """") AS segmentColor,
-		|	gyms.phone,
-		|	gyms.photo,
-		|	gyms.weekdaysTime,
-		|	gyms.holidaysTime,
-		|	CASE
-		|		WHEN gymstranslation.description IS NULL
-		|			THEN gyms.Description
-		|		WHEN gymstranslation.description = """"
-		|			THEN gyms.Description
-		|		ELSE gymstranslation.description
-		|	END AS Description,
-		|	CASE
-		|		WHEN gymstranslation.address IS NULL
-		|			THEN gyms.address
-		|		WHEN gymstranslation.address = """"
-		|			THEN gyms.address
-		|		ELSE gymstranslation.address
-		|	END AS address,
-		|	CASE
-		|		WHEN gymstranslation.nearestMetro IS NULL
-		|			THEN gyms.nearestMetro
-		|		WHEN gymstranslation.nearestMetro = ""[]""
-		|			THEN gyms.nearestMetro
-		|		ELSE gymstranslation.nearestMetro
-		|	END AS nearestMetro,
-		|	CASE
-		|		WHEN gymstranslation.state IS NULL
-		|			THEN gyms.state
-		|		WHEN gymstranslation.state = """"
-		|			THEN gyms.state
-		|		ELSE gymstranslation.state
-		|	END AS state
-		|FROM
-		|	Catalog.gyms AS gyms
-		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-		|		ON gymstranslation.Ref = gyms.Ref
-		|		AND gymstranslation.language = &language
-		|WHERE
-		|	NOT &byArray
-		|	AND
-		|	NOT gyms.DeletionMark
-		|	AND gyms.chain.code = &chainCode
-		|	AND gyms.startDate <= &currentTime
-		|	AND gyms.endDate >= &currentTime
-		|
-		|union all
-		|
-		|SELECT
-		|	gyms.Ref,
-		|	gyms.latitude,
-		|	gyms.longitude,
-		|	ISNULL(gyms.segment.Description, """") AS segment,
-		|	ISNULL(gyms.segment.color, """") AS segmentColor,
-		|	gyms.phone,
-		|	gyms.photo,
-		|	gyms.weekdaysTime,
-		|	gyms.holidaysTime,
-		|	CASE
-		|		WHEN gymstranslation.description IS NULL
-		|			THEN gyms.Description
-		|		WHEN gymstranslation.description = """"
-		|			THEN gyms.Description
-		|		ELSE gymstranslation.description
-		|	END AS Description,
-		|	CASE
-		|		WHEN gymstranslation.address IS NULL
-		|			THEN gyms.address
-		|		WHEN gymstranslation.address = """"
-		|			THEN gyms.address
-		|		ELSE gymstranslation.address
-		|	END AS address,
-		|	CASE
-		|		WHEN gymstranslation.nearestMetro IS NULL
-		|			THEN gyms.nearestMetro
-		|		WHEN gymstranslation.nearestMetro = ""[]""
-		|			THEN gyms.nearestMetro
-		|		ELSE gymstranslation.nearestMetro
-		|	END AS nearestMetro,
-		|	CASE
-		|		WHEN gymstranslation.state IS NULL
-		|			THEN gyms.state
-		|		WHEN gymstranslation.state = """"
-		|			THEN gyms.state
-		|		ELSE gymstranslation.state
-		|	END AS state
-		|FROM
-		|	Catalog.gyms AS gyms
-		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-		|		ON gymstranslation.Ref = gyms.Ref
-		|		AND gymstranslation.language = &language
-		|WHERE
-		|	&byArray
-		|	AND gyms.ref in (&Array)
-		|	AND
-		|	NOT gyms.DeletionMark");
+	|	gyms.Ref,
+	|	gyms.latitude,
+	|	gyms.longitude,
+	|	ISNULL(gyms.segment.Description, """") AS segment,
+	|	ISNULL(gyms.segment.color, """") AS segmentColor,
+	|	gyms.phone,
+	|	CASE
+	|		WHEN gyms.photo = """"
+	|			THEN ISNULL(segments.photo, """")
+	|		ELSE gyms.photo
+	|	END AS photo,
+	|	gyms.weekdaysTime,
+	|	gyms.holidaysTime,
+	|	CASE
+	|		WHEN gymstranslation.description IS NULL
+	|			THEN gyms.Description
+	|		WHEN gymstranslation.description = """"
+	|			THEN gyms.Description
+	|		ELSE gymstranslation.description
+	|	END AS Description,
+	|	CASE
+	|		WHEN gymstranslation.address IS NULL
+	|			THEN gyms.address
+	|		WHEN gymstranslation.address = """"
+	|			THEN gyms.address
+	|		ELSE gymstranslation.address
+	|	END AS address,
+	|	CASE
+	|		WHEN gymstranslation.nearestMetro IS NULL
+	|			THEN gyms.nearestMetro
+	|		WHEN gymstranslation.nearestMetro = ""[]""
+	|			THEN gyms.nearestMetro
+	|		ELSE gymstranslation.nearestMetro
+	|	END AS nearestMetro,
+	|	CASE
+	|		WHEN gymstranslation.state IS NULL
+	|			THEN gyms.state
+	|		WHEN gymstranslation.state = """"
+	|			THEN gyms.state
+	|		ELSE gymstranslation.state
+	|	END AS state
+	|FROM
+	|	Catalog.gyms AS gyms
+	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|		ON gymstranslation.Ref = gyms.Ref
+	|		AND gymstranslation.language = &language
+	|		LEFT JOIN Catalog.segments AS segments
+	|		ON gyms.segment = segments.Ref
+	|WHERE
+	|	NOT &byArray
+	|	AND
+	|	NOT gyms.DeletionMark
+	|	AND gyms.chain.code = &chainCode
+	|	AND gyms.startDate <= &currentTime
+	|	AND gyms.endDate >= &currentTime
+	|
+	|union all
+	|
+	|SELECT
+	|	gyms.Ref,
+	|	gyms.latitude,
+	|	gyms.longitude,
+	|	ISNULL(gyms.segment.Description, """") AS segment,
+	|	ISNULL(gyms.segment.color, """") AS segmentColor,
+	|	gyms.phone,
+	|	gyms.photo,
+	|	gyms.weekdaysTime,
+	|	gyms.holidaysTime,
+	|	CASE
+	|		WHEN gymstranslation.description IS NULL
+	|			THEN gyms.Description
+	|		WHEN gymstranslation.description = """"
+	|			THEN gyms.Description
+	|		ELSE gymstranslation.description
+	|	END AS Description,
+	|	CASE
+	|		WHEN gymstranslation.address IS NULL
+	|			THEN gyms.address
+	|		WHEN gymstranslation.address = """"
+	|			THEN gyms.address
+	|		ELSE gymstranslation.address
+	|	END AS address,
+	|	CASE
+	|		WHEN gymstranslation.nearestMetro IS NULL
+	|			THEN gyms.nearestMetro
+	|		WHEN gymstranslation.nearestMetro = ""[]""
+	|			THEN gyms.nearestMetro
+	|		ELSE gymstranslation.nearestMetro
+	|	END AS nearestMetro,
+	|	CASE
+	|		WHEN gymstranslation.state IS NULL
+	|			THEN gyms.state
+	|		WHEN gymstranslation.state = """"
+	|			THEN gyms.state
+	|		ELSE gymstranslation.state
+	|	END AS state
+	|FROM
+	|	Catalog.gyms AS gyms
+	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|		ON gymstranslation.Ref = gyms.Ref
+	|		AND gymstranslation.language = &language
+	|WHERE
+	|	&byArray
+	|	AND gyms.ref in (&Array)
+	|	AND
+	|	NOT gyms.DeletionMark");
 		
 		query.SetParameter("chainCode", stucParams.chainCode);
 		query.SetParameter("byArray", stucParams.byArray);

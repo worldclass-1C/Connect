@@ -75,6 +75,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="034224ab-3401-4f39-bde1-2c8ed72491e9">
+    <name>photo</name>
+    <synonym>
+      <key>ru</key>
+      <value>Photo</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="3b6e5b5d-0bc6-41c2-99bf-3a5275e65a5c">
     <name>ListForm</name>
     <synonym>
