@@ -90,7 +90,7 @@ Procedure executeRequestMethod(parameters) Export
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);
-		elsIf parameters.requestName = "changeprofile" then
+		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
 			changeProfile(parameters);			
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
@@ -899,12 +899,12 @@ EndProcedure
 Procedure changeProfile(parameters)
 	
 	tokenContext = parameters.tokenContext;
-	If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
+	//If ValueIsFilled(tokenContext.account) and tokenContext.account.canUpdatePersonalData Then
 		parametersNew = Service.getStructCopy(parameters);
 		executeExternalRequest(parameters);
 		parametersNew.Insert("requestStruct",new Structure());	
 		Account.getFromExternalSystem(parametersNew, "uid", XMLString(tokenContext.user));
-	Else
-		parameters.Insert("error", "system");
-	EndIf;
+	//Else
+	//	parameters.Insert("error", "system");
+	//EndIf;
 EndProcedure
