@@ -117,7 +117,7 @@ EndFunction
 
 Procedure sendSMS(parameters) Export
 
-	answer = New Structure("id, messageStatus, error, period", "", Enums.messageStatuses.notSent, "", Undefined);
+	answer = New Structure("id, messageStatus, error, period, AnswerResponseBodyForLogs", "", Enums.messageStatuses.notSent, "", Undefined, Undefined);
 
 	If parameters.SMSProvider = Enums.SmsProviders.Rapporto Then
 		answer = SmsRapporto.sendSMS(parameters, answer);
