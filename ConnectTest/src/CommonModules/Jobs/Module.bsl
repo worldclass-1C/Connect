@@ -78,13 +78,7 @@ Procedure ProcessQueue() Export
 	OrdersToProcess = GetOrdersToProcess();
 	While OrdersToProcess.Next() Do
 		parameters = GetParametersToProcessOrder(OrdersToProcess);
-		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.register Then
-			If OrdersToProcess.try < 30 then
-				Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
-			Else
-				Acquiring.delOrderToQueue(OrdersToProcess.order);
-			EndIf;
-		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
+		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
 			If OrdersToProcess.orderState = Enums.acquiringOrderStates.success Then
 				Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
 			Else
@@ -92,6 +86,12 @@ Procedure ProcessQueue() Export
 			EndIf;
 		ElsIf OrdersToProcess.acquiringRequest = Enums.acquiringRequests.unbinding Then
 			Acquiring.executeRequest("unBindCardBack", OrdersToProcess.order, parameters);
+		else
+			If OrdersToProcess.try < 30 then
+				Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+			Else
+				Acquiring.delOrderToQueue(OrdersToProcess.order);
+			EndIf;
 		EndIf;
 	EndDo;	
 EndProcedure
