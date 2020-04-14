@@ -61,7 +61,6 @@ Function getStatus(account)
 	|	CASE
 	|		WHEN accounts.firstName = """"
 	|		OR accounts.lastName = """"
-	|		OR accounts.email = """"
 	|		OR accounts.gender = """"
 	|		OR accounts.birthday = DATETIME(1, 1, 1)
 	|			THEN VALUE(Enum.accountStatuses.missingPersonalData)
