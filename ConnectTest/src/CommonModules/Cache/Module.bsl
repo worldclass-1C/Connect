@@ -51,7 +51,7 @@ Function GetCache(parameters, struсRequest) Export
 					arrParams.Add(parameters);
 					arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, cachetype));
 					BackgroundJobs.Execute("Cache.AskCache",arrParams )
-				Else
+				ElsIf Not FoundRow.Pass Then
 					data = FoundRow.data;
 					For Each KeyVal In mapReplace Do
 						data = StrReplace(data, KeyVal.Key, KeyVal.Value)
@@ -163,7 +163,8 @@ Function TextQuery()
 	|	CI.cacheInformation IS NULL AS NoData,
 	|	CI.cacheInformation.data AS data,
 	|	ISNULL(CCT.isUsed, FALSE) AS Used,
-	|	CT.PredefinedDataName AS PredefinedDataName
+	|	CT.PredefinedDataName AS PredefinedDataName,
+	|	NOT &date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation AS Pass
 	|INTO tabCI
 	|FROM
 	|	Catalog.cacheTypes AS CT
@@ -171,15 +172,15 @@ Function TextQuery()
 	|		ON CT.Ref = CI.cacheType
 	|		AND CI.user = &user
 	|		AND (CI.chain = &chain
-	|		or CI.chain = VALUE(Catalog.chains.EmptyRef))
+	|		OR CI.chain = VALUE(Catalog.chains.EmptyRef))
 	|		AND CI.holding = &holding
-	|		AND &date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
 	|		LEFT JOIN Catalog.chains.cacheTypes AS CCT
 	|		ON CCT.Ref = &chain
 	|		AND CCT.cacheType = CT.Ref
 	|WHERE
 	|	CT.Ref IN (&cacheTypes)
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabCI.cacheType AS cacheType,
@@ -187,10 +188,12 @@ Function TextQuery()
 	|	tabCI.NoData AS NoData,
 	|	tabCI.data AS data,
 	|	tabCI.Used AS Used,
-	|	tabCI.PredefinedDataName AS PredefinedDataName
+	|	tabCI.PredefinedDataName AS PredefinedDataName,
+	|	tabCI.Pass
 	|FROM
 	|	tabCI AS tabCI
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	dscr.Ref AS Ref,
@@ -204,6 +207,7 @@ Function TextQuery()
 	|WHERE
 	|	tabCI.Used
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabDesr.Ref AS Ref,
