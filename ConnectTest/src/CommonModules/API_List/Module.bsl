@@ -207,11 +207,7 @@ Function  getArrGyms(params) Export
 	|	ISNULL(gyms.segment.Description, """") AS segment,
 	|	ISNULL(gyms.segment.color, """") AS segmentColor,
 	|	gyms.phone,
-	|	CASE
-	|		WHEN gyms.photo = """"
-	|			THEN ISNULL(segments.photo, """")
-	|		ELSE gyms.photo
-	|	END AS photo,
+	|	gyms.photo,
 	|	gyms.weekdaysTime,
 	|	gyms.holidaysTime,
 	|	CASE
@@ -247,8 +243,6 @@ Function  getArrGyms(params) Export
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
 	|		ON gymstranslation.Ref = gyms.Ref
 	|		AND gymstranslation.language = &language
-	|		LEFT JOIN Catalog.segments AS segments
-	|		ON gyms.segment = segments.Ref
 	|WHERE
 	|	NOT &byArray
 	|	AND
