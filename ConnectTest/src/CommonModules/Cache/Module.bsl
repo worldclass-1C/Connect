@@ -157,6 +157,8 @@ Function TextQuery()
 	|		LEFT JOIN InformationRegister.cacheIndex AS CI
 	|		ON CT.Ref = CI.cacheType
 	|		AND CI.user = &user
+	|		AND (CI.chain = &chain
+	|		or CI.chain = VALUE(Catalog.chains.EmptyRef))
 	|		AND CI.holding = &holding
 	|		AND &date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
 	|		LEFT JOIN Catalog.chains.cacheTypes AS CCT
@@ -165,7 +167,6 @@ Function TextQuery()
 	|WHERE
 	|	CT.Ref IN (&cacheTypes)
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabCI.cacheType AS cacheType,
@@ -177,7 +178,6 @@ Function TextQuery()
 	|FROM
 	|	tabCI AS tabCI
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	dscr.Ref AS Ref,
@@ -191,7 +191,6 @@ Function TextQuery()
 	|WHERE
 	|	tabCI.Used
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabDesr.Ref AS Ref,
