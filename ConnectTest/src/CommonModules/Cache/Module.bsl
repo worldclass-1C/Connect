@@ -164,7 +164,7 @@ Function TextQuery()
 	|	CI.cacheInformation.data AS data,
 	|	ISNULL(CCT.isUsed, FALSE) AS Used,
 	|	CT.PredefinedDataName AS PredefinedDataName,
-	|	NOT &date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation AS Pass
+	|	NOT (&date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation) AS Pass
 	|INTO tabCI
 	|FROM
 	|	Catalog.cacheTypes AS CT
