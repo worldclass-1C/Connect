@@ -21,7 +21,11 @@ Function profile(user, appType) Export
 	|			THEN ""none""
 	|		ELSE users.owner.gender
 	|	END AS gender,
-	|	REFPRESENTATION(users.owner.status) AS status,
+	|	CASE
+	|		WHEN users.owner.status IS NULL
+	|			THEN ""unauthorized""
+	|		ELSE REFPRESENTATION(users.owner.status)
+	|	END AS status, 
 	|	users.barcode AS barcode,
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
 	|	not users.notSubscriptionSms AS subscriptionSms,
@@ -32,33 +36,7 @@ Function profile(user, appType) Export
 	|FROM
 	|	Catalog.users AS users
 	|WHERE
-	|	users.Ref = &user
-//	|;
-//	|////////////////////////////////////////////////////////////////////////////////
-//	|SELECT
-//	|	cacheTypes.Code AS cacheCode,
-//	|	cacheTypes.Ref AS cacheType,
-//	|	&user AS user,
-//	|	&appType AS appType
-//	|INTO TT
-//	|FROM
-//	|	Catalog.cacheTypes AS cacheTypes
-//	|WHERE
-//	|	cacheTypes.request = &requestName
-//	|;
-//	|////////////////////////////////////////////////////////////////////////////////
-//	|SELECT
-//	|	TT.cacheCode AS cacheCode,
-//	|	usersStates.stateValue AS cacheValue
-//	|FROM
-//	|	TT AS TT
-//	|		LEFT JOIN InformationRegister.usersStates AS usersStates
-//	|		ON TT.cacheType = usersStates.cacheValuesType
-//	|		AND TT.user = usersStates.user
-//	|		AND TT.appType = usersStates.appType
-//	|WHERE
-//	|	NOT usersStates.stateValue IS NULL
-|";
+	|	users.Ref = &user";
 	
 	query.SetParameter("user", user);
 //	query.SetParameter("appType", appType);
@@ -84,7 +62,7 @@ Function profile(user, appType) Export
 EndFunction
 
 Function initProfileStruct() Export
-	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
+	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
 EndFunction
 
 Procedure updateCache(val parameters) Export
