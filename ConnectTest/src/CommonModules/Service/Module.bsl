@@ -784,12 +784,17 @@ Procedure CalcMonthValue(Month) Export
 	|	UsersValues.appAnalytics,
 	|	UsersValues.analytic,
 	|	&ReportPeriod,
-	|	UsersValues.countTurnover,
+	|	SUM(UsersValues.countTurnover) AS countTurnover,
 	|	UsersValues.brand
 	|FROM
 	|	AccumulationRegister.UsersValues.Turnovers(&BeginDate, &EndDate,, ReportPeriod = &ReportPeriodDay
 	|	AND analyticValue <> VALUE(enum.analyticValues.activeUsers)
-	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues";
+	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues
+	|GROUP BY
+	|	UsersValues.holding,
+	|	UsersValues.appAnalytics,
+	|	UsersValues.analytic,
+	|	UsersValues.brand";
 	
 	Query.SetParameter("BeginDate", BegOfMonth(Month));
 	Query.SetParameter("EndDate", EndOfMonth(Month));	
