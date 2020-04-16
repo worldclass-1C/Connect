@@ -29,30 +29,41 @@ Function GetCache(parameters, struсRequest) Export
 		//emptyTypes = New Array;
 		strucRes = New Structure;
 		
+		mapReplace = DescriptionProcessing(tabDescriptions,strucSeek.languageCode,strucSeek.language);
+		
 		For Each cachetype In strucSeek.cacheTypes Do
 			FoundRows = common.FindRows(New Structure("cacheType", cachetype));
 			//пустых строк в запросе быть не может
 			//могут быть неиспользуемые, и без данных
-			FoundRow = FoundRows[0];
-			If Not FoundRow.Used Then
-				Continue
-			EndIf;
-			If FoundRow.NoData Then
-				//TODO нужно решить, сразу посылать в фоне при нахождении
-				//или собрать и синхронно запросить данные
-				//возможно в зависимости от типа cachetype
-				//	пока сделал в фоне
-				//emptyTypes.Add(XMLString(cachetype));
-				arrParams = New Array();
-				arrParams.Add(parameters);
-				arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, cachetype));
-				BackgroundJobs.Execute("Cache.AskCache",arrParams )
-			Else
-				data = FoundRow.data;
-				DescriptionProcessing(data,tabDescriptions.FindRows(New Structure("Ref", FoundRow.Ref)),strucSeek.languageCode,strucSeek.language);
-				data_decode = HTTP.decodeJSON(data);
-				strucRes.Insert(FoundRow.PredefinedDataName,data_decode);
-			EndIf
+			//FoundRow = FoundRows[0];
+			arrData = New Array;  
+			For Each FoundRow In FoundRows Do
+				If Not FoundRow.Used Then
+					Continue
+				EndIf;
+				If FoundRow.NoData Then
+					//TODO нужно решить, сразу посылать в фоне при нахождении
+					//или собрать и синхронно запросить данные
+					//возможно в зависимости от типа cachetype
+					//	пока сделал в фоне
+					//emptyTypes.Add(XMLString(cachetype));
+					arrParams = New Array();
+					arrParams.Add(parameters);
+					arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, cachetype));
+					BackgroundJobs.Execute("Cache.AskCache",arrParams )
+				ElsIf Not FoundRow.Pass Then
+					data = FoundRow.data;
+					For Each KeyVal In mapReplace Do
+						data = StrReplace(data, KeyVal.Key, KeyVal.Value)
+					EndDo;
+					arrData.Add(HTTP.decodeJSON(data));
+				EndIf
+			EndDo; 
+			If arrData.Count()=1 Then
+				strucRes.Insert(FoundRow.PredefinedDataName,arrData[0]);
+			ElsIf arrData.Count()>1 Then
+				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
+			EndIf; 
 		EndDo;
 		If strucRes.Count()=1 Then
 			For Each KeyVal In strucRes Do
@@ -67,8 +78,9 @@ Function GetCache(parameters, struсRequest) Export
 
 EndFunction
 
-Procedure DescriptionProcessing(data,arrDescr,languageCode,language)
-	
+Function DescriptionProcessing(arrDescr,languageCode,language)
+	res =  New Map;
+
 	mapData = New Map;
 	mapData.Insert(Type("CatalogRef.rooms"),New Structure("Handler,Array","getArrRooms",New Array));
 	mapData.Insert(Type("CatalogRef.gyms"),New Structure("Handler,Array","getArrGyms",New Array));
@@ -98,7 +110,7 @@ Procedure DescriptionProcessing(data,arrDescr,languageCode,language)
 					EndIf; 
 				EndIf;
 			EndDo; 
-			data = StrReplace(data,StrTemplate("""%1""",String(found.Description.UUID())),HTTP.encodeJSON(strucData));
+			res.Insert(StrTemplate("""%1""",String(found.Description.UUID())),HTTP.encodeJSON(strucData))
 		Else
 			//сбор значений
 			strucData = mapData.Get(typeDescr);
@@ -118,12 +130,13 @@ Procedure DescriptionProcessing(data,arrDescr,languageCode,language)
 				If ValRepl=Undefined Then
 					ValRepl=""
 				EndIf; 
-				data = StrReplace(data,StrTemplate("""%1""",String(lDecr.UUID())),ValRepl);
+				res.Insert(StrTemplate("""%1""",StrTemplate("""%1""",String(lDecr.UUID())),ValRepl))
 			EndDo;
 		EndIf; 
 	EndDo; 
 	
-EndProcedure
+	Return res
+EndFunction
 
 Procedure AskCache(parameters, struсRequest) Export
 	For Each KeyVal In struсRequest Do
@@ -150,15 +163,17 @@ Function TextQuery()
 	|	CI.cacheInformation IS NULL AS NoData,
 	|	CI.cacheInformation.data AS data,
 	|	ISNULL(CCT.isUsed, FALSE) AS Used,
-	|	CT.PredefinedDataName AS PredefinedDataName
+	|	CT.PredefinedDataName AS PredefinedDataName,
+	|	NOT (&date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation) AS Pass
 	|INTO tabCI
 	|FROM
 	|	Catalog.cacheTypes AS CT
 	|		LEFT JOIN InformationRegister.cacheIndex AS CI
 	|		ON CT.Ref = CI.cacheType
 	|		AND CI.user = &user
+	|		AND (CI.chain = &chain
+	|		OR CI.chain = VALUE(Catalog.chains.EmptyRef))
 	|		AND CI.holding = &holding
-	|		AND &date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation
 	|		LEFT JOIN Catalog.chains.cacheTypes AS CCT
 	|		ON CCT.Ref = &chain
 	|		AND CCT.cacheType = CT.Ref
@@ -173,7 +188,8 @@ Function TextQuery()
 	|	tabCI.NoData AS NoData,
 	|	tabCI.data AS data,
 	|	tabCI.Used AS Used,
-	|	tabCI.PredefinedDataName AS PredefinedDataName
+	|	tabCI.PredefinedDataName AS PredefinedDataName,
+	|	tabCI.Pass
 	|FROM
 	|	tabCI AS tabCI
 	|;
