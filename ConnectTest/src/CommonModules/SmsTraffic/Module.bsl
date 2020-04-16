@@ -60,7 +60,7 @@ Function checkSmsStatus(parameters, answer) Export
 	
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password, , parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
 	
-	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&operation=status&sd=false" + "&sms_id=" + parameters.id + "&sd=false&route=viber(60)-sms";
+	URL	= "smartdelivery-in/multi.php/?login=" + parameters.user + "&password=" + parameters.password + "&operation=status&sd=false" + "&sms_id=" + parameters.id;
 	requestHTTP = New HTTPRequest(URL);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());
