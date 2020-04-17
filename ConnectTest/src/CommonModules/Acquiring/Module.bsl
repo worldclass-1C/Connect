@@ -468,8 +468,10 @@ Procedure checkOrder(parameters, additionalParameters)
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
 	ElsIf parameters.errorCode = "rejected" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
+		addOrderToQueue(parameters.order, Enums.acquiringOrderStates.rejected);
 	ElsIf parameters.errorCode = "send"  Then
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.send); 	
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
+		addOrderToQueue(parameters.order, Enums.acquiringOrderStates.send); 	
 	EndIf;
 EndProcedure
 
