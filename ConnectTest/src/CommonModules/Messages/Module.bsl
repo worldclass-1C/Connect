@@ -473,7 +473,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	messages.Ref.objectId AS objectId,
 	|	messages.Ref.objectType AS objectType,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
-	|	ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef)) AS token,
+	|	MAX(ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef))) AS token,
 	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
 	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)) AS systemType,
 	|	messages.Ref.user AS user
@@ -488,10 +488,19 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
 	|	AND messages.Ref.appType = &appType
+	|GROUP BY
+	|	messages.Ref,
+	|	messages.Ref.title,
+	|	messages.Ref.text,
+	|	messages.Ref.action,
+	|	messages.Ref.objectId,
+	|	messages.Ref.objectType,
+	|	messages.Ref.user,
+	|	ISNULL(tokens.deviceToken, """"),
+	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef))
 	|ORDER BY
 	|	messages.Ref.priority
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	pushStatusBalance.user,
@@ -505,7 +514,6 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		FROM
 	|			TT AS TT)) AS pushStatusBalance
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.message AS message,
@@ -528,11 +536,9 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|BY
 	|	message
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TT
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TTunread";
 
