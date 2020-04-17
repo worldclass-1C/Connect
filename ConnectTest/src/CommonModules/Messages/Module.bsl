@@ -485,9 +485,11 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND messages.Ref.token <> tokens.Ref
 	|		AND tokens.appType = &appType
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
+	|		AND messages.Ref.holding = tokens.holding
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
 	|	AND messages.Ref.appType = &appType
+	|	AND messages.Ref.holding = &holding
 	|GROUP BY
 	|	messages.Ref,
 	|	messages.Ref.title,
@@ -544,6 +546,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);	
 	query.SetParameter("informationChannel", informationChannel);
+	query.SetParameter("holding", holding);
 
 	If informationChannel = Enums.informationChannels.pushEmployee Then
 		query.SetParameter("appType", Enums.appTypes.Employee);
