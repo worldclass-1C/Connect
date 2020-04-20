@@ -8,7 +8,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "firstName", "firstName", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "secondName", "secondName", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "lastName", "lastName", "string");
-	DataLoad.addRowInAttributesTable(attributesTable, "birthday", "birthdayDate", "date");
+	DataLoad.addRowInAttributesTable(attributesTable, "birthday", "birthday", "date");
 	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "email", "email", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "canUpdatePersonalData", "canUpdatePersonalData", "boolean");

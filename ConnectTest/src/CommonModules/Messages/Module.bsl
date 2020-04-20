@@ -475,7 +475,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	messages.Ref.objectId AS objectId,
 	|	messages.Ref.objectType AS objectType,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
-	|	ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef)) AS token,
+	|	MAX(ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef))) AS token,
 	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
 	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)) AS systemType,
 	|	messages.Ref.user AS user
@@ -487,13 +487,24 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND messages.Ref.token <> tokens.Ref
 	|		AND tokens.appType = &appType
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
+	|		AND messages.Ref.holding = tokens.holding
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
 	|	AND messages.Ref.appType = &appType
+	|	AND messages.Ref.holding = &holding
+	|GROUP BY
+	|	messages.Ref,
+	|	messages.Ref.title,
+	|	messages.Ref.text,
+	|	messages.Ref.action,
+	|	messages.Ref.objectId,
+	|	messages.Ref.objectType,
+	|	messages.Ref.user,
+	|	ISNULL(tokens.deviceToken, """"),
+	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef))
 	|ORDER BY
 	|	messages.Ref.priority
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	pushStatusBalance.user,
@@ -507,7 +518,6 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		FROM
 	|			TT AS TT)) AS pushStatusBalance
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.message AS message,
@@ -530,16 +540,15 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|BY
 	|	message
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TT
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TTunread";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);	
 	query.SetParameter("informationChannel", informationChannel);
+	query.SetParameter("holding", holding);
 
 	If informationChannel = Enums.informationChannels.pushEmployee Then
 		query.SetParameter("appType", Enums.appTypes.Employee);

@@ -271,7 +271,11 @@ Procedure paymentStatus(parameters) Export
 		EndIf;
 	EndIf;
 	If struct.result = "fail" Then
-		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+		If response.errorCode = "send"  Then
+			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
+		else
+			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+		EndIf;
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));

@@ -7,7 +7,31 @@
 	<dataSet xsi:type="DataSetQuery">
 		<name>НаборДанных1</name>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Холдинг</dataPath>
+			<dataPath>count</dataPath>
+			<field>count</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Count</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>brand</dataPath>
+			<field>brand</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>systemType</dataPath>
+			<field>systemType</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>System type</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>holding</dataPath>
 			<field>holding</field>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
@@ -18,66 +42,42 @@
 			<field>reportPeriod</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>analyticValue</dataPath>
-			<field>analyticValue</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>brand</dataPath>
-			<field>brand</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>analytic</dataPath>
-			<field>analytic</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>appAnalytics</dataPath>
 			<field>appAnalytics</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>count</dataPath>
-			<field>count</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Count</v8:content>
-				</v8:item>
-			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>appType</dataPath>
 			<field>appType</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
-					<v8:lang>en</v8:lang>
+					<v8:lang>ru</v8:lang>
 					<v8:content>App type</v8:content>
 				</v8:item>
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>systemType</dataPath>
-			<field>systemType</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>System type</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>analytic</dataPath>
+			<field>analytic</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>PeriodMonth</dataPath>
 			<field>PeriodMonth</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
-					<v8:lang>en</v8:lang>
+					<v8:lang>ru</v8:lang>
 					<v8:content>Period month</v8:content>
 				</v8:item>
 			</title>
 			<role>
 				<dcscom:periodNumber>1</dcscom:periodNumber>
 				<dcscom:periodType>Main</dcscom:periodType>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>analyticValue</dataPath>
+			<field>analyticValue</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
 			</role>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
@@ -89,16 +89,12 @@
 	UsersValuesTurnovers.analyticValue as analyticValue,
 	UsersValuesTurnovers.countTurnover as count
 from
-	AccumulationRegister.UsersValues.Turnovers(&amp;BeginOfPeriod, &amp;EndOfPeriod, Day,
+	AccumulationRegister.UsersValues.Turnovers(&amp;BeginOfPeriod, &amp;EndOfPeriod, Month,
 		reportPeriod = value(enum.reportPeriods.month)) as UsersValuesTurnovers</query>
 	</dataSet>
 	<totalField>
 		<dataPath>count</dataPath>
 		<expression>Sum(count)</expression>
-	</totalField>
-	<totalField>
-		<dataPath>Холдинг</dataPath>
-		<expression>Count(Холдинг)</expression>
 	</totalField>
 	<parameter>
 		<name>Period</name>
@@ -168,12 +164,6 @@ from
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
-				<dcsset:item xsi:type="dcsset:FilterItemComparison">
-					<dcsset:use>false</dcsset:use>
-					<dcsset:left xsi:type="dcscor:Field">Холдинг</dcsset:left>
-					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:userSettingID>d11c121a-d7a8-4758-ac3c-fcb754656959</dcsset:userSettingID>
-				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">appType</dcsset:left>

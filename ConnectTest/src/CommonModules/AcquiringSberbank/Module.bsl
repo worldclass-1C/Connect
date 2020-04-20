@@ -57,26 +57,33 @@ Procedure checkOrder(parameters) Export
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", answerStruct);
-	If answerHTTP.StatusCode = 200 Then						
-		If answerStruct.actionCode = 0 Then			
-			parameters.Insert("errorCode", "");
-			orderObject = parameters.order.GetObject();
-			newRow = orderObject.payments.Add();
-			newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
-			newRow.type = "card";
-			newRow.amount = parameters.acquiringAmount;			
-			newRow.details = prepareDetails(answerStruct);			
-			orderObject.Write();
-		ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
-			parameters.Insert("errorCode", "send");
-			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);;
-		ElsIf answerStruct.actionCode = -1 Or answerStruct.actionCode = 1001 
-		   Or answerStruct.actionCode = 51018 Then
-			parameters.Insert("errorCode", "fail");
-			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+	If answerHTTP.StatusCode = 200 Then
+		If answerStruct.Property("actionCode") then						
+			If answerStruct.actionCode = 0 Then			
+				parameters.Insert("errorCode", "");
+				orderObject = parameters.order.GetObject();
+				newRow = orderObject.payments.Add();
+				newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+				newRow.type = "card";
+				newRow.amount = parameters.acquiringAmount;			
+				newRow.details = prepareDetails(answerStruct);			
+				orderObject.Write();
+			ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
+				parameters.Insert("errorCode", "send");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);;
+			ElsIf answerStruct.actionCode = -1 Or answerStruct.actionCode = 1001 
+			   Or answerStruct.actionCode = 51018 Then
+				parameters.Insert("errorCode", "fail");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+			Else
+				parameters.Insert("errorCode", "rejected");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+			EndIf;
 		Else
 			parameters.Insert("errorCode", "rejected");
-			parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+			If answerStruct.Property("errorMessage") then
+				parameters.Insert("errorDescription", answerStruct.errorMessage);
+			EndIf;
 		EndIf;
 	Else
 		parameters.Insert("result", "fail");

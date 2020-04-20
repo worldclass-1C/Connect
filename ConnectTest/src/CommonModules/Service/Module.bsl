@@ -509,17 +509,17 @@ Procedure CalcValues() Export
 	|	CalcMonth desc";
 	
 	Result	= Query.Execute();
-	Если Result.IsEmpty() Тогда		
+	If Result.IsEmpty() then		
 		Months.Add(CurrentMonth);
 	Else
 		Selection	= Result.Select();
 		Selection.Next();
 		CalcMonth	= Selection.CalcMonth;		
 		Months.Add(CalcMonth);		
-		Пока CalcMonth < CurrentMonth Цикл
+		while CalcMonth < CurrentMonth do
 			CalcMonth	= AddMonth(CalcMonth, 1);
 			Months.Add(CalcMonth);
-		КонецЦикла;		
+		enddo;		
 	EndIf;	
 	
 	Service.CalcMonthsValues(Months);
@@ -734,6 +734,7 @@ Procedure CalcMonthValue(Month) Export
 	|	AND
 	|	NOT appAnalytics.ref IS NULL
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	&BeginDate AS period,
@@ -781,15 +782,20 @@ Procedure CalcMonthValue(Month) Export
 	|SELECT
 	|	&BeginDate,
 	|	UsersValues.holding,
-	|	UsersValues.appAnalytics,
+	|	UsersValues.analyticValue AS appAnalytics,
 	|	UsersValues.analytic,
 	|	&ReportPeriod,
-	|	UsersValues.countTurnover,
+	|	SUM(UsersValues.countTurnover) AS countTurnover,
 	|	UsersValues.brand
 	|FROM
 	|	AccumulationRegister.UsersValues.Turnovers(&BeginDate, &EndDate,, ReportPeriod = &ReportPeriodDay
 	|	AND analyticValue <> VALUE(enum.analyticValues.activeUsers)
-	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues";
+	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues
+	|GROUP BY
+	|	UsersValues.holding,
+	|	UsersValues.analytic,
+	|	UsersValues.brand,
+	|	UsersValues.analyticValue";
 	
 	Query.SetParameter("BeginDate", BegOfMonth(Month));
 	Query.SetParameter("EndDate", EndOfMonth(Month));	
