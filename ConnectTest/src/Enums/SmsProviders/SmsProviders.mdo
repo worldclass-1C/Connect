@@ -32,6 +32,13 @@
     <key>ru</key>
     <value>СМС провайдеры</value>
   </extendedListPresentation>
+  <enumValues uuid="7a680a69-e04a-4fd9-aff9-33c6185bc35c">
+    <name>Devino</name>
+    <synonym>
+      <key>ru</key>
+      <value>Devino</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="2d2f03ee-b6da-4b6e-897d-1b4a687a8497">
     <name>IDigital</name>
     <synonym>

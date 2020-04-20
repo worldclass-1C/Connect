@@ -137,6 +137,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsMtsCommunicator.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
+		answer = SmsDevino.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then

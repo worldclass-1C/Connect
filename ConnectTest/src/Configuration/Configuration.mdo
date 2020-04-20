@@ -87,6 +87,7 @@
   <commonModules>CommonModule.API_List</commonModules>
   <commonModules>CommonModule.API_Payment</commonModules>
   <commonModules>CommonModule.API_Schedule</commonModules>
+  <commonModules>CommonModule.Cache</commonModules>
   <commonModules>CommonModule.Check</commonModules>
   <commonModules>CommonModule.Crypto</commonModules>
   <commonModules>CommonModule.DataLoad</commonModules>
@@ -102,6 +103,7 @@
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.ServiceClient</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
+  <commonModules>CommonModule.SmsDevino</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
   <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
@@ -113,7 +115,6 @@
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.Cache</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
