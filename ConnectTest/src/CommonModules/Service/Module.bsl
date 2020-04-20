@@ -509,17 +509,17 @@ Procedure CalcValues() Export
 	|	CalcMonth desc";
 	
 	Result	= Query.Execute();
-	Если Result.IsEmpty() Тогда		
+	If Result.IsEmpty() then		
 		Months.Add(CurrentMonth);
 	Else
 		Selection	= Result.Select();
 		Selection.Next();
 		CalcMonth	= Selection.CalcMonth;		
 		Months.Add(CalcMonth);		
-		Пока CalcMonth < CurrentMonth Цикл
+		while CalcMonth < CurrentMonth do
 			CalcMonth	= AddMonth(CalcMonth, 1);
 			Months.Add(CalcMonth);
-		КонецЦикла;		
+		enddo;		
 	EndIf;	
 	
 	Service.CalcMonthsValues(Months);
