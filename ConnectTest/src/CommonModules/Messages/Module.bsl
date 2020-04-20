@@ -211,6 +211,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsMtsCommunicator.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
+		answer = SmsDevino.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;

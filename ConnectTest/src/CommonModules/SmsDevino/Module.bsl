@@ -50,6 +50,9 @@ Function sendSMS(parameters, answer) Export
 
 	answer.Insert("error", error);
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
+	
+	AnswerResponseBodyForLogs =  Messages.GetAnswerResponseBodyForLogs(Headers, JSONString, JSONStructure);
+	answer.Insert("AnswerResponseBodyForLogs", AnswerResponseBodyForLogs);
 
 	Return answer;
 
@@ -95,7 +98,7 @@ Function checkSmsStatus(parameters, answer) Export
 
 	answer.Insert("error", error);
 	answer.Insert("period", ToUniversalTime(CurrentDate()));
-
+	
 	Return answer;
 
 EndFunction
