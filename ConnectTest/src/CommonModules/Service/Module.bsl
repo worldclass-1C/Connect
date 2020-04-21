@@ -252,7 +252,7 @@ Procedure logRequest(parameters) Export
 		requestBodyArray.Add(parameters.headersJSON);
 	EndIf;	
 	requestBodyArray.Add("""Body"":");
-	requestBodyArray.Add(?(parameters.requestName = "imagePOST", "", parameters.requestBody)); 
+	requestBodyArray.Add(?(parameters.requestName = "imagePOST" or parameters.requestName = "filePOST" , "", parameters.requestBody)); 
 		
 	requestBody = StrConcat(requestBodyArray, Chars.LF);
 

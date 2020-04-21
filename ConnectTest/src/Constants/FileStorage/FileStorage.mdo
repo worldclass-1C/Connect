@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="16141af7-3a38-4453-ae3d-eb108c52f8eb">
+  <producedTypes>
+    <managerType typeId="555a302f-43d6-4d8f-8498-e7166366261a" valueTypeId="7a32c423-ee95-4439-aee5-c3e4e9eb22ab"/>
+    <valueManagerType typeId="2605c257-9a0e-4878-9e2c-4c129aba3276" valueTypeId="53cc0dd7-b2e9-4123-bdf6-72204396e018"/>
+    <valueKeyType typeId="8043756a-2f81-452f-aacd-c236b2950c98" valueTypeId="9515515a-f873-4d07-83b7-730879eddf9a"/>
+  </producedTypes>
+  <name>FileStorage</name>
+  <synonym>
+    <key>ru</key>
+    <value>File storage</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>200</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

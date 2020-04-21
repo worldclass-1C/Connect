@@ -137,6 +137,8 @@
   <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>
   <constants>Constant.ImgStorage</constants>
+  <constants>Constant.FileStorage</constants>
+  <constants>Constant.BaseFileURL</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>

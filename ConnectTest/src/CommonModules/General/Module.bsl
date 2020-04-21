@@ -90,6 +90,10 @@ Procedure executeRequestMethod(parameters) Export
 			imagePOST(parameters);
 		ElsIf parameters.requestName = "imageDELETE" Then 
 			imageDELETE(parameters);
+		ElsIf parameters.requestName = "filePOST" Then
+			filePOST(parameters);
+		ElsIf parameters.requestName = "fileDELETE" Then 
+			fileDELETE(parameters); 
 		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
 			changeProfile(parameters);			
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
@@ -825,6 +829,43 @@ Procedure imageDELETE(parameters)
 	
 	struct.Insert("result", "Ok");
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+	
+EndProcedure
+
+Procedure filePOST(parameters)
+	
+	requestBody = parameters.requestBody;
+	tokenContext = parameters.tokenContext;
+	headers = parameters.headers;	
+	
+	struct = New Structure();
+	
+	If TypeOf(requestBody) <> Type("BinaryData") Then		
+		parameters.Insert("error", "noBinaryData");
+	Else
+		pathStruct = Files.getFilePath(headers["objectName"], tokenContext.holding.code);
+		fileName = Files.pathConcat("" + New UUID(), headers["extension"]);
+		requestBody.write(Files.pathConcat(pathStruct.location, fileName, "\"));		
+		struct.Insert("result", Files.pathConcat(pathStruct.URL, fileName, "/"));
+	EndIf;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
+EndProcedure
+
+Procedure fileDELETE(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	struct = New Structure();	
+
+	location = StrReplace(StrReplace(requestStruct.url, Files.getBaseFileURL(), Files.getFileStoragePath()),"/","\");		
+	File = New File(location);
+	If File.Exist() Then
+		DeleteFiles(location);	
+	EndIf;
+	
+	struct.Insert("result", "Ok");
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure
 

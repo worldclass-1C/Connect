@@ -53,3 +53,23 @@ Function getPath(object, holdingCode = "") Export
 	EndIf;	
 EndFunction
 
+Function getFilePath(object, holdingCode = "") Export	
+	If holdingCode = "" Then
+		Return New Structure("location, URL", getFileStoragePath() + "\service", getBaseFileURL() + "/service");	
+	Else
+		holdingPath = getFileHoldingPath(holdingCode);
+		holdingURL = getFileHoldingPath(holdingCode, True);				
+		Return New Structure("location, URL", pathConcat(holdingPath, object, "\"), pathConcat(holdingURL, object, "/"));		
+	EndIf;	
+EndFunction
+
+Function getFileStoragePath() Export
+	Constants.FileStorage.Get();
+EndFunction	
+
+Function getBaseFileURL() Export
+	Return Constants.BaseFileURL.Get();
+EndFunction	
+Function getFileHoldingPath(holdingCode, url = False)
+	Return pathConcat(?(url, getBaseFileURL(), getFileStoragePath()), holdingCode, ?(url, "/", "\"));
+EndFunction
