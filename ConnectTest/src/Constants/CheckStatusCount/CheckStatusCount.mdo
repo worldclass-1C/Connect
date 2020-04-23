@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9931fe3c-2e47-4b84-b937-77559d352841">
+  <producedTypes>
+    <managerType typeId="fa63bbe4-fc33-400b-9b43-d4d86cbc033f" valueTypeId="bc88c1bb-6001-4249-a390-3fa9f776a255"/>
+    <valueManagerType typeId="19ba96f8-791d-46f2-aefd-e4c0f6e8ce24" valueTypeId="85688b9b-44a3-44fd-8070-ae9d15374b3b"/>
+    <valueKeyType typeId="dd1842ca-a1ab-48a3-ac06-40775fa76691" valueTypeId="4d1d8fd3-66f1-4d94-89f7-aeb500d503a5"/>
+  </producedTypes>
+  <name>CheckStatusCount</name>
+  <synonym>
+    <key>ru</key>
+    <value>Количество попыток проверки статуса сообщений</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>10</precision>
+    </numberQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>
