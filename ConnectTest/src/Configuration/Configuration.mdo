@@ -110,6 +110,7 @@
   <commonModules>CommonModule.SmsMtsCommunicator</commonModules>
   <commonModules>CommonModule.SmsPronto</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
+  <commonModules>CommonModule.SmsSmsc</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
   <commonModules>CommonModule.Token</commonModules>

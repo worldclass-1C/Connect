@@ -139,6 +139,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsPronto.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
 		answer = SmsDevino.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
+		answer = SmsSmsc.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -213,6 +215,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsPronto.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
 		answer = SmsDevino.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
+		answer = SmsSmsc.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;
@@ -409,6 +413,7 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		"SELECT
 		|	&currentDate AS currentDate,
 		|	messages.Ref AS message,
+		|	messages.Ref.phone AS phone,
 		|	messagesId.id AS id,
 		|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
 		|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
@@ -417,28 +422,30 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
 		|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
 		|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
-		|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection, SMSProviders.secureConnection)) AS secureConnection,
-		|	ISNULL(gymSMSProviders.UseOSAuthentication, ISNULL(chainSMSProviders.UseOSAuthentication, SMSProviders.UseOSAuthentication)) AS useOSAuthentication,
+		|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
+		|		SMSProviders.secureConnection)) AS secureConnection,
+		|	ISNULL(gymSMSProviders.UseOSAuthentication, ISNULL(chainSMSProviders.UseOSAuthentication,
+		|		SMSProviders.UseOSAuthentication)) AS useOSAuthentication,
 		|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
 		|INTO TemporaryTable
 		|FROM
 		|	Catalog.messages.Changes AS messages
 		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
-		|		ON (gymSMSProviders.holding = &holding)
-		|			AND (gymSMSProviders.gym = messages.Ref.gym)
-		|			AND (gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef))
+		|		ON gymSMSProviders.holding = &holding
+		|		AND gymSMSProviders.gym = messages.Ref.gym
+		|		AND gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef)
 		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
-		|		ON (chainSMSProviders.holding = &holding)
-		|			AND (chainSMSProviders.chain = messages.Ref.chain)
-		|			AND (chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef))
-		|			AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
+		|		ON chainSMSProviders.holding = &holding
+		|		AND chainSMSProviders.chain = messages.Ref.chain
+		|		AND chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef)
+		|		AND chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef)
 		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
-		|		ON (SMSProviders.holding = &holding)
-		|			AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
-		|			AND (SMSProviders.chain = VALUE(Catalog.chains.EmptyRef))
+		|		ON SMSProviders.holding = &holding
+		|		AND SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef)
+		|		AND SMSProviders.chain = VALUE(Catalog.chains.EmptyRef)
 		|		LEFT JOIN InformationRegister.messagesId AS messagesId
 		|		ON messages.Ref = messagesId.message
-		|			AND (messagesId.informationChannel = VALUE(Enum.informationChannels.sms))
+		|		AND messagesId.informationChannel = VALUE(Enum.informationChannels.sms)
 		|WHERE
 		|	messages.Node = &nodeMessagesToCheckStatus
 		|	AND messages.Ref.holding = &holding
@@ -460,7 +467,8 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		|	TemporaryTable.timeout AS timeout,
 		|	TemporaryTable.secureConnection AS secureConnection,
 		|	TemporaryTable.useOSAuthentication AS useOSAuthentication,
-		|	TemporaryTable.senderName AS senderName
+		|	TemporaryTable.senderName AS senderName,
+		|	TemporaryTable.phone
 		|INTO TemporaryTable1
 		|FROM
 		|	TemporaryTable AS TemporaryTable
@@ -468,7 +476,6 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		|		ON TemporaryTable.message = messageLogs.message
 		|WHERE
 		|	messageLogs.messageStatus <> VALUE(перечисление.messageStatuses.delivered)
-		|
 		|GROUP BY
 		|	TemporaryTable.currentDate,
 		|	TemporaryTable.message,
@@ -482,13 +489,15 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		|	TemporaryTable.timeout,
 		|	TemporaryTable.secureConnection,
 		|	TemporaryTable.useOSAuthentication,
-		|	TemporaryTable.senderName
+		|	TemporaryTable.senderName,
+		|	TemporaryTable.phone
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT
 		|	TemporaryTable1.currentDate AS currentDate,
 		|	TemporaryTable1.message AS message,
+		|	TemporaryTable1.phone,
 		|	TemporaryTable1.AttemptCount AS AttemptCount,
 		|	DATEDIFF(TemporaryTable1.LastAttemptDate, &currentDate, HOUR) AS HoursFromLastCheck,
 		|	TemporaryTable1.id AS id,

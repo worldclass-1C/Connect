@@ -82,6 +82,13 @@
       <value>Rapporto</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="8d55087e-e8b8-4e3c-b618-d8901ab6f32c">
+    <name>Smsc</name>
+    <synonym>
+      <key>ru</key>
+      <value>Smsc</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="4eab35da-1e7b-429a-aac2-255dd80f9e6e">
     <name>SmsGold</name>
     <synonym>
