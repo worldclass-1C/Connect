@@ -206,6 +206,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="7423f43c-938b-40cc-bc6c-d62eb5749fbb">
+    <name>brand</name>
+    <synonym>
+      <key>ru</key>
+      <value>Бренд</value>
+    </synonym>
+    <type>
+      <types>EnumRef.brandTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="acaca55a-4ff5-4c28-9c42-fe03e5f845d2">
     <name>chain</name>
     <synonym>

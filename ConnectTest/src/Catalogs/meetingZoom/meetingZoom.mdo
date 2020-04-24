@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0a789808-fca7-415d-af60-f9fcba88de1a">
+  <producedTypes>
+    <objectType typeId="f1d5c055-1f8a-46c0-8ed8-1590e07aaada" valueTypeId="79a54735-c1f0-4a1e-9b73-1c78351d5bf0"/>
+    <refType typeId="3f1dac2d-64a1-40df-aa48-a6283fa8b6d7" valueTypeId="68bae2a3-25c1-4883-93a5-3cb1fd366f39"/>
+    <selectionType typeId="ba4c1090-fd51-4768-85ca-4d61a58db161" valueTypeId="e60a2ca3-950e-4810-bbec-5141cb7088c9"/>
+    <listType typeId="20c03eaa-7394-4119-8f1c-ebd2fc2128ec" valueTypeId="0cb377b6-fa4a-4d55-963a-e7322b3ed81a"/>
+    <managerType typeId="6b3c99c7-cbca-4fca-8da9-5f44cbd03d16" valueTypeId="5155d552-f539-4f58-96fe-413a0debb560"/>
+  </producedTypes>
+  <name>meetingZoom</name>
+  <synonym>
+    <key>en</key>
+    <value>Meeting Zoom</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.meetingZoom.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.meetingZoom.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>150</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="19f06161-cb0b-41f1-86f3-d958821abe99">
+    <name>doc</name>
+    <synonym>
+      <key>en</key>
+      <value>Doc</value>
+    </synonym>
+    <comment>Документ-основание</comment>
+    <type>
+      <types>CatalogRef.classesSchedule</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="db2fbd16-dd69-43c3-a99b-4c676bab9a08">
+    <name>status</name>
+    <synonym>
+      <key>en</key>
+      <value>Status</value>
+    </synonym>
+    <type>
+      <types>EnumRef.meetingStatusesZoom</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ebf979d3-d218-4db4-917b-fd7d7a28145c">
+    <name>id</name>
+    <synonym>
+      <key>en</key>
+      <value>Id</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a6667f32-eba4-4b21-a613-2bcfb5f28f97">
+    <name>password</name>
+    <synonym>
+      <key>en</key>
+      <value>Password</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2a2c631c-652d-4456-adf6-1ead84749787">
+    <name>startDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Start date</value>
+    </synonym>
+    <comment>универсальная дата начала</comment>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="4107deca-2f08-4b59-8def-00b72e4c44fb">
+    <name>endDate</name>
+    <synonym>
+      <key>en</key>
+      <value>End date</value>
+    </synonym>
+    <comment>универсальная дата окончания</comment>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9ac0e237-f69b-4670-a1b2-faaf57b4a729">
+    <name>start_url</name>
+    <synonym>
+      <key>en</key>
+      <value>start_url</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9902f61e-b0db-4af3-ae3e-289760f8f4a6">
+    <name>join_url</name>
+    <synonym>
+      <key>en</key>
+      <value>Join url</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

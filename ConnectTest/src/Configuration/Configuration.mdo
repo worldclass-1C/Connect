@@ -110,11 +110,14 @@
   <commonModules>CommonModule.SmsMtsCommunicator</commonModules>
   <commonModules>CommonModule.SmsPronto</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
+  <commonModules>CommonModule.SmsSmsc</commonModules>
   <commonModules>CommonModule.SmsStramedia</commonModules>
   <commonModules>CommonModule.SmsTraffic</commonModules>
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
+  <commonModules>CommonModule.Zoom</commonModules>
+  <commonModules>CommonModule.JWT</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
@@ -133,12 +136,13 @@
   <commonCommands>CommonCommand.getUid</commonCommands>
   <commonCommands>CommonCommand.Рublish</commonCommands>
   <commonCommands>CommonCommand.findByUid</commonCommands>
+  <constants>Constant.BaseFileURL</constants>
   <constants>Constant.BaseImgURL</constants>
   <constants>Constant.BaseMessageCallbackURL</constants>
   <constants>Constant.BaseURL</constants>
-  <constants>Constant.ImgStorage</constants>
+  <constants>Constant.CheckStatusCount</constants>
   <constants>Constant.FileStorage</constants>
-  <constants>Constant.BaseFileURL</constants>
+  <constants>Constant.ImgStorage</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>
@@ -170,7 +174,12 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
+<<<<<<< HEAD
   <catalogs>Catalog.content</catalogs>
+=======
+  <catalogs>Catalog.meetingZoom</catalogs>
+  <catalogs>Catalog.hostsZoom</catalogs>
+>>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect.git
   <documents>Document.RegisterRecorder</documents>
   <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>
@@ -194,6 +203,7 @@
   <enums>Enum.SmsProviders</enums>
   <enums>Enum.systemTypes</enums>
   <enums>Enum.typeOfExternalRefs</enums>
+  <enums>Enum.meetingStatusesZoom</enums>
   <reports>Report.applicationVersions</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
@@ -218,6 +228,7 @@
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.DELETE_usersStates</informationRegisters>
+  <informationRegisters>InformationRegister.busyhostZoom</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
   <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
 </mdclass:Configuration>

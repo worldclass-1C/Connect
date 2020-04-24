@@ -78,12 +78,15 @@ Procedure gymSchedule(parameters) Export
 		|			ELSE FALSE
 		|		END) AS canCancel,
 		|	COUNT(classMembers.user) AS userPlaces,
-		|	MAX(classesSchedule.availablePlaces) AS availablePlaces
+		|	MAX(classesSchedule.availablePlaces) AS availablePlaces,
+		|	MAX(Meetings.join_url) AS urlZoom
 		|INTO TT
 		|FROM
 		|	Catalog.classesSchedule AS classesSchedule
 		|		LEFT JOIN InformationRegister.classMembers AS classMembers
-		|		ON (classesSchedule.Ref = classMembers.class)";
+		|		ON (classesSchedule.Ref = classMembers.class)
+		||		LEFT JOIN Catalog.meetingZoom AS Meetings
+		|		ON (classesSchedule.Ref = Meetings.doc)";
 	textCondition = "
 		|WHERE
 		|	classesSchedule.gym IN (Select TemporaryGyms.gym from TemporaryGyms as TemporaryGyms)
@@ -285,6 +288,7 @@ Procedure gymSchedule(parameters) Export
 		classesScheduleStruct.Insert("canRecord", select.canRecord
 			and Not select.recorded);
 		classesScheduleStruct.Insert("availablePlaces", select.availablePlaces);
+		classesScheduleStruct.Insert("urlZoom", select.urlZoom);
 		If tokenContext.user.IsEmpty() Then
 			classesScheduleStruct.Insert("price", Undefined);
 		Else
