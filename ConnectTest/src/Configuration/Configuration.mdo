@@ -116,6 +116,8 @@
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
+  <commonModules>CommonModule.Zoom</commonModules>
+  <commonModules>CommonModule.JWT</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
@@ -172,6 +174,8 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
+  <catalogs>Catalog.meetingZoom</catalogs>
+  <catalogs>Catalog.hostsZoom</catalogs>
   <documents>Document.RegisterRecorder</documents>
   <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>
@@ -195,6 +199,7 @@
   <enums>Enum.SmsProviders</enums>
   <enums>Enum.systemTypes</enums>
   <enums>Enum.typeOfExternalRefs</enums>
+  <enums>Enum.meetingStatusesZoom</enums>
   <reports>Report.applicationVersions</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
@@ -219,6 +224,7 @@
   <informationRegisters>InformationRegister.serviceMessagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.DELETE_usersStates</informationRegisters>
+  <informationRegisters>InformationRegister.busyhostZoom</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
   <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
 </mdclass:Configuration>

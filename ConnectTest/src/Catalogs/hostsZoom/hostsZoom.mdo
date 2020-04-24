@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2706ac40-015e-4956-9c7a-18f6958cfe1e">
+  <producedTypes>
+    <objectType typeId="ab3c76c9-0550-429d-91cb-86eddac5bda8" valueTypeId="b860b4f4-1ff1-4326-8722-a88fcfc164d5"/>
+    <refType typeId="d94879a0-dbcf-483d-a5a3-2a3e60843d5a" valueTypeId="01135c0e-092b-4aea-9554-1d5a34db8ef2"/>
+    <selectionType typeId="1caeab00-334c-400c-bb3a-71e7c8be344d" valueTypeId="cebfa955-8503-4f1d-9096-9cebf91cf4f1"/>
+    <listType typeId="27abe9e8-859e-43bd-9193-cf439713a024" valueTypeId="357a63a2-dbfc-4466-8cbc-daf7e7c3575d"/>
+    <managerType typeId="16e8453c-1db1-4971-9ae6-869d23424a79" valueTypeId="02d829e1-6b9c-4bf3-86c3-e3dc23fe8682"/>
+  </producedTypes>
+  <name>hostsZoom</name>
+  <synonym>
+    <key>en</key>
+    <value>Hosts Zoom</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.hostsZoom.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.hostsZoom.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>50</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="7b0e4ca8-a320-42e2-9102-956566de02a5">
+    <name>email</name>
+    <synonym>
+      <key>en</key>
+      <value>Email</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>
