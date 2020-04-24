@@ -47,6 +47,8 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "cataloggyms"
 				Or parameters.requestName = "gymlist" Then
 			API_List.gymList(parameters);
+		ElsIf  parameters.requestName = "integration_zoom" Then
+			zoom.integration(parameters);		
 		ElsIf  parameters.requestName = "roomlist" Then
 			API_List.roomlist(parameters);	
 		ElsIf parameters.requestName = "gyminfo" Then
