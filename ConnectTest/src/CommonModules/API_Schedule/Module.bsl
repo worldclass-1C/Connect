@@ -79,13 +79,13 @@ Procedure gymSchedule(parameters) Export
 		|		END) AS canCancel,
 		|	COUNT(classMembers.user) AS userPlaces,
 		|	MAX(classesSchedule.availablePlaces) AS availablePlaces,
-		|	MAX(Meetings.join_url) AS urlZoom
+		|	ISNULL(MAX(CAST(Meetings.join_url AS STRING(200))), "") AS urlZoom
 		|INTO TT
 		|FROM
 		|	Catalog.classesSchedule AS classesSchedule
 		|		LEFT JOIN InformationRegister.classMembers AS classMembers
 		|		ON (classesSchedule.Ref = classMembers.class)
-		||		LEFT JOIN Catalog.meetingZoom AS Meetings
+		|	LEFT JOIN Catalog.meetingZoom AS Meetings
 		|		ON (classesSchedule.Ref = Meetings.doc)";
 	textCondition = "
 		|WHERE
