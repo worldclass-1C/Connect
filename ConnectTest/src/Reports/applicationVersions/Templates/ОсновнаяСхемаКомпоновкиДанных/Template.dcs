@@ -35,13 +35,18 @@
 			<dataPath>systemType</dataPath>
 			<field>systemType</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>appVersion</dataPath>
+			<field>appVersion</field>
+		</field>
 		<dataSource>DataSource1</dataSource>
 		<query>SELECT
 	tokens.holding,
 	tokens.account AS account,
 	tokens.systemType,
 	tokens.systemVersion,
-	tokens.appType
+	tokens.appType,
+	tokens.appVersion
 FROM
 	Catalog.tokens AS tokens
 		LEFT JOIN catalog.appAnalytics AS appAnalytics
@@ -85,7 +90,7 @@ WHERE
 				<dcsset:point>
 					<dcsset:groupItems>
 						<dcsset:item xsi:type="dcsset:GroupItemField">
-							<dcsset:field>systemVersion</dcsset:field>
+							<dcsset:field>appVersion</dcsset:field>
 							<dcsset:groupType>Items</dcsset:groupType>
 							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 						</dcsset:item>

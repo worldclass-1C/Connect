@@ -30,7 +30,7 @@ Function processRequest(request, requestName = "", synch = False) Export
 	If parameters.error = "" Then		
 		Check.legality(request, parameters);
 	EndIf;			
-	If requestName = "imagePOST" Then
+	If requestName = "imagePOST" or requestName = "filePOST" Then
 		parameters.Insert("requestBody", request.GetBodyAsBinaryData());
 		parameters.Insert("headers", request.Headers);				
 	Else

@@ -81,4 +81,30 @@
       <handler>synchMethod</handler>
     </methods>
   </urlTemplates>
+  <urlTemplates uuid="99b0bdae-ba0a-4999-9aa8-832bb60e2e8d">
+    <name>file</name>
+    <synonym>
+      <key>ru</key>
+      <value>File</value>
+    </synonym>
+    <template>/file</template>
+    <methods uuid="146a2d06-3b1e-48e3-a249-cd374577d972">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>filePOST</handler>
+    </methods>
+    <methods uuid="7e8e67b8-04ec-4185-81b0-71d20088632a">
+      <name>DELETE</name>
+      <synonym>
+        <key>ru</key>
+        <value>DELETE</value>
+      </synonym>
+      <httpMethod>DELETE</httpMethod>
+      <handler>fileDELETE</handler>
+    </methods>
+  </urlTemplates>
 </mdclass:HTTPService>

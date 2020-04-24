@@ -18,3 +18,11 @@ EndFunction
 Function synchMethod(Request)
 	Return HTTP.processRequest(request,, True);
 EndFunction
+
+Function filePOST(Request)
+	Return HTTP.processRequest(request, "filePOST");
+EndFunction
+
+Function fileDELETE(Request)
+	Return HTTP.processRequest(request, "fileDELETE");
+EndFunction

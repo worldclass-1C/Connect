@@ -137,6 +137,10 @@ Procedure sendSMS(parameters) Export
 		answer = SmsMtsCommunicator.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
+		answer = SmsDevino.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
+		answer = SmsSmsc.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -209,6 +213,10 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsMtsCommunicator.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Devino Then
+		answer = SmsDevino.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
+		answer = SmsSmsc.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;
@@ -245,8 +253,7 @@ EndFunction
 
 Procedure checkSmsStatusContinuation(answer, parameters) Export
 
-	If answer.messageStatus = Enums.messageStatuses.delivered
-			Or parameters.messageAge > 2 Then
+	If answer.messageStatus = Enums.messageStatuses.delivered Then
 		ExchangePlans.DeleteChangeRecords(parameters.nodeMessagesToCheckStatus, parameters.message);
 	ElsIf answer.messageStatus = Enums.messageStatuses.notDelivered Then
 		useNextInformationChannel(parameters.message, Enums.informationChannels.sms);
@@ -270,15 +277,7 @@ EndProcedure
 
 Procedure logMassage(message, informationChannel, messageStatus, error,
 		recordDate = Undefined, token = Undefined, AnswerResponseBodyForLogs = Undefined) Export
-//	record = InformationRegisters.messagesLogs.CreateRecordManager();
-//	record.period = ToUniversalTime(CurrentDate());
-//	record.message = message;
-//	record.informationChannel = informationChannel;
-//	record.messageStatus = messageStatus;
-//	record.error = error;
-//	record.recordDate = ?(recordDate = Undefined, Date(1, 1, 1), recordDate);
-//	record.token = token;
-//	record.Write();
+	
 	record = Documents.messageLogs.CreateDocument();
 	record.date					= ToUniversalTime(CurrentDate());
 	record.message				= message;
@@ -410,44 +409,118 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 		holding) Export
 
 	query = New Query();
-	query.text = "SELECT
-	|	DATEDIFF(messages.Ref.registrationDate, &currentDate, Day) AS messageAge,
-	|	&currentDate AS currentDate,
-	|	messages.Ref AS message,
-	|	messagesId.id AS id,
-	|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
-	|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
-	|	ISNULL(gymSMSProviders.server, ISNULL(chainSMSProviders.server, SMSProviders.server)) AS server,
-	|	ISNULL(gymSMSProviders.port, ISNULL(chainSMSProviders.port, SMSProviders.port)) AS port,
-	|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
-	|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
-	|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
-	|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
-	|		SMSProviders.secureConnection)) AS secureConnection,
-	|	ISNULL(gymSMSProviders.useOSAuthentication, ISNULL(chainSMSProviders.useOSAuthentication,
-	|		SMSProviders.useOSAuthentication)) AS useOSAuthentication,
-	|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
-	|FROM
-	|	Catalog.messages.Changes AS messages
-	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
-	|		ON (gymSMSProviders.holding = &holding)
-	|		AND (gymSMSProviders.gym = messages.Ref.gym)
-	|		AND (gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef))
-	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
-	|		ON (chainSMSProviders.holding = &holding)
-	|		AND (chainSMSProviders.chain = messages.Ref.chain)
-	|		AND (chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef))
-	|		AND (chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
-	|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
-	|		ON (SMSProviders.holding = &holding)
-	|		AND (SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef))
-	|		AND (SMSProviders.chain = VALUE(Catalog.chains.EmptyRef))
-	|		LEFT JOIN InformationRegister.messagesId AS messagesId
-	|		ON messages.Ref = messagesId.message
-	|		AND (messagesId.informationChannel = VALUE(Enum.informationChannels.sms))
-	|WHERE
-	|	messages.Node = &nodeMessagesToCheckStatus
-	|	И messages.Ref.holding = &holding";
+		query.text = 
+		"SELECT
+		|	&currentDate AS currentDate,
+		|	messages.Ref AS message,
+		|	messages.Ref.phone AS phone,
+		|	messagesId.id AS id,
+		|	&nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
+		|	ISNULL(gymSMSProviders.SMSProvider, ISNULL(chainSMSProviders.SMSProvider, SMSProviders.SMSProvider)) AS SMSProvider,
+		|	ISNULL(gymSMSProviders.server, ISNULL(chainSMSProviders.server, SMSProviders.server)) AS server,
+		|	ISNULL(gymSMSProviders.port, ISNULL(chainSMSProviders.port, SMSProviders.port)) AS port,
+		|	ISNULL(gymSMSProviders.user, ISNULL(chainSMSProviders.user, SMSProviders.user)) AS user,
+		|	ISNULL(gymSMSProviders.password, ISNULL(chainSMSProviders.password, SMSProviders.password)) AS password,
+		|	ISNULL(gymSMSProviders.timeout, ISNULL(chainSMSProviders.timeout, SMSProviders.timeout)) AS timeout,
+		|	ISNULL(gymSMSProviders.secureConnection, ISNULL(chainSMSProviders.secureConnection,
+		|		SMSProviders.secureConnection)) AS secureConnection,
+		|	ISNULL(gymSMSProviders.UseOSAuthentication, ISNULL(chainSMSProviders.UseOSAuthentication,
+		|		SMSProviders.UseOSAuthentication)) AS useOSAuthentication,
+		|	ISNULL(gymSMSProviders.senderName, ISNULL(chainSMSProviders.senderName, SMSProviders.senderName)) AS senderName
+		|INTO TemporaryTable
+		|FROM
+		|	Catalog.messages.Changes AS messages
+		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS gymSMSProviders
+		|		ON gymSMSProviders.holding = &holding
+		|		AND gymSMSProviders.gym = messages.Ref.gym
+		|		AND gymSMSProviders.gym <> VALUE(Catalog.gyms.EmptyRef)
+		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS chainSMSProviders
+		|		ON chainSMSProviders.holding = &holding
+		|		AND chainSMSProviders.chain = messages.Ref.chain
+		|		AND chainSMSProviders.chain <> VALUE(Catalog.chains.EmptyRef)
+		|		AND chainSMSProviders.gym = VALUE(Catalog.gyms.EmptyRef)
+		|		LEFT JOIN InformationRegister.holdingsConnectionsSMSProviders AS SMSProviders
+		|		ON SMSProviders.holding = &holding
+		|		AND SMSProviders.gym = VALUE(Catalog.gyms.EmptyRef)
+		|		AND SMSProviders.chain = VALUE(Catalog.chains.EmptyRef)
+		|		LEFT JOIN InformationRegister.messagesId AS messagesId
+		|		ON messages.Ref = messagesId.message
+		|		AND messagesId.informationChannel = VALUE(Enum.informationChannels.sms)
+		|WHERE
+		|	messages.Node = &nodeMessagesToCheckStatus
+		|	AND messages.Ref.holding = &holding
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	TemporaryTable.currentDate AS currentDate,
+		|	TemporaryTable.message AS message,
+		|	COUNT(messageLogs.messageStatus) - 1 AS AttemptCount,
+		|	MAX(messageLogs.Date) AS LastAttemptDate,
+		|	TemporaryTable.id AS id,
+		|	TemporaryTable.nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
+		|	TemporaryTable.SMSProvider AS SMSProvider,
+		|	TemporaryTable.server AS server,
+		|	TemporaryTable.port AS port,
+		|	TemporaryTable.user AS user,
+		|	TemporaryTable.password AS password,
+		|	TemporaryTable.timeout AS timeout,
+		|	TemporaryTable.secureConnection AS secureConnection,
+		|	TemporaryTable.useOSAuthentication AS useOSAuthentication,
+		|	TemporaryTable.senderName AS senderName,
+		|	TemporaryTable.phone
+		|INTO TemporaryTable1
+		|FROM
+		|	TemporaryTable AS TemporaryTable
+		|		LEFT JOIN Document.messageLogs AS messageLogs
+		|		ON TemporaryTable.message = messageLogs.message
+		|WHERE
+		|	messageLogs.messageStatus <> VALUE(перечисление.messageStatuses.delivered)
+		|GROUP BY
+		|	TemporaryTable.currentDate,
+		|	TemporaryTable.message,
+		|	TemporaryTable.id,
+		|	TemporaryTable.nodeMessagesToCheckStatus,
+		|	TemporaryTable.SMSProvider,
+		|	TemporaryTable.server,
+		|	TemporaryTable.port,
+		|	TemporaryTable.user,
+		|	TemporaryTable.password,
+		|	TemporaryTable.timeout,
+		|	TemporaryTable.secureConnection,
+		|	TemporaryTable.useOSAuthentication,
+		|	TemporaryTable.senderName,
+		|	TemporaryTable.phone
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|SELECT
+		|	TemporaryTable1.currentDate AS currentDate,
+		|	TemporaryTable1.message AS message,
+		|	TemporaryTable1.phone,
+		|	TemporaryTable1.AttemptCount AS AttemptCount,
+		|	DATEDIFF(TemporaryTable1.LastAttemptDate, &currentDate, HOUR) AS HoursFromLastCheck,
+		|	TemporaryTable1.id AS id,
+		|	TemporaryTable1.nodeMessagesToCheckStatus AS nodeMessagesToCheckStatus,
+		|	TemporaryTable1.SMSProvider AS SMSProvider,
+		|	TemporaryTable1.server AS server,
+		|	TemporaryTable1.port AS port,
+		|	TemporaryTable1.user AS user,
+		|	TemporaryTable1.password AS password,
+		|	TemporaryTable1.timeout AS timeout,
+		|	TemporaryTable1.secureConnection AS secureConnection,
+		|	TemporaryTable1.useOSAuthentication AS useOSAuthentication,
+		|	TemporaryTable1.senderName AS senderName
+		|FROM
+		|	TemporaryTable1 AS TemporaryTable1
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|DROP TemporaryTable
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|DROP TemporaryTable1";
 
 	query.SetParameter("nodeMessagesToCheckStatus", nodeMessagesToCheckStatus);
 	query.SetParameter("holding", holding);
@@ -456,7 +529,17 @@ Procedure checkHoldingSmsStatus(nodeMessagesToCheckStatus,
 	selection = query.Execute().Select();
 
 	While selection.Next() Do
-		Messages.checkSmsStatus(selection);
+		
+		CheckStatusCount = Constants.CheckStatusCount.Get(); 
+		
+		If 0<=selection.AttemptCount<=?(CheckStatusCount = 0, 5, CheckStatusCount) Тогда
+			If selection.AttemptCount <= selection.HoursFromLastCheck Тогда
+				Messages.checkSmsStatus(selection);
+			EndIf
+		Else
+			ExchangePlans.DeleteChangeRecords(nodeMessagesToCheckStatus, selection.message);	
+		EndIf
+		
 	EndDo;
 
 EndProcedure
