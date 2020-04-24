@@ -237,7 +237,8 @@ Function  getArrGyms(params) Export
 	|		WHEN gymstranslation.state = """"
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
-	|	END AS state
+	|	END AS state,
+	|	gyms.order AS order
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -290,7 +291,8 @@ Function  getArrGyms(params) Export
 	|		WHEN gymstranslation.state = """"
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
-	|	END AS state
+	|	END AS state,
+	|	NULL
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -300,7 +302,9 @@ Function  getArrGyms(params) Export
 	|	&byArray
 	|	AND gyms.ref in (&Array)
 	|	AND
-	|	NOT gyms.DeletionMark");
+	|	NOT gyms.DeletionMark
+	|ORDER BY
+	|	order");
 		
 		query.SetParameter("chainCode", stucParams.chainCode);
 		query.SetParameter("byArray", stucParams.byArray);
@@ -357,29 +361,37 @@ Procedure productList(parameters) Export
 	 
 	productArray = New Array();
 	
-	productArray = getArrProduct(New Structure("byArray,arrProduct, productDirection,language,gym",
+	productArray = getArrProduct(New Structure("byArray,arrProduct, productDirection,language,gym,entryType",
 													False,
 													New Array(),
 													productDirection,
 													parameters.language,
-													 XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId)
-													));
+													 XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId),
+													parameters.entryType));
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		
 
 EndProcedure
 
 Function  getArrProduct(params) Export
-	stucParams = New Structure("byArray,Array, productDirection,language,gym",
+	stucParams = New Structure("byArray,Array, productDirection,language,gym,entryType",
 											True,
 											New Array(),
 											Undefined,
 											Catalogs.languages.EmptyRef(),
-											Undefined);
+											Undefined,
+											New Array());
 	FillPropertyValues(stucParams, params);
 	If stucParams.productDirection = Undefined then
    	   		stucParams.productDirection = enums.productDirections.fitness;
 	EndIf;
+	
+	entryType = new Array();
+	For Each entry in stucParams.entryType do
+		if entry.Property("entryType") then
+			entryType.Add(entry.entryType);
+		EndIf;
+	EndDo;
 	
 	baseImgURL = GeneralReuse.getBaseImgURL();
 	
@@ -387,39 +399,50 @@ Function  getArrProduct(params) Export
 	
 	query = New Query("SELECT
 	|	gymsProducts.product,
-	|	gymsProducts.productDirection
+	|	gymsProducts.productDirection,
+	|	gymsProducts.price
 	|INTO TT
 	|FROM
 	|	InformationRegister.gymsProducts AS gymsProducts
+	|		INNER JOIN InformationRegister.productsMapping AS productsMapping
+	|		ON productsMapping.product = gymsProducts.product
+	|		AND productsMapping.entryType IN (&entryType)
 	|WHERE
-	|	NOt &byArray
-	|	and gymsProducts.productDirection = &productDirection
+	|	NOT &byArray
+	|	AND gymsProducts.productDirection = &productDirection
 	|	AND gymsProducts.gym = &gym
 	|
-	|Union all
+	|UNION ALL
 	|
-	|select
+	|SELECT
 	|	products.Ref,
-	|	&productDirection
+	|	&productDirection,
+	|	NULL
 	|FROM
 	|	Catalog.products AS products
-	|Where
+	|WHERE
 	|	&byArray
-	|	AND products.Ref in (&Array)
+	|	AND products.Ref IN (&Array)
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.productDirection,
 	|	TT.product,
 	|	ISNULL(productstranslation.description, TT.product.Description) AS description,
 	|	ISNULL(productstranslation.shortDescription, TT.product.shortDescription) AS shortDescription,
-	|	TT.product.photo AS photo
+	|	TT.product.photo AS photo,
+	|	TT.product.order,
+	|	TT.price
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.translation AS productstranslation
 	|		ON TT.product = productstranslation.Ref
 	|		AND productstranslation.language = &language
+	|ORDER BY
+	|	TT.product.order
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	TT.product AS product,
@@ -430,10 +453,11 @@ Function  getArrProduct(params) Export
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.tags AS productstags
 	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
-	|			ON (productstags.tag = tagstranslation.Ref)
-	|			AND (tagstranslation.language = &language)
-	|		ON (TT.product = productstags.Ref)
+	|			ON productstags.tag = tagstranslation.Ref
+	|			AND tagstranslation.language = &language
+	|		ON TT.product = productstags.Ref
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -451,7 +475,7 @@ Function  getArrProduct(params) Export
 	query.SetParameter("Array", stucParams.Array);
 	query.SetParameter("language", stucParams.language);
 	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
-	
+	query.SetParameter("entryType",entryType);
 	results = query.ExecuteBatch();
 	select = results[1].Select();
 	selectTags = results[2].Select();
@@ -461,7 +485,10 @@ Function  getArrProduct(params) Export
 		productStruct = New Structure();
 		productStruct.Insert("uid", XMLString(select.product));		
 		productStruct.Insert("name", select.description);		
-		productStruct.Insert("shortDescription", select.shortDescription);		
+		productStruct.Insert("shortDescription", select.shortDescription);
+		if select.price <> Undefined then
+			productStruct.Insert("price", select.price);
+		EndIf;
 		If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
 			productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
 		ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then

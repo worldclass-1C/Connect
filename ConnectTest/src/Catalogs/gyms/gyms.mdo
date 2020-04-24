@@ -647,6 +647,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="17501c7c-35ee-42f7-82ac-eb1ec785f1e6">
+    <name>order</name>
+    <synonym>
+      <key>ru</key>
+      <value>Order</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="9f29fcd3-1571-4e7e-a4d8-564647782025">
     <producedTypes>
       <objectType typeId="3aa7c7b7-aca0-4dad-9163-75960cb3039f" valueTypeId="6f19938a-fcd8-4236-88a1-04cecb8ee6d0"/>

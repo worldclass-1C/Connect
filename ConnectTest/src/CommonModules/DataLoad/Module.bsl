@@ -56,6 +56,7 @@ Function isUploadRequest(requestName) Export
 		Or requestName = "addrooms"
 		Or requestName = "addemployees"				
 		Or requestName = "addproducts"
+		Or requestName = "addcontent"
 		Or requestName = "addtags"
 		Or requestName = "addcancelcauses"
 		Or requestName = "synchronization"
@@ -99,6 +100,8 @@ Function attributesStructure(val requestName)
 		Return Catalogs.tags.attributesStructure();
 	ElsIf requestName = "addproducts" Then
 		Return Catalogs.products.attributesStructure();
+	ElsIf requestName = "addcontent" Then
+		Return Catalogs.content.attributesStructure();
 	ElsIf requestName = "addrooms" Then
 		Return Catalogs.rooms.attributesStructure();
 	ElsIf requestName = "addcache" Then

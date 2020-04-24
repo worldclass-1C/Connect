@@ -7,7 +7,8 @@ Function attributesStructure(requestName) Export
 	DataLoad.addRowInAttributesTable(attributesTable, "productDirection", "productDirection", "enum");
 	DataLoad.addRowInAttributesTable(attributesTable, "gym", "gym", "ref");
 	DataLoad.addRowInAttributesTable(attributesTable, "product", "product", "ref");
-
+	DataLoad.addRowInAttributesTable(attributesTable, "price", "price", "number");
+	
 	mdStruct = New Structure();
 	mdStruct.Insert("productDirection", New Structure("productDirections", ""));
 	mdStruct.Insert("gym", New Structure("gyms", "uid"));

@@ -40,6 +40,26 @@
     <dataHistory>Use</dataHistory>
     <fillValue xsi:type="core:UndefinedValue"/>
   </resources>
+  <attributes uuid="93ce14f8-ac66-4857-b7c9-8fd89f311eb0">
+    <name>price</name>
+    <synonym>
+      <key>ru</key>
+      <value>Price</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <dimensions uuid="d607c664-02e8-4cd7-b7dc-de5fe022e62e">
     <name>productDirection</name>
     <synonym>

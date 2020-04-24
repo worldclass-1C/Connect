@@ -248,12 +248,14 @@ Procedure productInfo(parameters) Export
 	|	NOT &selectByProduct
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT 
+	|SELECT
 	|	products.Ref AS product,
 	|	products.Description AS Description,
 	|	products.shortDescription AS shortDescription,
 	|	products.fullDescription AS fullDescription,
-	|	products.addDescription AS addDescription
+	|	products.addDescription AS addDescription,
+	|	products.composition,
+	|	products.attribute
 	|INTO TT
 	|FROM
 	|	TT1 AS TT1
@@ -266,7 +268,9 @@ Procedure productInfo(parameters) Export
 	|	ISNULL(productstranslation.description, TT.Description) AS description,
 	|	ISNULL(productstranslation.shortDescription, TT.shortDescription) AS shortDescription,
 	|	ISNULL(productstranslation.fullDescription, TT.fullDescription) AS fullDescription,
-	|	ISNULL(productstranslation.addDescription, TT.addDescription) AS addDescription
+	|	ISNULL(productstranslation.addDescription, TT.addDescription) AS addDescription,
+	|	TT.composition,
+	|	TT.attribute
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.translation AS productstranslation
@@ -311,7 +315,49 @@ Procedure productInfo(parameters) Export
 	|		LEFT JOIN Catalog.products.photos AS productsphotos
 	|		ON TT.product = productsphotos.Ref
 	|WHERE
-	|	NOT productsphotos.URL IS NULL";
+	|	NOT productsphotos.URL IS NULL
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT1.product as product,
+	|	contentTab.url AS url,
+	|	contentTab.typeOfFile AS typeOfFile,
+	|	ISNULL(contenttranslation.description, contentTab.Description) AS description,
+	|	contentTab.Ref AS content
+	|FROM
+	|	TT1 AS TT1
+	|		LEFT JOIN Catalog.products.content AS productscontentTab
+	|			LEFT JOIN Catalog.content AS contentTab
+	|				LEFT JOIN Catalog.content.translation AS contenttranslation
+	|				ON contenttranslation.Ref = contentTab.Ref
+	|			ON productscontentTab.contentRef = contentTab.Ref
+	|		ON TT1.product = productscontentTab.Ref
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT1.product,
+	|	productsauthors.author,
+	|	ISNULL(employeestranslation.firstName, employees.firstName) AS firstName,
+	|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName
+	|FROM
+	|	TT1 AS TT1
+	|		LEFT JOIN Catalog.products.authors AS productsauthors
+	|			LEFT JOIN Catalog.employees AS employees
+	|				LEFT JOIN Catalog.employees.translation AS employeestranslation
+	|				ON employees.Ref = employeestranslation.Ref
+	|			ON productsauthors.author = employees.Ref
+	|		ON TT1.product = productsauthors.Ref
+	|WHERE
+	|	NOT productsauthors.author IS NULL
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT1.product,
+	|	isnull(gymsProducts.price, Undefined) as price
+	|FROM
+	|	TT1 AS TT1
+	|		LEFT JOIN InformationRegister.gymsProducts AS gymsProducts
+	|		ON gymsProducts.product = TT1.product";
 	
 	entryListUid = "";
 	If requestStruct.Property("entryList") And requestStruct.entryList.count() > 0 Then		
@@ -333,12 +379,14 @@ Procedure productInfo(parameters) Export
 	EndIf;	
 	query.SetParameter("language", language);
 	query.SetParameter("entryListUid", entryListUid);
-	
+		
 	results = query.ExecuteBatch();
 	select = results[2].Select();
 	selectTags = results[3].Select();
 	selectMapping = results[4].Select();
 	selectPhotos = results[5].Select();
+	selectFiles = results[6].Select();
+	selectAuthor = results[7].Select();
 	
 	While select.Next() Do		
 		productStruct.Insert("uid", XMLString(select.product));		
@@ -376,7 +424,38 @@ Procedure productInfo(parameters) Export
 			entryArray.Add(entryStruct);
 		EndDo;
 		productStruct.Insert("entryList", entryArray);
-		selectMapping.Reset();	
+		selectMapping.Reset();
+		
+		filesArray = New Array();
+		While selectFiles.FindNext(New Structure("product", select.product)) Do
+			fileStruct = New Structure();
+			fileStruct.Insert("uid", XMLString(selectFiles.content));
+			fileStruct.Insert("name", selectFiles.description);
+			fileStruct.Insert("url", selectFiles.url);
+			fileStruct.Insert("type", selectFiles.typeOfFile);			
+			filesArray.Add(fileStruct);
+		EndDo;
+		if filesArray.Count()>0 then
+			productStruct.Insert("content", filesArray);
+		else
+			productStruct.Insert("content", Undefined);
+		EndIf;
+		
+		authorArray = New Array();
+		While selectAuthor.FindNext(New Structure("product", select.product)) Do
+			authorStruct = New Structure();
+			authorStruct.Insert("uid", XMLString(selectAuthor.author));
+			authorStruct.Insert("firstName", selectAuthor.firstName);
+			authorStruct.Insert("lastName", selectAuthor.lastName);			
+			authorArray.Add(authorStruct);
+		EndDo;
+		if authorArray.Count()>0 then
+			productStruct.Insert("author", authorArray);
+		else
+			productStruct.Insert("author", Undefined);
+		EndIf;
+		
+		selectFiles.Reset();	
 		
 	EndDo;
 

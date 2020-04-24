@@ -170,6 +170,7 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
+  <catalogs>Catalog.content</catalogs>
   <documents>Document.RegisterRecorder</documents>
   <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>

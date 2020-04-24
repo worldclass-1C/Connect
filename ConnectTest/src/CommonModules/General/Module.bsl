@@ -95,7 +95,9 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "fileDELETE" Then 
 			fileDELETE(parameters); 
 		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
-			changeProfile(parameters);			
+			changeProfile(parameters);	
+		ElsIf parameters.requestName = "fileInfo" Then 
+			fileInfo(parameters);		
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
 		Else
@@ -948,4 +950,39 @@ Procedure changeProfile(parameters)
 	//Else
 	//	parameters.Insert("error", "system");
 	//EndIf;
+EndProcedure
+
+Procedure fileInfo(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	struct = New Structure();
+	If requestStruct.Property("uid") then
+		query = New Query("SELECT
+		|	contentTable.url,
+		|	contentTable.typeOfFile,
+		|	ISNULL(contenttranslation.description, contentTable.Description) AS Description,
+		|	ISNULL(contenttranslation.fullDescription, contentTable.fullDescription) AS fullDescription
+		|FROM
+		|	Catalog.content.translation AS contenttranslation
+		|		RIGHT JOIN Catalog.content AS contentTable
+		|		ON contenttranslation.Ref = contentTable.Ref
+		|		AND contenttranslation.language = &language
+		|WHERE
+		|	contentTable.Ref = &Ref");
+		query.SetParameter("Ref", Service.getRef(requestStruct.uid, "CatalogRef.content"));
+		query.SetParameter("language", language);
+		select = query.Execute().Select();
+		While select.Next() do
+			struct.Insert("name", select.Description);
+			struct.Insert("url", select.url);
+			struct.Insert("type", select.typeOfFile);
+			struct.Insert("description", select.fullDescription);
+		EndDo;
+	else
+		parameters.Insert("error", "noFile");
+	EndIf;
+	struct.Insert("result", "Ok");
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
 EndProcedure

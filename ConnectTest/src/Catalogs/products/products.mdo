@@ -194,6 +194,48 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="619c4148-2af4-4439-93b6-ee6f0c0ea66a">
+    <name>composition</name>
+    <synonym>
+      <key>ru</key>
+      <value>Composition</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="24bb50d9-ff98-4dc4-85a4-6f089f147734">
+    <name>attribute</name>
+    <synonym>
+      <key>ru</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="db9e5758-59ce-475b-ad14-dc04e3bcb454">
+    <name>order</name>
+    <synonym>
+      <key>ru</key>
+      <value>Order</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="2a15728d-a1ab-410d-ad4a-1f61a5a7a15a">
     <producedTypes>
       <objectType typeId="09b8c172-08cd-4865-ab42-08a59d01ac30" valueTypeId="26d21fbd-19eb-4592-8a13-78089d9afa7c"/>
@@ -363,6 +405,52 @@
         <stringQualifiers>
           <length>500</length>
         </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="4246231c-b5e9-4740-87dd-542287d40b70">
+    <producedTypes>
+      <objectType typeId="f14c96de-d2ea-460a-8bb6-0d53eee4f87a" valueTypeId="04421767-819d-44a4-8d17-3440071a498a"/>
+      <rowType typeId="df1eeae3-fce3-4e83-955a-47e3828ff423" valueTypeId="5fb437c0-4cda-4705-b637-c8809f0e5edd"/>
+    </producedTypes>
+    <name>content</name>
+    <synonym>
+      <key>ru</key>
+      <value>Content</value>
+    </synonym>
+    <attributes uuid="83bb2468-3fbd-46ce-8af3-05b418d937a1">
+      <name>contentRef</name>
+      <synonym>
+        <key>ru</key>
+        <value>Content ref</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.content</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="6c8e8c81-5263-4804-bd35-48316c98577f">
+    <producedTypes>
+      <objectType typeId="8d3a2e1a-20b7-443f-8cb2-706e3744fbc1" valueTypeId="011451c6-da28-4ab2-922e-5e1df3b5d872"/>
+      <rowType typeId="e501acfe-9947-4e8c-bb51-4fa6af8db29c" valueTypeId="82a0e69a-61ef-48cc-8762-591e5084a3ce"/>
+    </producedTypes>
+    <name>authors</name>
+    <synonym>
+      <key>ru</key>
+      <value>Authors</value>
+    </synonym>
+    <attributes uuid="5f3e5c44-180b-4b48-8db8-e35816cedb61">
+      <name>author</name>
+      <synonym>
+        <key>ru</key>
+        <value>Author</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.employees</types>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
