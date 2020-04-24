@@ -250,8 +250,67 @@ Function  getArrGyms(params) Export
 	|	AND gyms.chain.code = &chainCode
 	|	AND gyms.startDate <= &currentTime
 	|	AND gyms.endDate >= &currentTime
+	|	AND gyms.type <> VALUE(Enum.gymTypes.online)
 	|
-	|union all
+	|UNION ALL
+	|
+	|SELECT
+	|	gyms.Ref,
+	|	gyms.latitude,
+	|	gyms.longitude,
+	|	ISNULL(gyms.segment.Description, """"),
+	|	ISNULL(gyms.segment.color, """"),
+	|	gyms.phone,
+	|	gyms.photo,
+	|	gyms.weekdaysTime,
+	|	gyms.holidaysTime,
+	|	CASE
+	|		WHEN gymstranslation.description IS NULL
+	|			THEN gyms.Description
+	|		WHEN gymstranslation.description = """"
+	|			THEN gyms.Description
+	|		ELSE gymstranslation.description
+	|	END,
+	|	CASE
+	|		WHEN gymstranslation.address IS NULL
+	|			THEN gyms.address
+	|		WHEN gymstranslation.address = """"
+	|			THEN gyms.address
+	|		ELSE gymstranslation.address
+	|	END,
+	|	CASE
+	|		WHEN gymstranslation.nearestMetro IS NULL
+	|			THEN gyms.nearestMetro
+	|		WHEN gymstranslation.nearestMetro = ""[]""
+	|			THEN gyms.nearestMetro
+	|		ELSE gymstranslation.nearestMetro
+	|	END,
+	|	CASE
+	|		WHEN gymstranslation.state IS NULL
+	|			THEN gyms.state
+	|		WHEN gymstranslation.state = """"
+	|			THEN gyms.state
+	|		ELSE gymstranslation.state
+	|	END
+	|FROM
+	|	Catalog.gyms AS gyms
+	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|		ON gymstranslation.Ref = gyms.Ref
+	|		AND gymstranslation.language = &language
+	|		LEFT JOIN Catalog.chains AS chains
+	|		ON chains.brand = gyms.brand
+	|		AND chains.holding = gyms.holding
+	|WHERE
+	|	NOT &byArray
+	|	AND
+	|	NOT gyms.DeletionMark
+	|	AND gyms.chain.Code = &chainCode
+	|	AND gyms.startDate <= &currentTime
+	|	AND gyms.endDate >= &currentTime
+	|	AND gyms.type = VALUE(Enum.gymTypes.online)
+	|	AND chains.Code = &chainCode
+	|
+	|UNION ALL
 	|
 	|SELECT
 	|	gyms.Ref,
@@ -298,7 +357,7 @@ Function  getArrGyms(params) Export
 	|		AND gymstranslation.language = &language
 	|WHERE
 	|	&byArray
-	|	AND gyms.ref in (&Array)
+	|	AND gyms.ref IN (&Array)
 	|	AND
 	|	NOT gyms.DeletionMark");
 		

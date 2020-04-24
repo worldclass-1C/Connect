@@ -49,4 +49,11 @@
       <value>Программы вне клуба</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="9e25a02b-3304-42a9-8b18-cd23984ac3d9">
+    <name>online</name>
+    <synonym>
+      <key>ru</key>
+      <value>Online</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>
