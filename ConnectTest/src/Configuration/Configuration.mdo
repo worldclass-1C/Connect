@@ -116,7 +116,6 @@
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.Cache</commonModules>
   <commonModules>CommonModule.Zoom</commonModules>
   <commonModules>CommonModule.JWT</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
