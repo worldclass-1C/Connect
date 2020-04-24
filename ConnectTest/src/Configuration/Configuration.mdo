@@ -116,12 +116,9 @@
   <commonModules>CommonModule.Token</commonModules>
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-<<<<<<< HEAD
   <commonModules>CommonModule.Cache</commonModules>
   <commonModules>CommonModule.Zoom</commonModules>
   <commonModules>CommonModule.JWT</commonModules>
-=======
->>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
