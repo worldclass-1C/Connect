@@ -174,12 +174,9 @@
   <catalogs>Catalog.timeZones</catalogs>
   <catalogs>Catalog.tokens</catalogs>
   <catalogs>Catalog.users</catalogs>
-<<<<<<< HEAD
   <catalogs>Catalog.content</catalogs>
-=======
   <catalogs>Catalog.meetingZoom</catalogs>
   <catalogs>Catalog.hostsZoom</catalogs>
->>>>>>> branch 'master' of https://github.com/worldclass-1C/Connect.git
   <documents>Document.RegisterRecorder</documents>
   <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>
