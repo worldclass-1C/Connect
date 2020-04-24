@@ -226,6 +226,7 @@ EndProcedure
 Procedure productInfo(parameters) Export
 
 	requestStruct = parameters.requestStruct;
+	tokenContext = parameters.tokenContext;
 	language = parameters.language;	
 	productStruct = New Structure();
 
@@ -351,13 +352,17 @@ Procedure productInfo(parameters) Export
 	|	NOT productsauthors.author IS NULL
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
+	|SELECT DISTINCT TOP 1
 	|	TT1.product,
-	|	isnull(gymsProducts.price, Undefined) as price
+	|	ISNULL(gymsProducts.price, UNDEFINED) as price
 	|FROM
 	|	TT1 AS TT1
 	|		LEFT JOIN InformationRegister.gymsProducts AS gymsProducts
-	|		ON gymsProducts.product = TT1.product";
+	|		ON gymsProducts.product = TT1.product
+	|WHERE
+	|	gymsProducts.gym.type = VALUE(enum.gymTypes.online)
+	|	AND gymsProducts.gym.holding = &holding
+	|	AND gymsProducts.gym.brand = &brand";
 	
 	entryListUid = "";
 	If requestStruct.Property("entryList") And requestStruct.entryList.count() > 0 Then		
@@ -378,6 +383,8 @@ Procedure productInfo(parameters) Export
 		query.SetParameter("selectByProduct", False);	
 	EndIf;	
 	query.SetParameter("language", language);
+	query.SetParameter("holding",  tokenContext.holding);
+	query.SetParameter("brand",  tokenContext.brand);
 	query.SetParameter("entryListUid", entryListUid);
 		
 	results = query.ExecuteBatch();

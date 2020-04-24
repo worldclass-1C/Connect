@@ -292,7 +292,8 @@ Function  getArrGyms(params) Export
 	|		WHEN gymstranslation.state = """"
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
-	|	END
+	|	END,
+	|	gyms.order
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -351,7 +352,7 @@ Function  getArrGyms(params) Export
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
 	|	END AS state,
-	|	NULL
+	|	gyms.order
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -408,7 +409,6 @@ Function  getArrGyms(params) Export
 	
 	Return Res
 EndFunction
-
 Procedure productList(parameters) Export
 
 	requestStruct = parameters.requestStruct;
