@@ -1,5 +1,5 @@
 
-Function createItems(requestName, holding, requestStruct, owner = Undefined) Export
+Function createItems(requestName, holding, requestStruct, owner = Undefined, brand) Export
 
 	items = New Array();
 	If requestName = "synchronization" Then
@@ -15,7 +15,7 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined) Exp
 				For Each attribute In attributesStruct.attributesTable Do
 					fillField(object, attribute, attributesStruct, requestParameter);
 				EndDo;
-				fillPredefinedField(object, attributesStruct, holding, owner);
+				fillPredefinedField(object, attributesStruct, holding, owner, brand);
 				If attributesStruct.actType = "write" Then
 					object.Write();
 				ElsIf attributesStruct.actType = "delete" Then
@@ -199,7 +199,7 @@ Procedure fillValue(object, attribute, attributesStruct, requestParameter)
 	EndIf;		
 EndProcedure
 
-Procedure fillPredefinedField(object, attributesStruct, holding, owner)
+Procedure fillPredefinedField(object, attributesStruct, holding, owner, brand)
 	If attributesStruct.mdObjectName <> "matchingRequestsInformationSources" Then
 		If attributesStruct.mdType = "catalog" Then
 			If owner <> Undefined Then
@@ -210,6 +210,9 @@ Procedure fillPredefinedField(object, attributesStruct, holding, owner)
 			EndIf;
 			If attributesStruct.mdObjectName = "users" Then
 				object.description = "" + owner + " (" + holding + ")";
+			EndIf;
+			If attributesStruct.mdObjectName = "gyms" Then
+				object.brand = brand;
 			EndIf;
 		EndIf;
 	EndIf;

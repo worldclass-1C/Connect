@@ -731,7 +731,7 @@ Procedure changeCreateItems(parameters)
 	tokenContext = parameters.tokenContext;
 	struct	= New Structure();
 	struct.Insert("result", "Ok");		
-	DataLoad.createItems(parameters.requestName, tokenContext.holding, parameters.requestStruct);	
+	DataLoad.createItems(parameters.requestName, tokenContext.holding, parameters.requestStruct,tokenContext.brand);	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 

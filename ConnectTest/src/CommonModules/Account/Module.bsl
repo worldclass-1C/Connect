@@ -28,11 +28,11 @@ Function getFromExternalSystem(val parameters, val parametrName,
 		answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
 		If answerStruct.Count() = 1 Then
 			If account = Undefined Then
-				accountArray = DataLoad.createItems("addChangeAccounts", tokenContext.holding, answerStruct);
+				accountArray = DataLoad.createItems("addChangeAccounts", tokenContext.holding, answerStruct, tokenContext.brand);
 				account = accountArray[0];
 				setStatus(account);								
 			EndIf;			
-			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account);
+			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account, tokenContext.brand);
 			userProfile = Users.profile(userArray[0], tokenContext.appType);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));			
 			authKey = XMLString(tokenContext.token) + tempPassword();			
