@@ -170,7 +170,7 @@ EndProcedure
 
 Procedure UpdateCache(parameters) Export
 	Query = New Query("SELECT
-	|	chainscacheTypes.cacheType.PredefinedDataName AS CacheType
+	|	chainscacheTypes.cacheType AS CacheType
 	|FROM
 	|	Catalog.chains.cacheTypes AS chainscacheTypes
 	|WHERE
@@ -182,7 +182,7 @@ Procedure UpdateCache(parameters) Export
 	While Sel.Next() Do
 		If ValueIsFilled(Sel.cachetype) Then
 			AskCache(parameters, 
-				New Structure("user,chain,cacheType", parameters.tokenContex, parameters.tokenContex, Sel.cachetype))
+				New Structure("user,chain,cacheType", parameters.tokenContext.user, parameters.tokenContext.chain, Sel.cachetype))
 		EndIf; 
 	EndDo;
 EndProcedure
