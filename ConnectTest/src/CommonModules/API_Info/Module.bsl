@@ -333,6 +333,8 @@ Procedure productInfo(parameters) Export
 	|				ON contenttranslation.Ref = contentTab.Ref
 	|			ON productscontentTab.contentRef = contentTab.Ref
 	|		ON TT1.product = productscontentTab.Ref
+	|WHERE
+	|	NOT productscontentTab.Ref IS NULL
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -384,7 +386,7 @@ Procedure productInfo(parameters) Export
 	EndIf;	
 	query.SetParameter("language", language);
 	query.SetParameter("holding",  tokenContext.holding);
-	query.SetParameter("brand",  tokenContext.brand);
+	query.SetParameter("brand",  parameters.brand);
 	query.SetParameter("entryListUid", entryListUid);
 		
 	results = query.ExecuteBatch();
