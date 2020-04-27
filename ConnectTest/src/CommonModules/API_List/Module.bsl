@@ -426,7 +426,7 @@ Procedure productList(parameters) Export
 													productDirection,
 													parameters.language,
 													 XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId),
-													parameters.entryType));
+													?(parameters.Property("entryType"),parameters.entryType,New Array())));
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		
 
