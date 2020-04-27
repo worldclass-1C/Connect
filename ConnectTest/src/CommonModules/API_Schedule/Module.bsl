@@ -267,7 +267,7 @@ Procedure gymSchedule(parameters) Export
 	selectTags = results[7].Select();
 	selectRooms = results[8].Select();
 	selectRefs = results[9].Select();
-
+	urlZoom = "";
 	While select.Next() Do
 		classesScheduleStruct = New Structure();
 
@@ -289,7 +289,7 @@ Procedure gymSchedule(parameters) Export
 		classesScheduleStruct.Insert("canRecord", select.canRecord
 			and Not select.recorded);
 		classesScheduleStruct.Insert("availablePlaces", select.availablePlaces);
-		classesScheduleStruct.Insert("urlZoom", select.urlZoom);
+		urlZoom= select.urlZoom;
 		If tokenContext.user.IsEmpty() Then
 			classesScheduleStruct.Insert("price", Undefined);
 		Else
@@ -363,6 +363,9 @@ Procedure gymSchedule(parameters) Export
 			refStruct.Insert("ref", selectRefs.resourseRef);
 			externalRefs.Add(refStruct);
 		EndDo;
+		If ValueIsFilled(urlZoom) Then
+			externalRefs.Add(New Structure("type,ref","zoom",urlZoom))
+		EndIf; 	
 		
 		classesScheduleStruct.Insert("externalRefs", externalRefs);
 		

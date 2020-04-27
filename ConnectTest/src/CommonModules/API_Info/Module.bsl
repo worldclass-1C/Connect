@@ -515,27 +515,20 @@ Procedure userSummary(parameters) Export
 	
 EndProcedure
 
-//Procedure userSummaryCache(parameters) Export
-//	
-//	arrTypes = New Array();
-//	tps = Catalogs.cacheTypes;
-//	arrTypes.Add(tps.bonus); arrTypes.Add(tps.membershipList);
-//	arrTypes.Add(tps.balance); arrTypes.Add(tps.rentedLockerList);
-//	arrTypes.Add(tps.packageList); arrTypes.Add(tps.paymentPackage);
-//	 
-//	 commonCache(parameters,arrTypes);
-//
-//EndProcedure
-
 Procedure generalcache(parameters) Export
 	
-	If Not Type("Array") = TypeOf(parameters.requestStruct) Then
+	If Not Type("Structure") = TypeOf(parameters.requestStruct) Then
+		Return
+	EndIf;
+	
+	types = Undefined;
+	If Not parameters.requestStruct.Property("types",types) or Not  Type("Array") = TypeOf(types)  Then
 		Return
 	EndIf;
 	
 	arrTypes = New Array();
 	Predef = Metadata.Catalogs.cacheTypes.GetPredefinedNames();
-	For Each El In parameters.requestStruct Do
+	For Each El In types Do
 		If Not Predef.Find(El)=Undefined Then
 			arrTypes.Add(Catalogs.cacheTypes[El])
 		EndIf; 	
@@ -550,28 +543,8 @@ Procedure generalcache(parameters) Export
 												parameters.language,
 												arrTypes));
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-	
-	 //commonCache(parameters,arrTypes);
 
 EndProcedure
-	
-//Procedure commonCache(parameters,Types) Export
-//	
-//	If TypeOf(Types)=Type("Array") Then
-//		arrTypes = Types
-//	Else 
-//		arrTypes = New Array();
-//		arrTypes.Add(Types);
-//	EndIf;	
-//	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,languageCode,language,cacheTypes",
-//												parameters.tokenContext.user,
-//												parameters.tokenContext.holding,
-//												parameters.tokenContext.chain,
-//												parameters.languageCode,
-//												parameters.language,
-//												arrTypes));
-//	parameters.Insert("answerBody", HTTP.encodeJSON(struct));		
-//EndProcedure
 
 Procedure userCache(parameters) Export
 	
