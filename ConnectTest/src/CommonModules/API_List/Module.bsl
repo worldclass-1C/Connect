@@ -452,6 +452,11 @@ Function  getArrProduct(params) Export
 		EndIf;
 	EndDo;
 	
+	if entryType.Count() = 0 then
+		entryType.Add("personal");
+		entryType.Add("group");	
+	EndIf;
+	
 	baseImgURL = GeneralReuse.getBaseImgURL();
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
