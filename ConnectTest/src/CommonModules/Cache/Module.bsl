@@ -58,20 +58,27 @@ Function GetCache(parameters, struсRequest) Export
 					EndDo;
 					arrData.Add(HTTP.decodeJSON(data));
 				EndIf
-			EndDo; 
-			If arrData.Count()=1 Then
-				strucRes.Insert(FoundRow.PredefinedDataName,arrData[0]);
-			ElsIf arrData.Count()>1 Then
-				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
-			EndIf; 
-		EndDo;
-		If strucRes.Count()=1 Then
-			For Each KeyVal In strucRes Do
-				Result = KeyVal.Value
 			EndDo;
-		Else 
+			If FoundRow.cacheType=Catalogs.cacheTypes.banner 
+				OR FoundRow.cacheType=Catalogs.cacheTypes.rentedLockerList 
+				OR arrData.Count()>1 Then
+				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
+			ElsIf arrData.Count()=1 Then
+				strucRes.Insert(FoundRow.PredefinedDataName,arrData[0]);
+			EndIf; 
+//			If arrData.Count()=1 and Not FoundRow.cacheType =   Then
+//				strucRes.Insert(FoundRow.PredefinedDataName,arrData[0]);
+//			ElsIf arrData.Count()>1 Then
+//				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
+//			EndIf; 
+		EndDo;
+//		If strucRes.Count()=1 Then
+//			For Each KeyVal In strucRes Do
+//				Result = KeyVal.Value
+//			EndDo;
+//		Else 
 			Result = strucRes
-		EndIf;
+//		EndIf;
 	EndIf;
 
 	Return Result;
@@ -96,7 +103,7 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 			//для описаний кэша отдельная ветка
 			
 			//если в кэше есть локализация, то нужно это учесть
-			strucData = HTTP.decodeJSON(Found.data);
+			strucData = HTTP.decodeJSON(found.data);
 			For Each KeyVal In strucData Do
 				If KeyVal.Value.Count()=1 Then
 					For Each lKeyVal In KeyVal.Value Do
@@ -130,11 +137,16 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 				If ValRepl=Undefined Then
 					ValRepl=""
 				EndIf; 
-				res.Insert(StrTemplate("""%1""",StrTemplate("""%1""",String(lDecr.UUID())),ValRepl))
+				res.Insert(StrTemplate("""%1""",String(lDecr.UUID())),ValRepl)
 			EndDo;
 		EndIf; 
 	EndDo; 
 	
+	res.Insert("""_empty_product_""", "null");
+	res.Insert("""_empty_employee_""", "null");
+	res.Insert("""_empty_gym_""", "null");
+	res.Insert("""_empty_room_""", "null");
+
 	Return res
 EndFunction
 
