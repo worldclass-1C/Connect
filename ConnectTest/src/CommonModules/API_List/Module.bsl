@@ -364,7 +364,8 @@ Function  getArrGyms(params) Export
 	|	AND
 	|	NOT gyms.DeletionMark
 	|ORDER BY
-	|	order");
+	|	order,
+	|	Description");
 		
 		query.SetParameter("chainCode", stucParams.chainCode);
 		query.SetParameter("byArray", stucParams.byArray);
