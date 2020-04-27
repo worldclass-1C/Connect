@@ -202,6 +202,9 @@ Function  getArrGyms(params) Export
 											Enums.brandTypes.None,
 											Catalogs.holdings.EmptyRef());
 	FillPropertyValues(stucParams, params);
+	if stucParams.brand = Enums.brandTypes.None then
+		stucParams.brand = Enums.brandTypes.WorldClass;
+	EndIf;
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
 	query = New Query("SELECT
