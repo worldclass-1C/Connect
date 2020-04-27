@@ -174,13 +174,15 @@ Procedure gymList(parameters) Export
 	If Not requestStruct.Property("chain") Then		
 		parameters.Insert("error", "chainCodeError");
 	Else	 
-		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized",
+		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized,brand, holding",
 											requestStruct.chain,
 											False,
 											 parameters.language,
 											parameters.currentTime,
 											tokenContext.appType,
-											ValueIsFilled(tokenContext.user)));
+											ValueIsFilled(tokenContext.user),
+											parameters.brand,
+											tokenContext.holding));
 		
 	EndIf;
 		
@@ -189,14 +191,16 @@ Procedure gymList(parameters) Export
 EndProcedure
 
 Function  getArrGyms(params) Export
-	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized",
+	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding",
 											"",
 											True,
 											New Array(),
 											Catalogs.languages.EmptyRef(),
 											CurrentUniversalDate(),
 											,
-											False);
+											False,
+											Enums.brandTypes.None,
+											Catalogs.holdings.EmptyRef());
 	FillPropertyValues(stucParams, params);
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
@@ -255,7 +259,7 @@ Function  getArrGyms(params) Export
 	|
 	|UNION ALL
 	|
-	|SELECT
+	|SELECT DISTINCT
 	|	gyms.Ref,
 	|	gyms.latitude,
 	|	gyms.longitude,
@@ -306,11 +310,11 @@ Function  getArrGyms(params) Export
 	|	NOT &byArray
 	|	AND
 	|	NOT gyms.DeletionMark
-	|	AND gyms.chain.Code = &chainCode
 	|	AND gyms.startDate <= &currentTime
 	|	AND gyms.endDate >= &currentTime
 	|	AND gyms.type = VALUE(Enum.gymTypes.online)
-	|	AND chains.Code = &chainCode
+	|	AND gyms.brand = &brand
+	|	AND gyms.holding = &holding
 	|
 	|UNION ALL
 	|
@@ -372,6 +376,8 @@ Function  getArrGyms(params) Export
 		query.SetParameter("Array", stucParams.Array);
 		query.SetParameter("language", stucParams.language);
 		query.SetParameter("currentTime", stucParams.currentTime);
+		query.SetParameter("brand", stucParams.brand);
+		query.SetParameter("holding", stucParams.holding);
 //		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
 		
 		select = query.Execute().Select();
