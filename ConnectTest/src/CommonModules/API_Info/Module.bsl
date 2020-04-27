@@ -515,11 +515,13 @@ EndProcedure
 Procedure generalcache(parameters) Export
 	
 	If Not Type("Structure") = TypeOf(parameters.requestStruct) Then
+		parameters.Insert("error","noValidRequest");
 		Return
 	EndIf;
 	
 	types = Undefined;
 	If Not parameters.requestStruct.Property("types",types) or Not  Type("Array") = TypeOf(types)  Then
+		parameters.Insert("error","noValidRequest");
 		Return
 	EndIf;
 	
