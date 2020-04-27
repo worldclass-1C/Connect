@@ -384,6 +384,12 @@ Procedure confirmPhone(parameters)
 				parametersNew = Service.getStructCopy(parameters);
 				parametersNew.tokenContext.Insert("user", select.user);
 				//Users.updateCache(parametersNew);
+				//emptyTypes.Add(XMLString(cachetype));
+				
+				//запрос кэша при регистрации пользователя
+				arrParams = New Array();
+				arrParams.Add(parameters);
+				BackgroundJobs.Execute("Cache.UpdateCache",arrParams )
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
 				struct = answerStruct.response;

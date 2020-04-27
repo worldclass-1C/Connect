@@ -267,7 +267,6 @@ Procedure gymSchedule(parameters) Export
 	selectTags = results[7].Select();
 	selectRooms = results[8].Select();
 	selectRefs = results[9].Select();
-	urlZoom = "";
 	While select.Next() Do
 		classesScheduleStruct = New Structure();
 

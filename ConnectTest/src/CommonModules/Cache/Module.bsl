@@ -165,7 +165,26 @@ Procedure AskCache(parameters, struсRequest) Export
 				parameters.tokenContext,
 				parameters.language,
 				parameters.authKey,
-				parameters.language.Code));
+				parameters.languageCode));
+EndProcedure
+
+Procedure UpdateCache(parameters) Export
+	Query = New Query("SELECT
+	|	chainscacheTypes.cacheType.PredefinedDataName AS CacheType
+	|FROM
+	|	Catalog.chains.cacheTypes AS chainscacheTypes
+	|WHERE
+	|	chainscacheTypes.isUsed
+	|	AND chainscacheTypes.Ref = &chain");
+	
+	Query.SetParameter("chain",parameters.tokenContext.chain);
+	Sel = Query.Execute().Select();
+	While Sel.Next() Do
+		If ValueIsFilled(Sel.cachetype) Then
+			AskCache(parameters, 
+				New Structure("user,chain,cacheType", parameters.tokenContex, parameters.tokenContex, Sel.cachetype))
+		EndIf; 
+	EndDo;
 EndProcedure
 
 Function TextQuery()
