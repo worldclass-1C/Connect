@@ -489,7 +489,6 @@ Function  getArrProduct(params) Export
 	|	&byArray
 	|	AND products.Ref IN (&Array)
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.productDirection,
@@ -507,7 +506,6 @@ Function  getArrProduct(params) Export
 	|ORDER BY
 	|	TT.product.order
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	TT.product AS product,
@@ -522,7 +520,6 @@ Function  getArrProduct(params) Export
 	|			AND tagstranslation.language = &language
 	|		ON TT.product = productstags.Ref
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -531,7 +528,22 @@ Function  getArrProduct(params) Export
 	|FROM
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
-	|		ON TT.product = productsMapping.product");
+	|		ON TT.product = productsMapping.product
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TT.product,
+	|	productsauthors.author,
+	|	ISNULL(employeestranslation.firstName, employeestranslation.Ref.firstName) AS firstName,
+	|	ISNULL(employeestranslation.lastName, employeestranslation.Ref.lastName) AS lastName
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.authors AS productsauthors
+	|			LEFT JOIN Catalog.employees.translation AS employeestranslation
+	|			ON productsauthors.author = employeestranslation.Ref
+	|			AND employeestranslation.language = &language
+	|		ON TT.product = productsauthors.Ref");
 	
 
 	query.SetParameter("productDirection", stucParams.productDirection);
@@ -545,6 +557,7 @@ Function  getArrProduct(params) Export
 	select = results[1].Select();
 	selectTags = results[2].Select();
 	selectMapping = results[3].Select();
+	selectAuthor = results[4].Select();
 	
 	While select.Next() Do
 		productStruct = New Structure();
@@ -581,6 +594,17 @@ Function  getArrProduct(params) Export
 			entryArray.Add(entryStruct);
 		EndDo;
 		productStruct.Insert("entryList", entryArray);
+		
+		authorArray = New Array();
+		While selectAuthor.FindNext(New Structure("product", select.product)) Do
+			authorStruct = New Structure();
+			authorStruct.Insert("uid", selectAuthor.author);
+			authorStruct.Insert("firstName", selectAuthor.firstName);
+			authorStruct.Insert("lastName", selectAuthor.lastName);			
+			authorArray.Add(authorStruct);
+		EndDo;
+		productStruct.Insert("author", authorArray);
+		
 		selectMapping.Reset();
 		If stucParams.byArray Then
 			Res.Insert(select.product,  HTTP.encodeJSON(productStruct))

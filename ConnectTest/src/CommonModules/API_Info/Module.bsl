@@ -255,8 +255,8 @@ Procedure productInfo(parameters) Export
 	|	products.shortDescription AS shortDescription,
 	|	products.fullDescription AS fullDescription,
 	|	products.addDescription AS addDescription,
-	|	products.composition,
-	|	products.attribute
+	|	products.composition AS composition,
+	|	products.attribute AS attribute
 	|INTO TT
 	|FROM
 	|	TT1 AS TT1
@@ -402,7 +402,10 @@ Procedure productInfo(parameters) Export
 		productStruct.Insert("name", select.description);		
 		productStruct.Insert("shortDescription", select.shortDescription);
 		productStruct.Insert("fullDescription", select.fullDescription);
-		productStruct.Insert("addDescription", select.addDescription);		
+		productStruct.Insert("addDescription", select.addDescription);
+				
+		productStruct.Insert("composition", HTTP.decodeJSON(select.composition, Enums.JSONValueTypes.array));
+		productStruct.Insert("attribute", HTTP.decodeJSON(select.attribute, Enums.JSONValueTypes.array));
 		
 		photoArray = New Array();
 		While selectPhotos.FindNext(New Structure("product", select.product)) Do
