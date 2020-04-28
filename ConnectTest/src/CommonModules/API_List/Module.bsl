@@ -607,7 +607,7 @@ Function  getArrProduct(params) Export
 		authorArray = New Array();
 		While selectAuthor.FindNext(New Structure("product", select.product)) Do
 			authorStruct = New Structure();
-			authorStruct.Insert("uid", selectAuthor.author);
+			authorStruct.Insert("uid", XMLString(selectAuthor.author));
 			authorStruct.Insert("firstName", selectAuthor.firstName);
 			authorStruct.Insert("lastName", selectAuthor.lastName);			
 			authorArray.Add(authorStruct);
