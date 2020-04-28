@@ -99,7 +99,7 @@ Procedure executeRequestMethod(parameters) Export
 		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
 			changeProfile(parameters);	
 		ElsIf parameters.requestName = "fileInfo" Then 
-			fileInfo(parameters);		
+			API_Info.fileInfo(parameters);		
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
 		Else
@@ -960,39 +960,4 @@ Procedure changeProfile(parameters)
 	//EndIf;
 EndProcedure
 
-Procedure fileInfo(parameters)
-	
-	requestStruct = parameters.requestStruct;
-	language = parameters.language;
-	struct = New Structure();
-	If requestStruct.Property("uid") then
-		query = New Query("SELECT
-		|	contentTable.url,
-		|	contentTable.typeOfFile,
-		|	ISNULL(contenttranslation.description, contentTable.Description) AS Description,
-		|	ISNULL(contenttranslation.fullDescription, contentTable.fullDescription) AS fullDescription,
-		|	contentTable.avaliableForDownload
-		|FROM
-		|	Catalog.content.translation AS contenttranslation
-		|		RIGHT JOIN Catalog.content AS contentTable
-		|		ON contenttranslation.Ref = contentTable.Ref
-		|		AND contenttranslation.language = &language
-		|WHERE
-		|	contentTable.Ref = &Ref");
-		query.SetParameter("Ref", Service.getRef(requestStruct.uid, "CatalogRef.content"));
-		query.SetParameter("language", language);
-		select = query.Execute().Select();
-		While select.Next() do
-			struct.Insert("name", select.Description);
-			struct.Insert("url", select.url);
-			struct.Insert("type", select.typeOfFile);
-			struct.Insert("description", select.fullDescription);
-			struct.Insert("avaliableForDownload", select.avaliableForDownload);
-		EndDo;
-	else
-		parameters.Insert("error", "noFile");
-	EndIf;
-	struct.Insert("result", "Ok");
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-	
-EndProcedure
+
