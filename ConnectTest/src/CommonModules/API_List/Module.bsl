@@ -548,7 +548,7 @@ Function  getArrProduct(params) Export
 	|	ISNULL(employeestranslation.lastName, employeestranslation.Ref.lastName) AS lastName
 	|FROM
 	|	TT AS TT
-	|		LEFT JOIN Catalog.products.authors AS productsauthors
+	|		INNER JOIN Catalog.products.authors AS productsauthors
 	|			LEFT JOIN Catalog.employees.translation AS employeestranslation
 	|			ON productsauthors.author = employeestranslation.Ref
 	|			AND employeestranslation.language = &language
