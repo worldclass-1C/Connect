@@ -539,7 +539,6 @@ Function  getArrProduct(params) Export
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product,
@@ -552,7 +551,9 @@ Function  getArrProduct(params) Export
 	|			LEFT JOIN Catalog.employees.translation AS employeestranslation
 	|			ON productsauthors.author = employeestranslation.Ref
 	|			AND employeestranslation.language = &language
-	|		ON TT.product = productsauthors.Ref");
+	|		ON TT.product = productsauthors.Ref
+	|WHERE
+	|	NOT productsauthors.author.Ref IS NULL");
 	
 
 	query.SetParameter("productDirection", stucParams.productDirection);
