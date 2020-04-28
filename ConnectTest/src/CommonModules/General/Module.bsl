@@ -970,7 +970,8 @@ Procedure fileInfo(parameters)
 		|	contentTable.url,
 		|	contentTable.typeOfFile,
 		|	ISNULL(contenttranslation.description, contentTable.Description) AS Description,
-		|	ISNULL(contenttranslation.fullDescription, contentTable.fullDescription) AS fullDescription
+		|	ISNULL(contenttranslation.fullDescription, contentTable.fullDescription) AS fullDescription,
+		|	contentTable.avaliableForDownload
 		|FROM
 		|	Catalog.content.translation AS contenttranslation
 		|		RIGHT JOIN Catalog.content AS contentTable
@@ -986,6 +987,7 @@ Procedure fileInfo(parameters)
 			struct.Insert("url", select.url);
 			struct.Insert("type", select.typeOfFile);
 			struct.Insert("description", select.fullDescription);
+			struct.Insert("avaliableForDownload", select.avaliableForDownload);
 		EndDo;
 	else
 		parameters.Insert("error", "noFile");
