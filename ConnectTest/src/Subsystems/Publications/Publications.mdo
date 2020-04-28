@@ -18,4 +18,5 @@
   <content>Catalog.tags</content>
   <content>Catalog.products</content>
   <content>Catalog.rooms</content>
+  <content>Catalog.content</content>
 </mdclass:Subsystem>
