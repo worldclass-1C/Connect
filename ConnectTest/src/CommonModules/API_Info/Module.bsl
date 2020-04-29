@@ -523,7 +523,7 @@ Procedure userSummary(parameters) Export
 	
 EndProcedure
 
-Procedure generalCache(parameters) Export
+Procedure generalcache(parameters) Export
 	
 	If Not Type("Structure") = TypeOf(parameters.requestStruct) Then
 		parameters.Insert("error","noValidRequest");
