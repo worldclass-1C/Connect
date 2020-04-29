@@ -59,7 +59,7 @@ Function GetCache(parameters, struсRequest) Export
 					arrData.Add(HTTP.decodeJSON(data));
 				EndIf
 			EndDo;
-			If FoundRow.cacheType=Catalogs.cacheTypes.banner 
+			If FoundRow.cacheType=Catalogs.cacheTypes.bannerList 
 				OR FoundRow.cacheType=Catalogs.cacheTypes.rentedLockerList 
 				OR arrData.Count()>1 Then
 				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
@@ -131,7 +131,7 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 	For Each KeyVal In mapData Do
 		If KeyVal.Value.Array.Count()>0 Then
 			mapDescr = 
-			Eval(StrTemplate("API_List.%1(New Structure(""byArray,Array,language"",True,KeyVal.Value.Array,language))",KeyVal.Value.Handler));
+			Eval(StrTemplate("API_List.%1(New Structure(""byArray,Array,language,short"",True,KeyVal.Value.Array,language,True))",KeyVal.Value.Handler));
 			For Each lDecr In KeyVal.Value.Array Do
 				ValRepl = mapDescr.Get(lDecr);
 				If ValRepl=Undefined Then
@@ -142,10 +142,10 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 		EndIf; 
 	EndDo; 
 	
-	res.Insert("""_empty_product_""", "null");
-	res.Insert("""_empty_employee_""", "null");
-	res.Insert("""_empty_gym_""", "null");
-	res.Insert("""_empty_room_""", "null");
+//	res.Insert("""_empty_product_""", "null");
+//	res.Insert("""_empty_employee_""", "null");
+//	res.Insert("""_empty_gym_""", "null");
+//	res.Insert("""_empty_room_""", "null");
 
 	Return res
 EndFunction
