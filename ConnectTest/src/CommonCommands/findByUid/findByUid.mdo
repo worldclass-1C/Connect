@@ -25,6 +25,7 @@
     <types>CatalogRef.cacheTypes</types>
     <types>CatalogRef.cacheInformations</types>
     <types>CatalogRef.chains</types>
+    <types>CatalogRef.content</types>
   </commandParameterType>
   <representation>Auto</representation>
 </mdclass:CommonCommand>

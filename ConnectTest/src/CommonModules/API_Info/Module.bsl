@@ -245,9 +245,10 @@ Procedure productInfo(parameters) Export
 	|	InformationRegister.productsMapping AS productsMapping
 	|WHERE
 	|	productsMapping.uid = &entryListUid
-	|	And
+	|	AND
 	|	NOT &selectByProduct
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	products.Ref AS product,
@@ -261,8 +262,9 @@ Procedure productInfo(parameters) Export
 	|FROM
 	|	TT1 AS TT1
 	|		LEFT JOIN Catalog.products AS products
-	|		ON (TT1.product = products.Ref)
+	|		ON TT1.product = products.Ref
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -276,8 +278,9 @@ Procedure productInfo(parameters) Export
 	|	TT AS TT
 	|		LEFT JOIN Catalog.products.translation AS productstranslation
 	|		ON TT.product = productstranslation.Ref
-	|		AND (productstranslation.language = &language)
+	|		AND productstranslation.language = &language
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	TT.product AS product,
@@ -289,11 +292,12 @@ Procedure productInfo(parameters) Export
 	|		LEFT JOIN Catalog.products.tags AS productstags
 	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
 	|			ON productstags.tag = tagstranslation.Ref
-	|			AND (tagstranslation.language = &language)
+	|			AND tagstranslation.language = &language
 	|		ON TT.product = productstags.Ref
 	|WHERE
 	|	NOT productstags.Ref IS NULL
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -307,6 +311,7 @@ Procedure productInfo(parameters) Export
 	|	NOT productsMapping.uid IS NULL
 	|	AND productsMapping.uid IN (&entryList)
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -318,9 +323,10 @@ Procedure productInfo(parameters) Export
 	|WHERE
 	|	NOT productsphotos.URL IS NULL
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	TT1.product as product,
+	|	TT1.product AS product,
 	|	contentTab.url AS url,
 	|	contentTab.typeOfFile AS typeOfFile,
 	|	ISNULL(contenttranslation.description, contentTab.Description) AS description,
@@ -334,8 +340,9 @@ Procedure productInfo(parameters) Export
 	|			ON productscontentTab.contentRef = contentTab.Ref
 	|		ON TT1.product = productscontentTab.Ref
 	|WHERE
-	|	NOT productscontentTab.Ref IS NULL
+	|	NOT contentTab.Ref IS NULL
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT1.product,
@@ -351,12 +358,13 @@ Procedure productInfo(parameters) Export
 	|			ON productsauthors.author = employees.Ref
 	|		ON TT1.product = productsauthors.Ref
 	|WHERE
-	|	NOT productsauthors.author IS NULL
+	|	NOT productsauthors.author.ref IS NULL
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT TOP 1
 	|	TT1.product,
-	|	ISNULL(gymsProducts.price, UNDEFINED) as price
+	|	ISNULL(gymsProducts.price, UNDEFINED) AS price
 	|FROM
 	|	TT1 AS TT1
 	|		LEFT JOIN InformationRegister.gymsProducts AS gymsProducts
@@ -614,5 +622,42 @@ Procedure userCache(parameters) Export
 //	EndDo;
 //		
 //	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
+EndProcedure
+
+Procedure fileInfo(parameters)
+	
+	requestStruct = parameters.requestStruct;
+	language = parameters.language;
+	struct = New Structure();
+	If requestStruct.Property("uid") then
+		query = New Query("SELECT
+		|	contentTable.url,
+		|	contentTable.typeOfFile,
+		|	ISNULL(contenttranslation.description, contentTable.Description) AS Description,
+		|	ISNULL(contenttranslation.fullDescription, contentTable.fullDescription) AS fullDescription,
+		|	contentTable.avaliableForDownload
+		|FROM
+		|	Catalog.content.translation AS contenttranslation
+		|		RIGHT JOIN Catalog.content AS contentTable
+		|		ON contenttranslation.Ref = contentTable.Ref
+		|		AND contenttranslation.language = &language
+		|WHERE
+		|	contentTable.Ref = &Ref");
+		query.SetParameter("Ref", Service.getRef(requestStruct.uid, "CatalogRef.content"));
+		query.SetParameter("language", language);
+		select = query.Execute().Select();
+		While select.Next() do
+			struct.Insert("name", select.Description);
+			struct.Insert("url", select.url);
+			struct.Insert("type", select.typeOfFile);
+			struct.Insert("description", select.fullDescription);
+			struct.Insert("avaliableForDownload", select.avaliableForDownload);
+		EndDo;
+	else
+		parameters.Insert("error", "noFile");
+	EndIf;
+	struct.Insert("result", "Ok");
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure

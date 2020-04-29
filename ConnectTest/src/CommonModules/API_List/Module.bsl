@@ -444,7 +444,7 @@ Procedure productList(parameters) Export
 													productDirection,
 													parameters.language,
 													 XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId),
-													?(parameters.Property("entryType"),parameters.entryType,New Array())));
+													?(requestStruct.Property("entryType"),requestStruct.entryType,New Array())));
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		
 
@@ -560,13 +560,13 @@ Function  getArrProduct(params) Export
 	|	ISNULL(employeestranslation.lastName, employeestranslation.Ref.lastName) AS lastName
 	|FROM
 	|	TT AS TT
-	|		LEFT JOIN Catalog.products.authors AS productsauthors
+	|		INNER JOIN Catalog.products.authors AS productsauthors
 	|			LEFT JOIN Catalog.employees.translation AS employeestranslation
 	|			ON productsauthors.author = employeestranslation.Ref
 	|			AND employeestranslation.language = &language
 	|		ON TT.product = productsauthors.Ref
 	|where
-	|	Not &short");
+	|	Not &short AND NOT productsauthors.author.Ref IS NULL");
 	
 
 	query.SetParameter("productDirection", stucParams.productDirection);
@@ -577,7 +577,7 @@ Function  getArrProduct(params) Export
 	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	query.SetParameter("entryType",entryType);
 	query.SetParameter("short",stucParams.short);
-//	
+	
 	results = query.ExecuteBatch();
 	select = results[1].Select();
 	selectTags = results[2].Select();
@@ -624,7 +624,7 @@ Function  getArrProduct(params) Export
 			authorArray = New Array();
 			While selectAuthor.FindNext(New Structure("product", select.product)) Do
 				authorStruct = New Structure();
-				authorStruct.Insert("uid", selectAuthor.author);
+				authorStruct.Insert("uid", XMLString(selectAuthor.author));
 				authorStruct.Insert("firstName", selectAuthor.firstName);
 				authorStruct.Insert("lastName", selectAuthor.lastName);			
 				authorArray.Add(authorStruct);
