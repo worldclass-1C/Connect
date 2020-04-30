@@ -464,13 +464,8 @@ Function  getArrProduct(params) Export
    	   		stucParams.productDirection = enums.productDirections.fitness;
 	EndIf;
 	
-	entryType = new Array();
-	For Each entry in stucParams.entryType do
-		if entry.Property("entryType") then
-			entryType.Add(entry.entryType);
-		EndIf;
-	EndDo;
-	
+	entryType = stucParams.entryType;
+		
 	if entryType.Count() = 0 then
 		entryType.Add("personal");
 		entryType.Add("group");	
