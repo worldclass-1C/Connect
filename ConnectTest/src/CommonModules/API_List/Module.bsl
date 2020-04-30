@@ -19,11 +19,12 @@ Procedure employeeList(parameters) Export
 EndProcedure
 
 Function getArrEmployees(params) Export
-	stucParams = New Structure("gym,byArray,Array,language",
+	stucParams = New Structure("gym,byArray,Array,language,short",
 											Catalogs.gyms.EmptyRef(),
 											True,
 											New Array(),
-											Catalogs.languages.EmptyRef());
+											Catalogs.languages.EmptyRef(),
+											False);
 	FillPropertyValues(stucParams, params);
 	Res = ?(stucParams.byArray, New Map, New Array);
 	query = New Query("SELECT
@@ -74,10 +75,12 @@ Function getArrEmployees(params) Export
 		employeeStruct.Insert("uid", XMLString(select.employee));
 		employeeStruct.Insert("firstName", select.firstName);
 		employeeStruct.Insert("lastName", select.lastName);
-		employeeStruct.Insert("gender", select.gender);
-		employeeStruct.Insert("photo", select.photo);
-		employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
-		employeeStruct.Insert("isMyCoach", False);
+		If Not stucParams.short Then
+			employeeStruct.Insert("gender", select.gender);
+			employeeStruct.Insert("photo", select.photo);
+			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
+			employeeStruct.Insert("isMyCoach", False);
+		EndIf;
 		If stucParams.byArray Then
 			Res.Insert(select.employee,  HTTP.encodeJSON(employeeStruct))
 		Else
@@ -112,12 +115,13 @@ Procedure roomList(parameters) Export
 EndProcedure
 
 Function  getArrRooms(params) Export
-	stucParams = New Structure("gym,byArray,Array,language,type",
+	stucParams = New Structure("gym,byArray,Array,language,type,short",
 											Undefined,
 											True,
 											New Array(),
 											Catalogs.languages.EmptyRef(),
-											Undefined);
+											Undefined,
+											False);
 	FillPropertyValues(stucParams, params);
 	Res = ?(stucParams.byArray, New Map, New Array);
 	
@@ -153,8 +157,9 @@ Function  getArrRooms(params) Export
 			roomStruct = New Structure();
 			roomStruct.Insert("uid", XMLString(select.Ref));
 			roomStruct.Insert("name", select.description);
-			roomStruct.Insert("type", XMLString(select.type));
-			
+			If Not stucParams.short Then
+				roomStruct.Insert("type", XMLString(select.type));
+			EndIf;
 			If stucParams.byArray Then
 				Res.Insert(select.Ref,  HTTP.encodeJSON(roomStruct))
 			Else
@@ -191,7 +196,7 @@ Procedure gymList(parameters) Export
 EndProcedure
 
 Function  getArrGyms(params) Export
-	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding",
+	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding,short",
 											"",
 											True,
 											New Array(),
@@ -200,7 +205,8 @@ Function  getArrGyms(params) Export
 											,
 											False,
 											Enums.brandTypes.None,
-											Catalogs.holdings.EmptyRef());
+											Catalogs.holdings.EmptyRef(),
+											False);
 	FillPropertyValues(stucParams, params);
 	if stucParams.brand = Enums.brandTypes.None then
 		stucParams.brand = Enums.brandTypes.WorldClass;
@@ -388,28 +394,29 @@ Function  getArrGyms(params) Export
 		While select.Next() Do
 			gymStruct = New Structure();
 			gymStruct.Insert("uid", XMLString(select.Ref));
-			gymStruct.Insert("gymId", gymStruct.uid);
 			gymStruct.Insert("name", select.description);
-			gymStruct.Insert("type", "Club");
-			gymStruct.Insert("state", select.state);			
-			gymStruct.Insert("address", select.address);
-			gymStruct.Insert("photo", select.photo);
-			gymStruct.Insert("phone", select.phone);
-			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
-			gymStruct.Insert("holidaysTime", select.holidaysTime);
-			gymStruct.Insert("hasAccess", ?(stucParams.authorized, false, Undefined));
-			gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
+			If Not stucParams.short Then
+				gymStruct.Insert("gymId", gymStruct.uid);
+				gymStruct.Insert("type", "Club");
+				gymStruct.Insert("state", select.state);			
+				gymStruct.Insert("address", select.address);
+				gymStruct.Insert("photo", select.photo);
+				gymStruct.Insert("phone", select.phone);
+				gymStruct.Insert("weekdaysTime", select.weekdaysTime);
+				gymStruct.Insert("holidaysTime", select.holidaysTime);
+				gymStruct.Insert("hasAccess", ?(stucParams.authorized, false, Undefined));
+				gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
-			coords = New Structure();
-			coords.Insert("latitude", select.latitude);
-			coords.Insert("longitude", select.longitude);
-			gymStruct.Insert("coords", coords);
+				coords = New Structure();
+				coords.Insert("latitude", select.latitude);
+				coords.Insert("longitude", select.longitude);
+				gymStruct.Insert("coords", coords);
 			
-			segment = New Structure();
-			segment.Insert("name", select.segment);
-			segment.Insert("color", select.segmentColor);
-			gymStruct.Insert("segment", segment);			
-			
+				segment = New Structure();
+				segment.Insert("name", select.segment);
+				segment.Insert("color", select.segmentColor);
+				gymStruct.Insert("segment", segment);			
+			EndIf;
 			If stucParams.byArray Then
 				Res.Insert(select.Ref,  HTTP.encodeJSON(gymStruct))
 			Else
@@ -419,6 +426,7 @@ Function  getArrGyms(params) Export
 	
 	Return Res
 EndFunction
+
 Procedure productList(parameters) Export
 
 	requestStruct = parameters.requestStruct;
@@ -443,13 +451,14 @@ Procedure productList(parameters) Export
 EndProcedure
 
 Function  getArrProduct(params) Export
-	stucParams = New Structure("byArray,Array, productDirection,language,gym,entryType",
+	stucParams = New Structure("byArray,Array, productDirection,language,gym,entryType,short",
 											True,
 											New Array(),
 											Undefined,
 											Catalogs.languages.EmptyRef(),
 											Undefined,
-											New Array());
+											New Array(),
+											False);
 	FillPropertyValues(stucParams, params);
 	If stucParams.productDirection = Undefined then
    	   		stucParams.productDirection = enums.productDirections.fitness;
@@ -528,6 +537,8 @@ Function  getArrProduct(params) Export
 	|			ON productstags.tag = tagstranslation.Ref
 	|			AND tagstranslation.language = &language
 	|		ON TT.product = productstags.Ref
+	|where
+	|	Not &short
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -538,6 +549,8 @@ Function  getArrProduct(params) Export
 	|	TT AS TT
 	|		LEFT JOIN InformationRegister.productsMapping AS productsMapping
 	|		ON TT.product = productsMapping.product
+	|where
+	|	Not &short
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -552,8 +565,8 @@ Function  getArrProduct(params) Export
 	|			ON productsauthors.author = employeestranslation.Ref
 	|			AND employeestranslation.language = &language
 	|		ON TT.product = productsauthors.Ref
-	|WHERE
-	|	NOT productsauthors.author.Ref IS NULL");
+	|where
+	|	Not &short AND NOT productsauthors.author.Ref IS NULL");
 	
 
 	query.SetParameter("productDirection", stucParams.productDirection);
@@ -563,6 +576,8 @@ Function  getArrProduct(params) Export
 	query.SetParameter("language", stucParams.language);
 	query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	query.SetParameter("entryType",entryType);
+	query.SetParameter("short",stucParams.short);
+	
 	results = query.ExecuteBatch();
 	select = results[1].Select();
 	selectTags = results[2].Select();
@@ -574,50 +589,52 @@ Function  getArrProduct(params) Export
 		productStruct.Insert("uid", XMLString(select.product));		
 		productStruct.Insert("name", select.description);		
 		productStruct.Insert("shortDescription", select.shortDescription);
-		if select.price <> Undefined then
-			productStruct.Insert("price", select.price);
+		If Not stucParams.short Then
+			if select.price <> Undefined then
+				productStruct.Insert("price", select.price);
+			EndIf;
+			If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
+				productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
+			ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then
+				productStruct.Insert("photo", baseImgURL + "/service/spa.jpg");
+			Else			 	 
+				productStruct.Insert("photo", select.photo);
+			EndIf;				
+		
+			tagArray = New Array();
+			While selectTags.FindNext(New Structure("product", select.product)) Do
+				tagStruct = New Structure();
+				tagStruct.Insert("tag", XMLString(selectTags.tag));
+				tagStruct.Insert("level", selectTags.level);
+				tagStruct.Insert("weight", selectTags.weight);
+				tagArray.Add(tagStruct);
+			EndDo;
+			productStruct.Insert("tagList", tagArray);
+			selectTags.Reset();
+		
+			entryArray = New Array();
+			While selectMapping.FindNext(New Structure("product", select.product)) Do
+				entryStruct = New Structure();
+				entryStruct.Insert("uid", selectMapping.uid);
+				entryStruct.Insert("entryType", selectMapping.entryType);			
+				entryArray.Add(entryStruct);
+			EndDo;
+			productStruct.Insert("entryList", entryArray);
+		
+			authorArray = New Array();
+			While selectAuthor.FindNext(New Structure("product", select.product)) Do
+				authorStruct = New Structure();
+				authorStruct.Insert("uid", XMLString(selectAuthor.author));
+				authorStruct.Insert("firstName", selectAuthor.firstName);
+				authorStruct.Insert("lastName", selectAuthor.lastName);			
+				authorArray.Add(authorStruct);
+			EndDo;
+			productStruct.Insert("author", authorArray);
+		
+			selectMapping.Reset();
 		EndIf;
-		If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
-			productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
-		ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then
-			productStruct.Insert("photo", baseImgURL + "/service/spa.jpg");
-		Else			 	 
-			productStruct.Insert("photo", select.photo);
-		EndIf;				
-		
-		tagArray = New Array();
-		While selectTags.FindNext(New Structure("product", select.product)) Do
-			tagStruct = New Structure();
-			tagStruct.Insert("tag", XMLString(selectTags.tag));
-			tagStruct.Insert("level", selectTags.level);
-			tagStruct.Insert("weight", selectTags.weight);
-			tagArray.Add(tagStruct);
-		EndDo;
-		productStruct.Insert("tagList", tagArray);
-		selectTags.Reset();
-		
-		entryArray = New Array();
-		While selectMapping.FindNext(New Structure("product", select.product)) Do
-			entryStruct = New Structure();
-			entryStruct.Insert("uid", selectMapping.uid);
-			entryStruct.Insert("entryType", selectMapping.entryType);			
-			entryArray.Add(entryStruct);
-		EndDo;
-		productStruct.Insert("entryList", entryArray);
-		
-		authorArray = New Array();
-		While selectAuthor.FindNext(New Structure("product", select.product)) Do
-			authorStruct = New Structure();
-			authorStruct.Insert("uid", XMLString(selectAuthor.author));
-			authorStruct.Insert("firstName", selectAuthor.firstName);
-			authorStruct.Insert("lastName", selectAuthor.lastName);			
-			authorArray.Add(authorStruct);
-		EndDo;
-		productStruct.Insert("author", authorArray);
-		
-		selectMapping.Reset();
 		If stucParams.byArray Then
-			Res.Insert(select.product,  HTTP.encodeJSON(productStruct))
+				Res.Insert(select.product,  HTTP.encodeJSON(productStruct))
 		Else
 			Res.add(productStruct);
 		EndIf

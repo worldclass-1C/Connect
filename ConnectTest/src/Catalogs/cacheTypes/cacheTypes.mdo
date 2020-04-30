@@ -144,9 +144,9 @@
       </code>
     </items>
     <items id="6ffad23c-c08a-4258-96a2-0ea879168231">
-      <name>membershipList</name>
+      <name>membershipInfo</name>
       <code xsi:type="core:StringValue">
-        <value>membershipList</value>
+        <value>membershipInfo</value>
       </code>
     </items>
     <items id="af0c5149-9d91-483d-b187-c437396b0e99">
@@ -156,9 +156,9 @@
       </code>
     </items>
     <items id="5de50dd5-3c34-4db5-98ef-dc28c4d0f09b">
-      <name>packageList</name>
+      <name>packageInfo</name>
       <code xsi:type="core:StringValue">
-        <value>packageList</value>
+        <value>packageInfo</value>
       </code>
     </items>
     <items id="6c7629a8-6dca-44ac-9bda-28f6d7a56875">
@@ -186,9 +186,9 @@
       </code>
     </items>
     <items id="5910220e-98bd-4cfc-9ea6-a804e74d421b">
-      <name>banner</name>
+      <name>bannerList</name>
       <code xsi:type="core:StringValue">
-        <value>banner</value>
+        <value>bannerList</value>
       </code>
     </items>
     <items id="547efa87-491c-4f4b-8946-b293ac70ecc9">
@@ -198,7 +198,7 @@
       </code>
     </items>
     <items id="9718ef2d-25fa-49a9-b407-8392ee7d24a5">
-      <name>availableServices</name>
+      <name>availableServiceList</name>
       <code xsi:type="core:StringValue">
         <value>availableServices</value>
       </code>
