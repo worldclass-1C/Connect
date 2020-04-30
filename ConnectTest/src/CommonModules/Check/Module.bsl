@@ -58,7 +58,7 @@ Function getRequiredParameters(requestName)
 	ElsIF requestName = "confirmphone" Then
 		Return "password";
 	ElsIF requestName = "registerdevice" Then
-		Return "appType,appVersion,deviceModel,systemType,systemVersion";
+		Return "appType,appVersion,deviceModel,systemType";
 	ElsIF requestName = "payment" Then
 		Return "uid";
 	ElsIF requestName = "paymentstatus" Then

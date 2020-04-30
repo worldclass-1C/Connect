@@ -15,7 +15,7 @@ Function get(token, parameters) Export
 	tokenObject.deviceToken = parameters.deviceToken;
 	tokenObject.holding = parameters.holding;
 	tokenObject.systemType = parameters.systemType;
-	tokenObject.systemVersion = parameters.systemVersion;
+	tokenObject.systemVersion = ?(parameters.Property("systemVersion"),parameters.systemVersion,"");
 	tokenObject.timeZone = parameters.timeZone;
 	tokenObject.Write();
 	Return tokenObject.Ref;
