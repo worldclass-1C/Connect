@@ -141,7 +141,10 @@ Function prepareRequestBody(parameters) Export
 	Else
 		struct.Insert("appType", TrimAll(tokenContext.appType));
 	EndIf;
-
+	
+	struct.Insert("appVersion", tokenContext.appVersion);
+	struct.Insert("systemType", TrimAll(tokenContext.systemType));
+	
 	Return HTTP.encodeJSON(struct);
 
 EndFunction
