@@ -10,7 +10,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "gender", "gender", "string");
 	DataLoad.addRowInAttributesTable(attributesTable, "active", "active", "boolean");	
 	DataLoad.addRowInAttributesTable(attributesTable, "descriptionFull", "descriptionFull", "JSON");
-	DataLoad.addRowInAttributesTable(attributesTable, "categoryList", "categoryList", "JSON");
+	//DataLoad.addRowInAttributesTable(attributesTable, "categoryList", "categoryList", "JSON");
 	
 	DataLoad.addRowInAttributesTable(attributesTable, "translation", "translation", "valueTable");
 	DataLoad.addRowInAttributesTable(attributesTable, "photos", "photos", "valueTable");
