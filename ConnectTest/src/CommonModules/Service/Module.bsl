@@ -782,8 +782,8 @@ Procedure CalcMonthValue(Month) Export
 	|SELECT
 	|	&BeginDate,
 	|	UsersValues.holding,
-	|	UsersValues.analyticValue AS appAnalytics,
 	|	UsersValues.analytic,
+	|	UsersValues.analyticValue AS appAnalytics,
 	|	&ReportPeriod,
 	|	SUM(UsersValues.countTurnover) AS countTurnover,
 	|	UsersValues.brand
@@ -793,8 +793,8 @@ Procedure CalcMonthValue(Month) Export
 	|	AND analyticValue <> VALUE(enum.analyticValues.users)) AS UsersValues
 	|GROUP BY
 	|	UsersValues.holding,
-	|	UsersValues.analytic,
 	|	UsersValues.brand,
+	|	UsersValues.analytic,
 	|	UsersValues.analyticValue";
 	
 	Query.SetParameter("BeginDate", BegOfMonth(Month));
