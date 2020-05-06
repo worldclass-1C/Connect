@@ -470,7 +470,7 @@ Procedure CalcValues() Export
 	
 	Query	= New query;
 	Query.text	= "select TOP 1
-	|	RegisterRecorder.Date КАК CalcDay
+	|	RegisterRecorder.Date As CalcDay
 	|from
 	|	Document.RegisterRecorder AS RegisterRecorder
 	|where
@@ -499,10 +499,10 @@ Procedure CalcValues() Export
 	
 	Query	= New query;
 	Query.text	= "select top 1
-	|	RegisterRecorder.date КАК CalcMonth,
-	|	RegisterRecorder.ref КАК ref
+	|	RegisterRecorder.date As CalcMonth,
+	|	RegisterRecorder.ref As ref
 	|from
-	|	Document.RegisterRecorder КАК RegisterRecorder
+	|	Document.RegisterRecorder As RegisterRecorder
 	|where
 	|	RegisterRecorder.ReportPeriod = Value(Enum.reportPeriods.month)
 	|ORDER BY
@@ -782,8 +782,8 @@ Procedure CalcMonthValue(Month) Export
 	|SELECT
 	|	&BeginDate,
 	|	UsersValues.holding,
-	|	UsersValues.analytic,
-	|	UsersValues.analyticValue AS appAnalytics,
+	|	UsersValues.appAnalytics,
+	|	UsersValues.analyticValue,
 	|	&ReportPeriod,
 	|	SUM(UsersValues.countTurnover) AS countTurnover,
 	|	UsersValues.brand
@@ -794,8 +794,8 @@ Procedure CalcMonthValue(Month) Export
 	|GROUP BY
 	|	UsersValues.holding,
 	|	UsersValues.brand,
-	|	UsersValues.analytic,
-	|	UsersValues.analyticValue";
+	|	UsersValues.analyticValue,
+	|	UsersValues.appAnalytics";
 	
 	Query.SetParameter("BeginDate", BegOfMonth(Month));
 	Query.SetParameter("EndDate", EndOfMonth(Month));	

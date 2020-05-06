@@ -503,7 +503,7 @@ Function  getArrProduct(params) Export
 	|	AND products.Ref IN (&Array)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
+	|SELECT DISTINCT
 	|	TT.productDirection,
 	|	TT.product,
 	|	ISNULL(productstranslation.description, TT.product.Description) AS description,
