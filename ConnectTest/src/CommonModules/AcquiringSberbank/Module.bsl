@@ -244,7 +244,9 @@ Function prepareDetails(parameters)
 	details = New Structure();
 	
 	details.Insert("terminalId", ?(parameters.Property("terminalId"), parameters.terminalId, ""));
-	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));	
+	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));
+	details.Insert("authDateTime", ?(parameters.Property("authDateTime"), parameters.authDateTime, ""));
+		
 	details.Insert("approvalCode", "");
 	details.Insert("maskedPan", "");
 	details.Insert("cardholderName", "");
