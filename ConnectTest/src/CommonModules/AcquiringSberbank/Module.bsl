@@ -245,7 +245,15 @@ Function prepareDetails(parameters)
 	
 	details.Insert("terminalId", ?(parameters.Property("terminalId"), parameters.terminalId, ""));
 	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));
-	details.Insert("authDateTime", ?(parameters.Property("authDateTime"), parameters.authDateTime, ""));
+	dateTime = Date(1,1,1);
+	If parameters.Property("authDateTime") then
+		try
+			dateTime = ToLocalTime('19700101' + Number(parameters.authDateTime)/1000);
+		Except
+			dateTime = Date(1,1,1);
+		EndTry;
+	EndIf;		
+	details.Insert("authDateTime", dateTime);
 		
 	details.Insert("approvalCode", "");
 	details.Insert("maskedPan", "");
