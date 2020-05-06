@@ -23,6 +23,10 @@
   <enumValues uuid="95cb5946-1953-42d9-ab89-738a3be5ba98">
     <name>Android</name>
     <synonym>
+      <key>en</key>
+      <value>Android</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
       <value>Android</value>
     </synonym>
@@ -30,12 +34,20 @@
   <enumValues uuid="47cf1a89-45b8-4645-99be-94e4c1531f88">
     <name>iOS</name>
     <synonym>
+      <key>en</key>
+      <value>iOS</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
       <value>iOS</value>
     </synonym>
   </enumValues>
   <enumValues uuid="f445cfbb-2420-4ef8-a856-b264ac795167">
     <name>Web</name>
+    <synonym>
+      <key>en</key>
+      <value>Web</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>Web</value>
