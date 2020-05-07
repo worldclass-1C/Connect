@@ -64,7 +64,7 @@ Function getFilePath(object, holdingCode = "") Export
 EndFunction
 
 Function getFileStoragePath() Export
-	Constants.FileStorage.Get();
+	Return Constants.FileStorage.Get();
 EndFunction	
 
 Function getBaseFileURL() Export
