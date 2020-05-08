@@ -205,6 +205,7 @@
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
+  <reports>Report.ecquiringData</reports>
   <dataProcessors>DataProcessor.sendPush</dataProcessors>
   <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>
   <informationRegisters>InformationRegister.acquiringOrdersQueue</informationRegisters>

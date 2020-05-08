@@ -14,4 +14,5 @@
   <content>Report.statisticsByDay</content>
   <content>Report.statisticsByMonth</content>
   <content>Report.applicationVersions</content>
+  <content>Report.ecquiringData</content>
 </mdclass:Subsystem>

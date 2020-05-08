@@ -45,6 +45,7 @@
       <commands>Report.registeredMessages.StandardCommand.Open</commands>
       <commands>Report.statisticsByDay.StandardCommand.Open</commands>
       <commands>Report.statisticsByMonth.StandardCommand.Open</commands>
+      <commands>Report.ecquiringData.StandardCommand.Open</commands>
     </placementFragments>
     <placementFragments>
       <group>ActionsPanelTools</group>
