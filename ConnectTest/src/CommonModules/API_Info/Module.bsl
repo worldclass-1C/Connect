@@ -404,6 +404,7 @@ Procedure productInfo(parameters) Export
 	selectPhotos = results[5].Select();
 	selectFiles = results[6].Select();
 	selectAuthor = results[7].Select();
+	selectPrice = results[8].Select();
 	
 	While select.Next() Do		
 		productStruct.Insert("uid", XMLString(select.product));		
@@ -460,6 +461,7 @@ Procedure productInfo(parameters) Export
 		else
 			productStruct.Insert("content", Undefined);
 		EndIf;
+		selectFiles.Reset();
 		
 		authorArray = New Array();
 		While selectAuthor.FindNext(New Structure("product", select.product)) Do
@@ -475,7 +477,30 @@ Procedure productInfo(parameters) Export
 			productStruct.Insert("author", Undefined);
 		EndIf;
 		
-		selectFiles.Reset();	
+		selectAuthor.Reset();	
+		
+		Price = Undefined;
+		While selectPrice.FindNext(New Structure("product", select.product)) Do
+			productStruct.Insert("price", selectPrice.price);
+			Price = selectPrice.price;
+		EndDo;
+		selectPrice.Reset();
+		
+		if Price <> Undefined then
+			parametersNew = Service.getStructCopy(parameters);
+			parametersNew.requestName = "isMyCourse";
+			parametersNew.Insert("requestStruct",new Structure("uid", XMLString(select.product)));
+			general.executeRequestMethod(parametersNew);
+			isMyCourse = false;
+			error = parametersNew.error;
+			If error = "" Then
+				answerStruct = HTTP.decodeJSON(parametersNew.answerBody);
+				If answerStruct.Count() > 0 Then
+					isMyCourse = true;	
+				EndIf;
+			EndIf;
+			productStruct.Insert("isMyCourse", isMyCourse);
+		EndIf;
 		
 	EndDo;
 
