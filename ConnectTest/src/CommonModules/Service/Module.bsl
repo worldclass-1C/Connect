@@ -44,7 +44,7 @@ Function getErrorDescription(language, erroeCode = "",
 			description = select.description;
 			mailRecipients = select.mailRecipients.Unload().UnloadColumn("Mail");
 		EndIf;
-		errorDescription.Insert("description", select.description);		
+		errorDescription.Insert("description", description);		
 		
 	EndIf;
 	

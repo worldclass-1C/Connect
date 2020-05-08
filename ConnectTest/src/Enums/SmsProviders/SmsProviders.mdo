@@ -62,10 +62,17 @@
     </synonym>
   </enumValues>
   <enumValues uuid="5742ad5a-b3f6-4850-aa00-cb5d7ee69bd5">
-    <name>MTSComminicator</name>
+    <name>MTSCommunicator</name>
     <synonym>
       <key>ru</key>
-      <value>MTSComminicator</value>
+      <value>MTSCommunicator</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="20ea08b8-a613-4772-9706-9e629e690b15">
+    <name>P1sms</name>
+    <synonym>
+      <key>ru</key>
+      <value>P1sms</value>
     </synonym>
   </enumValues>
   <enumValues uuid="407f2cc5-e365-4312-ad88-11cb7959a06b">

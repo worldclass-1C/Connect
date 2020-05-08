@@ -133,7 +133,7 @@ Procedure sendSMS(parameters) Export
 		answer = SmsMegalab.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.IDigital Then
 		answer = SmsIDigital.sendSMS(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSCommunicator Then
 		answer = SmsMtsCommunicator.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.sendSMS(parameters, answer);
@@ -141,6 +141,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsDevino.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
 		answer = SmsSmsc.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.P1sms Then
+		answer = SmsP1sms.sendSMS(parameters, answer);
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -209,7 +211,7 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsStramedia.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.SmsGold Then
 		answer = SmsGold.checkSmsStatus(parameters, answer);
-	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSComminicator Then
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.MTSCommunicator Then
 		answer = SmsMtsCommunicator.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Prontosms Then
 		answer = SmsPronto.checkSmsStatus(parameters, answer);
@@ -217,6 +219,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsDevino.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.Smsc Then
 		answer = SmsSmsc.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.P1sms Then
+		answer = SmsP1sms.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;
