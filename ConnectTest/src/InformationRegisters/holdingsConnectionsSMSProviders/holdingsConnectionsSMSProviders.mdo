@@ -214,7 +214,7 @@
     <type>
       <types>String</types>
       <stringQualifiers>
-        <length>50</length>
+        <length>60</length>
       </stringQualifiers>
     </type>
     <passwordMode>true</passwordMode>
@@ -222,9 +222,6 @@
     <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
   </resources>
   <resources uuid="5c6343b4-c067-4ab1-8761-f463ff1321ba">
     <name>timeout</name>

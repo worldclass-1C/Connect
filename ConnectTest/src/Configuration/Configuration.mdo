@@ -99,6 +99,7 @@
   <commonModules>CommonModule.HTTP</commonModules>
   <commonModules>CommonModule.Internal_API_Payment</commonModules>
   <commonModules>CommonModule.Jobs</commonModules>
+  <commonModules>CommonModule.JWT</commonModules>
   <commonModules>CommonModule.Messages</commonModules>
   <commonModules>CommonModule.Service</commonModules>
   <commonModules>CommonModule.ServiceClient</commonModules>
@@ -108,6 +109,7 @@
   <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
   <commonModules>CommonModule.SmsMtsCommunicator</commonModules>
+  <commonModules>CommonModule.SmsP1sms</commonModules>
   <commonModules>CommonModule.SmsPronto</commonModules>
   <commonModules>CommonModule.SmsRapporto</commonModules>
   <commonModules>CommonModule.SmsSmsc</commonModules>
@@ -117,7 +119,6 @@
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.Zoom</commonModules>
-  <commonModules>CommonModule.JWT</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
