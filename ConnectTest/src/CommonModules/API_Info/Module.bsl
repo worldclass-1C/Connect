@@ -669,13 +669,13 @@ Procedure fileInfo(parameters) Export
 		|		AND contenttranslation.language = &language
 		|WHERE
 		|	contentTable.Ref = &Ref");
-		query.SetParameter("Ref", Service.getRef(requestStruct.uid, "CatalogRef.content"));
+		query.SetParameter("Ref", Service.getRef(requestStruct.uid, Type("CatalogRef.content")));
 		query.SetParameter("language", language);
 		select = query.Execute().Select();
 		While select.Next() do
 			struct.Insert("name", select.Description);
 			struct.Insert("url", select.url);
-			struct.Insert("type", select.typeOfFile);
+			struct.Insert("type", xmlString(select.typeOfFile));
 			struct.Insert("description", select.fullDescription);
 			struct.Insert("avaliableForDownload", select.avaliableForDownload);
 		EndDo;
