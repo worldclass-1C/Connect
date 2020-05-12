@@ -98,7 +98,7 @@ Procedure executeRequestMethod(parameters) Export
 			fileDELETE(parameters); 
 		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
 			changeProfile(parameters);	
-		ElsIf parameters.requestName = "fileInfo" Then 
+		ElsIf parameters.requestName = "fileinfo" Then 
 			API_Info.fileInfo(parameters);		
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
