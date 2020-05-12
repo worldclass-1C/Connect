@@ -677,7 +677,7 @@ Procedure fileInfo(parameters) Export
 			struct.Insert("url", select.url);
 			struct.Insert("type", xmlString(select.typeOfFile));
 			struct.Insert("description", select.fullDescription);
-			struct.Insert("avaliableForDownload", select.avaliableForDownload);
+			struct.Insert("availableForDownload", select.avaliableForDownload);
 		EndDo;
 	else
 		parameters.Insert("error", "noFile");
