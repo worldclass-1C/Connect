@@ -110,7 +110,8 @@ Function GetOrdersToProcess()
 	|	acquiringOrdersQueue.order.acquiringRequest AS acquiringRequest,
 	|	acquiringOrdersQueue.orderState,
 	|	COUNT(DISTINCT ISNULL(acquiringLogs.Ref, 0)) AS try,
-	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion AS appVersion
+	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion AS appVersion,
+	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType AS systemType
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|		LEFT JOIN Catalog.acquiringLogs AS acquiringLogs
@@ -130,7 +131,8 @@ Function GetOrdersToProcess()
 	|	acquiringOrdersQueue.orderState,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
-	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion";
+	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion,
+	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType";
 	Return Query.Execute().Select();
 EndFunction
 
@@ -145,6 +147,7 @@ Function GetParametersToProcessOrder(DataSelect)
 	TokenContext.Insert("timeZone", DataSelect.timeZone);
 	TokenContext.Insert("appType", DataSelect.deviceModel);
 	TokenContext.Insert("appVersion", DataSelect.appVersion);
+	TokenContext.Insert("systemType", DataSelect.systemType);
 	TokenContext.Insert("holding",DataSelect.holding);
 	TokenContext.Insert("token",Catalogs.tokens.EmptyRef());
 	Parameters.Insert("tokenContext", TokenContext);
