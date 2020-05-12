@@ -650,7 +650,7 @@ Procedure userCache(parameters) Export
 	
 EndProcedure
 
-Procedure fileInfo(parameters)
+Procedure fileInfo(parameters) Export
 	
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
