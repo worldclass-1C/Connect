@@ -189,7 +189,10 @@ Procedure payment(parameters) Export
 		    Or isApplePay 
 		    Or isGooglePay Then
 			struct.Insert("amount", aquiringAmount);
-			Acquiring.changeOrderState(order, Enums.acquiringOrderStates.send);
+			Acquiring.changeOrderState(order, ?(aquiringAmount = 0, Enums.acquiringOrderStates.success, Enums.acquiringOrderStates.send));
+			if aquiringAmount = 0 then
+				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success); 
+			endif;
 		Else 
 			answer = Acquiring.executeRequest("send", order);
 			If answer.errorCode = "" Then
