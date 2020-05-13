@@ -186,7 +186,7 @@ Procedure employeeInfo(parameters) Export
 			struct.Insert("lastName", select.lastName);
 			struct.Insert("gender", select.gender);			
 			struct.Insert("isMyCoach", False);
-			//struct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));			
+			struct.Insert("categoryList", new Array());			
 			
 			presentationArray = HTTP.decodeJSON(select.descriptionFull, Enums.JSONValueTypes.array);
 			presentationArrayFinal = New Array();
