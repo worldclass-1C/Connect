@@ -672,7 +672,7 @@ Procedure fileInfo(parameters) Export
 	else
 		parameters.Insert("error", "noFile");
 	EndIf;
-	struct.Insert("result", "Ok");
+	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure
