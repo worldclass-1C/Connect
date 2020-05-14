@@ -645,7 +645,8 @@ Procedure fileInfo(parameters) Export
 	requestStruct = parameters.requestStruct;
 	language = parameters.language;
 	struct = New Structure();
-	If requestStruct.Property("uid") then
+	content = ?(requestStruct.Property("uid"),Service.getRef(requestStruct.uid, Type("CatalogRef.content")),Undefined);
+	If ValueIsFilled(content) then
 		query = New Query("SELECT
 		|	contentTable.url,
 		|	contentTable.typeOfFile,
@@ -659,7 +660,7 @@ Procedure fileInfo(parameters) Export
 		|		AND contenttranslation.language = &language
 		|WHERE
 		|	contentTable.Ref = &Ref");
-		query.SetParameter("Ref", Service.getRef(requestStruct.uid, Type("CatalogRef.content")));
+		query.SetParameter("Ref", content);
 		query.SetParameter("language", language);
 		select = query.Execute().Select();
 		While select.Next() do
@@ -670,7 +671,7 @@ Procedure fileInfo(parameters) Export
 			struct.Insert("availableForDownload", select.avaliableForDownload);
 		EndDo;
 	else
-		parameters.Insert("error", "noFile");
+		struct.Insert("error", "noFile");
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
