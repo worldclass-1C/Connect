@@ -443,7 +443,7 @@ Procedure productList(parameters) Export
 													New Array(),
 													productDirection,
 													parameters.language,
-													 XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId),
+													?(requestStruct.Property("gymId"), XMLValue(Type("CatalogRef.gyms"), requestStruct.gymId), General.getOnlineGym(parameters)),
 													?(requestStruct.Property("entryType"),requestStruct.entryType,New Array())));
 		
 	parameters.Insert("answerBody", HTTP.encodeJSON(productArray));		

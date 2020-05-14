@@ -99,7 +99,9 @@ Procedure executeRequestMethod(parameters) Export
 		elsIf parameters.requestName = "changeprofile" or parameters.requestName = "changesubscribe" then
 			changeProfile(parameters);	
 		ElsIf parameters.requestName = "fileinfo" Then 
-			API_Info.fileInfo(parameters);		
+			API_Info.fileInfo(parameters);
+		ElsIf parameters.requestName = "addtomycourses" then
+			addtomycourses(parameters);
 		ElsIf DataLoad.isUploadRequest(parameters.requestName) Then 
 			changeCreateItems(parameters);
 		Else
@@ -960,4 +962,32 @@ Procedure changeProfile(parameters)
 	//EndIf;
 EndProcedure
 
+Function getOnlineGym(parameters) Export
+	
+	tokenContext = parameters.tokenContext;
+	query = New query();
+	query.SetParameter("holding",  tokenContext.holding);
+	query.SetParameter("brand",  parameters.brand); 
+	query.Text = "SELECT TOP 1
+	|	gyms.Ref AS gym
+	|FROM
+	|	Catalog.gyms AS gyms
+	|WHERE
+	|	gyms.brand = &brand
+	|	AND gyms.holding = &holding
+	|	AND gyms.type = VALUE(enum.gymTypes.online)";
+	Selection = query.Execute().Select();
+	If Selection.Next() then
+		return Selection.gym;
+	EndIf;
+	return Undefined;
+	
+EndFunction
+
+Procedure addtomycourses(parameters)
+	if parameters.Property("requestStruct") then
+		parameters.requestStruct.Insert("gym", XMLString(getOnlineGym(parameters)));
+	EndIf;
+	executeExternalRequest(parameters);
+EndProcedure
 

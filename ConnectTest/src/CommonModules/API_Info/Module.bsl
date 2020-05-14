@@ -248,7 +248,6 @@ Procedure productInfo(parameters) Export
 	|	AND
 	|	NOT &selectByProduct
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	products.Ref AS product,
@@ -264,7 +263,6 @@ Procedure productInfo(parameters) Export
 	|		LEFT JOIN Catalog.products AS products
 	|		ON TT1.product = products.Ref
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -280,7 +278,6 @@ Procedure productInfo(parameters) Export
 	|		ON TT.product = productstranslation.Ref
 	|		AND productstranslation.language = &language
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	TT.product AS product,
@@ -297,7 +294,6 @@ Procedure productInfo(parameters) Export
 	|WHERE
 	|	NOT productstags.Ref IS NULL
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -311,7 +307,6 @@ Procedure productInfo(parameters) Export
 	|	NOT productsMapping.uid IS NULL
 	|	AND productsMapping.uid IN (&entryList)
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT.product AS product,
@@ -323,7 +318,6 @@ Procedure productInfo(parameters) Export
 	|WHERE
 	|	NOT productsphotos.URL IS NULL
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT1.product AS product,
@@ -342,7 +336,6 @@ Procedure productInfo(parameters) Export
 	|WHERE
 	|	NOT contentTab.Ref IS NULL
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TT1.product,
@@ -360,7 +353,6 @@ Procedure productInfo(parameters) Export
 	|WHERE
 	|	NOT productsauthors.author.ref IS NULL
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT TOP 1
 	|	TT1.product,
@@ -369,10 +361,7 @@ Procedure productInfo(parameters) Export
 	|	TT1 AS TT1
 	|		LEFT JOIN InformationRegister.gymsProducts AS gymsProducts
 	|		ON gymsProducts.product = TT1.product
-	|WHERE
-	|	gymsProducts.gym.type = VALUE(enum.gymTypes.online)
-	|	AND gymsProducts.gym.holding = &holding
-	|	AND gymsProducts.gym.brand = &brand";
+	|		AND gymsProducts.gym = &gym";
 	
 	entryListUid = "";
 	If requestStruct.Property("entryList") And requestStruct.entryList.count() > 0 Then		
@@ -392,10 +381,11 @@ Procedure productInfo(parameters) Export
 		query.SetParameter("product", Catalogs.products.EmptyRef());
 		query.SetParameter("selectByProduct", False);	
 	EndIf;	
-	query.SetParameter("language", language);
-	query.SetParameter("holding",  tokenContext.holding);
-	query.SetParameter("brand",  parameters.brand);
-	query.SetParameter("entryListUid", entryListUid);
+	query.SetParameter("language", 		language);
+	query.SetParameter("gym", 			General.getOnlineGym(parameters));
+	query.SetParameter("holding",  		tokenContext.holding);
+	query.SetParameter("brand",  		parameters.brand);
+	query.SetParameter("entryListUid", 	entryListUid);
 		
 	results = query.ExecuteBatch();
 	select = results[2].Select();
@@ -486,7 +476,7 @@ Procedure productInfo(parameters) Export
 		EndDo;
 		selectPrice.Reset();
 		
-		if Price <> Undefined then
+		if Price >= 0 then
 			parametersNew = Service.getStructCopy(parameters);
 			parametersNew.requestName = "isMyCourse";
 			parametersNew.Insert("requestStruct",new Structure("uid", XMLString(select.product)));
