@@ -186,7 +186,7 @@ Procedure gymSchedule(parameters) Export
 	|	ISNULL(productstags.tag.weight, 0) AS weight
 	|FROM
 	|	TT AS TT
-	|		LEFT JOIN Catalog.products.tags AS productstags
+	|		INNER JOIN Catalog.products.tags AS productstags
 	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
 	|			ON (productstags.tag = tagstranslation.Ref)
 	|			AND (tagstranslation.language = &language)
