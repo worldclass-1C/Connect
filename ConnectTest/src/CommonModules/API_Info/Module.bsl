@@ -663,6 +663,9 @@ Procedure fileInfo(parameters) Export
 		query.SetParameter("Ref", content);
 		query.SetParameter("language", language);
 		select = query.Execute().Select();
+		If select.Count() = 0 then
+			struct.Insert("error", "noFile");
+		EndIf;
 		While select.Next() do
 			struct.Insert("name", select.Description);
 			struct.Insert("url", select.url);
