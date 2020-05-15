@@ -53,6 +53,7 @@
     <type>
       <types>CatalogRef.meetingZoom</types>
     </type>
+    <indexing>Index</indexing>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
     <mainFilter>true</mainFilter>

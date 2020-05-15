@@ -17,8 +17,23 @@ Function Query(EndPoint="", body=Undefined, metod="POST")
 	// Для авторизации по токену
 	Headers = New Map;
 	Headers.Insert("authorization", "Bearer " + JWTToken);
-	If bodyexist Then
-		Headers.Insert("Content-Type",  "application/json");
+	If bodyexist   Then
+		If metod = "GET"  Then
+			arrEndPoint = New Array();
+			arrEndPoint.Add(EndPoint);
+			arrEndPoint.Add("?");
+			For Each par In body Do
+				If arrEndPoint.Count()>2 Then
+					arrEndPoint.Add("&");
+				EndIf;
+				arrEndPoint.Add(par.Key);
+				arrEndPoint.Add("=");
+				arrEndPoint.Add(par.Value);
+			EndDo;
+			EndPoint = StrConcat(arrEndPoint);
+		Else
+			Headers.Insert("Content-Type",  "application/json");
+		EndIf
 	EndIf;
 	
 	// Подключаемся к сайту.
@@ -27,7 +42,7 @@ Function Query(EndPoint="", body=Undefined, metod="POST")
 	
 	Req = New HTTPRequest(EndPoint, Headers);
 	
-	If bodyexist Then
+	If bodyexist And Not metod = "GET"  Then
 		Req.SetBodyFromString(HTTP.encodeJSON(body), TextEncoding.UTF8);
 	EndIf;
 	
@@ -61,6 +76,8 @@ Procedure integration(parameters) Export
 			struct=updMeeting(requeststruct)
 		ElsIf process= "del_meet" Then //удаление конференции
 			struct=delMeeting(requeststruct)
+		ElsIf process= "upd_ref" Then //апдейт ссылки
+			struct=updRef(requeststruct)	
 		EndIf	
 	EndIf;
 	
@@ -182,6 +199,7 @@ Function addMeeting(parameters)
 	meetObj.doc		 = Catalogs.classesSchedule.GetRef(New UUID(parameters.doc));
 	meetObj.startDate = XmlValue(Type("Date"), parameters.startDate);
 	meetObj.endDate   = XmlValue(Type("Date"), parameters.endDate);
+	meetObj.urlDate = CurrentUniversalDate();
 	meetObj.Write();
 	
 	IDZoom = getHost(New Structure("meeting,startDate,endDate", meetObj.Ref, meetObj.startDate, meetObj.endDate), struct);
@@ -199,6 +217,7 @@ Function addMeeting(parameters)
 				struct.Insert("Id", meetObj.ID);
 				struct.Insert("start_url", meetObj.start_url);
 				struct.Insert("join_url", meetObj.join_url);
+				struct.Insert("urlDate", meetObj.urlDate);
 				struct.Insert("password", meetObj.password);
 				struct.result = "OK";
 			Else
@@ -223,8 +242,8 @@ EndFunction
 
 Procedure setHost(parameters, Add=False)
 		RecSet = InformationRegisters.busyhostZoom.CreateRecordSet();
-		RecSet.Filter.startDate.Set(parameters.startDate);
-		RecSet.Filter.endDate.Set(parameters.endDate);
+//		RecSet.Filter.startDate.Set(parameters.startDate);
+//		RecSet.Filter.endDate.Set(parameters.endDate);
 		RecSet.Filter.meeting.Set(parameters.meeting);
 		If Add Then
 			FillPropertyValues(RecSet.Add(), parameters);
@@ -322,6 +341,52 @@ Function delMeeting(parameters)
 			struct.message =  ErrorDescription();
 		EndTry;
 	
+	Else
+		struct.message = "meeting not found"
+	EndIf; 
+
+	Return struct;
+EndFunction
+
+Function updRef(parameters) 
+	
+	struct = DefStructRes(); 
+	
+	meetObj = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom)).GetObject();
+	//meeting
+	If Not meetObj =Undefined Then
+		
+		Query = New Query("SELECT top 1
+		|	busyhostZoom.host,
+		|	busyhostZoom.host.Description as Name
+		|FROM
+		|	InformationRegister.busyhostZoom AS busyhostZoom
+		|WHERE
+		|	busyhostZoom.meeting = &meeting");
+		Query.SetParameter("meeting", meetObj.Ref );
+		Sel = Query.Execute().Select();
+		If Sel.Next() Then 
+			Try
+				res = Query(StrTemplate("/users/%1/token",Sel.Name), New Structure("type","zak") ,"GET");
+				body = res.GetBodyAsString();
+				If res.StatusCode=200 Then
+					structBody= HTTP.decodeJSON(body);
+					meetObj.start_url=StrTemplate("%1%2",
+									Left(meetObj.start_url, StrFind(meetObj.start_url, "?zak=")+4),
+									structBody.token);
+					meetObj.urlDate = CurrentUniversalDate();
+					struct.Insert("start_url", meetObj.start_url);
+					struct.Insert("urlDate", meetObj.urlDate);
+					struct.result = "OK";
+					meetObj.Write();
+				Else
+					struct.message = body
+				EndIf
+			Except
+				struct.message =  ErrorDescription();
+			EndTry;
+		EndIf;
+
 	Else
 		struct.message = "meeting not found"
 	EndIf; 
