@@ -473,7 +473,7 @@ Procedure checkOrder(parameters, additionalParameters)
 	EndIf;
 EndProcedure
 
-Procedure reverseOrder(parameters)
+Procedure reverseOrder(parameters) Export
 	parameters.Insert("errorCode", "acquiringOrderReverse");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.reverseOrder(parameters);
