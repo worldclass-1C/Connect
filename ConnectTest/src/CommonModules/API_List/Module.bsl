@@ -179,7 +179,7 @@ Procedure gymList(parameters) Export
 	If Not requestStruct.Property("chain") Then		
 		parameters.Insert("error", "chainCodeError");
 	Else	 
-		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized,brand, holding",
+		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized,brand, holding, type",
 											requestStruct.chain,
 											False,
 											 parameters.language,
@@ -187,7 +187,8 @@ Procedure gymList(parameters) Export
 											tokenContext.appType,
 											ValueIsFilled(tokenContext.user),
 											parameters.brand,
-											tokenContext.holding));
+											tokenContext.holding,
+											?(requestStruct.Property("type"), requestStruct.type, Undefined)));
 		
 	EndIf;
 		
@@ -196,7 +197,7 @@ Procedure gymList(parameters) Export
 EndProcedure
 
 Function  getArrGyms(params) Export
-	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding,short",
+	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding, short, type",
 											"",
 											True,
 											New Array(),
@@ -206,7 +207,8 @@ Function  getArrGyms(params) Export
 											False,
 											Enums.brandTypes.None,
 											Catalogs.holdings.EmptyRef(),
-											False);
+											False,
+											Undefined);
 	FillPropertyValues(stucParams, params);
 	if stucParams.brand = Enums.brandTypes.None then
 		stucParams.brand = Enums.brandTypes.WorldClass;
@@ -265,6 +267,11 @@ Function  getArrGyms(params) Export
 	|	AND gyms.startDate <= &currentTime
 	|	AND gyms.endDate >= &currentTime
 	|	AND gyms.type <> VALUE(Enum.gymTypes.online)
+	|	AND CASE
+	|		WHEN &FilterType
+	|			THEN gyms.type = (&type)
+	|		ELSE TRUE
+	|	END
 	|
 	|UNION ALL
 	|
@@ -324,6 +331,11 @@ Function  getArrGyms(params) Export
 	|	AND gyms.type = VALUE(Enum.gymTypes.online)
 	|	AND gyms.brand = &brand
 	|	AND gyms.holding = &holding
+	|	AND CASE
+	|		WHEN &FilterType
+	|			THEN gyms.type = (&type)
+	|		ELSE TRUE
+	|	END
 	|
 	|UNION ALL
 	|
@@ -376,6 +388,11 @@ Function  getArrGyms(params) Export
 	|	AND gyms.ref IN (&Array)
 	|	AND
 	|	NOT gyms.DeletionMark
+	|	AND CASE
+	|		WHEN &FilterType
+	|			THEN gyms.type = (&type)
+	|		ELSE TRUE
+	|	END
 	|ORDER BY
 	|	order,
 	|	Description");
@@ -388,6 +405,15 @@ Function  getArrGyms(params) Export
 		query.SetParameter("brand", stucParams.brand);
 		query.SetParameter("holding", stucParams.holding);
 //		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
+		if stucParams.type = Undefined then
+			filterType = false;
+			gymtype = enums.gymTypes.EmptyRef();
+		else
+			filterType = true;
+			gymtype = service.getRef(stucParams.type,Type("EnumRef.gymTypes"), GetgymTypesArray());
+		EndIf;
+		query.SetParameter("FilterType", filterType);
+		query.SetParameter("type", gymtype);
 		
 		select = query.Execute().Select();
 
@@ -844,3 +870,8 @@ Procedure notificationList(parameters) Export
 	parameters.Insert("answerBody", HTTP.encodeJSON(array));
 
 EndProcedure
+
+Function GetgymTypesArray()
+	gymTypes = "gym studio outdoor online";
+	Return StrSplit(gymTypes, " ");
+EndFunction
