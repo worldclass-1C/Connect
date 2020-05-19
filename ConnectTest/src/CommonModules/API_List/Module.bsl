@@ -504,7 +504,11 @@ Function  getArrProduct(params) Export
 	query = New Query("SELECT
 	|	gymsProducts.product,
 	|	gymsProducts.productDirection,
-	|	gymsProducts.price
+	|	CASE
+	|		WHEN VALUETYPE(gymsProducts.price) = TYPE(STRING)
+	|			THEN UNDEFINED
+	|		ELSE gymsProducts.price
+	|	END AS price
 	|INTO TT
 	|FROM
 	|	InformationRegister.gymsProducts AS gymsProducts
@@ -587,7 +591,9 @@ Function  getArrProduct(params) Export
 	|			AND employeestranslation.language = &language
 	|		ON TT.product = productsauthors.Ref
 	|where
-	|	Not &short AND NOT productsauthors.author.Ref IS NULL");
+	|	Not &short
+	|	AND
+	|	NOT productsauthors.author.Ref IS NULL");
 	
 
 	query.SetParameter("productDirection", stucParams.productDirection);
