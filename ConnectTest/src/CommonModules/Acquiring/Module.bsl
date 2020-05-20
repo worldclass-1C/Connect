@@ -456,10 +456,10 @@ Procedure checkOrder(parameters, additionalParameters)
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		If parameters.order.acquiringRequest = enums.acquiringRequests.applePay
 	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
-			AcquiringSberbank.checkOrderAppleGoogle(parameters, additionalParameters);
-		Else
-			 AcquiringSberbank.checkOrder(parameters);
+	   		parametersNew = Service.getStructCopy(parameters);
+			AcquiringSberbank.checkOrderAppleGoogle(parametersNew, additionalParameters);
 		EndIf;
+		AcquiringSberbank.checkOrder(parameters);		
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
