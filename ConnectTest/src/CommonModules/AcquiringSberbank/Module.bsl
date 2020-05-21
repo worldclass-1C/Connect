@@ -66,7 +66,7 @@ Procedure checkOrder(parameters) Export
 				newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
 				newRow.type = "card";
 				newRow.amount = parameters.acquiringAmount;			
-				newRow.details = prepareDetails(answerStruct);			
+				newRow.details = prepareDetails(answerStruct, parameters);			
 				orderObject.Write();
 			ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
 				parameters.Insert("errorCode", "send");
@@ -132,14 +132,7 @@ Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", answerStruct);
 	If answerStruct.success = true Then									
-			parameters.Insert("errorCode", "");
-			orderObject = parameters.order.GetObject();
-			newRow = orderObject.payments.Add();
-			newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
-			newRow.type = "card";
-			newRow.amount = parameters.acquiringAmount;			
-			newRow.details = prepareDetails(answerStruct);			
-			orderObject.Write();
+		parameters.Insert("errorCode", "");
 	Else
 		parameters.Insert("result", "fail");
 		parameters.Insert("errorCode", "rejected");		
@@ -239,7 +232,7 @@ Function requestExecute(parameters, requestName, requestParametrs)
 	Return connection.Get(request);
 EndFunction
 
-Function prepareDetails(parameters)
+Function prepareDetails(parameters, parametersQuery)
 	
 	details = New Structure();
 	
@@ -248,11 +241,12 @@ Function prepareDetails(parameters)
 	dateTime = Date(1,1,1);
 	If parameters.Property("authDateTime") then
 		try
-			dateTime = ToLocalTime('19700101' + Number(parameters.authDateTime)/1000);
+			dateTime = '19700101' + Number(parameters.authDateTime)/1000;
 		Except
 			dateTime = Date(1,1,1);
 		EndTry;
-	EndIf;		
+	EndIf;	
+	details.Insert("timeZone", ?(parametersQuery.Property("tokenContext"), string(parametersQuery.tokenContext.token.timeZone), ""));
 	details.Insert("authDateTime", dateTime);
 		
 	details.Insert("approvalCode", "");
