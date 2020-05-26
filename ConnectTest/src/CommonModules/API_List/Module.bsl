@@ -547,7 +547,7 @@ Function  getArrProduct(params) Export
 	|		ON TT.product = productstranslation.Ref
 	|		AND productstranslation.language = &language
 	|WHERE
-	|	TT.product.endDate < &CurrentDate
+	|	TT.product.endDate > &CurrentDate
 	|ORDER BY
 	|	TT.product.order
 	|;
