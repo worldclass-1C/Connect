@@ -319,7 +319,7 @@ Procedure productInfo(parameters) Export
 	|	NOT productsphotos.URL IS NULL
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
+	|SELECT DISTINCT
 	|	TT1.product AS product,
 	|	contentTab.url AS url,
 	|	contentTab.typeOfFile AS typeOfFile,
@@ -337,7 +337,7 @@ Procedure productInfo(parameters) Export
 	|	NOT contentTab.Ref IS NULL
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
+	|SELECT DISTINCT
 	|	TT1.product,
 	|	productsauthors.author,
 	|	ISNULL(employeestranslation.firstName, employees.firstName) AS firstName,
