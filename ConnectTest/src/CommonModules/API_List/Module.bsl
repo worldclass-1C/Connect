@@ -546,6 +546,8 @@ Function  getArrProduct(params) Export
 	|		LEFT JOIN Catalog.products.translation AS productstranslation
 	|		ON TT.product = productstranslation.Ref
 	|		AND productstranslation.language = &language
+	|WHERE
+	|	TT.product.endDate < &CurrentDate
 	|ORDER BY
 	|	TT.product.order
 	|;
