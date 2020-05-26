@@ -348,6 +348,7 @@ Procedure productInfo(parameters) Export
 	|			LEFT JOIN Catalog.employees AS employees
 	|				LEFT JOIN Catalog.employees.translation AS employeestranslation
 	|				ON employees.Ref = employeestranslation.Ref
+	|				AND employeestranslation.language = &language
 	|			ON productsauthors.author = employees.Ref
 	|		ON TT1.product = productsauthors.Ref
 	|WHERE
