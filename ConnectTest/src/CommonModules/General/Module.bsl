@@ -390,7 +390,8 @@ Procedure confirmPhone(parameters)
 				
 				//запрос кэша при регистрации пользователя
 				arrParams = New Array();
-				arrParams.Add(parameters);
+//				arrParams.Add(parameters);
+				arrParams.Add(parametersNew);
 				BackgroundJobs.Execute("Cache.UpdateCache",arrParams )
 			Else	
 				answerStruct = Account.getFromExternalSystem(parameters, "phone", answer.phone, select.account);
