@@ -40,6 +40,7 @@ Function getFromExternalSystem(val parameters, val parametrName,
 			//Users.updateCache(parametersNew);		
 			
 			//запрос кэша при регистрации пользователя
+			parametersNew.tokenContext.Insert("user", userArray[0]);
 			arrParams = New Array();
 			arrParams.Add(parametersNew);
 			BackgroundJobs.Execute("Cache.UpdateCache",arrParams )	
