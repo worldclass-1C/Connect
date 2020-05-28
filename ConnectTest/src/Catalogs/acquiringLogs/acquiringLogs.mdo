@@ -258,13 +258,10 @@
     </synonym>
     <type>
       <types>String</types>
-      <stringQualifiers>
-        <length>1000</length>
-      </stringQualifiers>
+      <stringQualifiers/>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
   </attributes>
   <forms uuid="5b53f7e0-4a5d-45c2-b4d6-c26ecad2fd59">
     <name>ListForm</name>

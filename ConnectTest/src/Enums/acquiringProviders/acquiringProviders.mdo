@@ -35,4 +35,11 @@
       <value>Сбербанк</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="454ea6a1-aedf-4e35-a93a-e1cf36920601">
+    <name>demirBank</name>
+    <synonym>
+      <key>ru</key>
+      <value>Demir bank</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

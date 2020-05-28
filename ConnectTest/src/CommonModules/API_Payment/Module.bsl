@@ -261,9 +261,9 @@ Procedure paymentStatus(parameters) Export
 					else
 						answerKPO = Acquiring.executeRequest("process", order, parameters);
 					EndIf;
-					If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
-						parameters.Insert("error", "system");					
-					EndIf;
+					//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
+					//	parameters.Insert("error", "system");					
+					//EndIf;
 				EndIf;
 			EndIf;
 		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1ad5d4d5-1cc4-4d5e-96e6-f8e1383baff3">
+  <name>sendRestrictionChanges</name>
+  <synonym>
+    <key>en</key>
+    <value>Send restriction changes</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Отправить изменения ограничений доступа</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.sendGetRestriction</methodName>
+  <use>true</use>
+  <predefined>true</predefined>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>25</restartIntervalOnFailure>
+</mdclass:ScheduledJob>

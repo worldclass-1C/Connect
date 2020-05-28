@@ -285,7 +285,21 @@ Function orderDetails(order)
 	|		WHEN NOT chainConnection.connection IS NULL
 	|			THEN chainConnection.connection.merchantPay
 	|		ELSE holdingConnection.connection.merchantPay
-	|	END AS merchantPay
+	|	END AS merchantPay,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection.key
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection.key
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection.key
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection.key
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection.key
+	|		ELSE holdingConnection.connection.key
+	|	END AS key,
+	|	acquiringOrders.registrationDate
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -364,7 +378,9 @@ Function answerStruct()
 	answer.Insert("requestName", "");
 	answer.Insert("requestBody", "");
 	answer.Insert("responseBody", "");
-	answer.Insert("response", New Structure());	
+	answer.Insert("response", New Structure());
+	answer.Insert("key", "");
+	answer.Insert("registrationDate", Date(1,1,1));	
 	Return answer;		
 EndFunction
 
@@ -444,7 +460,11 @@ Procedure sendOrder(parameters)
 	EndIf;
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.sendOrder(parameters);		
+		AcquiringSberbank.sendOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
+		If parameters.acquiringRequest <> Enums.acquiringRequests.binding Then
+			AcquiringDemirBank.sendOrder(parameters);
+		EndIf;
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
@@ -454,22 +474,27 @@ EndProcedure
 Procedure checkOrder(parameters, additionalParameters) 
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		If parameters.order.acquiringRequest = enums.acquiringRequests.applePay
-	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
+		If (parameters.order.acquiringRequest = enums.acquiringRequests.applePay
+	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay) and additionalParameters<>Undefined Then
 	   		parametersNew = Service.getStructCopy(parameters);
 			AcquiringSberbank.checkOrderAppleGoogle(parametersNew, additionalParameters);
+			Service.logAcquiringBackground(parametersNew);
 		EndIf;
-		AcquiringSberbank.checkOrder(parameters);		
+		AcquiringSberbank.checkOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
+		AcquiringDemirBank.checkOrder(parameters);		
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 			activateCard(parameters);
 		EndIf;
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
-	ElsIf parameters.errorCode = "rejected" Then
+	ElsIf parameters.errorCode = "rejected" and parameters.registrationDate < ToUniversalTime(CurrentDate())-20*60 Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
-	ElsIf parameters.errorCode = "send"  Then
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
+	//ElsIf parameters.errorCode = "send"  Then
+	//	changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
+	Else
+		parameters.errorCode = "send";
 	EndIf;
 EndProcedure
 
@@ -477,6 +502,7 @@ Procedure reverseOrder(parameters) Export
 	parameters.Insert("errorCode", "acquiringOrderReverse");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.reverseOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
 	EndIf;	
 EndProcedure
 
@@ -484,6 +510,7 @@ Procedure unBindCard(parameters)
 	parameters.Insert("errorCode", "acquiringUnBindCard");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.unBindCard(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
 	EndIf;	
 	If parameters.errorCode = "" Then 
 		deactivateCard(parameters.creditCard);
@@ -501,6 +528,8 @@ EndProcedure
 Procedure activateCard(parameters)
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
+	elsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
+		bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
 	EndIf;	
 	creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
 	If creditCardObject = Undefined Then		

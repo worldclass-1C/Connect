@@ -119,12 +119,15 @@
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.Zoom</commonModules>
+  <commonModules>CommonModule.AcquiringDemirBank</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
+  <exchangePlans>ExchangePlan.restrictionChanges</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.internal</httpServices>
   <httpServices>HTTPService.smsStatus</httpServices>
+  <httpServices>HTTPService.paymentStatus</httpServices>
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>
@@ -134,6 +137,7 @@
   <scheduledJobs>ScheduledJob.CheckAcquiringStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <scheduledJobs>ScheduledJob.clearHistory</scheduledJobs>
+  <scheduledJobs>ScheduledJob.sendRestrictionChanges</scheduledJobs>
   <commonCommands>CommonCommand.getUid</commonCommands>
   <commonCommands>CommonCommand.Рublish</commonCommands>
   <commonCommands>CommonCommand.findByUid</commonCommands>
@@ -144,6 +148,7 @@
   <constants>Constant.CheckStatusCount</constants>
   <constants>Constant.FileStorage</constants>
   <constants>Constant.ImgStorage</constants>
+  <constants>Constant.acquiringURL</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>
@@ -178,6 +183,7 @@
   <catalogs>Catalog.content</catalogs>
   <catalogs>Catalog.meetingZoom</catalogs>
   <catalogs>Catalog.hostsZoom</catalogs>
+  <catalogs>Catalog.restrictions</catalogs>
   <documents>Document.RegisterRecorder</documents>
   <documents>Document.messageLogs</documents>
   <enums>Enum.accountStatuses</enums>
@@ -228,6 +234,7 @@
   <informationRegisters>InformationRegister.usersAuthorizationCodes</informationRegisters>
   <informationRegisters>InformationRegister.DELETE_usersStates</informationRegisters>
   <informationRegisters>InformationRegister.busyhostZoom</informationRegisters>
+  <informationRegisters>InformationRegister.usersRestriction</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
   <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
 </mdclass:Configuration>

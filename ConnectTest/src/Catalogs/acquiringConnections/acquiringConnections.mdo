@@ -218,6 +218,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="9e7f3a5a-0eba-4db6-9d08-f9df1d7e6c9d">
+    <name>key</name>
+    <synonym>
+      <key>ru</key>
+      <value>Key</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>150</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="129a90d1-dd71-4bb1-afcf-5b5655649f7d">
     <name>ListForm</name>
     <synonym>

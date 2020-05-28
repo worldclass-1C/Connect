@@ -178,3 +178,10 @@ Procedure ClearHistory() Export
 		objectLog.Delete();
 	EndDo;
 EndProcedure
+
+Procedure sendGetRestriction() Export
+	getUsersRestrictions();
+EndProcedure
+
+Procedure getUsersRestrictions() Export
+EndProcedure
