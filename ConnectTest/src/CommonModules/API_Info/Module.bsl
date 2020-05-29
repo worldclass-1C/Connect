@@ -477,7 +477,7 @@ Procedure productInfo(parameters) Export
 		EndDo;
 		selectPrice.Reset();
 		
-		if Price <> Undefined then
+		if Price <> Undefined and Price <> "" then
 			parametersNew = Service.getStructCopy(parameters);
 			parametersNew.requestName = "isMyCourse";
 			parametersNew.Insert("requestStruct",new Structure("uid", XMLString(select.product)));

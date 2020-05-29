@@ -619,7 +619,7 @@ Function  getArrProduct(params) Export
 		productStruct.Insert("name", select.description);		
 		productStruct.Insert("shortDescription", select.shortDescription);
 		If Not stucParams.short Then
-			if select.price <> Undefined then
+			if select.price <> Undefined and select.price <> "" then
 				productStruct.Insert("price", select.price);
 			EndIf;
 			If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
