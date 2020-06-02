@@ -175,7 +175,8 @@ Procedure UpdateCache(parameters) Export
 	|	Catalog.chains.cacheTypes AS chainscacheTypes
 	|WHERE
 	|	chainscacheTypes.isUsed
-	|	AND chainscacheTypes.Ref = &chain");
+	|	AND chainscacheTypes.Ref = &chain
+	|	AND chainscacheTypes.isUpdated");
 	
 	Query.SetParameter("chain",parameters.tokenContext.chain);
 	Sel = Query.Execute().Select();

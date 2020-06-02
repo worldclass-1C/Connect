@@ -14,6 +14,8 @@ Procedure executeRequestMethod(parameters) Export
 			API_List.countryCodeList(parameters);
 		ElsIf parameters.requestName = "config" Then
 			config(parameters);
+		ElsIf parameters.requestName = "availablefeatures" Then
+			availableFeatures(parameters);	
 		ElsIf parameters.requestName = "signin" Then
 			signIn(parameters);
 		ElsIf parameters.requestName = "confirmphone" Then
@@ -230,6 +232,29 @@ Procedure config(parameters)
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	
+EndProcedure
+
+Procedure availableFeatures(parameters)
+
+	query = New Query();
+	query.Text = "SELECT
+	|
+	|	chainscacheTypes.cacheType.PredefinedDataName as Feature
+	|FROM
+	|	Catalog.tokens AS tokens
+	|		LEFT JOIN Catalog.chains.cacheTypes AS chainscacheTypes
+	|		ON tokens.chain = chainscacheTypes.Ref
+	|WHERE
+	|	tokens.Ref = &token
+	|	AND chainscacheTypes.isUsed";
+
+	query.SetParameter("token", parameters.tokenContex.token);
+
+	parameters.Insert("answerBody", 
+			HTTP.encodeJSON(
+					New Structure("availableFeatures", 
+												query.Execute().Unload().UnloadColumn("Feature"))));
 	
 EndProcedure
 
