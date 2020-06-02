@@ -237,8 +237,8 @@ Function addMeeting(parameters, struct)
 		meetObj=Ref.GetObject();
 		createdNow = False;
 		If meetObj = Undefined Then
-			meetObj.app = parameters.app;
 			meetObj = Catalogs.meetingZoom.CreateItem();
+			meetObj.app = parameters.app;
 			meetObj.SetNewObjectRef(Ref);
 			createdNow=True;
 		Else
