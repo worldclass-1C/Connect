@@ -152,4 +152,16 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="65c95a60-6ae9-4197-abc1-6e32073a847b">
+    <name>app</name>
+    <synonym>
+      <key>en</key>
+      <value>App</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.appsZoom</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
 </mdclass:Catalog>

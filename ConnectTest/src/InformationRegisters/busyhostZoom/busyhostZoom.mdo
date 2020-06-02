@@ -71,4 +71,17 @@
     <dataHistory>Use</dataHistory>
     <mainFilter>true</mainFilter>
   </dimensions>
+  <dimensions uuid="a4f5899b-e9de-492c-9c1e-cb3868425f21">
+    <name>app</name>
+    <synonym>
+      <key>en</key>
+      <value>App</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.appsZoom</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
 </mdclass:InformationRegister>

@@ -23,4 +23,5 @@
   <content>Constant.BaseURL</content>
   <content>InformationRegister.holdingsConnectionsAcquiringBank</content>
   <content>Catalog.acquiringConnections</content>
+  <subsystems>Zoom</subsystems>
 </mdclass:Subsystem>

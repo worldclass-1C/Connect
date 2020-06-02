@@ -6,10 +6,49 @@ Function ConnectInfo()
 						30);
 EndFunction
 
-Function Query(EndPoint="", body=Undefined, metod="POST")
+Function  getAppAndConnectInfo(requeststruct, holding, responsestruct)
+	res= True; 
+	
+	ConnectInfo= New Structure("URL,APIKey,APISecret,LifeTimeToken");
+	
+	query = New Query("SELECT
+	|	m.app AS app,
+	|	a.APIKey,
+	|	a.APISecret,
+	|	a.APIURL AS URL,
+	|	a.LifeTimeToken
+	|FROM
+	|	InformationRegister.matchingAppZoom AS m
+	|		left join Catalog.AppsZoom AS a
+	|		on a.Ref = m.app
+	|WHERE
+	|	m.Holding = &Holding");
+	query.SetParameter("Holding",holding);
+	resSel = query.Execute().Select();
+	
+	If resSel.Next() then 
+		requeststruct.Insert("app", resSel.app);
+		FillPropertyValues(ConnectInfo, resSel);
+		requeststruct.Insert("ConnectInfo", resSel);
+		If Not ValueIsFilled(resSel.URL) 
+			Or Not ValueIsFilled(resSel.APIKey) 
+			Or Not ValueIsFilled(resSel.APISecret)  
+			Or Not ValueIsFilled(resSel.LifeTimeToken)   Then
+			res = False;
+			responsestruct.message = "Connect info not found"
+		EndIf
+	Else
+		res = False;
+		responsestruct.message = "app not found"	
+	EndIf;
+
+	Return res;
+EndFunction
+
+Function goQuery(ConnectInfo, EndPoint="", body=Undefined, metod="POST")
 	
 	bodyexist = Not body=Undefined;
-	ConnectInfo = ConnectInfo();
+//	ConnectInfo = ConnectInfo();
 	JWTToken = JWT.GetToken(ConnectInfo);
 	
 	isPOST = metod="POST";
@@ -65,37 +104,48 @@ Procedure integration(parameters) Export
 	struct = New Structure();
 	
 	requeststruct= parameters.requeststruct;
+
+	
 	If TypeOf(requeststruct) = Type("Structure") And requeststruct.Property("process", process) Then
-		If process= "add_acc" Then //создание аккаунта
-			//struct=addAccount(requeststruct)
-		ElsIf process= "del_acc" Then //удаление аккаунта
-			//struct=delAccount(requeststruct)
-		ElsIf process= "add_meet" Then //cоздание конференции 
-			struct=addMeeting(requeststruct)
-		ElsIf process= "upd_meet" Then //изменение параметров конференции
-			struct=updMeeting(requeststruct)
-		ElsIf process= "del_meet" Then //удаление конференции
-			struct=delMeeting(requeststruct)
-		ElsIf process= "upd_ref" Then //апдейт ссылки
-			struct=updRef(requeststruct)	
-		EndIf	
+		struct = DefStructRes(); 
+		
+		
+		
+	If getAppAndConnectInfo(requeststruct, parameters.tokenContext.holding, struct) Then
+			
+	//		If process= "add_acc" Then //создание аккаунта
+	//			//struct=addAccount(requeststruct)
+	//		ElsIf process= "del_acc" Then //удаление аккаунта
+	//			//struct=delAccount(requeststruct)
+	//		Els
+			If process= "add_meet" Then //cоздание конференции 
+				struct=addMeeting(requeststruct, struct)
+			ElsIf process= "upd_meet" Then //изменение параметров конференции
+				struct=updMeeting(requeststruct, struct)
+			ElsIf process= "del_meet" Then //удаление конференции
+				struct=delMeeting(requeststruct, struct)
+			ElsIf process= "upd_ref" Then //апдейт ссылки
+				struct=updRef(requeststruct, struct)	
+			EndIf	
+		EndIf;
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 EndProcedure
 
-Procedure addhost(arrAcc, domain) Export
+Procedure addhost(arrAcc,ConnectInfo,Application) Export
 	message = "";
 	
 	For Each strucAcc In arrAcc Do
 		strucZoom = New Structure("action,user_info",
 									strucAcc);
 		Try
-			res = Query("users", strucZoom);
+			res = goQuery(ConnectInfo, "users", strucZoom);
 			body = res.GetBodyAsString();
 			If res.StatusCode=201 Then
 				hostObj = Catalogs.hostsZoom.CreateItem();
 				hostObj.email = strucAcc.email;
+				hostObj.app = Application;
 				hostObj.Description = HTTP.decodeJSON(body).Id;
 				hostObj.Write();
 			Else
@@ -180,62 +230,67 @@ EndProcedure
 //
 //EndFunction
 //
-Function addMeeting(parameters) 
-	struct = DefStructRes(); 
-
+Function addMeeting(parameters, struct)
+	
 	//создаем конференцию
-	
-	Ref = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom));
-	meetObj=Ref.GetObject();
-	createdNow = False;
-	If meetObj=Undefined Then
-		meetObj = Catalogs.meetingZoom.CreateItem();
-		meetObj.SetNewObjectRef(Ref);
-		createdNow=True;
-	Else
-		meetObj.id="";meetObj.join_url="";meetObj.start_url="";meetObj.password="";
+		Ref = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom));
+		meetObj=Ref.GetObject();
+		createdNow = False;
+		If meetObj = Undefined Then
+			meetObj.app = parameters.app;
+			meetObj = Catalogs.meetingZoom.CreateItem();
+			meetObj.SetNewObjectRef(Ref);
+			createdNow=True;
+		Else
+			meetObj.id="";
+			meetObj.join_url="";
+			meetObj.start_url="";
+			meetObj.password="";
+		EndIf;
+		FillPropertyValues(meetObj, parameters, "description, password");
+		meetObj.doc		 = Catalogs.classesSchedule.GetRef(New UUID(parameters.doc));
+		meetObj.startDate = XmlValue(Type("Date"), parameters.startDate);
+		meetObj.endDate   = XmlValue(Type("Date"), parameters.endDate);
+		meetObj.urlDate = CurrentUniversalDate();
+		meetObj.Write();
+
+		IDZoom = getHost(New Structure("app,meeting,startDate,endDate", meetObj.app, meetObj.Ref, meetObj.startDate, meetObj.endDate),
+			struct);
+
+		If Not IDZoom = Undefined Then
+			StrucMeet = DefMeet(meetObj.Description, meetObj.Description, meetObj.startDate, meetObj.endDate,
+				parameters.password);
+			Try
+				res = goQuery(parameters.ConnectInfo, StrTemplate("/users/%1/meetings", IDZoom), StrucMeet);
+				body = res.GetBodyAsString();
+				If res.StatusCode = 201 Then
+					meetstruct = HTTP.decodeJSON(body);
+					meetObj.ID = Format(meetstruct.id, "ND=15; NFD=0; NG=0");
+					FillPropertyValues(meetObj, meetstruct, "start_url,join_url,password");
+					meetObj.Write();
+					struct.Insert("Id", meetObj.ID);
+					struct.Insert("start_url", meetObj.start_url);
+					struct.Insert("join_url", meetObj.join_url);
+					struct.Insert("urlDate", meetObj.urlDate);
+					struct.Insert("password", meetObj.password);
+					struct.result = "OK";
+				Else
+					struct.message = body;
+			EndIf;
+			Except
+				struct.message =  ErrorDescription();
+			EndTry;
+		Else
+			struct.message = "no free hosts";
 	EndIf;
-	FillPropertyValues(meetObj, parameters, "description, password");
-	meetObj.doc		 = Catalogs.classesSchedule.GetRef(New UUID(parameters.doc));
-	meetObj.startDate = XmlValue(Type("Date"), parameters.startDate);
-	meetObj.endDate   = XmlValue(Type("Date"), parameters.endDate);
-	meetObj.urlDate = CurrentUniversalDate();
-	meetObj.Write();
 	
-	IDZoom = getHost(New Structure("meeting,startDate,endDate", meetObj.Ref, meetObj.startDate, meetObj.endDate), struct);
-	
-	If Not IDZoom=Undefined Then
-		StrucMeet = DefMeet(meetObj.Description, meetObj.Description, meetObj.startDate, meetObj.endDate, parameters.password);
-		Try
-			res = Query(StrTemplate("/users/%1/meetings",IDZoom), StrucMeet);
-			body = res.GetBodyAsString();
-			If res.StatusCode=201 Then
-				meetstruct = HTTP.decodeJSON(body);
-				meetObj.ID = Format(meetstruct.id,"ND=15; NFD=0; NG=0");
-				FillPropertyValues(meetObj, meetstruct, "start_url,join_url,password");
-				meetObj.Write();
-				struct.Insert("Id", meetObj.ID);
-				struct.Insert("start_url", meetObj.start_url);
-				struct.Insert("join_url", meetObj.join_url);
-				struct.Insert("urlDate", meetObj.urlDate);
-				struct.Insert("password", meetObj.password);
-				struct.result = "OK";
-			Else
-				struct.message = body
-			EndIf
-		Except
-			struct.message =  ErrorDescription();
-		EndTry;
-	Else	
-		struct.message = "no free hosts"
-	EndIf;
-	
-	//очистка предсозданного объекта
-	//и возможного распределения хостов
-	If createdNow And Not struct.result = "OK" Then
-		setHost(New Structure("startDate,endDate,meeting",meetObj.startDate,meetObj.endDate,meetObj.Ref));
-		meetObj.Delete();
-	EndIf;
+		//очистка предсозданного объекта
+		//и возможного распределения хостов
+		If createdNow And Not struct.result = "OK" Then
+			setHost(New Structure("startDate,endDate,meeting", meetObj.startDate, meetObj.endDate, meetObj.Ref));
+			meetObj.Delete();
+		EndIf;
+
 
 	Return struct;
 EndFunction
@@ -251,9 +306,7 @@ Procedure setHost(parameters, Add=False)
 		RecSet.Write();
 EndProcedure
 
-Function updMeeting(parameters) 
-	
-	struct = DefStructRes(); 
+Function updMeeting(parameters, struct) 
 	
 	meetObj = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom)).GetObject();
 	//meeting
@@ -263,7 +316,7 @@ Function updMeeting(parameters)
 		
 		startDate = XmlValue(Type("Date"), parameters.startDate);
 		endDate   = XmlValue(Type("Date"), parameters.endDate);
-		getHost(new Structure("meeting, startDate, endDate", meetObj.Ref, startDate, endDate),
+		getHost(new Structure("app, meeting, startDate, endDate", meetObj.app, meetObj.Ref, startDate, endDate),
 						struct, True, meetObj.startDate, meetObj.endDate, HostNotChanged);
 		
 		If HostNotChanged Then
@@ -274,7 +327,7 @@ Function updMeeting(parameters)
 			StrucMeet = DefMeet(meetObj.Description, meetObj.Description, meetObj.startDate, meetObj.endDate);
 			StrucMeet.Insert("occurrence_id",meetObj.id);
 			Try
-				res = Query(StrTemplate("/meetings/%1",EncodeString(meetObj.id, StringEncodingMethod.URLEncoding)), StrucMeet,"PATCH");
+				res = goQuery(parameters.ConnectInfo, StrTemplate("/meetings/%1",EncodeString(meetObj.id, StringEncodingMethod.URLEncoding)), StrucMeet,"PATCH");
 				body = res.GetBodyAsString();
 				If res.StatusCode=204 or res.StatusCode=200 Then
 					meetObj.Write();
@@ -288,9 +341,9 @@ Function updMeeting(parameters)
 			EndTry;
 		Else
 			//хост изменился, значит нужно создавать под другим хостом
-			struct = delMeeting(parameters);
+			struct = delMeeting(parameters, DefStructRes());
 			If struct.result="OK" Then
-				struct =addMeeting(parameters)
+				struct =addMeeting(parameters, DefStructRes())
 			EndIf
 		EndIf;
 	Else
@@ -320,16 +373,14 @@ Function DefMeet(topic,agenda, startDate, endDate, password=Undefined)
 
 EndFunction // ()
 
-Function delMeeting(parameters) 
-	
-	struct = DefStructRes(); 
+Function delMeeting(parameters,struct) 
 	
 	meeting = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom));
 	meet_id = meeting.id;
 
 	If Not meet_id =Undefined Then
 		Try
-			res = Query(StrTemplate("/meetings/%1",meet_id), ,"DELETE");
+			res = goQuery(parameters.ConnectInfo, StrTemplate("/meetings/%1",meet_id), ,"DELETE");
 			body = res.GetBodyAsString();
 			If res.StatusCode=204 or  res.StatusCode=200 Then
 				struct.result = "OK";
@@ -348,9 +399,7 @@ Function delMeeting(parameters)
 	Return struct;
 EndFunction
 
-Function updRef(parameters) 
-	
-	struct = DefStructRes(); 
+Function updRef(parameters,  struct) 
 	
 	meetObj = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom)).GetObject();
 	//meeting
@@ -367,7 +416,7 @@ Function updRef(parameters)
 		Sel = Query.Execute().Select();
 		If Sel.Next() Then 
 			Try
-				res = Query(StrTemplate("/users/%1/token",Sel.Name), New Structure("type","zak") ,"GET");
+				res = goQuery(parameters.ConnectInfo, StrTemplate("/users/%1/token",Sel.Name), New Structure("type","zak") ,"GET");
 				body = res.GetBodyAsString();
 				If res.StatusCode=200 Then
 					structBody= HTTP.decodeJSON(body);
@@ -413,10 +462,11 @@ Function getHost(findStruc, struct, replace = False, oldstartDate=Undefined, old
 		|		OR &startDate BETWEEN busyhostZoom.startDate AND busyhostZoom.endDate)
 		|		AND
 		|		NOT busyhostZoom.meeting = &meeting
+		|		And busyhostZoom.app = &app
 		|where
-		|	busyhostZoom.host IS NULL
+		|	hostsZoom.app = &app
+		|	AND busyhostZoom.host IS NULL
 		|;
-		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|select
 		|	busyhostZoom.startDate,
@@ -431,6 +481,7 @@ Function getHost(findStruc, struct, replace = False, oldstartDate=Undefined, old
 		|	AND busyhostZoom.endDate = &oldendDate
 		|	AND busyhostZoom.meeting = &meeting";
 	
+	Query.SetParameter("app", findStruc.app);
 	Query.SetParameter("startDate", findStruc.startDate);
 	Query.SetParameter("endDate", findStruc.endDate);
 	Query.SetParameter("oldstartDate", oldstartDate);

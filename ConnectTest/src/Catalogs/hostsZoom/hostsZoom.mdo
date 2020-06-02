@@ -30,6 +30,7 @@
   <defaultPresentation>AsDescription</defaultPresentation>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.hostsZoom.Form.ListForm</defaultListForm>
   <attributes uuid="7b0e4ca8-a320-42e2-9102-956566de02a5">
     <name>email</name>
     <synonym>
@@ -45,4 +46,35 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="e4c45c9f-3c07-47ec-9dd4-773fc8d8772f">
+    <name>app</name>
+    <synonym>
+      <key>en</key>
+      <value>App</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.appsZoom</types>
+    </type>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="c6d16bdd-59a6-468b-ba2b-0670a66feb2b">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="a40bce71-5e35-43ae-ad58-721ea86c1319">
+    <name>FillForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Fill form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>
