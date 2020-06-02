@@ -348,7 +348,7 @@
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>8</precision>
+        <precision>9</precision>
         <scale>6</scale>
       </numberQualifiers>
     </type>
@@ -390,9 +390,6 @@
     <maxValue xsi:type="core:StringValue">
       <value>90</value>
     </maxValue>
-    <fillValue xsi:type="core:NumberValue">
-      <value>0</value>
-    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -417,7 +414,7 @@
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>8</precision>
+        <precision>9</precision>
         <scale>6</scale>
       </numberQualifiers>
     </type>
@@ -459,7 +456,6 @@
     <maxValue xsi:type="core:StringValue">
       <value>90</value>
     </maxValue>
-    <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
