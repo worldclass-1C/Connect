@@ -249,7 +249,7 @@ Procedure availableFeatures(parameters)
 	|	tokens.Ref = &token
 	|	AND chainscacheTypes.isUsed";
 
-	query.SetParameter("token", parameters.tokenContex.token);
+	query.SetParameter("token", parameters.tokenContext.token);
 
 	parameters.Insert("answerBody", 
 			HTTP.encodeJSON(

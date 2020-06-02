@@ -209,6 +209,48 @@
         <value>rentedLockerList</value>
       </code>
     </items>
+    <items id="c75d693d-6498-4d1c-9113-a819f3bf9c14">
+      <name>fitness</name>
+      <code xsi:type="core:StringValue">
+        <value>fitness</value>
+      </code>
+    </items>
+    <items id="67c4fd8b-0479-4616-a908-3fd6febabf02">
+      <name>spa</name>
+      <code xsi:type="core:StringValue">
+        <value>spa</value>
+      </code>
+    </items>
+    <items id="9c7e35d4-fe11-42c5-bbd5-eda32ed90a08">
+      <name>employees</name>
+      <code xsi:type="core:StringValue">
+        <value>employees</value>
+      </code>
+    </items>
+    <items id="0507ce52-1567-40a6-953a-2cc5f4d5b788">
+      <name>forChildren</name>
+      <code xsi:type="core:StringValue">
+        <value>forChildren</value>
+      </code>
+    </items>
+    <items id="9536d318-a861-47d5-afeb-e5144ceecc4e">
+      <name>journal</name>
+      <code xsi:type="core:StringValue">
+        <value>journal</value>
+      </code>
+    </items>
+    <items id="cf7b3c48-010f-4fb4-aa1b-f9fc3f5d5ae7">
+      <name>personalBooking</name>
+      <code xsi:type="core:StringValue">
+        <value>personalBooking</value>
+      </code>
+    </items>
+    <items id="c3135fc9-b7e8-4bfa-925b-f77ff1aadbaa">
+      <name>courses</name>
+      <code xsi:type="core:StringValue">
+        <value>courses</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
