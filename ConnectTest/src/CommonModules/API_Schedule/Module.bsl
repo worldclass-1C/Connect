@@ -356,19 +356,19 @@ Procedure gymSchedule(parameters) Export
 		selectRooms.Reset();
 		
 		externalRefs = New Array;
-		While selectRefs.FindNext(New Structure("ref", select.doc)) do
-			refStruct = New Structure();
-			refStruct.Insert("type", string(selectRefs.type));
-			refStruct.Insert("ref", selectRefs.resourseRef);
-			externalRefs.Add(refStruct);
-		EndDo;
-		If ValueIsFilled(urlZoom) Then
-			externalRefs.Add(New Structure("type,ref","zoom",urlZoom))
-		EndIf; 	
-		
-		classesScheduleStruct.Insert("externalRefs", externalRefs);
-		
-		selectRooms.Reset();
+		If (select.isPreBooked And select.recorded) Or Not select.isPreBooked Then
+			While selectRefs.FindNext(New Structure("ref", select.doc)) Do
+				refStruct = New Structure;
+				refStruct.Insert("type", string(selectRefs.type));
+				refStruct.Insert("ref", selectRefs.resourseRef);
+				externalRefs.Add(refStruct);
+			EndDo;
+			If ValueIsFilled(urlZoom) Then
+				externalRefs.Add(New Structure("type,ref", "zoom", urlZoom));
+			EndIf;
+		EndIf;		
+		classesScheduleStruct.Insert("externalRefs", externalRefs);		
+		selectRefs.Reset();
 
 		classesScheduleArray.add(classesScheduleStruct);
 	EndDo;
