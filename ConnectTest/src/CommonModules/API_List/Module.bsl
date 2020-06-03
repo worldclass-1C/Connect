@@ -697,7 +697,7 @@ Procedure chainList(parameters) Export
 	|	chain.cacheTypes.(
 	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections,
-	|	chain.holding.rulesRef
+	|	chain.holding.rulesRef AS rulesRef
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
