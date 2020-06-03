@@ -16,6 +16,17 @@
   </synonym>
   <quickChoice>true</quickChoice>
   <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="8413960d-4a5c-40e0-9025-8cd1360ad31d">
+    <name>forBooking</name>
+    <synonym>
+      <key>en</key>
+      <value>For booking</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Для бронирования</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="8dfd689b-57ae-4b49-b759-ced3ec375a76">
     <name>lockerRoom</name>
     <synonym>
