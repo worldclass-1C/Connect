@@ -29,7 +29,7 @@ Function  getAppAndConnectInfo(requeststruct, holding, responsestruct)
 	If resSel.Next() then 
 		requeststruct.Insert("app", resSel.app);
 		FillPropertyValues(ConnectInfo, resSel);
-		requeststruct.Insert("ConnectInfo", resSel);
+		requeststruct.Insert("ConnectInfo", ConnectInfo);
 		If Not ValueIsFilled(resSel.URL) 
 			Or Not ValueIsFilled(resSel.APIKey) 
 			Or Not ValueIsFilled(resSel.APISecret)  
