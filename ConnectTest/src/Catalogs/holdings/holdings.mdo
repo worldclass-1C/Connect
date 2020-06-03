@@ -196,6 +196,25 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="6d38676f-9db9-4182-ae6a-2b980e053f83">
+    <name>rulesRef</name>
+    <synonym>
+      <key>en</key>
+      <value>Rules ref</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ссылка на ознакомление с правилами</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>300</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="58bd1a6a-3e3b-49d8-b9fa-718d88ba22f2">
     <name>ChoiceForm</name>
     <synonym>
