@@ -488,7 +488,11 @@ Procedure checkOrder(parameters, additionalParameters)
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 			activateCard(parameters);
 		EndIf;
-		changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
+		If parameters.errorCode = "" Then
+			changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
+		Else
+			changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
+		EndIf;
 	ElsIf parameters.errorCode = "rejected" and parameters.registrationDate < ToUniversalTime(CurrentDate())-20*60 Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
 	//ElsIf parameters.errorCode = "send"  Then
@@ -503,7 +507,8 @@ Procedure reverseOrder(parameters) Export
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.reverseOrder(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
-	EndIf;	
+	EndIf;
+	Service.logAcquiringBackground(parameters);
 EndProcedure
 
 Procedure unBindCard(parameters)
@@ -531,7 +536,13 @@ Procedure activateCard(parameters)
 	elsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
 		bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
 	EndIf;	
-	creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
+	
+	if bindCardParameters.Property("bindingId") then
+		creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
+	else
+		creditCardObject = Undefined;
+	EndIf;
+			
 	If creditCardObject = Undefined Then		
 		creditCard = newCard(bindCardParameters); 
 	Else
@@ -540,6 +551,10 @@ Procedure activateCard(parameters)
 		creditCard = creditCardObject.Ref;				
 	EndIf;	
 	addCardToOrder(parameters.order, creditCard);
+	If creditCard.IsEmpty() then
+		parameters.errorCode = "rejected";
+	EndIf;
+	
 EndProcedure
 
 Procedure deactivateCard(creditCard)
