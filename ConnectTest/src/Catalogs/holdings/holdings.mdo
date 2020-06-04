@@ -215,6 +215,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="fb09b335-5d57-4f88-b48e-e0965e715bd0">
+    <name>pdn</name>
+    <synonym>
+      <key>ru</key>
+      <value>Pdn</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>300</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="58bd1a6a-3e3b-49d8-b9fa-718d88ba22f2">
     <name>ChoiceForm</name>
     <synonym>
