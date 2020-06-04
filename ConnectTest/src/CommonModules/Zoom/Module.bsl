@@ -375,16 +375,16 @@ EndFunction // ()
 
 Function delMeeting(parameters,struct) 
 	
-	meeting = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom));
-	meet_id = meeting.id;
+	meetingObj = Catalogs.meetingZoom.GetRef(New UUID(parameters.MeetingZoom)).GetObject();
 
-	If Not meet_id =Undefined Then
+	If Not meetingObj = Undefined and ValueIsFilled(meetingObj.id) Then
 		Try
-			res = goQuery(parameters.ConnectInfo, StrTemplate("/meetings/%1",meet_id), ,"DELETE");
+			res = goQuery(parameters.ConnectInfo, StrTemplate("/meetings/%1",meetingObj.id), ,"DELETE");
 			body = res.GetBodyAsString();
 			If res.StatusCode=204 or  res.StatusCode=200 Then
 				struct.result = "OK";
-				setHost(New Structure("startDate,endDate,meeting",meeting.startDate,meeting.endDate,meeting));
+				setHost(New Structure("startDate,endDate,meeting",meetingObj.startDate,meetingObj.endDate,meetingObj.Ref));
+				meetingObj.Delete();
 			Else
 				struct.message = body
 			EndIf
