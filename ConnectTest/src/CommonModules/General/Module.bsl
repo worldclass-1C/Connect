@@ -20,6 +20,10 @@ Procedure executeRequestMethod(parameters) Export
 			signIn(parameters);
 		ElsIf parameters.requestName = "confirmphone" Then
 			confirmPhone(parameters);
+		ElsIf parameters.requestName = "changeChain" Then
+			changeChain(parameters);
+		ElsIf parameters.requestName = "addUser" Then 
+			addUser(parameters);
 		ElsIf parameters.requestName = "addusertotoken" Then 
 			addUserToToken(parameters);
 		ElsIf parameters.requestName = "registerdevice" Then 
@@ -432,6 +436,60 @@ Procedure confirmPhone(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	parameters.Insert("error", error);
 
+EndProcedure
+
+Procedure changeChain(parameters)
+
+	tokenContext = parameters.tokenContext;	
+	struct = New Structure();
+	
+		queryUser = New Query("SELECT
+		|	accounts.Ref AS account,
+		|	ISNULL(users.Ref, VALUE(Catalog.users.EmptyRef)) AS user,
+		|	accounts.Code AS phone
+		|FROM
+		|	Catalog.accounts AS accounts
+		|		LEFT JOIN Catalog.users AS users
+		|		ON accounts.Ref = users.Owner
+		|		AND users.holding = &holding
+		|WHERE
+		|	accounts.Ref = &Ref");
+
+		queryUser.SetParameter("holding", tokenContext.holding);
+		queryUser.SetParameter("Ref", tokenContext.account);
+		queryUserResult = queryUser.Execute();
+		
+		select = queryUserResult.Select();
+		select.Next();
+		If ValueIsFilled(select.user) Then
+			struct.Insert("success", 		true);
+			parametersNew = Service.getStructCopy(parameters);
+			parametersNew.tokenContext.Insert("user", select.user);
+			//запрос кэша при регистрации пользователя
+			arrParams = New Array();
+			arrParams.Add(parametersNew);
+			BackgroundJobs.Execute("Cache.UpdateCache",arrParams);
+		Else	
+			struct.Insert("success", 		false);
+		EndIf;		
+		
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("error", "");
+
+EndProcedure
+
+Procedure addUser(parameters)
+	tokenContext = parameters.tokenContext;
+	answerStruct = Account.getFromExternalSystem(parameters, "phone", tokenContext.account.code, tokenContext.account);
+	error = answerStruct.error;
+	struct = new Structure();
+	if error = "" then
+		struct.Insert("result", "ok");
+	else
+		struct.Insert("result", "fail");
+	EndIf;
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
+	parameters.Insert("error", error);
 EndProcedure
 
 Procedure addUserToToken(parameters)
