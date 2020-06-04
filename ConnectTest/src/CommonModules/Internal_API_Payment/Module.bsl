@@ -49,6 +49,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 		parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
+		Service.logRequestBackground(parametersNew);
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, select.state);
 			parameters.Insert("errorCode", parametersNew.error);
@@ -93,7 +94,8 @@ Procedure bindCard(parameters, additionalParameters) Export
 	    parametersNew.Insert("requestName",        "paymentBindCardBack");
 	    parametersNew.Insert("requestStruct", 	requestStruct);
 		Acquiring.delOrderToQueue(parameters.order);
-		General.executeRequestMethod(parametersNew);		
+		General.executeRequestMethod(parametersNew);
+		Service.logRequestBackground(parametersNew);		
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
 			parameters.Insert("errorCode", parametersNew.error);
@@ -113,7 +115,8 @@ Procedure unBindCard(parameters, additionalParameters) Export
 	    parametersNew.Insert("requestStruct", 	requestStruct);
 	    parametersNew.Insert("internalRequestMethod", True);
 		Acquiring.delOrderToQueue(parameters.order);
-		General.executeRequestMethod(parametersNew);		
+		General.executeRequestMethod(parametersNew);
+		Service.logRequestBackground(parametersNew);		
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.success);
 			parameters.Insert("errorCode", parametersNew.error);

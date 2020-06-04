@@ -482,6 +482,7 @@ Procedure productInfo(parameters) Export
 			parametersNew.requestName = "isMyCourse";
 			parametersNew.Insert("requestStruct",new Structure("uid", XMLString(select.product)));
 			general.executeRequestMethod(parametersNew);
+			Service.logRequestBackground(parametersNew);
 			isMyCourse = false;
 			error = parametersNew.error;
 			If error = "" Then

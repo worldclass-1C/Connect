@@ -34,6 +34,7 @@ Procedure paymentPreparation(parameters) Export
 	parametersNew = Service.getStructCopy(parameters);
 	parametersNew.Insert("requestName", "paymentPreparationBack");		
 	General.executeRequestMethod(parametersNew);
+	Service.logRequestBackground(parametersNew);
 	If parametersNew.error = "" Then
 		struct = HTTP.decodeJSON(parametersNew.answerBody, Enums.JSONValueTypes.structure);
 		orderStruct = New Structure();
