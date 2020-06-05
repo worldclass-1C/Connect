@@ -251,6 +251,12 @@
         <value>courses</value>
       </code>
     </items>
+    <items id="5fe434b1-6e6f-41ea-af48-0327a17f15b2">
+      <name>visitBooking</name>
+      <code xsi:type="core:StringValue">
+        <value>visitBooking</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
