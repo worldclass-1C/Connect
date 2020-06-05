@@ -16,6 +16,20 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <dataLockControlMode>Managed</dataLockControlMode>
+  <dimensions uuid="925bd0ca-a5a6-4009-86b1-63011add065d">
+    <name>chain</name>
+    <synonym>
+      <key>ru</key>
+      <value>Chain</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
   <dimensions uuid="da3ba6ee-8ead-43c4-aeec-0c8a39dcecb5">
     <name>token</name>
     <synonym>

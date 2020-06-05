@@ -77,7 +77,7 @@ EndFunction
 Procedure ProcessQueue() Export
 	OrdersToProcess = GetOrdersToProcess();
 	While OrdersToProcess.Next() Do
-		parameters = GetParametersToProcessOrder(OrdersToProcess);
+		parameters = GetParametersToSend(OrdersToProcess);
 		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
 			If OrdersToProcess.orderState = Enums.acquiringOrderStates.success Then
 				Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
@@ -161,7 +161,7 @@ Function GetOrdersToProcess()
 	Return Query.Execute().Select();
 EndFunction
 
-Function GetParametersToProcessOrder(DataSelect)
+Function GetParametersToSend(DataSelect)
 	Parameters = new structure();
 	Parameters.Insert("language", DataSelect.language);
 	Parameters.Insert("authKey", string(DataSelect.tokenDefault.UUID()));
@@ -210,11 +210,144 @@ Procedure sendGetRestriction() Export
 EndProcedure
 
 Procedure getUsersRestrictions() Export
-	
+	query = New Query();
+	query.Text = "SELECT DISTINCT
+	|	restrictions.chain AS chain,
+	|	ISNULL(restrictions.chain.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
+	|	ISNULL(restrictions.chain.holding.languageDefault.Code, """") AS languageCode,
+	|	ISNULL(restrictions.chain.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
+	|	ISNULL(restrictions.chain.holding.tokenDefault.user.userCode, """") AS userCode,
+	|	ISNULL(restrictions.chain.holding.tokenDefault.deviceModel, """") AS deviceModel,
+	|	restrictions.chain.holding.tokenDefault AS tokenDefault,
+	|	restrictions.chain.holding AS holding,
+	|	restrictions.chain.holding.tokenDefault.appVersion AS appVersion,
+	|	restrictions.chain.holding.tokenDefault.systemType AS systemType
+	|FROM
+	|	Catalog.restrictions AS restrictions";
+	selectionChain = query.Execute().Select();
+	while selectionChain.Next() do
+		requestStruct = new Structure();
+		requestStruct.Insert("chainId", XMLString(selectionChain.chain));
+		parameters = GetParametersToSend(selectionChain);
+		parameters.Insert("internalRequestMethod", 	True);
+	    parameters.Insert("requestName",        	"getRestrictions");
+	    parameters.Insert("requestStruct", 			requestStruct);
+	    General.executeRequestMethod(parameters);
+	    Service.logRequestBackground(parameters);
+	    if parameters.error = "" then
+	    	struct = HTTP.decodeJSON(parameters.answerBody, Enums.JSONValueTypes.structure);
+	    	tableValues = getTableValuesUsersRestrictions(struct);
+	    	loadTableValuesToRestrictionUsers(tableValues, selectionChain.chain);
+	    EndIf;
+	EndDo;
 EndProcedure
 
 Procedure sendRestrictions()
+	
 	query = New Query();
-	//query.Text = 
+	query.Text = "SELECT
+	|	restrictionsChanges.Ref,
+	|	restrictionsChanges.Ref.chain AS chain,
+	|	restrictionsChanges.Ref.Presentation AS name,
+	|	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
+	|	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault.Code, """") AS languageCode,
+	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
+	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.user.userCode, """") AS userCode,
+	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.deviceModel, """") AS deviceModel,
+	|	restrictionsChanges.Ref.chain.holding.tokenDefault AS tokenDefault,
+	|	restrictionsChanges.Ref.chain.holding AS holding,
+	|	restrictionsChanges.Ref.chain.holding.tokenDefault.appVersion AS appVersion,
+	|	restrictionsChanges.Ref.chain.holding.tokenDefault.systemType AS systemType
+	|FROM
+	|	Catalog.restrictions.Changes AS restrictionsChanges
+	|TOTALS
+	|	MAX(language) AS language,
+	|	MAX(languageCode) AS languageCode,
+	|	MAX(timeZone) AS timeZone,
+	|	MAX(userCode) AS userCode,
+	|	MAX(deviceModel) AS deviceModel,
+	|	MAX(tokenDefault) AS tokenDefault,
+	|	MAX(holding) AS holding,
+	|	MAX(appVersion) AS appVersion,
+	|	MAX(systemType) AS systemType
+	|BY
+	|	chain";
+	selectionChain = query.Execute().Select(QueryResultIteration.ByGroups);
+	unit = ExchangePlans.restrictionChanges.FindByCode("RC");
+	while selectionChain.Next() do
+		array = new array();
+		selection = selectionChain.Select();
+		while selection.Next() do
+			restrictionStructure = new structure();
+			restrictionStructure.Insert("uid", 		XMLString(selection.ref));
+			restrictionStructure.Insert("chainId", 	XMLString(selection.chain));
+			restrictionStructure.Insert("name", 	selection.name);
+			array.Add(restrictionStructure);
+		EndDo;
+		requestStruct = new Structure();
+		requestStruct.Insert("restrictionsList", array);
+		parameters = GetParametersToSend(selectionChain);
+		parameters.Insert("internalRequestMethod", 	True);
+	    parameters.Insert("requestName",        	"sendRestrictions");
+	    parameters.Insert("requestStruct", 			requestStruct);
+	    General.executeRequestMethod(parameters);
+	    Service.logRequestBackground(parameters);
+	    if parameters.error = "" then
+	    	selection.Reset();
+	    	while selection.Next() do
+	    		ExchangePlans.DeleteChangeRecords(unit, selection.ref);
+	    	EndDo;
+	    EndIf;
+	EndDo;
+	 
+EndProcedure
+
+Function getTableValuesUsersRestrictions(struct)
+	TableValues = getValueTableStruct();
+	for each value in struct do
+		newString = TableValues.Add();
+		newString.restriction = Service.getRef(value.restrictionsId, Type("CatalogRef.restrictions"));
+		newString.user = Service.getRef(value.userId, Type("CatalogRef.users"));
+	EndDo;
+	Return TableValues;
+EndFunction
+ 
+Function getValueTableStruct()
+	table = New ValueTable();
+	table.Columns.Add("user", New TypeDescription("CatalogRef.users"));
+	table.Columns.Add("restriction", New TypeDescription("CatalogRef.restrictions"));
+	Return table;
+EndFunction
+
+Procedure loadTableValuesToRestrictionUsers(tableValues, chain)
+	query = new query();
+	query.Text = "SELECT
+	|	TemporaryTable.user,
+	|	TemporaryTable.restriction
+	|INTO data
+	|FROM
+	|	&TemporaryTable AS TemporaryTable
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	data.user,
+	|	tokens.Ref AS token,
+	|	data.restriction,
+	|	tokens.chain
+	|FROM
+	|	data AS data
+	|		INNER JOIN Catalog.tokens AS tokens
+	|		ON tokens.appType = CAST(data.restriction AS Catalog.restrictions).appType
+	|		AND CAST(data.restriction AS Catalog.restrictions).chain = tokens.chain
+	|		AND tokens.lockDate = DATETIME(1, 1, 1)
+	|		AND tokens.user = data.user";
+	query.SetParameter("TemporaryTable", tableValues);
+	result = query.Execute();
+	if not result.IsEmpty() then
+		recordSet = informationRegisters.usersRestriction.CreateRecordSet();
+		recordSet.Filter.chain.Set(chain, true);
+		recordSet.Load(result.Unload());
+		recordSet.Write();
+	EndIf;
 EndProcedure
 
