@@ -740,7 +740,7 @@ Procedure chainList(parameters) Export
 			EndIf;		
 		EndDo;
 		chainStruct.Insert("availableSections", availableSections);
-		chainStruct.Insert("rules", select.rulesRef);
+		chainStruct.Insert("rules", select.rules);
 		chainStruct.Insert("pdn", select.pdn);		
 		array.add(chainStruct);
 	EndDo;
