@@ -132,7 +132,32 @@ Function GetOrdersToProcess()
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
 	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion,
-	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType";
+	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	acquiringOrders.Ref,
+	|	ISNULL(acquiringOrders.Ref.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
+	|	ISNULL(acquiringOrders.Ref.holding.languageDefault.code, """"),
+	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
+	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.user.userCode, """"),
+	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.deviceModel, """"),
+	|	acquiringOrders.Ref.holding.tokenDefault,
+	|	acquiringOrders.Ref.holding,
+	|	acquiringOrders.Ref.acquiringRequest,
+	|	ordersStates.state,
+	|	0,
+	|	acquiringOrders.holding.tokenDefault.appVersion,
+	|	acquiringOrders.holding.tokenDefault.systemType
+	|FROM
+	|	InformationRegister.ordersStates AS ordersStates
+	|		RIGHT JOIN Catalog.acquiringOrders AS acquiringOrders
+	|		ON ordersStates.order = acquiringOrders.Ref
+	|WHERE
+	|	ordersStates.state IS NULL
+	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)";
+	Query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	Return Query.Execute().Select();
 EndFunction
 
@@ -181,7 +206,15 @@ EndProcedure
 
 Procedure sendGetRestriction() Export
 	getUsersRestrictions();
+	sendRestrictions();
 EndProcedure
 
 Procedure getUsersRestrictions() Export
+	
 EndProcedure
+
+Procedure sendRestrictions()
+	query = New Query();
+	//query.Text = 
+EndProcedure
+

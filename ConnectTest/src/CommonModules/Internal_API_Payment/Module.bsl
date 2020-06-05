@@ -9,14 +9,17 @@ Procedure processOrder(parameters, additionalParameters) Export
 	|		amount AS amount,
 	|		details AS details) AS payments,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
-	|	isnull(ordersStates.state, value(Enum.acquiringOrderStates.emptyRef)) AS state
+	|	isnull(ordersStates.state, value(Enum.acquiringOrderStates.emptyRef)) AS state,
+	|	acquiringOrders.registrationDate
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
 	|		ON ordersStates.order = acquiringOrders.Ref
 	|WHERE
 	|	acquiringOrders.Ref = &order
-	|	AND isnull(ordersStates.state, value(Enum.acquiringOrderStates.emptyRef)) in (VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected), value(Enum.acquiringOrderStates.emptyRef))");
+	|	AND ISNULL(ordersStates.state, VALUE(Enum.acquiringOrderStates.emptyRef)) IN
+	|	(VALUE(Enum.acquiringOrderStates.success), VALUE(Enum.acquiringOrderStates.rejected),
+	|		VALUE(Enum.acquiringOrderStates.emptyRef))");
 	
 	query.SetParameter("order", parameters.order);
 	
@@ -30,7 +33,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 		If select.acquiringRequest = Enums.acquiringRequests.register
 		   or  select.acquiringRequest = Enums.acquiringRequests.applePay
 		   or select.acquiringRequest = Enums.acquiringRequests.googlePay Then			
-			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty(),"reserve",""))));
+			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty() and select.registrationDate<(ToUniversalTime(CurrentDate())-20*60),"cancel","reserve"))));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array();
@@ -50,6 +53,10 @@ Procedure processOrder(parameters, additionalParameters) Export
 		Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
 		Service.logRequestBackground(parametersNew);
+		if select.state.isEmpty() and select.registrationDate<(ToUniversalTime(CurrentDate())-20*60) then
+			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
+		EndIf;
+		
 		If parametersNew.error <> "" Then
 			Acquiring.addOrderToQueue(parameters.order, select.state);
 			parameters.Insert("errorCode", parametersNew.error);
