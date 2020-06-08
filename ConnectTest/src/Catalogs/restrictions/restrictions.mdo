@@ -39,6 +39,7 @@
     <type>
       <types>CatalogRef.chains</types>
     </type>
+    <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -51,6 +52,7 @@
     <type>
       <types>EnumRef.appTypes</types>
     </type>
+    <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
