@@ -340,8 +340,11 @@ Procedure loadTableValuesToRestrictionUsers(tableValues, chain)
 	|		ON tokens.appType = CAST(data.restriction AS Catalog.restrictions).appType
 	|		AND CAST(data.restriction AS Catalog.restrictions).chain = tokens.chain
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
-	|		AND tokens.user = data.user";
+	|		AND tokens.user = data.user
+	|WHERE
+	|	tokens.chain = &chain";
 	query.SetParameter("TemporaryTable", tableValues);
+	query.SetParameter("chain", chain);
 	result = query.Execute();
 	if not result.IsEmpty() then
 		recordSet = informationRegisters.usersRestriction.CreateRecordSet();

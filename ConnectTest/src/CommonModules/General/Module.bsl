@@ -6,6 +6,7 @@ Procedure executeRequestMethod(parameters) Export
 	EndIf;
 	
 	parameters.Insert("error", Check.requestParameters(parameters));	
+	parameters.Insert("error", Check.accessRequest(parameters));
 	
 	If parameters.error = "" Then
 		If parameters.requestName = "chainlist" Then

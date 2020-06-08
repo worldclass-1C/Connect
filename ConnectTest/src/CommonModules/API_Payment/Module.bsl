@@ -258,7 +258,8 @@ Procedure paymentStatus(parameters) Export
 						answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
 					ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
 						answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);
-						Acquiring.reverseOrder(parameters);					
+						parametersNew = Service.getStructCopy(parameters);
+						Acquiring.reverseOrder(parametersNew);					
 					else
 						answerKPO = Acquiring.executeRequest("process", order, parameters);
 					EndIf;

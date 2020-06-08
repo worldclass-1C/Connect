@@ -145,3 +145,35 @@ Procedure ChangeProperty(val account, struct) Export
 		accountObject.Write();
 	EndIf;
 EndProcedure
+
+Function accessRequest(parameters) Export
+	tokenV = parameters.tokenContext.token;
+	method = parameters.requestName;
+	query = new query;
+	query.Text = "SELECT
+	|	usersRestriction.restriction
+	|INTO TTRestriction
+	|FROM
+	|	InformationRegister.usersRestriction AS usersRestriction
+	|WHERE
+	|	usersRestriction.token = &token
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TTRestriction.restriction,
+	|	restrictionsmethods.method
+	|FROM
+	|	TTRestriction AS TTRestriction
+	|		LEFT JOIN Catalog.restrictions.methods AS restrictionsmethods
+	|		ON TTRestriction.restriction = restrictionsmethods.Ref
+	|WHERE
+	|	restrictionsmethods.method = &method";
+	query.SetParameter("token", tokenV);
+	query.SetParameter("method", method);
+	result = query.Execute();
+	if result.IsEmpty() then
+		return "";
+	EndIf;
+	return "accessDenied";
+EndFunction
