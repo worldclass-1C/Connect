@@ -11,8 +11,12 @@
   </producedTypes>
   <name>usersRestriction</name>
   <synonym>
-    <key>ru</key>
+    <key>en</key>
     <value>Users restriction</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Ограничения доступа пользователей</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <dataLockControlMode>Managed</dataLockControlMode>

@@ -23,5 +23,6 @@
   <content>Constant.BaseURL</content>
   <content>InformationRegister.holdingsConnectionsAcquiringBank</content>
   <content>Catalog.acquiringConnections</content>
+  <content>InformationRegister.usersRestriction</content>
   <subsystems>Zoom</subsystems>
 </mdclass:Subsystem>
