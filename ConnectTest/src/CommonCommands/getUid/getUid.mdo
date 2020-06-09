@@ -27,6 +27,7 @@
     <types>CatalogRef.cacheTypes</types>
     <types>CatalogRef.cacheInformations</types>
     <types>CatalogRef.content</types>
+    <types>CatalogRef.restrictions</types>
   </commandParameterType>
   <representation>Auto</representation>
   <shortcut></shortcut>
