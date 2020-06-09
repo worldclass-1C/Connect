@@ -346,11 +346,11 @@ Procedure loadTableValuesToRestrictionUsers(tableValues, chain)
 	query.SetParameter("TemporaryTable", tableValues);
 	query.SetParameter("chain", chain);
 	result = query.Execute();
+	recordSet = informationRegisters.usersRestriction.CreateRecordSet();
+	recordSet.Filter.chain.Set(chain, true);
 	if not result.IsEmpty() then
-		recordSet = informationRegisters.usersRestriction.CreateRecordSet();
-		recordSet.Filter.chain.Set(chain, true);
 		recordSet.Load(result.Unload());
-		recordSet.Write();
 	EndIf;
+	recordSet.Write();
 EndProcedure
 
