@@ -34,23 +34,6 @@
     <master>true</master>
     <mainFilter>true</mainFilter>
   </dimensions>
-  <dimensions uuid="da3ba6ee-8ead-43c4-aeec-0c8a39dcecb5">
-    <name>token</name>
-    <synonym>
-      <key>en</key>
-      <value>Token</value>
-    </synonym>
-    <synonym>
-      <key>ru</key>
-      <value>Токен</value>
-    </synonym>
-    <type>
-      <types>CatalogRef.tokens</types>
-    </type>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-    <mainFilter>true</mainFilter>
-  </dimensions>
   <dimensions uuid="e9186562-b146-4769-9768-b06706757855">
     <name>restriction</name>
     <synonym>
@@ -63,6 +46,19 @@
     </synonym>
     <type>
       <types>CatalogRef.restrictions</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="91fa91a9-2597-458f-b26b-139f99430936">
+    <name>user</name>
+    <synonym>
+      <key>ru</key>
+      <value>User</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
     </type>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>

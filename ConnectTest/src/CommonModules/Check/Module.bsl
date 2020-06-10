@@ -147,7 +147,15 @@ Procedure ChangeProperty(val account, struct) Export
 EndProcedure
 
 Function accessRequest(parameters) Export
-	tokenV = parameters.tokenContext.token;
+	If parameters.tokenContext.token = Catalogs.tokens.EmptyRef() then
+		user = Catalogs.users.EmptyRef();
+		chain = catalogs.chains.EmptyRef();
+		appType = enums.appTypes.EmptyRef();
+	else
+		user = parameters.tokenContext.user;
+		chain = parameters.tokenContext.token.chain;
+		appType = parameters.tokenContext.appType;
+	EndIf;
 	method = parameters.requestName;
 	query = new query;
 	query.Text = "SELECT
@@ -156,9 +164,10 @@ Function accessRequest(parameters) Export
 	|FROM
 	|	InformationRegister.usersRestriction AS usersRestriction
 	|WHERE
-	|	usersRestriction.token = &token
+	|	usersRestriction.user = &user
+	|	AND usersRestriction.chain = &chain
+	|	AND usersRestriction.restriction.appType = &appType
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	TTRestriction.restriction,
@@ -168,8 +177,10 @@ Function accessRequest(parameters) Export
 	|		LEFT JOIN Catalog.restrictions.methods AS restrictionsmethods
 	|		ON TTRestriction.restriction = restrictionsmethods.Ref
 	|WHERE
-	|	restrictionsmethods.method = &method";
-	query.SetParameter("token", tokenV);
+	|	restrictionsmethods.method LIKE &method";
+	query.SetParameter("user", user);
+	query.SetParameter("chain", chain);
+	query.SetParameter("appType", appType);
 	query.SetParameter("method", method);
 	result = query.Execute();
 	if result.IsEmpty() then

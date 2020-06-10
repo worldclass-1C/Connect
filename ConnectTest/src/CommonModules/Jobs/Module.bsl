@@ -236,7 +236,7 @@ Procedure getUsersRestrictions() Export
 	    Service.logRequestBackground(parameters);
 	    if parameters.error = "" then
 	    	struct = HTTP.decodeJSON(parameters.answerBody, Enums.JSONValueTypes.structure);
-	    	tableValues = getTableValuesUsersRestrictions(struct);
+	    	tableValues = getTableValuesUsersRestrictions(struct, selectionChain.chain);
 	    	loadTableValuesToRestrictionUsers(tableValues, selectionChain.chain);
 	    EndIf;
 	EndDo;
@@ -302,12 +302,13 @@ Procedure sendRestrictions()
 	 
 EndProcedure
 
-Function getTableValuesUsersRestrictions(struct)
+Function getTableValuesUsersRestrictions(struct, chain)
 	TableValues = getValueTableStruct();
 	for each value in struct do
 		newString = TableValues.Add();
 		newString.restriction = Service.getRef(value.restrictionsId, Type("CatalogRef.restrictions"));
 		newString.user = Service.getRef(value.userId, Type("CatalogRef.users"));
+		newString.chain = chain;
 	EndDo;
 	Return TableValues;
 EndFunction
@@ -316,40 +317,15 @@ Function getValueTableStruct()
 	table = New ValueTable();
 	table.Columns.Add("user", New TypeDescription("CatalogRef.users"));
 	table.Columns.Add("restriction", New TypeDescription("CatalogRef.restrictions"));
+	table.Columns.Add("chain", New TypeDescription("CatalogRef.chains"));
 	Return table;
 EndFunction
 
 Procedure loadTableValuesToRestrictionUsers(tableValues, chain)
-	query = new query();
-	query.Text = "SELECT
-	|	TemporaryTable.user,
-	|	TemporaryTable.restriction
-	|INTO data
-	|FROM
-	|	&TemporaryTable AS TemporaryTable
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	data.user,
-	|	tokens.Ref AS token,
-	|	data.restriction,
-	|	tokens.chain
-	|FROM
-	|	data AS data
-	|		INNER JOIN Catalog.tokens AS tokens
-	|		ON tokens.appType = CAST(data.restriction AS Catalog.restrictions).appType
-	|		AND CAST(data.restriction AS Catalog.restrictions).chain = tokens.chain
-	|		AND tokens.lockDate = DATETIME(1, 1, 1)
-	|		AND tokens.user = data.user
-	|WHERE
-	|	tokens.chain = &chain";
-	query.SetParameter("TemporaryTable", tableValues);
-	query.SetParameter("chain", chain);
-	result = query.Execute();
 	recordSet = informationRegisters.usersRestriction.CreateRecordSet();
 	recordSet.Filter.chain.Set(chain, true);
-	if not result.IsEmpty() then
-		recordSet.Load(result.Unload());
+	if tableValues.Count()>0 then
+		recordSet.Load(tableValues);
 	EndIf;
 	recordSet.Write();
 EndProcedure
