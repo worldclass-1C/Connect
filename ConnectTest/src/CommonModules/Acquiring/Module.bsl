@@ -537,7 +537,7 @@ Procedure activateCard(parameters)
 		bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
 	EndIf;	
 	
-	if bindCardParameters.Property("bindingId") then
+	if bindCardParameters.Property("bindingId") and bindCardParameters.bindingId <> "" then
 		creditCardObject = Catalogs.creditCards.GetRef(New UUID(bindCardParameters.bindingId)).GetObject();
 	else
 		creditCardObject = Undefined;
