@@ -7,12 +7,12 @@ Function okURLPOST(Request)
 	
 		for each element in arrayParams do
 			param = StrSplit(element, "=");
-			responseParameters.Insert(StrReplace(param[0],"""",""), param[1]);
+			responseParameters.Insert(StrReplace(StrReplace(param[0],"""",""),".",""), ?(param.Count()>=2,param[1],""));
 		enddo;
 		
 		order = Undefined;
-		if responseParameters.Property("oid") then
-			order = service.getRef(left(responseParameters.oid,36), type("CatalogRef.acquiringOrders"));
+		if responseParameters.Property("ReturnOid") then
+			order = service.getRef(left(responseParameters.ReturnOid,36), type("CatalogRef.acquiringOrders"));
 		EndIf;
 		newacquiringLog 				= Catalogs.acquiringLogs.CreateItem();
 		newacquiringLog.order 			= order;
@@ -58,12 +58,12 @@ Function failURLPOST(Request)
 	
 		for each element in arrayParams do
 			param = StrSplit(element, "=");
-			responseParameters.Insert(param[0], param[1]);
+			responseParameters.Insert(StrReplace(StrReplace(param[0],"""",""),".",""), ?(param.Count()>=2,param[1],""));
 		enddo;
 		
 		order = Undefined;
-		if responseParameters.Property("oid") then
-			order = service.getRef(left(responseParameters.oid,36), type("CatalogRef.acquiringOrders"));
+		if responseParameters.Property("ReturnOid") then
+			order = service.getRef(left(responseParameters.ReturnOid,36), type("CatalogRef.acquiringOrders"));
 		EndIf;
 		newacquiringLog = Catalogs.acquiringLogs.CreateItem();
 		newacquiringLog.order = order;
@@ -96,9 +96,9 @@ function prepareDetails(parameters)
 	details.Insert("terminalId", ?(parameters.Property("TransId"), parameters.TransId, ""));
 	details.Insert("authRefNum", ?(parameters.Property("AuthCode"),parameters.AuthCode,""));
 	dateTime = Date(1,1,1);
-	If parameters.Property("EXTRA") then
+	If parameters.Property("EXTRATRXDATE") then
 		try
-			dateTime = parameters.EXTRA.TRXDATE;
+			dateTime = parameters.EXTRATRXDATE;
 		Except
 			dateTime = Date(1,1,1);
 		EndTry;
