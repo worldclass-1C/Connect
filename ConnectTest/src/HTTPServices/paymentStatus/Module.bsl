@@ -98,7 +98,7 @@ function prepareDetails(parameters)
 	dateTime = Date(1,1,1);
 	If parameters.Property("EXTRATRXDATE") then
 		try
-			dateTime = parameters.EXTRATRXDATE;
+			dateTime = Date(StrReplace(StrReplace(parameters.EXTRATRXDATE,"%3A",""),"+",""));
 		Except
 			dateTime = Date(1,1,1);
 		EndTry;
