@@ -22,7 +22,7 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTranslation, "firstName", "firstName", "string");
 	DataLoad.addRowInAttributesTable(attributesTranslation, "lastName", "lastName", "string");	
 	DataLoad.addRowInAttributesTable(attributesTranslation, "descriptionFull", "descriptionFull", "JSON");	
-	//DataLoad.addRowInAttributesTable(attributesTranslation, "categoryList", "categoryList", "JSON");
+	DataLoad.addRowInAttributesTable(attributesTranslation, "categoryList", "categoryList", "JSON");
 	
 	attributesPhotos = DataLoad.getValueTable();
 	DataLoad.addRowInAttributesTable(attributesPhotos, "URL", "URL", "string");
