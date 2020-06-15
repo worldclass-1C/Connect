@@ -233,6 +233,7 @@ Function orderDetails(order)
 	|			THEN chainConnection.connection.password
 	|		ELSE holdingConnection.connection.password
 	|	END AS password,
+	|
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
 	|			THEN gymAcquiringProviderConnection.connection.timeout
@@ -487,6 +488,9 @@ Procedure checkOrder(parameters, additionalParameters)
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 			activateCard(parameters);
+			parametersNew = Service.getStructCopy(parameters);
+			Acquiring.reverseOrder(parametersNew);
+			Service.logAcquiringBackground(parametersNew);
 		EndIf;
 		If parameters.errorCode = "" Then
 			changeOrderState(parameters.order, Enums.acquiringOrderStates.success);
