@@ -257,6 +257,13 @@
         <value>visitBooking</value>
       </code>
     </items>
+    <items id="4b3d4be0-58dc-4709-981c-7a8c16216691">
+      <name>gymList</name>
+      <description>Gym list</description>
+      <code xsi:type="core:StringValue">
+        <value>gymList</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
