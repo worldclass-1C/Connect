@@ -234,32 +234,42 @@ Procedure logAcquiringBackground(parameters) Export
 EndProcedure
 	
 Procedure logRequest(parameters) Export
-	requestBodyArray = New Array();
-	record = Catalogs.logs.CreateItem();
-	record.period = ToUniversalTime(CurrentDate());
-	If parameters.Property("tokenContext") Then
-		record.token = parameters.tokenContext.token;
-		record.user = parameters.tokenContext.user;	
-	EndIf;
-	record.requestName = parameters.requestName;
-	record.duration = parameters.duration;
-	record.statusCode = parameters.statusCode;
-	record.isError = parameters.isError;
-	If Not parameters.internalRequestMethod Then
-		record.brand = parameters.brand;
-		record.ipAddress = parameters.ipAddress;
-		requestBodyArray.Add("""Headers"":");
-		requestBodyArray.Add(parameters.headersJSON);
-	EndIf;	
-	requestBodyArray.Add("""Body"":");
-	requestBodyArray.Add(?(parameters.requestName = "imagePOST" or parameters.requestName = "filePOST" , "", parameters.requestBody)); 
+	Try 
+		requestBodyArray = New Array();
+		record = Catalogs.logs.CreateItem();
+		record.period = ToUniversalTime(CurrentDate());
+		If parameters.Property("tokenContext") Then
+			record.token = parameters.tokenContext.token;
+			record.user = parameters.tokenContext.user;	
+		EndIf;
+		record.requestName = parameters.requestName;
+		record.duration = parameters.duration;
+		record.statusCode = parameters.statusCode;
+		record.isError = parameters.isError;
+		If Not parameters.internalRequestMethod Then
+			record.brand = parameters.brand;
+			record.ipAddress = parameters.ipAddress;
+			requestBodyArray.Add("""Headers"":");
+			requestBodyArray.Add(parameters.headersJSON);
+		EndIf;	
+		requestBodyArray.Add("""Body"":");
+		requestBodyArray.Add(?(parameters.requestName = "imagePOST" or parameters.requestName = "filePOST" , "", parameters.requestBody)); 
 		
-	requestBody = StrConcat(requestBodyArray, Chars.LF);
+		requestBody = StrConcat(requestBodyArray, Chars.LF);
 
-	record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
-	record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
+		record.request = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(requestBody, New Deflation(9)))));
+		record.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
 		
-	record.Write();
+		record.Write();
+	Except
+		Text = "";
+		For Each KeyVal in parameters Do
+			Text = StrTemplate("%1%2%3  %4", Text, ?(Text="","",Chars.LF), KeyVal.key,KeyVal.Value);
+		EndDo;
+		WriteLogEvent("Logging", 
+        EventLogLevel.Warning, , ,
+        StrTemplate("%1%2", "Error loggin for parameters: ", Text));
+	EndTry	
 EndProcedure
 
 Procedure logAcquiring(parameters) Export
