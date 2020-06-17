@@ -23,6 +23,7 @@ Procedure sendOrder(parameters) Export
 	requestBody.Add("okUrl=" + Constants.acquiringURL.Get()+"/okURL");
 	requestBody.Add("failUrl=" + Constants.acquiringURL.Get()+"/failURL");
 	requestBody.Add("lang=en");
+	requestBody.Add("encoding=UTF-8");
 	requestBody.Add("rnd="+Left(XMLString(parameters.order),20));
 		
 	requestURL = New Array();
