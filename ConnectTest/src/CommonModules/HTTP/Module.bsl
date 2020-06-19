@@ -250,6 +250,7 @@ Function inTheWhiteList(origin) Export
 		Or origin = "https://stoplight.io" 
 		Or origin = "https://tilda.cc"
 		Or origin = "https://ufcgymrussia.ru"
+		Or origin = "https://www.ufcgymrussia.ru"
 		Or origin = "https://worldclass.ru"
 		Or origin = "https://online.worldclass.ru"
 		Or origin = "https://online.fizkult-nn.ru"
