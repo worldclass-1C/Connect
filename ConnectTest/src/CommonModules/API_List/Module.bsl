@@ -179,7 +179,7 @@ Procedure gymList(parameters) Export
 	If Not requestStruct.Property("chain") Then		
 		parameters.Insert("error", "chainCodeError");
 	Else	 
-		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized,brand, holding, type",
+		gymArray = getArrGyms(New Structure("chainCode,byArray,language,currentTime,appType,authorized,brand, holding, type, myGyms",
 											requestStruct.chain,
 											False,
 											 parameters.language,
@@ -188,7 +188,13 @@ Procedure gymList(parameters) Export
 											ValueIsFilled(tokenContext.user),
 											parameters.brand,
 											tokenContext.holding,
-											?(requestStruct.Property("type"), requestStruct.type, Undefined)));
+											?(requestStruct.Property("type"), requestStruct.type, Undefined),
+											Cache.getMyClubs(new Structure("user,chain,holding,language,languageCode",
+																			tokenContext.user,
+																			tokenContext.chain, 
+																			tokenContext.holding,
+																			parameters.language,
+																			parameters.languageCode),parameters)));
 		
 	EndIf;
 		
@@ -197,7 +203,7 @@ Procedure gymList(parameters) Export
 EndProcedure
 
 Function  getArrGyms(params) Export
-	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding, short, type",
+	stucParams = New Structure("chainCode,byArray,Array,language,currentTime,appType,authorized, brand, holding, short, type, myGyms",
 											"",
 											True,
 											New Array(),
@@ -208,7 +214,8 @@ Function  getArrGyms(params) Export
 											Enums.brandTypes.None,
 											Catalogs.holdings.EmptyRef(),
 											False,
-											Undefined);
+											Undefined,
+											New Array());
 	FillPropertyValues(stucParams, params);
 	if stucParams.brand = Enums.brandTypes.None then
 		stucParams.brand = Enums.brandTypes.WorldClass;
@@ -253,7 +260,12 @@ Function  getArrGyms(params) Export
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
 	|	END AS state,
-	|	gyms.order AS order
+	|	gyms.order AS order,
+	|	CASE
+	|		WHEN gyms.Ref in (&myGyms)
+	|			then true
+	|		ELSE FALSE
+	|	END AS hasAccess
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -313,7 +325,8 @@ Function  getArrGyms(params) Export
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
 	|	END,
-	|	gyms.order
+	|	gyms.order,
+	|	NULL
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -377,7 +390,8 @@ Function  getArrGyms(params) Export
 	|			THEN gyms.state
 	|		ELSE gymstranslation.state
 	|	END AS state,
-	|	gyms.order
+	|	gyms.order,
+	|	NULL
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -404,6 +418,7 @@ Function  getArrGyms(params) Export
 		query.SetParameter("currentTime", stucParams.currentTime);
 		query.SetParameter("brand", stucParams.brand);
 		query.SetParameter("holding", stucParams.holding);
+		query.SetParameter("myGyms", stucParams.myGyms);
 //		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
 		if stucParams.type = Undefined then
 			filterType = false;
@@ -430,7 +445,7 @@ Function  getArrGyms(params) Export
 				gymStruct.Insert("phone", select.phone);
 				gymStruct.Insert("weekdaysTime", select.weekdaysTime);
 				gymStruct.Insert("holidaysTime", select.holidaysTime);
-				gymStruct.Insert("hasAccess", ?(stucParams.authorized, false, Undefined));
+				gymStruct.Insert("hasAccess", ?(stucParams.authorized, false, select.hasAccess));
 				gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
 				coords = New Structure();

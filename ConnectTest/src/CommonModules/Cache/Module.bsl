@@ -249,3 +249,42 @@ Function TextQuery()
 	|	tabDesr AS tabDesr"
 
 EndFunction
+
+Function getMyClubs(data,parameters) Export
+	
+	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
+								Catalogs.users.EmptyRef(), 
+								Catalogs.chains.EmptyRef(),
+								Catalogs.holdings.EmptyRef(),
+								CurrentUniversalDate(), 
+								"",
+								Catalogs.languages.EmptyRef(),
+								New Array);
+
+	FillPropertyValues(strucSeek, data);
+	cacheTypes = new array();
+	cacheTypes.Add(Catalogs.cacheTypes.gymList);
+	strucSeek.cacheTypes = cacheTypes;
+	Query = New Query(TextQuery());
+	For Each KeyVal In strucSeek Do
+		Query.SetParameter(KeyVal.Key, KeyVal.Value);
+	EndDo;
+	resQuery = Query.ExecuteBatch();
+	gyms = New Array();
+	if resQuery[1].IsEmpty() then
+		arrParams = New Array();
+		arrParams.Add(parameters);
+		arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, Catalogs.cacheTypes.gymList));
+		BackgroundJobs.Execute("Cache.AskCache",arrParams )
+	else
+		common = resQuery[1].Unload();
+		For each cacheVal in common Do
+			cacheData = HTTP.decodeJSON(cacheVal.data);
+			for each elem in cacheData do
+				gyms.Add(Service.getRef(elem, Type("CatalogRef.gyms")));
+			EndDo;
+		EndDo;
+	EndIf;
+	
+	Return gyms;
+EndFunction
