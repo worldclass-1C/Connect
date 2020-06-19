@@ -53,7 +53,7 @@ Procedure SendData(requestStruct, holding, language)
 				"FillCatalog",
 				requestStruct,
 				True,
-				New Structure("holding,appType,timezone,token,user,", holding, "API"),
+				New Structure("holding,appType,token,timezone,user,", holding, "API",holding.tokenDefault),
 				language,
 				"",
 				language.Code));
