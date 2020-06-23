@@ -271,20 +271,21 @@ Function getMyClubs(data,parameters) Export
 	EndDo;
 	resQuery = Query.ExecuteBatch();
 	gyms = New Array();
-	if resQuery[1].IsEmpty() then
-		arrParams = New Array();
-		arrParams.Add(parameters);
-		arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, Catalogs.cacheTypes.gymList));
-		BackgroundJobs.Execute("Cache.AskCache",arrParams )
-	else
-		common = resQuery[1].Unload();
-		For each cacheVal in common Do
+	
+	common = resQuery[1].Unload();
+	For each cacheVal in common Do
+		If cacheVal.NoData then
+			arrParams = New Array();
+			arrParams.Add(parameters);
+			arrParams.Add(New Structure("user,chain,cacheType", strucSeek.user, strucSeek.chain, Catalogs.cacheTypes.gymList));
+			BackgroundJobs.Execute("Cache.AskCache",arrParams );
+		else
 			cacheData = HTTP.decodeJSON(cacheVal.data);
 			for each elem in cacheData do
 				gyms.Add(Service.getRef(elem, Type("CatalogRef.gyms")));
 			EndDo;
-		EndDo;
-	EndIf;
+		EndIf;
+	EndDo;
 	
 	Return gyms;
 EndFunction
