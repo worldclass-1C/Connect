@@ -289,3 +289,7 @@ Function getMyClubs(data,parameters) Export
 	
 	Return gyms;
 EndFunction
+
+Function Test(c)
+	Return c;
+EndFunction
