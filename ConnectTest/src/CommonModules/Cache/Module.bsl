@@ -289,8 +289,3 @@ Function getMyClubs(data,parameters) Export
 	
 	Return gyms;
 EndFunction
-
-Function Test(c)
-	d=4;
-	Return c;
-EndFunction
