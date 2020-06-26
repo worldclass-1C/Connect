@@ -264,6 +264,13 @@
         <value>gymList</value>
       </code>
     </items>
+    <items id="e98fab6d-ce50-4673-8e3a-0f2c760dee93">
+      <name>reserveBalance</name>
+      <description>Reserve balance</description>
+      <code xsi:type="core:StringValue">
+        <value>reserveBalance</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
