@@ -58,10 +58,14 @@ Procedure processOrder(parameters, additionalParameters) Export
 		EndIf;
 		
 		If parametersNew.error <> "" Then
-			Acquiring.addOrderToQueue(parameters.order, select.state);
-			parameters.Insert("errorCode", parametersNew.error);
-			Texts = String(parametersNew.requestName)+chars.LF+parametersNew.requestBody+chars.LF+parametersNew.statusCode+chars.LF+parametersNew.answerBody;
-			parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error,,Texts));	
+			if parameters.order.acquiringAmount = 0 then
+				Acquiring.delOrderToQueue(parameters.order);
+			else	
+				Acquiring.addOrderToQueue(parameters.order, select.state);
+				parameters.Insert("errorCode", parametersNew.error);
+				Texts = String(parametersNew.requestName)+chars.LF+parametersNew.requestBody+chars.LF+parametersNew.statusCode+chars.LF+parametersNew.answerBody;
+				parameters.Insert("response", Service.getErrorDescription(additionalParameters.language, parametersNew.error,,Texts));	
+			EndIf;
 		EndIf;		
 	EndIf;	
 	
