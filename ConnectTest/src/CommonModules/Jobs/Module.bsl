@@ -51,7 +51,11 @@ Procedure CheckAcquiringStatus() Export
 			If response.errorCode = "" Then
 				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.success);
 			Else
-				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);
+				If response.errorCode = "send"  Then
+					Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.send);
+				else
+					Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);
+				EndIf;
 			EndIf;
 		EndIf;
 	EndDo;

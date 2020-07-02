@@ -503,6 +503,7 @@ Procedure checkOrder(parameters, additionalParameters)
 	//	changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
 	Else
 		parameters.errorCode = "send";
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
 	EndIf;
 EndProcedure
 
