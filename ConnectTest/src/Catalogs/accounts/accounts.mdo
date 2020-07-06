@@ -152,6 +152,16 @@
   <codeType>String</codeType>
   <codeAllowedLength>Variable</codeAllowedLength>
   <checkUnique>true</checkUnique>
+  <predefined>
+    <items id="e6d367e0-1939-4126-8b9e-cefd934387b4">
+      <name>Tilda</name>
+      <description>Tilda</description>
+      <code xsi:type="core:StringValue">
+        <value>Tilda</value>
+      </code>
+    </items>
+  </predefined>
+  <predefinedDataUpdate>DontAutoUpdate</predefinedDataUpdate>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>

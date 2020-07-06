@@ -19,8 +19,10 @@ Function CollectData(Data,arrHolding)
 	res = Undefined;
 	If ValueIsFilled(Data) Then
 		N = "";
+		ChainToken = "";
 		If TypeOf(Data)=Type("CatalogRef.chains") Then
 			N = "chains";
+			ChainToken = GetChainToken(Data);
 			arrHolding.Add(Data.holding);
 		ElsIf TypeOf(Data)=Type("CatalogRef.cacheTypes") Then
 			N = "ИменаКэша";
@@ -32,6 +34,7 @@ Function CollectData(Data,arrHolding)
 		If N<>"" Then
 			arrEl = New Array;
 			strucData = New Structure("Description,Code, domainName");
+			strucData.Insert("ChainToken", ChainToken);
 			FillPropertyValues(strucData, Data);
 			For Each KeyVal In strucData Do
 				If Not ValueIsFilled(KeyVal.Value) Then
@@ -59,6 +62,27 @@ Procedure SendData(requestStruct, holding, language)
 				language.Code));
 	EndIf; 
 EndProcedure
+
+Function GetChainToken(chain)
+	ChainToken = "";
+	Query = New Query;
+	Query.Text = "SELECT TOP 1
+		|	tokens.Ref AS Ref
+		|FROM
+		|	Catalog.tokens AS tokens
+		|WHERE
+		|	tokens.account = VALUE(Catalog.accounts.Tilda)
+		|	AND tokens.chain = &chain";
+
+	Query.SetParameter("chain", chain);
+	QueryResult = Query.Execute();
+	SelectionDetailRecords = QueryResult.Select();
+
+	While SelectionDetailRecords.Next() Do
+		ChainToken = XMLString(SelectionDetailRecords.Ref);
+	EndDo;
+	Return ChainToken
+EndFunction
 
 
 
