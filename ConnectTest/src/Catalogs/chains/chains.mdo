@@ -201,6 +201,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="af1347ce-6e04-4a9f-997e-150e6fbdccf2">
+    <name>domainName</name>
+    <synonym>
+      <key>ru</key>
+      <value>Доменное имя</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="710505af-da16-485e-96ad-6760e7773ab9">
     <name>holding</name>
     <synonym>

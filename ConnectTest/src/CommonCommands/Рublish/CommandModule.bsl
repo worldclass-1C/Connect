@@ -31,7 +31,7 @@ Function CollectData(Data,arrHolding)
 		
 		If N<>"" Then
 			arrEl = New Array;
-			strucData = New Structure("Description,Code");
+			strucData = New Structure("Description,Code, domainName");
 			FillPropertyValues(strucData, Data);
 			For Each KeyVal In strucData Do
 				If Not ValueIsFilled(KeyVal.Value) Then
