@@ -4,71 +4,128 @@
 		<name>DataSource1</name>
 		<dataSourceType>Local</dataSourceType>
 	</dataSource>
+	<dataSet xsi:type="DataSetObject">
+		<name>KPOData</name>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>UID</dataPath>
+			<field>UID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>UID</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>StateKPO</dataPath>
+			<field>StateKPO</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>StateKPO</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Name</dataPath>
+			<field>Name</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Name</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Operation</dataPath>
+			<field>Operation</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Operation</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Club</dataPath>
+			<field>Club</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Club</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Number</dataPath>
+			<field>Number</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Number</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<dataSource>DataSource1</dataSource>
+		<objectName>KPOData</objectName>
+	</dataSet>
 	<dataSet xsi:type="DataSetQuery">
-		<name>DataSet1</name>
+		<name>DataSet2</name>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>inOrderOrderState</dataPath>
-			<field>inOrderOrderState</field>
+			<dataPath>registrationDateQueue</dataPath>
+			<field>registrationDateQueue</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>In order order state</v8:content>
+					<v8:content>Registration date queue</v8:content>
 				</v8:item>
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>inOrderRegistrationDate</dataPath>
-			<field>inOrderRegistrationDate</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>In order registration date</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>acquiringProvider</dataPath>
-			<field>acquiringProvider</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>requestBody</dataPath>
-			<field>requestBody</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>period</dataPath>
-			<field>period</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>isError</dataPath>
-			<field>isError</field>
+			<dataPath>acquiringAmount</dataPath>
+			<field>acquiringAmount</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>holding</dataPath>
 			<field>holding</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>state</dataPath>
-			<field>state</field>
+			<dataPath>creditCard</dataPath>
+			<field>creditCard</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>user</dataPath>
-			<field>user</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>amount</dataPath>
-			<field>amount</field>
+			<dataPath>registrationDate</dataPath>
+			<field>registrationDate</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>acquiringRequest</dataPath>
 			<field>acquiringRequest</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>responseBody</dataPath>
-			<field>responseBody</field>
+			<dataPath>acquiringProvider</dataPath>
+			<field>acquiringProvider</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>requestName</dataPath>
-			<field>requestName</field>
+			<dataPath>orderStateQueue</dataPath>
+			<field>orderStateQueue</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Order state queue</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>amount</dataPath>
+			<field>amount</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>gym</dataPath>
+			<field>gym</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>state</dataPath>
+			<field>state</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>order</dataPath>
@@ -83,30 +140,68 @@
 		<dataSource>DataSource1</dataSource>
 		<query>SELECT
 	acquiringOrders.Ref AS order,
+	acquiringOrders.acquiringAmount,
 	acquiringOrders.acquiringProvider,
 	acquiringOrders.acquiringRequest,
 	acquiringOrders.amount,
+	acquiringOrders.creditCard,
+	acquiringOrders.gym,
 	acquiringOrders.holding,
-	acquiringOrders.user,
-	acquiringOrdersQueue.registrationDate AS inOrderRegistrationDate,
-	acquiringOrdersQueue.orderState AS inOrderOrderState,
+	acquiringOrders.registrationDate,
 	ordersStates.state,
-	acquiringLogs.isError,
-	acquiringLogs.period,
-	acquiringLogs.requestName,
-	acquiringLogs.requestBody,
-	acquiringLogs.responseBody
+	acquiringOrdersQueue.registrationDate AS registrationDateQueue,
+	acquiringOrdersQueue.orderState AS orderStateQueue
 FROM
-	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
+	InformationRegister.ordersStates AS ordersStates
 		RIGHT JOIN Catalog.acquiringOrders AS acquiringOrders
-			LEFT JOIN InformationRegister.ordersStates AS ordersStates
-			ON acquiringOrders.Ref = ordersStates.order
-			LEFT JOIN Catalog.acquiringLogs AS acquiringLogs
-			ON acquiringLogs.order = acquiringOrders.Ref
-		ON acquiringOrdersQueue.order = acquiringOrders.Ref
+			LEFT JOIN InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
+			ON acquiringOrders.Ref = acquiringOrdersQueue.order
+		ON ordersStates.order = acquiringOrders.Ref
 WHERE
-	acquiringOrders.registrationDate BETWEEN &amp;startDate AND &amp;endDate</query>
+	acquiringOrders.registrationDate BETWEEN &amp;startDate AND &amp;endDate
+	AND acquiringOrders.holding = &amp;holding</query>
 	</dataSet>
+	<dataSet xsi:type="DataSetQuery">
+		<name>DataSet3</name>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>order</dataPath>
+			<field>order</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Order</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>uid</dataPath>
+			<field>uid</field>
+		</field>
+		<dataSource>DataSource1</dataSource>
+		<query>SELECT
+	acquiringOrdersorders.Ref AS order,
+	acquiringOrdersorders.uid
+FROM
+	Catalog.acquiringOrders.orders AS acquiringOrdersorders
+WHERE
+	acquiringOrdersorders.Ref.registrationDate BETWEEN &amp;startDate AND &amp;endDate</query>
+	</dataSet>
+	<dataSetLink>
+		<sourceDataSet>DataSet2</sourceDataSet>
+		<destinationDataSet>DataSet3</destinationDataSet>
+		<sourceExpression>order</sourceExpression>
+		<destinationExpression>order</destinationExpression>
+	</dataSetLink>
+	<dataSetLink>
+		<sourceDataSet>DataSet3</sourceDataSet>
+		<destinationDataSet>KPOData</destinationDataSet>
+		<sourceExpression>uid</sourceExpression>
+		<destinationExpression>UID</destinationExpression>
+	</dataSetLink>
+	<totalField>
+		<dataPath>acquiringAmount</dataPath>
+		<expression>Sum(acquiringAmount)</expression>
+	</totalField>
 	<totalField>
 		<dataPath>amount</dataPath>
 		<expression>Sum(amount)</expression>
@@ -148,13 +243,81 @@ WHERE
 		</valueType>
 		<useRestriction>false</useRestriction>
 	</parameter>
+	<parameter>
+		<name>holding</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Holding</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.holdings</v8:Type>
+		</valueType>
+		<useRestriction>false</useRestriction>
+		<denyIncompleteValues>true</denyIncompleteValues>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Default</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Default</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>amount</dcsset:field>
+					<dcsset:field>order</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>holding</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>acquiringProvider</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>registrationDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>creditCard</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>state</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Queue</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>registrationDateQueue</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>orderStateQueue</dcsset:field>
+					</dcsset:item>
+					<dcsset:placement>SpecialColumn</dcsset:placement>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KPO</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Number</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Name</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Club</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Operation</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>StateKPO</dcsset:field>
+					</dcsset:item>
+					<dcsset:placement>SpecialColumn</dcsset:placement>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
@@ -179,11 +342,16 @@ WHERE
 					<dcscor:parameter>period</dcscor:parameter>
 					<dcsset:userSettingID>76c7656a-1ad3-4c6b-bc9d-04322acf534f</dcsset:userSettingID>
 				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>holding</dcscor:parameter>
+					<dcsset:userSettingID>7288d17b-2236-4eef-ab65-42b43bc4b4ac</dcsset:userSettingID>
+				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:groupItems>
 					<dcsset:item xsi:type="dcsset:GroupItemField">
-						<dcsset:field>holding</dcsset:field>
+						<dcsset:field>acquiringRequest</dcsset:field>
 						<dcsset:groupType>Items</dcsset:groupType>
 						<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 					</dcsset:item>
@@ -195,78 +363,12 @@ WHERE
 					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 				</dcsset:selection>
 				<dcsset:item xsi:type="dcsset:StructureItemGroup">
-					<dcsset:groupItems>
-						<dcsset:item xsi:type="dcsset:GroupItemField">
-							<dcsset:field>acquiringRequest</dcsset:field>
-							<dcsset:groupType>Items</dcsset:groupType>
-							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-						</dcsset:item>
-					</dcsset:groupItems>
 					<dcsset:order>
 						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 					</dcsset:order>
 					<dcsset:selection>
 						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 					</dcsset:selection>
-					<dcsset:item xsi:type="dcsset:StructureItemGroup">
-						<dcsset:groupItems>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>order</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>inOrderOrderState</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>inOrderRegistrationDate</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>holding</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>state</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>user</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-							</dcsset:item>
-						</dcsset:groupItems>
-						<dcsset:order>
-							<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
-						</dcsset:order>
-						<dcsset:selection>
-							<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
-						</dcsset:selection>
-						<dcsset:item xsi:type="dcsset:StructureItemGroup">
-							<dcsset:order>
-								<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
-							</dcsset:order>
-							<dcsset:selection>
-								<dcsset:item xsi:type="dcsset:SelectedItemField">
-									<dcsset:field>period</dcsset:field>
-								</dcsset:item>
-								<dcsset:item xsi:type="dcsset:SelectedItemField">
-									<dcsset:field>requestName</dcsset:field>
-								</dcsset:item>
-								<dcsset:item xsi:type="dcsset:SelectedItemField">
-									<dcsset:field>requestBody</dcsset:field>
-								</dcsset:item>
-								<dcsset:item xsi:type="dcsset:SelectedItemField">
-									<dcsset:field>isError</dcsset:field>
-								</dcsset:item>
-							</dcsset:selection>
-						</dcsset:item>
-					</dcsset:item>
 				</dcsset:item>
 			</dcsset:item>
 		</dcsset:settings>

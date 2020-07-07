@@ -109,10 +109,14 @@ Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False, isXDTOS
 	EndIf;	
 EndFunction
 
-Function encodeJSON(data) Export
+Function encodeJSON(data, isXDTOSerializer = False) Export
 	JSONWriter = New JSONWriter();
 	JSONWriter.SetString();
-	WriteJSON(JSONWriter, data);
+	if isXDTOSerializer then
+		XDTOSerializer.WriteJSON(JSONWriter, data, XMLTypeAssignment.Explicit);
+	else
+		WriteJSON(JSONWriter, data);
+	EndIf;
 	Return JSONWriter.Close();
 EndFunction
 
@@ -145,7 +149,7 @@ Function prepareRequestBody(parameters) Export
 	struct.Insert("appVersion", tokenContext.appVersion);
 	struct.Insert("systemType", TrimAll(tokenContext.systemType));
 	
-	Return HTTP.encodeJSON(struct);
+	Return HTTP.encodeJSON(struct, ?(parameters.Property("isXDTOSerializer"),parameters.isXDTOSerializer,false));
 
 EndFunction
 
