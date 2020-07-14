@@ -463,7 +463,20 @@ Function orderDetails(order)
 	|		WHEN NOT chainConnection.qrConnection IS NULL
 	|			THEN chainConnection.qrConnection.authorization
 	|		ELSE holdingConnection.qrConnection.authorization
-	|	END AS authorization
+	|	END AS authorization,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN gymAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN chainAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|			THEN AcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT gymConnection.qrConnection IS NULL
+	|			THEN gymConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT chainConnection.qrConnection IS NULL
+	|			THEN chainConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		ELSE holdingConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|	END AS hasQR
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -546,7 +559,8 @@ Function answerStruct()
 	answer.Insert("key", "");
 	answer.Insert("registrationDate", Date(1,1,1));	
 	answer.Insert("merchantID", "");
-	answer.Insert("authorization", "");	
+	answer.Insert("authorization", "");
+	answer.Insert("hasQR",false);	
 	Return answer;		
 EndFunction
 
@@ -578,7 +592,7 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 							elementOfArray.cards.insert(0, cardStruct);
 						EndIf;
 					EndIf;
-					If ValueIsFilled(orderParams.merchantID) then
+					If ValueIsFilled(orderParams.hasQR) then
 						cardStruct = New Structure("type, name, uid, amount", "qr", NStr("ru='Оплата по QR коду';en='Payment by QR code'", parameters.languageCode), "qr", amount);
 						elementOfArray.cards.add(cardStruct);
 					EndIf;
