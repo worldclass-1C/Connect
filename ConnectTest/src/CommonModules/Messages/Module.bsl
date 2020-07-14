@@ -98,7 +98,7 @@ Function sendPush(parameters) Export
 
 		request = New HTTPRequest();
 		request.Headers.Insert("Content-Type", "application/json");
-		request.Headers.Insert("Authorization", "key=AAAA7ccmJw0:APA91bHVSb1GF1C9lUqet0gvrbT1fqbPmbU6Vy7VYpwBUBQmEVN8vF2E8WdxFdaKYOBJw5uagvFFGQF-ELc-VtMsr62gK1JiBsEixEQ6PpgLdUznExIJEtonsjSgezqjq4k_xC4UXA1l");
+		request.Headers.Insert("authorization", "key=AAAA7ccmJw0:APA91bHVSb1GF1C9lUqet0gvrbT1fqbPmbU6Vy7VYpwBUBQmEVN8vF2E8WdxFdaKYOBJw5uagvFFGQF-ELc-VtMsr62gK1JiBsEixEQ6PpgLdUznExIJEtonsjSgezqjq4k_xC4UXA1l");
 		request.SetBodyFromString(HTTP.encodeJSON(messageParam), TextEncoding.UTF8);
 
 		response = HTTPConnection.Post(request);		

@@ -4,7 +4,7 @@ Function sendSMS(parameters, answer) Export
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , 60, ssl);
 
 	Headers = New Map;
-	Headers.insert("Authorization", "Bearer " + parameters.password);
+	Headers.insert("authorization", "Bearer " + parameters.password);
 	Headers.insert("Content-Type", "application/x-www-form-urlencoded");
 
 	JSONString = 
@@ -60,7 +60,7 @@ Function checkSmsStatus(parameters, answer) Export
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , 60, ssl);
 
 	Headers = New Map;
-	Headers.insert("Authorization", "Bearer " + parameters.password);
+	Headers.insert("authorization", "Bearer " + parameters.password);
 	Headers.insert("Content-Type", "application/x-www-form-urlencoded");
 
 	JSONString = "messageID=" + parameters.id + "&login=&password=";

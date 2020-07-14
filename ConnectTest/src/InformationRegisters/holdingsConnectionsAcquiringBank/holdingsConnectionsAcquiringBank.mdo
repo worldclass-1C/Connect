@@ -102,6 +102,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </resources>
+  <resources uuid="fe050938-2e2f-49ca-bc61-8922062ad722">
+    <name>qrConnection</name>
+    <synonym>
+      <key>ru</key>
+      <value>Qr connection</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.qrAcquiringConnections</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
   <dimensions uuid="b75cbe02-da4e-4b81-888c-0b1e4de75715">
     <name>holding</name>
     <synonym>

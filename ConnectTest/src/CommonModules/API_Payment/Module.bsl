@@ -104,11 +104,14 @@ Procedure payment(parameters) Export
 	card = Catalogs.creditCards.EmptyRef();
 	isApplePay = false;
 	isGooglePay = false;
+	isQr = false;
 	If requestStruct.Property("card") and not requestStruct.card = Undefined Then
 		If requestStruct.card = "applePay" Then
 			isApplePay = true;
 		ElsIf requestStruct.card = "googlePay" Then
 			isGooglePay = true;
+		ElsIf requestStruct.card = "qr" Then 
+			isQr = true;
 		ElsIf requestStruct.card <> "bankCard" Then
 			card = XMLValue(Type("CatalogRef.creditCards"), requestStruct.card);
 		EndIf;
@@ -155,6 +158,8 @@ Procedure payment(parameters) Export
 			 Else
 			 	error = "acquiringCard";
 			 EndIf;
+		ElsIf isQr Then
+			 orderObject.acquiringRequest = enums.acquiringRequests.qrRegister; 
 		EndIf;
 	EndIf;
 
@@ -194,13 +199,18 @@ Procedure payment(parameters) Export
 			if aquiringAmount = 0 then
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success); 
 			endif;
-		Else 
-			answer = Acquiring.executeRequest("send", order);
+		Else
+			 if isQr Then
+			 	answer = Acquiring.executeRequest("getQr", order, parameters);
+			 else
+			 	answer = Acquiring.executeRequest("send", order);
+			 EndIf;
+			 
 			If answer.errorCode = "" Then
-				struct.Insert("orderId", answer.orderId);
-				struct.Insert("formUrl", answer.formUrl);
-				struct.Insert("returnUrl", answer.returnUrl);
-				struct.Insert("failUrl", answer.failUrl);
+				struct.Insert("orderId", 	answer.orderId);
+				struct.Insert("formUrl", 	answer.formUrl);
+				struct.Insert("returnUrl", 	answer.returnUrl);
+				struct.Insert("failUrl", 	answer.failUrl);
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
 			Else
 				error = answer.errorCode;
@@ -358,3 +368,4 @@ Procedure unBindCard(parameters) Export
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 			
 EndProcedure
+

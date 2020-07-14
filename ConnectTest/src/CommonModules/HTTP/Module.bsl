@@ -160,7 +160,7 @@ Function prepareResponse(parameters) Export
 		parameters.Insert("answerBody", HTTP.encodeJSON(Service.getErrorDescription(parameters.language, parameters.error,,Texts)));		
 	EndIf;
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, Authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");
+	response.Headers.Insert("Access-Control-Allow-Headers", "content-type, server, date, content-length, Access-Control-Allow-Headers, authorization, X-Requested-With, auth-key,brand,content-type,kpo-code,language,request");
 //	response.Headers.Insert("Access-Control-Allow-Headers", "*");
 	If HTTP.inTheWhiteList(parameters.origin) Then		
 		//	response.Headers.Insert("Access-Control-Allow-Credentials", "true");
