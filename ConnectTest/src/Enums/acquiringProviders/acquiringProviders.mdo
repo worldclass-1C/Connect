@@ -42,4 +42,11 @@
       <value>Demir bank</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="63f38448-c912-4061-af2d-6cf64fcf67e5">
+    <name>raiffeisen</name>
+    <synonym>
+      <key>ru</key>
+      <value>Raiffeisen</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

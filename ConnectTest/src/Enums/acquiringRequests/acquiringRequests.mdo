@@ -74,4 +74,11 @@
       <value>Google pay</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="62d7a6d0-0f96-4103-9a2b-9e3a714997e9">
+    <name>qrRegister</name>
+    <synonym>
+      <key>ru</key>
+      <value>Qr register</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

@@ -20,6 +20,7 @@
   <content>Catalog.errorDescriptions</content>
   <content>Catalog.segments</content>
   <content>Catalog.restrictions</content>
+  <content>Catalog.qrAcquiringConnections</content>
   <subsystems>Accounts</subsystems>
   <subsystems>Cache</subsystems>
 </mdclass:Subsystem>

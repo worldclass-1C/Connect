@@ -118,7 +118,9 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "bindCardBack" Then
 			Internal_API_Payment.bindCard(parameters, additionalParameters);	
 		ElsIf requestName = "unBindCardBack" Then
-			Internal_API_Payment.unBindCard(parameters, additionalParameters);				
+			Internal_API_Payment.unBindCard(parameters, additionalParameters);
+		ElsIf requestName = "getQr" Then
+			getQr(parameters,additionalParameters);				
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -169,138 +171,312 @@ Function orderDetails(order)
 	|	ISNULL(acquiringOrders.creditCard.owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.acquiringProvider
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.acquiringProvider
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.acquiringProvider
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.acquiringProvider
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.acquiringProvider
-	|		ELSE holdingConnection.connection.acquiringProvider
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.acquiringProvider
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.acquiringProvider
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.acquiringProvider
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.acquiringProvider
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.acquiringProvider
+	|				ELSE holdingConnection.qrConnection.acquiringProvider
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.acquiringProvider
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.acquiringProvider
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.acquiringProvider
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.acquiringProvider
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.acquiringProvider
+	|			ELSE holdingConnection.connection.acquiringProvider
+	|		END
 	|	END AS acquiringProvider,
 	|	ISNULL(CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.server
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.server
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.server
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.server
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.server
-	|		ELSE holdingConnection.connection.server
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.server
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.server
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.server
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.server
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.server
+	|				ELSE holdingConnection.qrConnection.server
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.server
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.server
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.server
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.server
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.server
+	|			ELSE holdingConnection.connection.server
+	|		END
 	|	END, """") AS server,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.port
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.port
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.port
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.port
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.port
-	|		ELSE holdingConnection.connection.port
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.port
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.port
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.port
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.port
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.port
+	|				ELSE holdingConnection.qrConnection.port
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.port
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.port
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.port
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.port
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.port
+	|			ELSE holdingConnection.connection.port
+	|		END
 	|	END AS port,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.user
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.user
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.user
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.user
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.user
-	|		ELSE holdingConnection.connection.user
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.user
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.user
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.user
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.user
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.user
+	|				ELSE holdingConnection.qrConnection.user
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.user
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.user
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.user
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.user
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.user
+	|			ELSE holdingConnection.connection.user
+	|		END
 	|	END AS user,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.password
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.password
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.password
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.password
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.password
-	|		ELSE holdingConnection.connection.password
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.password
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.password
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.password
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.password
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.password
+	|				ELSE holdingConnection.qrConnection.password
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.password
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.password
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.password
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.password
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.password
+	|			ELSE holdingConnection.connection.password
+	|		END
 	|	END AS password,
-	|
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.timeout
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.timeout
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.timeout
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.timeout
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.timeout
-	|		ELSE holdingConnection.connection.timeout
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.timeout
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.timeout
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.timeout
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.timeout
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.timeout
+	|				ELSE holdingConnection.qrConnection.timeout
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.timeout
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.timeout
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.timeout
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.timeout
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.timeout
+	|			ELSE holdingConnection.connection.timeout
+	|		END
 	|	END AS timeout,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.secureConnection
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.secureConnection
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.secureConnection
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.secureConnection
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.secureConnection
-	|		ELSE holdingConnection.connection.secureConnection
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.secureConnection
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.secureConnection
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.secureConnection
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.secureConnection
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.secureConnection
+	|				ELSE holdingConnection.qrConnection.secureConnection
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.secureConnection
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.secureConnection
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.secureConnection
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.secureConnection
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.secureConnection
+	|			ELSE holdingConnection.connection.secureConnection
+	|		END
 	|	END AS secureConnection,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.UseOSAuthentication
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.UseOSAuthentication
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.UseOSAuthentication
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.UseOSAuthentication
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.UseOSAuthentication
-	|		ELSE holdingConnection.connection.UseOSAuthentication
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN CASE
+	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN gymAcquiringProviderConnection.qrConnection.UseOSAuthentication
+	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|					THEN chainAcquiringProviderConnection.qrConnection.UseOSAuthentication
+	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|					THEN AcquiringProviderConnection.qrConnection.UseOSAuthentication
+	|				WHEN NOT gymConnection.qrConnection IS NULL
+	|					THEN gymConnection.qrConnection.UseOSAuthentication
+	|				WHEN NOT chainConnection.qrConnection IS NULL
+	|					THEN chainConnection.qrConnection.UseOSAuthentication
+	|				ELSE holdingConnection.qrConnection.UseOSAuthentication
+	|			END
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.UseOSAuthentication
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.UseOSAuthentication
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.UseOSAuthentication
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.UseOSAuthentication
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.UseOSAuthentication
+	|			ELSE holdingConnection.connection.UseOSAuthentication
+	|		END
 	|	END AS UseOSAuthentication,
 	|	"""" AS errorDescription,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.merchantPay
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.merchantPay
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.merchantPay
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.merchantPay
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.merchantPay
-	|		ELSE holdingConnection.connection.merchantPay
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN """"
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.merchantPay
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.merchantPay
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.merchantPay
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.merchantPay
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.merchantPay
+	|			ELSE holdingConnection.connection.merchantPay
+	|		END
 	|	END AS merchantPay,
 	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection.key
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection.key
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection.key
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection.key
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection.key
-	|		ELSE holdingConnection.connection.key
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
+	|			THEN """"
+	|		ELSE CASE
+	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|				THEN gymAcquiringProviderConnection.connection.key
+	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|				THEN chainAcquiringProviderConnection.connection.key
+	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|				THEN AcquiringProviderConnection.connection.key
+	|			WHEN NOT gymConnection.connection IS NULL
+	|				THEN gymConnection.connection.key
+	|			WHEN NOT chainConnection.connection IS NULL
+	|				THEN chainConnection.connection.key
+	|			ELSE holdingConnection.connection.key
+	|		END
 	|	END AS key,
-	|	acquiringOrders.registrationDate
+	|	acquiringOrders.registrationDate,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN gymAcquiringProviderConnection.qrConnection.merchantID
+	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN chainAcquiringProviderConnection.qrConnection.merchantID
+	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|			THEN AcquiringProviderConnection.qrConnection.merchantID
+	|		WHEN NOT gymConnection.qrConnection IS NULL
+	|			THEN gymConnection.qrConnection.merchantID
+	|		WHEN NOT chainConnection.qrConnection IS NULL
+	|			THEN chainConnection.qrConnection.merchantID
+	|		ELSE holdingConnection.qrConnection.merchantID
+	|	END AS merchantID,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN gymAcquiringProviderConnection.qrConnection.authorization
+	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN chainAcquiringProviderConnection.qrConnection.authorization
+	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|			THEN AcquiringProviderConnection.qrConnection.authorization
+	|		WHEN NOT gymConnection.qrConnection IS NULL
+	|			THEN gymConnection.qrConnection.authorization
+	|		WHEN NOT chainConnection.qrConnection IS NULL
+	|			THEN chainConnection.qrConnection.authorization
+	|		ELSE holdingConnection.qrConnection.authorization
+	|	END AS authorization,
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN gymAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
+	|			THEN chainAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
+	|			THEN AcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT gymConnection.qrConnection IS NULL
+	|			THEN gymConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		WHEN NOT chainConnection.qrConnection IS NULL
+	|			THEN chainConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		ELSE holdingConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|	END AS hasQR
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -382,6 +558,9 @@ Function answerStruct()
 	answer.Insert("response", New Structure());
 	answer.Insert("key", "");
 	answer.Insert("registrationDate", Date(1,1,1));	
+	answer.Insert("merchantID", "");
+	answer.Insert("authorization", "");
+	answer.Insert("hasQR",false);	
 	Return answer;		
 EndFunction
 
@@ -413,6 +592,11 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 							elementOfArray.cards.insert(0, cardStruct);
 						EndIf;
 					EndIf;
+					If ValueIsFilled(orderParams.hasQR) then
+						cardStruct = New Structure("type, name, uid, amount", "qr", NStr("ru='Оплата по QR коду';en='Payment by QR code'", parameters.languageCode), "qr", amount);
+						elementOfArray.cards.add(cardStruct);
+					EndIf;
+					
 					PaymentSystemDescription = "Bank card";
 					PaymentSystemDescription = NStr("ru='Банковская карта';en='Bank card'", parameters.languageCode);
 				
@@ -483,7 +667,9 @@ Procedure checkOrder(parameters, additionalParameters)
 		EndIf;
 		AcquiringSberbank.checkOrder(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
-		AcquiringDemirBank.checkOrder(parameters);		
+		AcquiringDemirBank.checkOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then 
+		AcquiringRaiffeisen.checkStatus(parameters);		
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
@@ -504,6 +690,7 @@ Procedure checkOrder(parameters, additionalParameters)
 	Else
 		parameters.errorCode = "send";
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
+		Acquiring.addOrderToQueue(parameters.order, Enums.acquiringOrderStates.send);
 	EndIf;
 EndProcedure
 
@@ -573,5 +760,13 @@ Procedure changeOrderState(order, state) Export
 	record.order = order;
 	record.state = state;
 	record.Write();
+EndProcedure
+
+Procedure getQr(parameters,additionalParameters) Export
+	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
+	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/bindFail.html");
+	If parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then
+		AcquiringRaiffeisen.getQr(parameters,additionalParameters);
+	EndIf;
 EndProcedure
 

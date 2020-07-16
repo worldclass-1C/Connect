@@ -32,7 +32,8 @@ Procedure processOrder(parameters, additionalParameters) Export
 		select.Next();		
 		If select.acquiringRequest = Enums.acquiringRequests.register
 		   or  select.acquiringRequest = Enums.acquiringRequests.applePay
-		   or select.acquiringRequest = Enums.acquiringRequests.googlePay Then			
+		   or select.acquiringRequest = Enums.acquiringRequests.googlePay
+		   or select.acquiringRequest = Enums.acquiringRequests.qrRegister Then			
 			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty() and select.registrationDate<(ToUniversalTime(CurrentDate())-20*60),"cancel","reserve"))));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));

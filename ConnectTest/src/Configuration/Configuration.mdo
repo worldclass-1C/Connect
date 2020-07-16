@@ -82,7 +82,9 @@
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Acquiring</commonModules>
+  <commonModules>CommonModule.AcquiringDemirBank</commonModules>
   <commonModules>CommonModule.AcquiringSberbank</commonModules>
+  <commonModules>CommonModule.AcquiringRaiffeisen</commonModules>
   <commonModules>CommonModule.API_Info</commonModules>
   <commonModules>CommonModule.API_List</commonModules>
   <commonModules>CommonModule.API_Payment</commonModules>
@@ -119,7 +121,6 @@
   <commonModules>CommonModule.TokenReuse</commonModules>
   <commonModules>CommonModule.Users</commonModules>
   <commonModules>CommonModule.Zoom</commonModules>
-  <commonModules>CommonModule.AcquiringDemirBank</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
@@ -151,6 +152,7 @@
   <constants>Constant.acquiringURL</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
+  <catalogs>Catalog.qrAcquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>
   <catalogs>Catalog.acquiringOrderIdentifiers</catalogs>
   <catalogs>Catalog.acquiringOrders</catalogs>
