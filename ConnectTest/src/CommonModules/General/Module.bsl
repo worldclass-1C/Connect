@@ -321,7 +321,7 @@ Procedure signIn(parameters)
 
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
-	language = parameters.language;	
+	languageCode = parameters.languageCode;	
 
 	struct = New Structure();
 
@@ -353,8 +353,8 @@ Procedure signIn(parameters)
 			informationChannels.Add(Enums.informationChannels.sms);
 			rowsArray = New Array();
 			rowsArray.Add(tempCode);
-			rowsArray.Add(?(language = "ru", " - ваш код для входа", " - your login code"));
-			rowsArray.Add(?(language = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
+			rowsArray.Add(?(languageCode = "ru", " - ваш код для входа", " - your login code"));
+			rowsArray.Add(?(languageCode = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
 			messageStruct = New Structure();
 			messageStruct.Insert("phone", requestStruct.phone);
 			messageStruct.Insert("title", "SMS code");
