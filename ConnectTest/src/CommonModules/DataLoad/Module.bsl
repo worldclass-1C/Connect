@@ -61,6 +61,7 @@ Function isUploadRequest(requestName) Export
 		Or requestName = "addcancelcauses"
 		Or requestName = "synchronization"
 		Or requestName = "addcache"
+		Or requestName = "addusers"
 	Then
 		Return True;	
 	Else
@@ -106,6 +107,8 @@ Function attributesStructure(val requestName)
 		Return Catalogs.rooms.attributesStructure();
 	ElsIf requestName = "addcache" Then
 		Return Catalogs.cacheInformations.attributesStructure();
+	ElsIf requestName = "addusers" Then
+		Return Catalogs.users.attributesStructure();
 	Else
 		Return New Structure("mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", "", "", "", getValueTable(), getValueTable(), New Structure());
 	EndIf;	 

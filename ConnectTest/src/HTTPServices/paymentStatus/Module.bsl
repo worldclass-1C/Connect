@@ -115,3 +115,21 @@ function prepareDetails(parameters)
 	Return HTTP.encodeJSON(details);
 	
 EndFunction
+
+Function echoRaiffeisenPOST(Request)
+	
+	body = Request.getBodyAsString();
+	if ValueIsFilled(body) then
+		answerStruct = HTTP.decodeJSON(body, Enums.JSONValueTypes.structure);
+		If answerStruct.Property("qrId") then
+			acquiringOrderIdentifier = catalogs.acquiringOrderIdentifiers.FindByDescription(answerStruct.qrId);
+			if ValueIsFilled(acquiringOrderIdentifier) then
+				Acquiring.executeRequest("check", acquiringOrderIdentifier.Owner);
+			EndIf;
+		EndIf;
+	EndIf;
+	Response	= new HTTPServiceResponse(200);
+	Response.Headers.Insert("Content-type", "application/json; charset=utf-8");
+	Response.SetBodyFromString("ok");	
+	return Response;
+EndFunction

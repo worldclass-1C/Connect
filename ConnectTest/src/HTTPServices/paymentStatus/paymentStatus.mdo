@@ -42,4 +42,21 @@
       <handler>failURLPOST</handler>
     </methods>
   </urlTemplates>
+  <urlTemplates uuid="aae378fa-dc40-4959-939e-bde30c0a7fb8">
+    <name>echoRaiffeisen</name>
+    <synonym>
+      <key>ru</key>
+      <value>Echo raiffeisen</value>
+    </synonym>
+    <template>/echoRaiffeisen</template>
+    <methods uuid="843a8a3f-0394-434b-80bd-7a88ed2d962e">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>echoRaiffeisenPOST</handler>
+    </methods>
+  </urlTemplates>
 </mdclass:HTTPService>
