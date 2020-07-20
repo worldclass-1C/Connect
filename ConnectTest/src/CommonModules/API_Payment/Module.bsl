@@ -74,31 +74,34 @@ Procedure payment(parameters) Export
 	struct = New Structure();
 
 	query = New Query("SELECT
-		|	acquiringOrders.Ref AS order,
-		|	acquiringOrders.amount
-		|FROM
-		|	Catalog.acquiringOrders AS acquiringOrders
-		|WHERE
-		|	acquiringOrders.Ref = &order
-		|;
-		|////////////////////////////////////////////////////////////////////////////////
-		|SELECT
-		|	acquiringOrderscards.card
-		|FROM
-		|	Catalog.acquiringOrders.cards AS acquiringOrderscards
-		|WHERE
-		|	acquiringOrderscards.Ref = &order
-		|	AND acquiringOrderscards.card = &card
-		|	AND &cardIsFilled
-		|	AND
-		|	NOT acquiringOrderscards.card.inactive
-		|
-		|UNION ALL
-		|
-		|SELECT
-		|	&card
-		|WHERE
-		|	NOT &cardIsFilled");
+	|	acquiringOrders.Ref AS order,
+	|	acquiringOrders.amount
+	|FROM
+	|	InformationRegister.ordersStates AS ordersStates
+	|		RIGHT JOIN Catalog.acquiringOrders AS acquiringOrders
+	|		ON ordersStates.order = acquiringOrders.Ref
+	|WHERE
+	|	acquiringOrders.Ref = &order
+	|	AND ISNULL(ordersStates.state, VALUE(enum.acquiringOrderStates.send)) = VALUE(enum.acquiringOrderStates.send)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	acquiringOrderscards.card
+	|FROM
+	|	Catalog.acquiringOrders.cards AS acquiringOrderscards
+	|WHERE
+	|	acquiringOrderscards.Ref = &order
+	|	AND acquiringOrderscards.card = &card
+	|	AND &cardIsFilled
+	|	AND
+	|	NOT acquiringOrderscards.card.inactive
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	&card
+	|WHERE
+	|	NOT &cardIsFilled");
 
 	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
 	card = Catalogs.creditCards.EmptyRef();
@@ -116,7 +119,7 @@ Procedure payment(parameters) Export
 			card = XMLValue(Type("CatalogRef.creditCards"), requestStruct.card);
 		EndIf;
 	EndIf;
-	owner = ?(requestStruct.Property("owner") and not requestStruct.owner = Undefined, XMLValue(Type("CatalogRef.users"), requestStruct.owner), Catalogs.users.EmptyRef());
+	owner = ?(requestStruct.Property("owner") and not requestStruct.owner = Undefined, XMLValue(Type("CatalogRef.users"), requestStruct.owner), ?(valueIsFilled(order),order.user,catalogs.users.EmptyRef()));
 	query.SetParameter("order", order);
 	query.SetParameter("card", card);
 	query.SetParameter("cardIsFilled", ValueIsFilled(card));
@@ -131,7 +134,7 @@ Procedure payment(parameters) Export
 	ElsIf owner.IsEmpty() Then
 		error = "userNotfound";
 	EndIf;
-	
+
 	orderObject = order.GetObject();
 	
 	If isApplePay or isGooglePay  Then
