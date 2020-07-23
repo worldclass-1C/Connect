@@ -44,49 +44,66 @@ Procedure gymSchedule(parameters) Export
 		|;
 		|////////////////////////////////////////////////////////////////////////////////";
 
-	textTampTable = "
-		|SELECT
-		|	classesSchedule.Ref AS Doc,
-		|	classesSchedule.period AS period,
-		|	classesSchedule.employee AS employee,
-		|	classesSchedule.gym AS gym,
-		|	classesSchedule.room AS room,
-		|	classesSchedule.product AS product,	
-		|	classesSchedule.isPreBooked AS isPreBooked,
-		|	classesSchedule.isPrePaid AS isPrePaid,
-		|	classesSchedule.onlyWithParents AS onlyWithParents,
-		|	classesSchedule.onlyMembers AS onlyMembers,
-		|	classesSchedule.duration AS duration,
-		|	classesSchedule.ageMin AS ageMin,
-		|	classesSchedule.ageMax AS ageMax,
-		|	classesSchedule.studentLevel AS studentLevel,
-		|	classesSchedule.price AS price,
-		|	MAX(CASE
-		|			WHEN classMembers.user = &user
-		|				THEN TRUE
-		|			ELSE FALSE
-		|		END) AS recorded,
-		|	MAX(CASE
-		|			WHEN &currentTime >= classesSchedule.startRegistration
-		|					AND &currentTime <= classesSchedule.endRegistration
-		|				THEN TRUE
-		|			ELSE FALSE
-		|		END) AS canRecord,
-		|	MAX(CASE
-		|			WHEN DATEDIFF(&currentTime, classesSchedule.period, HOUR) > 8
-		|				THEN TRUE
-		|			ELSE FALSE
-		|		END) AS canCancel,
-		|	COUNT(classMembers.user) AS userPlaces,
-		|	MAX(classesSchedule.availablePlaces) AS availablePlaces,
-		|	ISNULL(MAX(CAST(Meetings.join_url AS STRING(200))), """") AS urlZoom
-		|INTO TT
-		|FROM
-		|	Catalog.classesSchedule AS classesSchedule
-		|		LEFT JOIN InformationRegister.classMembers AS classMembers
-		|		ON (classesSchedule.Ref = classMembers.class)
-		|	LEFT JOIN Catalog.meetingZoom AS Meetings
-		|		ON (classesSchedule.Ref = Meetings.doc)";
+	textTampTable = "SELECT
+	|	classesSchedule.Ref AS Doc,
+	|	classesSchedule.period AS period,
+	|	classesSchedule.employee AS employee,
+	|	classesSchedule.gym AS gym,
+	|	classesSchedule.room AS room,
+	|	classesSchedule.product AS product,
+	|	classesSchedule.isPreBooked AS isPreBooked,
+	|	classesSchedule.isPrePaid AS isPrePaid,
+	|	classesSchedule.onlyWithParents AS onlyWithParents,
+	|	classesSchedule.onlyMembers AS onlyMembers,
+	|	classesSchedule.duration AS duration,
+	|	classesSchedule.ageMin AS ageMin,
+	|	classesSchedule.ageMax AS ageMax,
+	|	classesSchedule.studentLevel AS studentLevel,
+	|	classesSchedule.price AS price,
+	|	MAX(CASE
+	|		WHEN classMembers.user = &user
+	|			THEN TRUE
+	|		ELSE FALSE
+	|	END) AS recorded,
+	|	MAX(CASE
+	|		WHEN &currentTime >= classesSchedule.startRegistration
+	|		AND &currentTime <= classesSchedule.endRegistration
+	|			THEN TRUE
+	|		ELSE FALSE
+	|	END) AS canRecord,
+	|	MAX(CASE
+	|		WHEN NOT classesSchedule.isPrePaid
+	|			THEN TRUE
+	|		WHEN DATEDIFF(&currentTime, classesSchedule.period, HOUR) > 8
+	|			THEN TRUE
+	|		ELSE FALSE
+	|	END) AS canCancel,
+	|	COUNT(classMembers.user) AS userPlaces,
+	|	MAX(classesSchedule.availablePlaces) AS availablePlaces,
+	|	ISNULL(MAX(CAST(Meetings.join_url AS STRING(200))), """") AS urlZoom
+	|INTO TT
+	|FROM
+	|	Catalog.classesSchedule AS classesSchedule
+	|		LEFT JOIN InformationRegister.classMembers AS classMembers
+	|		ON classesSchedule.Ref = classMembers.class
+	|		LEFT JOIN Catalog.meetingZoom AS Meetings
+	|		ON classesSchedule.Ref = Meetings.doc
+	|GROUP BY
+	|	classesSchedule.Ref,
+	|	classesSchedule.period,
+	|	classesSchedule.employee,
+	|	classesSchedule.gym,
+	|	classesSchedule.room,
+	|	classesSchedule.product,
+	|	classesSchedule.isPreBooked,
+	|	classesSchedule.isPrePaid,
+	|	classesSchedule.onlyWithParents,
+	|	classesSchedule.onlyMembers,
+	|	classesSchedule.duration,
+	|	classesSchedule.ageMin,
+	|	classesSchedule.ageMax,
+	|	classesSchedule.studentLevel,
+	|	classesSchedule.price";
 	textCondition = "
 		|WHERE
 		|	classesSchedule.gym IN (Select TemporaryGyms.gym from TemporaryGyms as TemporaryGyms)
