@@ -572,6 +572,8 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND messages.Ref.token <> tokens.Ref
 	|		AND tokens.appType = &appType
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
+	|		AND tokens.systemType <> VALUE(Enum.systemTypes.web)
+	|		AND messages.Ref.gym.brand = tokens.chain.brand
 	|		AND messages.Ref.holding = tokens.holding
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend
