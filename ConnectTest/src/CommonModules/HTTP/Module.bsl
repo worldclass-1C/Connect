@@ -260,6 +260,7 @@ Function inTheWhiteList(origin) Export
 		Or origin = "https://online.fizkult-nn.ru"
 		Or origin = "https://project1205002.tilda.ws"
 		Or origin = "https://localhost:55555"
+		Or origin = "http://localhost:55555"
 		Or origin = "https://localhost"
 		Or origin = "https://solutions.worldclass.ru" 
 		Or origin = "https://spa.worldclass.ru"
