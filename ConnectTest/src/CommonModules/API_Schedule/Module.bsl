@@ -132,8 +132,7 @@ Procedure gymSchedule(parameters) Export
 		|
 		|;
 		|////////////////////////////////////////////////////////////////////////////////";
-	textResum = "
-	|SELECT
+	textResum = "SELECT
 	|	TT.Doc AS Doc,
 	|	TT.period AS period,
 	|	TT.employee AS employee,
@@ -158,7 +157,7 @@ Procedure gymSchedule(parameters) Export
 	|			THEN -1
 	|		ELSE TT.availablePlaces - TT.userPlaces
 	|	END AS availablePlaces,
-	|	urlZoom AS urlZoom
+	|	TT.urlZoom AS urlZoom
 	|FROM
 	|	TT AS TT
 	|;
@@ -221,7 +220,6 @@ Procedure gymSchedule(parameters) Export
 	|		ON TT.room = roomstranslation.Ref
 	|		AND (roomstranslation.language = &language)
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	TT.doc as ref,
@@ -230,7 +228,11 @@ Procedure gymSchedule(parameters) Export
 	|FROM
 	|	TT AS TT
 	|		INNER JOIN Catalog.classesSchedule.externalRefs AS classesScheduleexternalRefs
-	|		ON classesScheduleexternalRefs.Ref = TT.doc";
+	|		ON classesScheduleexternalRefs.Ref = TT.doc
+	|Where
+	|	not classesScheduleexternalRefs.resourseRef = """"
+	|	and
+	|	not classesScheduleexternalRefs.resoursType = value(Enum.typeOfExternalRefs.emptyref)";
 
 	gymList = New Array();
 	For Each gymUid In requestStruct.gymList Do
