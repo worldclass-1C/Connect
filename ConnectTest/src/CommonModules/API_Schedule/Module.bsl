@@ -272,10 +272,10 @@ Procedure gymSchedule(parameters) Export
 	querryTextArray = New Array();
 	querryTextArray.Add(textSelectGyms);
 	querryTextArray.Add(textTampTable);
-	querryTextArray.Add(StrConcat(querryConditionArray, " "));
+	querryTextArray.Add(StrConcat(querryConditionArray, Chars.LF));
 	querryTextArray.Add(textGroup);
 	querryTextArray.Add(textResum);
-	query.Text = StrConcat(querryTextArray, " ");
+	query.Text = StrConcat(querryTextArray, Chars.LF);
 
 	results = query.ExecuteBatch();
 
