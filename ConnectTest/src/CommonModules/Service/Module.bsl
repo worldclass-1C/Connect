@@ -221,6 +221,10 @@ Function getRef(uid, typeOfObject, arrayValues = Undefined) Export
 	Return XMLValue(typeOfObject, uid);		
 EndFunction
 
+Function isArray(value) Export
+	Return TypeOf(value) = Type("Array")	
+EndFunction
+
 Procedure logRequestBackground(parameters) Export
 	array	= New Array();
 	array.Add(parameters);

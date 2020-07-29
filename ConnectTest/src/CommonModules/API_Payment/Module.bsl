@@ -139,7 +139,7 @@ Procedure payment(parameters) Export
 	
 	If isApplePay or isGooglePay  Then
 		If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
-				SystemType = parameters.tokenContext.systemType;
+			SystemType = parameters.tokenContext.systemType;
 		EndIf;
 	EndIf;
 	
@@ -168,22 +168,19 @@ Procedure payment(parameters) Export
 
 	//Проверяем есть ли оплата авансами
 	If error = "" Then
-		If requestStruct.Property("deposits") and not requestStruct.deposits = Undefined Then
+		If requestStruct.Property("deposits") And Service.isArray(requestStruct.deposits)
+			And requestStruct.deposits.Count() > 0 And orderObject <> Undefined Then
+			orderObject.payments.Clear();
 			For Each deposit In requestStruct.deposits Do
 				newRow = orderObject.payments.Add();
 				newRow.owner = owner;
 				newRow.type = deposit.type;
-				newRow.amount = deposit.paymentAmount;			
-				newRow.details = HTTP.encodeJSON(deposit);	
-			EndDo;
-		EndIf;
-		If orderObject <> Undefined Then
-			orderObject.Write();
-		EndIf;
-		answer = Acquiring.executeRequest("process", order, parameters);
-		If not answer.errorCode = "" Then 
-			error = answer.errorCode;
-			orderObject.payments.Clear();				
+				newRow.amount = deposit.paymentAmount;
+				newRow.details = HTTP.encodeJSON(deposit);
+			EndDo;			
+			orderObject.Write();			
+			answer = Acquiring.executeRequest("process", order, parameters);
+			error = answer.errorCode;			
 		EndIf;
 	EndIf;
 	
