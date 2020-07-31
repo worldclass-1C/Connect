@@ -660,7 +660,8 @@ Procedure checkOrder(parameters, additionalParameters)
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		If (parameters.order.acquiringRequest = enums.acquiringRequests.applePay
-	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay) and additionalParameters<>Undefined Then
+	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay) and additionalParameters<>Undefined
+	   and additionalParameters.Property("paymentData") Then
 	   		parametersNew = Service.getStructCopy(parameters);
 			AcquiringSberbank.checkOrderAppleGoogle(parametersNew, additionalParameters);
 			Service.logAcquiringBackground(parametersNew);

@@ -326,7 +326,11 @@ Function  getArrGyms(params) Export
 	|		ELSE gymstranslation.state
 	|	END,
 	|	gyms.order,
-	|	NULL
+	|	CASE
+	|		WHEN gyms.Ref in (&myGyms)
+	|			then true
+	|		ELSE FALSE
+	|	END AS hasAccess
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -391,7 +395,11 @@ Function  getArrGyms(params) Export
 	|		ELSE gymstranslation.state
 	|	END AS state,
 	|	gyms.order,
-	|	NULL
+	|	CASE
+	|		WHEN gyms.Ref in (&myGyms)
+	|			then true
+	|		ELSE FALSE
+	|	END AS hasAccess
 	|FROM
 	|	Catalog.gyms AS gyms
 	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
