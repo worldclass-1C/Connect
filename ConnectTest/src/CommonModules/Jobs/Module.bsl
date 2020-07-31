@@ -40,9 +40,9 @@ Procedure CheckAcquiringStatus() Export
 	OrdersToCheck = GetOrdersToCheck();
 	While OrdersToCheck.Next() Do
 		response = Acquiring.executeRequest("check", OrdersToCheck.order);
-		
 		If response = Undefined Then
-			  Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);		
+			Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);
+			Acquiring.changeOrderState(OrdersToCheck.order, Enums.acquiringOrderStates.rejected);		
 		Else
 			If response.errorCode = "" Then
 				Acquiring.addOrderToQueue(OrdersToCheck.order, Enums.acquiringOrderStates.success);
