@@ -252,6 +252,10 @@
         <key>en</key>
         <value>Requests</value>
       </title>
+      <title>
+        <key>ru</key>
+        <value>Запросы</value>
+      </title>
       <toolTip>
         <key>en</key>
         <value>Page1</value>
@@ -526,6 +530,10 @@
       <title>
         <key>en</key>
         <value>Errors</value>
+      </title>
+      <title>
+        <key>ru</key>
+        <value>Описание ошибок</value>
       </title>
       <toolTip>
         <key>en</key>
