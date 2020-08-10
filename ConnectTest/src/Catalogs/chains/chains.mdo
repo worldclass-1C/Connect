@@ -394,7 +394,7 @@
       <name>isUpdated</name>
       <synonym>
         <key>en</key>
-        <value>Updated</value>
+        <value>IsCache</value>
       </synonym>
       <synonym>
         <key>ru</key>
