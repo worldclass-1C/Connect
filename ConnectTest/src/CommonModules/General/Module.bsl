@@ -709,7 +709,7 @@ Procedure executeExternalRequest(parameters)
 	|	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
 	|	matchingRequestsInformationSources.HTTPRequestType AS HTTPRequestType,
 	|	matchingRequestsInformationSources.Attribute AS Attribute,
-	|	matchingRequestsInformationSources.staffOnly AS staffOnly,	
+	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
 	|	matchingRequestsInformationSources.mockServerMode AS mockServerMode,
 	|	holdingsConnectionsInformationSources.URL AS URL,
 	|	holdingsConnectionsInformationSources.server AS server,
@@ -728,7 +728,7 @@ Procedure executeExternalRequest(parameters)
 	|			THEN matchingRequestsInformationSources.Ref.defaultResponse
 	|		ELSE """"
 	|	END AS defaultResponse,
-	|	matchingRequestsInformationSources.disableLogging AS disableLogging
+	|	matchingRequestsInformationSources.Ref.disableLogging AS disableLogging
 	|FROM
 	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
 	|		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
