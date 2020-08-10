@@ -727,7 +727,8 @@ Procedure executeExternalRequest(parameters)
 	|		WHEN matchingRequestsInformationSources.mockServerMode
 	|			THEN matchingRequestsInformationSources.Ref.defaultResponse
 	|		ELSE """"
-	|	END AS defaultResponse
+	|	END AS defaultResponse,
+	|	matchingRequestsInformationSources.disableLogging AS disableLogging
 	|FROM
 	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
 	|		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
@@ -754,6 +755,7 @@ Procedure executeExternalRequest(parameters)
 				And tokenContext.userType <> "employee" Then			
 			parameters.Insert("error", "staffOnly");
 		Else
+			parameters.Insert("disableLogging", select.disableLogging);
 			If select.mockServerMode Then
 				answerBody = select.defaultResponse;	
 			Else				

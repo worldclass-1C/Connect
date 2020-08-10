@@ -226,6 +226,9 @@ Function isArray(value) Export
 EndFunction
 
 Procedure logRequestBackground(parameters) Export
+	If parameters.Property("disableLogging") AND parameters.disableLogging Then
+		Return
+	EndIf;
 	array	= New Array();
 	array.Add(parameters);
 	BackgroundJobs.Execute("Service.logRequest", array, New UUID());
