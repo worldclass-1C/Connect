@@ -211,8 +211,8 @@ Function TextQuery()
 	|		AND CCT.cacheType = CT.Ref
 	|WHERE
 	|	CT.Ref IN (&cacheTypes)
+	|	and CCT.isUpdated
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabCI.cacheType AS cacheType,
@@ -225,7 +225,6 @@ Function TextQuery()
 	|FROM
 	|	tabCI AS tabCI
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	dscr.Ref AS Ref,
@@ -239,7 +238,6 @@ Function TextQuery()
 	|WHERE
 	|	tabCI.Used
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	tabDesr.Ref AS Ref,

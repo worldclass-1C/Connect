@@ -22,6 +22,7 @@ Function newMessage(messageData, sendImmediately = False) Export
 	messageObject.text = ?(messageData.Property("text"), messageData.text, "");
 	messageObject.appType = ?(messageData.Property("appType"), messageData.appType, Enums.appTypes.EmptyRef());
 	messageObject.holding = messageData.holding;
+	messageObject.chain = ?(messageData.Property("chain"), messageData.chain, Catalogs.chains.EmptyRef());
 
 	For Each informationChannel In messageData.informationChannels Do
 		newRow = messageObject.channelPriorities.Add();
@@ -576,6 +577,8 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|		AND messages.Ref.token <> tokens.Ref
 	|		AND tokens.appType = &appType
 	|		AND tokens.lockDate = DATETIME(1, 1, 1)
+	|		AND tokens.systemType <> VALUE(Enum.systemTypes.web)
+	|		AND messages.Ref.gym.brand = tokens.chain.brand
 	|		AND messages.Ref.holding = tokens.holding
 	|WHERE
 	|	messages.Node = &nodeMessagesToSend

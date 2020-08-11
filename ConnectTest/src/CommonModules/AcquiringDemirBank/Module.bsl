@@ -32,11 +32,11 @@ Procedure sendOrder(parameters) Export
 	requestURL.Add(Body);
 	URL = Body;
 	parameters.Insert("requestBody", URL);	
-	ConnectionHTTP = New HTTPConnection("entegrasyon.asseco-see.com.tr", parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	
 	requestHTTP = New HTTPRequest(Connection);
 	requestHTTP.Headers.Insert("Content-Type", "application/x-www-form-urlencoded");
-	requestHTTP.Headers.Insert("Host", "entegrasyon.asseco-see.com.tr");
+	requestHTTP.Headers.Insert("Host", parameters.server);
 	requestHTTP.SetBodyFromString(Body, TextEncoding.UTF8);
 	answerHTTP = ConnectionHTTP.Post(requestHTTP);		
 	parameters.insert("response", answerHTTP.getbodyasstring());

@@ -59,7 +59,7 @@ function GetKPOData(holding,startDate, endDate)
 		requestParameters.Insert("requestStruct", requestStruct);
 		requestParameters.Insert("internalRequestMethod", True);
 		requestParameters.Insert("isXDTOSerializer", true);
-		General.executeRequestMethod(requestParameters);
+		GeneralCallServer.executeRequestMethod(requestParameters);
 		If requestParameters.error = "" Then
 			JSONReader = New JSONReader();
 			JSONReader.SetString(requestParameters.answerBody);

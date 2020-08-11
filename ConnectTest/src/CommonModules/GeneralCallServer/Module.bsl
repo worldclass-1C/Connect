@@ -9,3 +9,7 @@ EndFunction
 Function getRef(uid, typeOfObject) Export	
 	Return Service.getRef(uid, typeOfObject);		
 EndFunction
+
+Procedure executeRequestMethod(requestParameters) Export
+	General.executeRequestMethod(requestParameters);
+EndProcedure
