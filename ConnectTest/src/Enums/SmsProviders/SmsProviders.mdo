@@ -39,6 +39,13 @@
       <value>Devino</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="751138d2-4431-4a06-bf72-b1183e7f6347">
+    <name>FigenSoft</name>
+    <synonym>
+      <key>ru</key>
+      <value>Figen soft</value>
+    </synonym>
+  </enumValues>
   <enumValues uuid="2d2f03ee-b6da-4b6e-897d-1b4a687a8497">
     <name>IDigital</name>
     <synonym>

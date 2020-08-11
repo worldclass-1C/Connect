@@ -83,8 +83,8 @@
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Acquiring</commonModules>
   <commonModules>CommonModule.AcquiringDemirBank</commonModules>
-  <commonModules>CommonModule.AcquiringSberbank</commonModules>
   <commonModules>CommonModule.AcquiringRaiffeisen</commonModules>
+  <commonModules>CommonModule.AcquiringSberbank</commonModules>
   <commonModules>CommonModule.API_Info</commonModules>
   <commonModules>CommonModule.API_List</commonModules>
   <commonModules>CommonModule.API_Payment</commonModules>
@@ -107,6 +107,7 @@
   <commonModules>CommonModule.ServiceClient</commonModules>
   <commonModules>CommonModule.SmsCIDMkg</commonModules>
   <commonModules>CommonModule.SmsDevino</commonModules>
+  <commonModules>CommonModule.SmsFigenSoft</commonModules>
   <commonModules>CommonModule.SmsGold</commonModules>
   <commonModules>CommonModule.SmsIDigital</commonModules>
   <commonModules>CommonModule.SmsMegalab</commonModules>
