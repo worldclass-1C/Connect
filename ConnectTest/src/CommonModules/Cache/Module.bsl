@@ -33,9 +33,9 @@ Function GetCache(parameters, struсRequest) Export
 		
 		For Each cachetype In strucSeek.cacheTypes Do
 			FoundRows = common.FindRows(New Structure("cacheType", cachetype));
-			//пустых строк в запросе быть не может
-			//могут быть неиспользуемые, и без данных
-			//FoundRow = FoundRows[0];
+			If FoundRows.Count()=0 Then
+				Continue
+			EndIf;
 			arrData = New Array;  
 			For Each FoundRow In FoundRows Do
 				If Not FoundRow.Used Then
