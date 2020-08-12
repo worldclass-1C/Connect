@@ -720,8 +720,8 @@ Procedure chainList(parameters) Export
 	|	chain.cacheTypes.(
 	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections,
-	|	chain.holding.rulesRef AS rules,
-	|	chain.holding.pdn AS pdn
+	|	chain.rulesRef AS rules,
+	|	chain.pdn AS pdn
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText

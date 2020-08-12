@@ -294,6 +294,40 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="aaca4996-c921-4357-b7de-76b5558902e1">
+    <name>rulesRef</name>
+    <synonym>
+      <key>en</key>
+      <value>Rules ref</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ссылка на ознакомление с правилами</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>300</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="798e761f-c9f2-4aa3-9ec2-47606beab548">
+    <name>pdn</name>
+    <synonym>
+      <key>ru</key>
+      <value>Pdn</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>300</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="40328762-d8e6-4785-955a-9aec83c78d6b">
     <producedTypes>
       <objectType typeId="58ef62ac-165e-469d-91a6-039ffa718b55" valueTypeId="9a0d5a35-0ad6-490f-aa48-188b8665c40f"/>
