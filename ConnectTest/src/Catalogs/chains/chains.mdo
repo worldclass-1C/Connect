@@ -314,10 +314,10 @@
     <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="798e761f-c9f2-4aa3-9ec2-47606beab548">
-    <name>pdn</name>
+    <name>pdnRef</name>
     <synonym>
       <key>ru</key>
-      <value>Pdn</value>
+      <value>Pdn ref</value>
     </synonym>
     <type>
       <types>String</types>

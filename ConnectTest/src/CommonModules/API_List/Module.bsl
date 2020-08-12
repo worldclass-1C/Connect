@@ -721,7 +721,7 @@ Procedure chainList(parameters) Export
 	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections,
 	|	chain.rulesRef AS rules,
-	|	chain.pdn AS pdn
+	|	chain.pdnRef AS pdn
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
