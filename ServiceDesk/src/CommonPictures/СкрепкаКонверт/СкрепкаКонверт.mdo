@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d26f9dc2-5d0d-4a4f-99fc-066b54bf6528">
-  <name>СкрепкаКонверт</name>
-  <synonym>
-    <key>ru</key>
-    <value>Скрепка конверт</value>
-  </synonym>
-  <comment>24х24</comment>
-</mdclass:CommonPicture>

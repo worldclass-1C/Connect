@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="be5d8852-c8c5-4a8b-afab-a7689d537089">
-  <name>ОтчетыОбработки</name>
-  <synonym>
-    <key>ru</key>
-    <value>Отчеты обработки</value>
-  </synonym>
-</mdclass:CommonPicture>

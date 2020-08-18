@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b86d2012-70c2-40d2-a7ab-8b92782ac4a8">
-  <name>Камера</name>
-  <synonym>
-    <key>ru</key>
-    <value>Камера</value>
-  </synonym>
-  <comment>Камера 24х24</comment>
-</mdclass:CommonPicture>

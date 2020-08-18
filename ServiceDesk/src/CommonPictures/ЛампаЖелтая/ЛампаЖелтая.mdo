@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="035cb89b-a42b-4ac2-8d69-c4cc584230fe">
-  <name>ЛампаЖелтая</name>
-  <synonym>
-    <key>ru</key>
-    <value>Лампа желтая</value>
-  </synonym>
-  <comment>Лампа желтая 24х24</comment>
-</mdclass:CommonPicture>

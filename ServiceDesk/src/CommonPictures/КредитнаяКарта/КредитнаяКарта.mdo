@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4da09a44-0013-476a-9c71-dc1ea264862a">
-  <name>КредитнаяКарта</name>
-  <synonym>
-    <key>ru</key>
-    <value>Кредитная карта</value>
-  </synonym>
-  <comment>Кредитная карта 24х24</comment>
-</mdclass:CommonPicture>
