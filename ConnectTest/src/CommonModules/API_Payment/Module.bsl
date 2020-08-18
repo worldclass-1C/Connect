@@ -178,12 +178,11 @@ Procedure payment(parameters) Export
 				newRow.amount = deposit.paymentAmount;
 				newRow.details = HTTP.encodeJSON(deposit);
 			EndDo;			
-			orderObject.Write();			
-			answer = Acquiring.executeRequest("process", order, parameters);
-			error = answer.errorCode;			
+			orderObject.Write();						
 		EndIf;
 	EndIf;
-	
+	answer = Acquiring.executeRequest("process", order, parameters);
+	error = answer.errorCode;
 	//Отправляем в запрос в банк на оставшуюся сумму
 	If error = "" Then
 		If orderObject <> Undefined Then

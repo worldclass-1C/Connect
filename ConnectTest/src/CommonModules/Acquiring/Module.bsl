@@ -727,7 +727,7 @@ Procedure activateCard(parameters)
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
 	elsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
-		bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
+		//bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
 	EndIf;	
 	
 	if bindCardParameters.Property("bindingId") and bindCardParameters.bindingId <> "" then
