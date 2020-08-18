@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1b726079-9c32-4eae-a450-e2b8c461b4f8">
+  <name>Отчеты</name>
+  <synonym>
+    <key>ru</key>
+    <value>Отчеты</value>
+  </synonym>
+  <content>CommonPicture.ОтчетыОбработки</content>
+  <content>Report.СтатусыЗаявок</content>
+  <content>Report.ФактическиеТрудозатраты</content>
+  <content>Report.ПланВыполненияЗадач</content>
+  <content>Report.ВыполненныеЗаявки</content>
+  <content>Report.ОписаниеРелиза</content>
+  <content>Report.АктВыполненыхРабот</content>
+  <content>Report.РелизыИнформационныхБаз</content>
+</mdclass:Subsystem>

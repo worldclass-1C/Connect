@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b889a9c1-32ea-40fa-a6fc-64d87157dbe2">
+  <name>Релиз</name>
+  <synonym>
+    <key>ru</key>
+    <value>Релиз</value>
+  </synonym>
+  <comment>Релиз 24х24</comment>
+</mdclass:CommonPicture>

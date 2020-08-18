@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7a8708bb-aad7-424f-8324-8cb71f6534a9">
+  <name>УРВ</name>
+  <synonym>
+    <key>ru</key>
+    <value>УРВ</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>Document.ЕжедневныйОтчет</content>
+  <content>CommonPicture.УчетВремени</content>
+  <content>AccumulationRegister.РабочееВремяПользователей</content>
+  <content>InformationRegister.ПеренесенныеРабочиеДни</content>
+  <content>InformationRegister.ПроизводственныйКалендарь</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряВоскресеньеЦвет</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряНеУказанЦвет</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряПраздникЦвет</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряПредпраздничныйЦвет</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряРабочийЦвет</content>
+  <content>StyleItem.ВидДняПроизводственногоКалендаряСубботаЦвет</content>
+</mdclass:Subsystem>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f0d51a4b-2402-43e5-8835-811b7ae1a63c">
+  <producedTypes>
+    <managerType typeId="00a98cd5-74b9-4b43-bbd4-f777e09e26f6" valueTypeId="cdcd0287-a9e1-42e6-99ec-0aa5d8b4d5cd"/>
+    <valueManagerType typeId="9a99e7e9-9a6c-44b1-91d5-fa8e9ed13859" valueTypeId="f3dec47c-f7d9-4203-abc4-73b9157d4261"/>
+    <valueKeyType typeId="ca03c477-a0fe-524d-b6b2-6b4e18c05c89" valueTypeId="185ef258-c3d7-5567-8780-2c12d0d5ddb3"/>
+  </producedTypes>
+  <name>АдресСервераSMTP</name>
+  <synonym>
+    <key>ru</key>
+    <value>Адрес сервера SMTP</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>30</length>
+    </stringQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+</mdclass:Constant>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9866aa53-8d95-4a88-a343-bda769d0f18f">
+  <producedTypes>
+    <refType typeId="5583fd2c-cac2-41a9-8f80-8b90409d92eb" valueTypeId="f8c37560-93e4-487f-a17e-496ad6875462"/>
+    <listType typeId="546d7df6-3dcd-4cfb-b618-37668913052f" valueTypeId="41134b57-8af4-46cc-8727-854c67956902"/>
+    <managerType typeId="061cbabd-7505-4893-91ba-89c4b2d2028e" valueTypeId="a211dd59-227a-4677-8e15-1e49caa117b7"/>
+  </producedTypes>
+  <name>БизнесНаправления</name>
+  <synonym>
+    <key>ru</key>
+    <value>Бизнес направления</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="76edb7e4-2412-48f5-b216-93204a2d7840">
+    <name>Бухгалтерия</name>
+    <synonym>
+      <key>ru</key>
+      <value>Бухгалтерия</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="484a0e69-ca68-4fc6-a939-878d6f25148f">
+    <name>ДирекцияКлуба</name>
+    <synonym>
+      <key>ru</key>
+      <value>Дирекция клуба</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="cae472c0-323c-4bfd-aa9d-689be6d80a7f">
+    <name>ИТ</name>
+    <synonym>
+      <key>ru</key>
+      <value>ИТ</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2872bca3-4810-4dcf-b88f-1eb3806b1d12">
+    <name>Маркетинг</name>
+    <synonym>
+      <key>ru</key>
+      <value>Маркетинг</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="6625a5e7-2451-47ef-918a-d20fc36992d9">
+    <name>ОтделКадров</name>
+    <synonym>
+      <key>ru</key>
+      <value>Отдел кадров</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="7fe86165-231c-4219-a505-2b78bd546bcc">
+    <name>ОтделПродаж</name>
+    <synonym>
+      <key>ru</key>
+      <value>Отдел продаж</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2b495259-8e20-4812-8d69-0a1c89de7a0d">
+    <name>СервиснаяСлужба</name>
+    <synonym>
+      <key>ru</key>
+      <value>Сервисная служба</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="e1038d49-2caa-446f-a9bd-5671748929d7">
+    <name>СПА</name>
+    <synonym>
+      <key>ru</key>
+      <value>СПА</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2f4e52f3-8ca4-4b15-8cc3-b9829cf89949">
+    <name>Финансы</name>
+    <synonym>
+      <key>ru</key>
+      <value>Финансы</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="02456dd1-a3ad-4c9c-96ba-3651a38fee0e">
+    <name>Фитнес</name>
+    <synonym>
+      <key>ru</key>
+      <value>Фитнес</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="2477f199-fce5-4214-b0c7-ca4bb28d7277">
+    <name>Франчайзинг</name>
+    <synonym>
+      <key>ru</key>
+      <value>Франчайзинг</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="b349cfc5-89b7-4ebc-b722-7c4aeaa88a38">
+    <name>Юристы</name>
+    <synonym>
+      <key>ru</key>
+      <value>Юристы</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

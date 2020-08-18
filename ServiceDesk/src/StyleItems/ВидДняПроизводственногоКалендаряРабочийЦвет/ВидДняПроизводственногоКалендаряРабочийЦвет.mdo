@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:StyleItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2850b677-11c7-4c64-8ac8-cf4c9301d3f0">
+  <name>ВидДняПроизводственногоКалендаряРабочийЦвет</name>
+  <synonym>
+    <key>ru</key>
+    <value>Вид дня производственного календаря рабочий цвет</value>
+  </synonym>
+  <value xsi:type="core:ColorValue">
+    <value xsi:type="core:ColorRef">
+      <color>Web.Black</color>
+    </value>
+  </value>
+</mdclass:StyleItem>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ffc37dbf-fcbd-49ee-b287-d58630a73e3b">
+  <producedTypes>
+    <managerType typeId="754de29f-b87f-45a4-ac85-e4bc0b4b5a37" valueTypeId="0a5109b4-693b-42cb-8bee-e3dca3548d62"/>
+    <valueManagerType typeId="847acc06-b17e-4dfe-bab5-0b511b47b8dc" valueTypeId="42ec7fa9-4f7c-4e0b-9c57-30a64bf74ccd"/>
+    <valueKeyType typeId="b15a42ee-3413-5c55-8eca-f73fc17bf7f0" valueTypeId="79854dfd-5b0c-5b8f-b4b9-3dd2c5881e0b"/>
+  </producedTypes>
+  <name>ПортSMTP</name>
+  <synonym>
+    <key>ru</key>
+    <value>Порт SMTP</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>5</precision>
+    </numberQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+</mdclass:Constant>

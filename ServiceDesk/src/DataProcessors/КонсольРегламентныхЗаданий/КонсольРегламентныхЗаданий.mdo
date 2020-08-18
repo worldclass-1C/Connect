@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1f7585da-dccd-495f-8c3d-988df00464cf">
+  <producedTypes>
+    <objectType typeId="85a2de79-5714-40cb-9a2f-e090d45cbd64" valueTypeId="25c1dcf0-df53-4d13-b772-3ea9f2c29ffe"/>
+    <managerType typeId="4dc6bacb-9403-48e9-8061-e6d3725b1a9c" valueTypeId="cece602c-a7af-4f4e-b5d6-182d087a178c"/>
+  </producedTypes>
+  <name>КонсольРегламентныхЗаданий</name>
+  <synonym>
+    <key>ru</key>
+    <value>Консоль регламентных заданий</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>DataProcessor.КонсольРегламентныхЗаданий.Form.КонсольРегламентныхЗаданий</defaultForm>
+  <forms uuid="3bc35109-9cb7-41cc-8c53-4ebf92c20df0">
+    <name>КонсольРегламентныхЗаданий</name>
+    <synonym>
+      <key>ru</key>
+      <value>Консоль регламентных заданий</value>
+    </synonym>
+    <includeHelpInContents>true</includeHelpInContents>
+    <help>
+      <pages>
+        <lang>ru</lang>
+      </pages>
+    </help>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="9a691e92-ed47-4f86-b041-f91cb402cd68">
+    <name>ФоновоеЗадание</name>
+    <synonym>
+      <key>ru</key>
+      <value>Фоновое задание</value>
+    </synonym>
+    <help>
+      <pages>
+        <lang>ru</lang>
+      </pages>
+    </help>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="f105e625-20c2-41ee-813e-0fa2ca4d8fbd">
+    <name>РегламентноеЗадание</name>
+    <synonym>
+      <key>ru</key>
+      <value>Регламентное задание</value>
+    </synonym>
+    <help>
+      <pages>
+        <lang>ru</lang>
+      </pages>
+    </help>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="cbb6e826-1187-4346-90c3-e7a621f38847">
+    <name>ОбработкаРегламентныхЗаданий</name>
+    <synonym>
+      <key>ru</key>
+      <value>Обработка регламентных заданий</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="288312ae-f47b-4fa5-8960-54c1283e8ce1">
+    <name>НастройкаОбработкиРегламентныхЗаданий</name>
+    <synonym>
+      <key>ru</key>
+      <value>Настройка обработки регламентных заданий</value>
+    </synonym>
+    <help>
+      <pages>
+        <lang>ru</lang>
+      </pages>
+    </help>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="97106abc-4ac4-4eee-9b2d-48fb0d4c9900">
+    <name>РабочийСтолОтдельногоСеансаОбработкиРегламентныхЗаданий</name>
+    <synonym>
+      <key>ru</key>
+      <value>Рабочий стол отдельного сеанса обработки регламентных заданий</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:DataProcessor>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="cd614199-8e2b-4d9f-945c-39ec7248e9e5">
+  <name>ЛампаСиняя</name>
+  <synonym>
+    <key>ru</key>
+    <value>Лампа синяя</value>
+  </synonym>
+  <comment>Лампа синяя 24х24</comment>
+</mdclass:CommonPicture>

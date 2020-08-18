@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e1b14937-2bdf-4803-8358-8cd4ceaf64b8">
+  <name>НаборЗаписей_ПередЗаписью</name>
+  <synonym>
+    <key>ru</key>
+    <value>Набор записей перед записью</value>
+  </synonym>
+  <source>
+    <types>InformationRegisterRecordSet</types>
+    <types>AccumulationRegisterRecordSet</types>
+  </source>
+  <event>BeforeWrite</event>
+  <handler>CommonModule.ПодпискиНаСобытия.НаборЗаписей_ПередЗаписью</handler>
+</mdclass:EventSubscription>

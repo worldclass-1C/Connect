@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="edda3d98-f77b-4f99-9d43-669f06d17e7e">
+  <producedTypes>
+    <objectType typeId="e5e44227-96a2-45ca-9976-517cd1f8fd16" valueTypeId="a7307a67-55be-4de1-a4a7-bee03e3fc19e"/>
+    <refType typeId="149e1e31-3140-4ccf-ac51-dd6909198428" valueTypeId="0d428d01-df0f-4704-b128-a86e5a6c14ea"/>
+    <selectionType typeId="d4d61c6c-7ebf-4849-a112-054616e63c3f" valueTypeId="c4c152fa-144f-4746-b7e0-6ab8fe20917e"/>
+    <listType typeId="6b161c20-3b47-471e-8687-4f9c11397e8f" valueTypeId="fe98e843-aa58-44d6-a30b-047e608b010a"/>
+    <managerType typeId="9e680d07-6fad-4d59-8336-6e07f1a804b4" valueTypeId="3672bc7d-96b8-4bdc-beef-4bb86bd4a6ec"/>
+  </producedTypes>
+  <name>ВидыДеятельности</name>
+  <synonym>
+    <key>ru</key>
+    <value>Виды деятельности</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.ВидыДеятельности.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.ВидыДеятельности.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>100</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <predefined>
+    <items id="d27a2908-8d88-464c-9f70-7ff61bad5c20">
+      <name>Консультация</name>
+      <description>1 - Консультация</description>
+      <code xsi:type="core:StringValue">
+        <value>000000002</value>
+      </code>
+    </items>
+    <items id="541090d6-efad-49cd-b2c4-ff662f59a317">
+      <name>ИсправлениеОшибок</name>
+      <description>2 - Ошибка разработчика</description>
+      <code xsi:type="core:StringValue">
+        <value>000000003</value>
+      </code>
+    </items>
+    <items id="90cb7449-bac3-4bf8-8149-200727fb5e08">
+      <name>Разработка</name>
+      <description>3 - Разработка</description>
+      <code xsi:type="core:StringValue">
+        <value>000000004</value>
+      </code>
+    </items>
+    <items id="d243b31e-0883-4c59-b247-addd5d3c5244">
+      <name>ОшибкиПользователей</name>
+      <description>4 - Ошибка пользователя</description>
+      <code xsi:type="core:StringValue">
+        <value>000000005</value>
+      </code>
+    </items>
+    <items id="0912303b-5139-4128-9fd8-115498e2e2d0">
+      <name>ОбработкаДанных</name>
+      <description>5 - Обработка данных</description>
+      <code xsi:type="core:StringValue">
+        <value>000000006</value>
+      </code>
+    </items>
+  </predefined>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.ВидыДеятельности.Form.ФормаЭлемента</defaultObjectForm>
+  <attributes uuid="3fc5a878-5a02-44c9-a696-535c07418ef5">
+    <name>ВремяРеакции</name>
+    <synonym>
+      <key>ru</key>
+      <value>Время реакции (в часах)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <scale>3</scale>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="133ee61a-8ce6-4297-9151-be8cd993a9d7">
+    <name>ВремяПринятияВРаботу</name>
+    <synonym>
+      <key>ru</key>
+      <value>Время принятия в работу (в часах)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <scale>3</scale>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="d205728c-9379-468c-9d92-b9a05f92a07b">
+    <name>ВремяРешенияИнцедента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Максимальное время решения инцедента (в часах)</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <scale>3</scale>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="98b5d33e-beb4-41de-84dd-19ed9d6a1ee4">
+    <name>Постоянная</name>
+    <synonym>
+      <key>ru</key>
+      <value>Постоянная</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="e4186d70-f427-45e5-bb9a-e777e8390c71">
+    <name>ФормаЭлемента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма элемента</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0202c245-aa0c-4000-bf02-9d242a5a974a">
+  <name>КругСерый</name>
+  <synonym>
+    <key>ru</key>
+    <value>Круг серый</value>
+  </synonym>
+  <comment>Круг серый 24х24</comment>
+</mdclass:CommonPicture>

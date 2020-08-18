@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f9f8f98c-6294-4335-9b04-5a75be32103d">
+  <producedTypes>
+    <objectType typeId="1e37ff57-3140-4bb9-9cb8-94b292411935" valueTypeId="839fefcf-f762-418d-8df2-8ab75dbc3e43"/>
+    <refType typeId="31dd2d5d-39cb-414c-a02f-02cacc6c7c26" valueTypeId="e638d5c4-2c32-4b22-a00e-c12eb29901cf"/>
+    <selectionType typeId="06bfe13c-c5fc-4f92-b9cb-970deb93ad13" valueTypeId="b0f76b2e-5e81-416f-bf7a-a118e359ec8b"/>
+    <listType typeId="ce1f3d71-e4b8-4738-a4c4-36f6d71426b5" valueTypeId="c8480247-9afc-462e-af39-0974d24148c4"/>
+    <managerType typeId="87e29868-12a6-403e-8c2c-aa737850dd59" valueTypeId="bd2dfcfd-cb71-40e8-b777-7ee9c0a3c0a0"/>
+  </producedTypes>
+  <name>Проекты</name>
+  <synonym>
+    <key>ru</key>
+    <value>Проекты</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Проекты.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.Проекты.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <hierarchical>true</hierarchical>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>3</codeLength>
+  <descriptionLength>100</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Проекты.Form.ФормаЭлемента</defaultObjectForm>
+  <defaultListForm>Catalog.Проекты.Form.ФормаСписка</defaultListForm>
+  <tabularSections uuid="f34cd24f-b8b1-44c4-a82e-b9298cedacfe">
+    <producedTypes>
+      <objectType typeId="efa189e4-773c-4910-adfd-36cf03dcb744" valueTypeId="86023826-94eb-4838-88de-9c60f06fa3e1"/>
+      <rowType typeId="5318b2ba-f801-438c-b492-aef626684de3" valueTypeId="a291f86a-28e9-4b5c-94df-5676ef921946"/>
+    </producedTypes>
+    <name>Участники</name>
+    <synonym>
+      <key>ru</key>
+      <value>Участники</value>
+    </synonym>
+    <attributes uuid="3a9055a0-54ea-4a25-8f0d-878239c50a3c">
+      <name>Участник</name>
+      <synonym>
+        <key>ru</key>
+        <value>Участник</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.Пользователи</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <fillChecking>ShowError</fillChecking>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <forms uuid="09abc1c6-1797-4422-ae52-a7925ea9be87">
+    <name>ФормаЭлемента</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма элемента</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="27cb7440-4ab2-4f67-8016-7c9b856dfb50">
+    <name>ФормаСписка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Форма списка</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

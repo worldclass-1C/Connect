@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ec00fa25-f756-421f-9bdb-e093395b593b">
+  <producedTypes>
+    <managerType typeId="806abbba-8858-4aec-bee7-8ac705a2836b" valueTypeId="8943237a-7ef0-44e0-8aad-3ad78e95c14b"/>
+    <valueManagerType typeId="3308ae32-0d85-4e98-9c38-d3833f150358" valueTypeId="d4913b7e-ba58-4102-aecb-924e9a895256"/>
+    <valueKeyType typeId="160cea0b-df0a-53d3-b627-29eb44aab2f1" valueTypeId="f80404b5-66c4-53ee-a8ee-3b5b3b3a6452"/>
+  </producedTypes>
+  <name>ДатаЗапретаРедактированияУРВ</name>
+  <synonym>
+    <key>ru</key>
+    <value>Дата запрета редактирования УРВ</value>
+  </synonym>
+  <type>
+    <types>Date</types>
+    <dateQualifiers>
+      <dateFractions>Date</dateFractions>
+    </dateQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

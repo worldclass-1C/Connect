@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e8dd8322-5fac-43ce-b66e-917cd82eca73">
+  <name>Администрирование</name>
+  <synonym>
+    <key>ru</key>
+    <value>Администрирование</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>CommonPicture.Администрирование</content>
+  <content>DataProcessor.КонсольРегламентныхЗаданий</content>
+  <content>CommonPicture.ОбработатьРегламентноеЗаданиеВручную</content>
+  <content>Constant.СостояниеОбработкиРегламентныхЗаданий</content>
+  <content>CommonForm.ФормаКонстант</content>
+  <content>CommonPicture.КонсольЗаданий</content>
+  <content>5a849977-c049-47d5-be5d-d1c0139f1787</content>
+  <content>0aa25f0f-0ee1-481f-bcf0-668dd2edad99</content>
+  <content>CommonPicture.Робот</content>
+  <content>9598669f-e04c-49fb-b37c-5603700a97f7</content>
+  <content>Enum.ПлатформыВнешнихИнформационныхБаз</content>
+  <content>CommonPicture.ОбменДанными</content>
+  <content>CommonModule.ПроцедурыЗагрузкиДанныхСервер</content>
+  <content>InformationRegister.ПраваДоступаКИнформационнымСистемам</content>
+  <content>Constant.ДатаЗапретаРедактированияУРВ</content>
+  <content>DataProcessor.ЗаполнитьПроизводственныйКалендарь</content>
+  <content>eb2899b5-d565-4c83-82e3-68fe47ab1624</content>
+  <content>DataProcessor.АктивныеПользователи</content>
+  <content>82178322-e946-40c0-8a68-5dc252330ed6</content>
+  <content>AccumulationRegister.ВыполненыеЗаявки</content>
+  <content>CommonCommand.НайтиЗаявкуПоНомеру</content>
+</mdclass:Subsystem>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="07f5d132-e6ca-4ecf-b3f3-cc2b107eb25c">
+  <name>Закладка</name>
+  <synonym>
+    <key>ru</key>
+    <value>Закладка</value>
+  </synonym>
+  <comment>24х24</comment>
+</mdclass:CommonPicture>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonPicture xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dc4ac67b-d55d-4825-a4ff-57f637ffac61">
+  <name>Диск</name>
+  <synonym>
+    <key>ru</key>
+    <value>Диск</value>
+  </synonym>
+  <comment>Диск 24х24</comment>
+</mdclass:CommonPicture>

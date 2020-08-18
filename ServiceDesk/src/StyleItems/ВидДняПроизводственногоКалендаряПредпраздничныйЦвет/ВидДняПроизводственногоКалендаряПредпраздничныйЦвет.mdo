@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:StyleItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="745bf104-9c68-477f-ac49-7c58bc560c35">
+  <name>ВидДняПроизводственногоКалендаряПредпраздничныйЦвет</name>
+  <synonym>
+    <key>ru</key>
+    <value>Вид дня производственного календаря предпраздничный цвет</value>
+  </synonym>
+  <value xsi:type="core:ColorValue">
+    <value xsi:type="core:ColorRef">
+      <color>Web.DarkBlue</color>
+    </value>
+  </value>
+</mdclass:StyleItem>

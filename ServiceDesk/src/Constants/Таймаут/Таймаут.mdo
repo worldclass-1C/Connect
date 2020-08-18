@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3ad68455-9e67-4a90-bcfd-21c1c1654426">
+  <producedTypes>
+    <managerType typeId="3ff0fe1a-3056-4b59-84a7-2931cfdeedf1" valueTypeId="221f8ea1-7161-4437-ac7d-3d2715f24881"/>
+    <valueManagerType typeId="1e72f30d-711c-4595-b704-647e8ef0990d" valueTypeId="a0f77b94-b3ec-4111-b2a1-5cc6aeab016e"/>
+    <valueKeyType typeId="665d01e8-c7e6-5404-b570-25c79bae3327" valueTypeId="341298fe-6b27-575d-b5cc-0a98bddfb764"/>
+  </producedTypes>
+  <name>Таймаут</name>
+  <synonym>
+    <key>ru</key>
+    <value>Таймаут</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>5</precision>
+    </numberQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+</mdclass:Constant>

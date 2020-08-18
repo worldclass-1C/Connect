@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d1bc359b-57d9-48c2-93a9-8b3c0c2126b2">
+  <producedTypes>
+    <selectionType typeId="7d82a95a-81a1-47a6-99b9-40ffac570a4c" valueTypeId="d859bc74-6d8f-48fa-83ff-8ce848e8f536"/>
+    <listType typeId="8fe0c47d-a6d4-4d8b-ba49-ad810d239306" valueTypeId="43a774c1-6874-415f-a3e6-d9caf628b9a0"/>
+    <managerType typeId="d56f58b5-d82c-47ec-a1a4-6d738ff386bf" valueTypeId="2a923b68-0d61-4dad-9baa-eb4539449558"/>
+    <recordSetType typeId="7583e9ed-b20f-4a47-85f1-a9b2dafa7583" valueTypeId="cb10429a-3edc-427b-83ae-452bd5fbdb0b"/>
+    <recordKeyType typeId="2542cfb9-7d67-4995-9006-4ae26a9c07ab" valueTypeId="9558f4ab-20ca-45a4-9737-2d1b05d6a5b8"/>
+    <recordType typeId="ef6ff498-0250-4047-b001-f3bc1ca46a91" valueTypeId="cb378c0b-d047-4dee-80b9-d9e7e9109b25"/>
+  </producedTypes>
+  <name>ВыполненыеЗаявки</name>
+  <synonym>
+    <key>ru</key>
+    <value>Выполненые заявки</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <registerType>Turnovers</registerType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="1eaa0fc3-a44b-439d-8b2e-fcac1e5f91dc">
+    <name>Количество</name>
+    <synonym>
+      <key>ru</key>
+      <value>Количество</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <resources uuid="45d3d419-ec7f-4151-844b-26a08e534d74">
+    <name>Трудоёмкость</name>
+    <synonym>
+      <key>ru</key>
+      <value>Трудоёмкость</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <dimensions uuid="63060e5c-75ec-420c-b395-abc1175aabbd">
+    <name>Заявка</name>
+    <synonym>
+      <key>ru</key>
+      <value>Заявка</value>
+    </synonym>
+    <type>
+      <types>DocumentRef.ЗаявкаПользователя</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+</mdclass:AccumulationRegister>

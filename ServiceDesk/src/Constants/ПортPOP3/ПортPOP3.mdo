@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a8add0cd-5478-4d14-87f6-6ed6371c49a9">
+  <producedTypes>
+    <managerType typeId="8f1e1422-5916-4059-9171-6011098c2293" valueTypeId="4ae19feb-b6e6-47ad-84d9-4f59e39c2a8c"/>
+    <valueManagerType typeId="ab4c9857-e251-4a77-b469-2522efe7f656" valueTypeId="8251e403-b7af-4168-87af-49f83fee476a"/>
+    <valueKeyType typeId="358a1d83-ae24-5c3d-94bb-04aa3dbcd6a3" valueTypeId="ce3efc7f-1d4b-5d38-937a-80a424cf0652"/>
+  </producedTypes>
+  <name>ПортPOP3</name>
+  <synonym>
+    <key>ru</key>
+    <value>Порт POP3</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>5</precision>
+    </numberQualifiers>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+</mdclass:Constant>

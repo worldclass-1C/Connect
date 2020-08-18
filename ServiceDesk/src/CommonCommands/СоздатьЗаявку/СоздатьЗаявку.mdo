@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonCommand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9b13084b-9509-479b-8390-efc3093ae063">
+  <name>СоздатьЗаявку</name>
+  <synonym>
+    <key>ru</key>
+    <value>Создать заявку</value>
+  </synonym>
+  <group>ActionsPanelTools</group>
+  <commandParameterType/>
+  <representation>Picture</representation>
+  <picture xsi:type="core:PictureRef">
+    <picture>StdPicture.CreateListItem</picture>
+  </picture>
+  <shortcut></shortcut>
+</mdclass:CommonCommand>

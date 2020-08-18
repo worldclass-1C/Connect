@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonAttribute xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a60d49aa-3ad5-4617-a3d2-c3628f03d49a">
+  <name>АвторИзменения</name>
+  <synonym>
+    <key>ru</key>
+    <value>Автор изменения</value>
+  </synonym>
+  <type>
+    <types>CatalogRef.Пользователи</types>
+  </type>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataHistory>Use</dataHistory>
+  <fillValue xsi:type="core:UndefinedValue"/>
+  <content>
+    <metadata>Document.ЗаявкаПользователя</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>BusinessProcess.ОбработкаЗаявки</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.ЭтапыПроекта</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.РолиПользователей</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.СостоянияЗаявки</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.Релизы</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.ВидыДеятельности</metadata>
+    <use>DontUse</use>
+  </content>
+  <content>
+    <metadata>Catalog.Проекты</metadata>
+    <use>DontUse</use>
+  </content>
+  <dataSeparation>DontUse</dataSeparation>
+  <usersSeparation>DontUse</usersSeparation>
+  <authenticationSeparation>DontUse</authenticationSeparation>
+  <fullTextSearch>Use</fullTextSearch>
+</mdclass:CommonAttribute>
