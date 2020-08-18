@@ -180,9 +180,10 @@ Procedure payment(parameters) Export
 			EndDo;			
 			orderObject.Write();						
 		EndIf;
+		answer = Acquiring.executeRequest("process", order, parameters);
+		error = answer.errorCode;
 	EndIf;
-	answer = Acquiring.executeRequest("process", order, parameters);
-	error = answer.errorCode;
+	
 	//Отправляем в запрос в банк на оставшуюся сумму
 	If error = "" Then
 		If orderObject <> Undefined Then
