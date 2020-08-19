@@ -592,7 +592,7 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 							elementOfArray.cards.insert(0, cardStruct);
 						EndIf;
 					EndIf;
-					If ValueIsFilled(orderParams.hasQR) then
+					If ValueIsFilled(orderParams.hasQR) and orderParams.hasQR then
 						cardStruct = New Structure("type, name, uid, amount", "qr", NStr("ru='Оплата по QR коду';en='Payment by QR code'", parameters.languageCode), "qr", amount);
 						elementOfArray.cards.add(cardStruct);
 					EndIf;
