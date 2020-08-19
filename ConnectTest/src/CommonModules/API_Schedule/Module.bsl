@@ -4,7 +4,7 @@ Procedure gymSchedule(parameters) Export
 	tokenContext = parameters.tokenContext;
 	language = parameters.language;
 	classesScheduleArray = New Array();
-
+	
 	query = New Query();
 	textSelectGyms = "SELECT
 		|	gyms.chain,
@@ -87,23 +87,8 @@ Procedure gymSchedule(parameters) Export
 	|		LEFT JOIN InformationRegister.classMembers AS classMembers
 	|		ON classesSchedule.Ref = classMembers.class
 	|		LEFT JOIN Catalog.meetingZoom AS Meetings
-	|		ON classesSchedule.Ref = Meetings.doc
-	|GROUP BY
-	|	classesSchedule.Ref,
-	|	classesSchedule.period,
-	|	classesSchedule.employee,
-	|	classesSchedule.gym,
-	|	classesSchedule.room,
-	|	classesSchedule.product,
-	|	classesSchedule.isPreBooked,
-	|	classesSchedule.isPrePaid,
-	|	classesSchedule.onlyWithParents,
-	|	classesSchedule.onlyMembers,
-	|	classesSchedule.duration,
-	|	classesSchedule.ageMin,
-	|	classesSchedule.ageMax,
-	|	classesSchedule.studentLevel,
-	|	classesSchedule.price";
+	|		ON classesSchedule.Ref = Meetings.doc";
+	
 	textCondition = "
 		|WHERE
 		|	classesSchedule.gym IN (Select TemporaryGyms.gym from TemporaryGyms as TemporaryGyms)
@@ -111,6 +96,7 @@ Procedure gymSchedule(parameters) Export
 		|	AND classesSchedule.active";
 	textConditionEmployee = "";
 	textConditionService = "";
+	textConditionDocId = "";	
 
 	textGroup = "
 		|GROUP BY
