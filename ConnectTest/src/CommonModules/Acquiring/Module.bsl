@@ -475,7 +475,7 @@ Function orderDetails(order)
 	|			THEN gymConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
 	|		WHEN NOT chainConnection.qrConnection IS NULL
 	|			THEN chainConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
-	|		ELSE holdingConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|		ELSE false
 	|	END AS hasQR
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
