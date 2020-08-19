@@ -269,7 +269,24 @@ Procedure paymentStatus(parameters) Export
 					ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
 						answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
 					else
-						answerKPO = Acquiring.executeRequest("process", order, parameters);
+						BeginTransaction();
+						try
+							DataLock = New DataLock;
+							DataLockItem = DataLock.Add("InformationRegister.acquiringOrdersQueue");
+							DataLockItem.SetValue("order", order);
+							DataLock.Lock();
+							answerKPO = Acquiring.executeRequest("process", order, parameters);
+							CommitTransaction();
+						Except
+							RollbackTransaction();
+							Raise;
+						EndTry;
+						If Not TransactionActive() Then
+							UnlockDataForEdit(order);
+						EndIf;
+					EndIf;
+					If answerKPO.errorCode = "" Then
+						Acquiring.delOrderToQueue(parameters.order);
 					EndIf;
 					//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
 					//	parameters.Insert("error", "system");					

@@ -52,7 +52,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 		EndIf;
 		parametersNew.Insert("requestStruct", requestStruct);
 		parametersNew.Insert("internalRequestMethod", True);
-		Acquiring.delOrderToQueue(parameters.order);
+		//Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
 		//Service.logRequestBackground(parametersNew);
 		If select.state.isEmpty() And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60) Then
@@ -60,16 +60,12 @@ Procedure processOrder(parameters, additionalParameters) Export
 		EndIf;
 
 		If parametersNew.error <> "" Then
-			If parameters.order.acquiringAmount = 0 Then
-				Acquiring.delOrderToQueue(parameters.order);
-			Else
-				Acquiring.addOrderToQueue(parameters.order, select.state);
+				//Acquiring.addOrderToQueue(parameters.order, select.state);
 				parameters.Insert("errorCode", parametersNew.error);
 				Texts = String(parametersNew.requestName) + chars.LF + parametersNew.requestBody + chars.LF
 					+ parametersNew.statusCode + chars.LF + parametersNew.answerBody;
 				parameters.Insert("response", Service.getErrorDescription(additionalParameters.language,
 					parametersNew.error, , Texts));
-			EndIf;
 		EndIf;
 	EndIf;
 

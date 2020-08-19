@@ -88,7 +88,10 @@ Procedure ProcessQueue() Export
 			Acquiring.executeRequest("unBindCardBack", OrdersToProcess.order, parameters);
 		else
 			If OrdersToProcess.try < 30 then
-				Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+				answerKPO = Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+				If answerKPO.errorCode = "" Then
+					Acquiring.delOrderToQueue(OrdersToProcess.order);
+				EndIf;
 			Else
 				Acquiring.delOrderToQueue(OrdersToProcess.order);
 			EndIf;
