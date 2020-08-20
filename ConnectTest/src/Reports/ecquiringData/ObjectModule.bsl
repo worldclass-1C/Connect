@@ -124,7 +124,7 @@ Function GetParametersToSend(DataSelect)
 	Parameters = new structure();
 	Parameters.Insert("language", DataSelect.language);
 	Parameters.Insert("authKey", string(DataSelect.tokenDefault.UUID()));
-	Parameters.Insert("requestName", "requester");
+	Parameters.Insert("requestName", "request");
 	Parameters.Insert("languageCode", DataSelect.languageCode);
 	TokenContext = New structure();
 	TokenContext.Insert("user", DataSelect.userCode);
