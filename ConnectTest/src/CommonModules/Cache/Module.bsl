@@ -198,7 +198,7 @@ Function TextQuery()
 	|	CT.PredefinedDataName AS PredefinedDataName,
 	|	NOT (&date BETWEEN CI.cacheInformation.startRotation AND CI.cacheInformation.endRotation) AS Pass
 	|INTO tabCI
-	|FROM
+	|FROM	
 	|	Catalog.cacheTypes AS CT
 	|		LEFT JOIN InformationRegister.cacheIndex AS CI
 	|		ON CT.Ref = CI.cacheType

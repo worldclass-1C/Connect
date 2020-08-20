@@ -1,8 +1,16 @@
 &AtClient
 Procedure OnChange(Item)
+	OnChangeAtServer()
+EndProcedure
+
+&AtServer
+Procedure OnChangeAtServer()
 	Tab.Clear();
 	For cht=1 to Count Do
-		Tab.Add().email = StrTemplate("%1%2@%3",Prefix,Count,Postfix);
+		email = StrTemplate("%1%2@%3",Prefix,cht,Postfix);
+		If Not ValueIsFilled(Catalogs.hostsZoom.FindByAttribute("email", email)) Then
+			Tab.Add().email =email ;
+		EndIf;	
 	EndDo
 EndProcedure
 

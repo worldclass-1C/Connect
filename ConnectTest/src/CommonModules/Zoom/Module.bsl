@@ -138,7 +138,7 @@ Procedure addhost(arrAcc,ConnectInfo,Application) Export
 	
 	For Each strucAcc In arrAcc Do
 		strucZoom = New Structure("action,user_info",
-									strucAcc);
+							"create",strucAcc);
 		Try
 			res = goQuery(ConnectInfo, "users", strucZoom);
 			body = res.GetBodyAsString();
