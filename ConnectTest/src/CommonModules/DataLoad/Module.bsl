@@ -12,20 +12,22 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined, bra
 		If TypeOf(requestStruct) = Type("Array") Then
 			For Each requestParameter In requestStruct Do
 				object = initObjectItem(attributesStruct, requestParameter);
-				For Each attribute In attributesStruct.attributesTable Do
-					fillField(object, attribute, attributesStruct, requestParameter);
-				EndDo;
-				fillPredefinedField(object, attributesStruct, holding, owner, brand);
-				If attributesStruct.actType = "write" Then
-					object.Write();
-				ElsIf attributesStruct.actType = "delete" Then
-					object.Read();
-					If object.Selected() Then
-						object.Delete();
+				If object <> Undefined Then
+					For Each attribute In attributesStruct.attributesTable Do
+						fillField(object, attribute, attributesStruct, requestParameter);
+					EndDo;
+					fillPredefinedField(object, attributesStruct, holding, owner, brand);
+					If attributesStruct.actType = "write" Then
+						object.Write();
+					ElsIf attributesStruct.actType = "delete" Then
+						object.Read();
+						If object.Selected() Then
+							object.Delete();
+						EndIf;
 					EndIf;
-				EndIf;
-				If attributesStruct.mdType <> "informationRegister" Then
-					items.Add(object.Ref);
+					If attributesStruct.mdType <> "informationRegister" Then
+						items.Add(object.Ref);
+					EndIf;
 				EndIf;
 			EndDo;
 		EndIf;
@@ -125,16 +127,20 @@ Function initObjectItem(attributesStruct, requestParameter)
 		EndIf;
 		object = catalogRef.GetObject();
 		If object = Undefined Then
-			If requestParameter.Property("isfolder") And requestParameter.isfolder Then
-				object = Catalogs[attributesStruct.mdObjectName].CreateFolder();
-			Else
-				object = Catalogs[attributesStruct.mdObjectName].CreateItem();
+			If requestParameter.Property("notCreate") And requestParameter.notCreate Then
+				requestParameter.Delete("notCreate");
+			Else	
+				If requestParameter.Property("isfolder") And requestParameter.isfolder Then
+					object = Catalogs[attributesStruct.mdObjectName].CreateFolder();
+				Else
+					object = Catalogs[attributesStruct.mdObjectName].CreateItem();
+				EndIf;
+				object.SetNewObjectRef(catalogRef);
+				object.SetNewCode();
+				For Each attribute In attributesStruct.attributesTableForNewItem Do
+					object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+				EndDo;
 			EndIf;
-			object.SetNewObjectRef(catalogRef);
-			object.SetNewCode();
-			For Each attribute In attributesStruct.attributesTableForNewItem Do
-				object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
-			EndDo;
 		EndIf;
 	ElsIf attributesStruct.mdType = "informationRegister" Then
 		object = InformationRegisters[attributesStruct.mdObjectName].CreateRecordManager();	
