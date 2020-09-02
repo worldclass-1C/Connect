@@ -286,7 +286,7 @@ Procedure paymentStatus(parameters) Export
 						EndIf;
 					EndIf;
 					If answerKPO.errorCode = "" Then
-						Acquiring.delOrderToQueue(parameters.order);
+						Acquiring.delOrderToQueue(order);
 					EndIf;
 					//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
 					//	parameters.Insert("error", "system");					
