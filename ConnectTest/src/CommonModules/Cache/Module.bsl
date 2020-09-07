@@ -135,7 +135,7 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 			For Each lDecr In KeyVal.Value.Array Do
 				ValRepl = mapDescr.Get(lDecr);
 				If ValRepl=Undefined Then
-					ValRepl=""
+					ValRepl="null"
 				EndIf; 
 				res.Insert(StrTemplate("""%1""",String(lDecr.UUID())),ValRepl)
 			EndDo;
