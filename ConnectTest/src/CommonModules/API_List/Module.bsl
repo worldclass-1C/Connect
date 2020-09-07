@@ -641,18 +641,19 @@ Function  getArrProduct(params) Export
 		productStruct.Insert("uid", XMLString(select.product));		
 		productStruct.Insert("name", select.description);		
 		productStruct.Insert("shortDescription", select.shortDescription);
+		
+		If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
+			productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
+		ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then
+			productStruct.Insert("photo", baseImgURL + "/service/spa.jpg");
+		Else			 	 
+			productStruct.Insert("photo", select.photo);
+		EndIf;
+			
 		If Not stucParams.short Then
 			if select.price <> Undefined and select.price <> "" then
 				productStruct.Insert("price", select.price);
 			EndIf;
-			If select.photo = "" And select.productDirection = Enums.productDirections.fitness Then
-				productStruct.Insert("photo", baseImgURL + "/service/fitness.jpg");
-			ElsIf select.photo = "" And select.productDirection = Enums.productDirections.spa Then
-				productStruct.Insert("photo", baseImgURL + "/service/spa.jpg");
-			Else			 	 
-				productStruct.Insert("photo", select.photo);
-			EndIf;				
-		
 			tagArray = New Array();
 			While selectTags.FindNext(New Structure("product", select.product)) Do
 				tagStruct = New Structure();
