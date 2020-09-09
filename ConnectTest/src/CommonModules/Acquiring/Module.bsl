@@ -41,6 +41,9 @@ Function newOrder(parameters) Export
 			EndIf;
 		EndDo;
 	EndIf;
+	If parameters.Property("gymId") Then
+		orderObject.gym = XMLValue(Type("CatalogRef.gyms"), parameters.gymId);		
+	EndIf;
 	orderObject.registrationDate = ToUniversalTime(CurrentDate());
 	orderObject.Write();
 	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));

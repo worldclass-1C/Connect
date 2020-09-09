@@ -52,6 +52,7 @@ Procedure paymentPreparation(parameters) Export
 		orderStruct.Insert("amount", struct.paymentAmount);
 		orderStruct.Insert("acquiringAmount", struct.paymentAmount);
 		orderStruct.Insert("orders", struct.docList);
+		orderStruct.Insert("gymId", struct.gymId);
 		orderStruct.Insert("paymentOptions", struct.paymentOptions);
 		order = Acquiring.newOrder(orderStruct);
 		//@skip-warning
