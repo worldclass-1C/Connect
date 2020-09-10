@@ -489,21 +489,21 @@ Function orderDetails(order)
 	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
 	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding		
 	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
 	|		ON acquiringOrders.holding = gymConnection.holding
 	|		AND acquiringOrders.gym = gymConnection.gym
 	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	|		ON acquiringOrders.holding = holdingConnection.holding
-	|		AND acquiringOrders.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
 	|		ON acquiringOrders.holding = gymConnection.holding
 	|		AND acquiringOrders.gym.chain = gymConnection.chain
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
 	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
 	|		AND acquiringOrders.gym.chain = gymAcquiringProviderConnection.chain
