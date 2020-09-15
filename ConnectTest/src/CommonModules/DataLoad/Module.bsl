@@ -120,8 +120,10 @@ EndFunction
 Function initObjectItem(attributesStruct, requestParameter)
 	
 	If attributesStruct.mdType = "catalog" Then
-		If attributesStruct.mdObjectName = "languages" Then
-			catalogRef = Catalogs[attributesStruct.mdObjectName].FindByCode(requestParameter.code)
+		If attributesStruct.mdObjectName = "accounts" Then
+			catalogRef = Catalogs[attributesStruct.mdObjectName].FindByCode(requestParameter.phoneNumber)
+		ElsIf attributesStruct.mdObjectName = "languages" Then
+			catalogRef = Catalogs[attributesStruct.mdObjectName].FindByCode(requestParameter.code)		
 		Else
 			catalogRef = Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
 		EndIf;
