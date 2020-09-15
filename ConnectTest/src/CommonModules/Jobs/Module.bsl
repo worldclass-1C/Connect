@@ -96,13 +96,18 @@ Procedure ProcessQueue() Export
 				Acquiring.delOrderToQueue(OrdersToProcess.order);
 			EndIf;
 		EndIf;
+		
+		If OrdersToProcess.orderState = Null Then
+			Acquiring.changeOrderState(OrdersToProcess.order, Enums.acquiringOrderStates.rejected);
+		EndIf; 
+		
 	EndDo;	
 EndProcedure
 
 Function GetOrdersToProcess()
 	Query = New Query();
 	Query.Text = "SELECT TOP 100
-	|	acquiringOrdersQueue.order,
+	|	acquiringOrdersQueue.order AS order,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault.Code, """") AS languageCode,
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
