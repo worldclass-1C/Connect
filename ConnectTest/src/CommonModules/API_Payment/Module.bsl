@@ -257,42 +257,42 @@ Procedure paymentStatus(parameters) Export
 		selection = result.Select();
 	    selection.Next();
 		If selection.state = Enums.acquiringOrderStates.send Then
-			response = Acquiring.executeRequest("check", order, requestStruct);
-			If response = Undefined Then
-				parameters.Insert("error", "acquiringOrderCheck");
-			Else				
-				//parameters.Insert("error", response.errorCode);
-				If response.errorCode = "" Then
-					struct.Insert("result", "ok");
-					Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);
-					If order.acquiringRequest = Enums.acquiringRequests.unbinding then
-						answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
-					ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
-						answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
-					else
-						BeginTransaction();
-						try
-							DataLock = New DataLock;
-							DataLockItem = DataLock.Add("InformationRegister.acquiringOrdersQueue");
-							DataLockItem.SetValue("order", order);
-							DataLock.Lock();
-							answerKPO = Acquiring.executeRequest("process", order, parameters);
-							CommitTransaction();
-						Except
-							RollbackTransaction();
-							Raise;
-						EndTry;
-						If Not TransactionActive() Then
-							UnlockDataForEdit(order);
+			DataLock = New DataLock;
+			DataLockItem = DataLock.Add("InformationRegister.acquiringOrdersQueue");
+			DataLockItem.SetValue("order", order);
+			BeginTransaction();
+			try	
+				DataLock.Lock();
+				response = Acquiring.executeRequest("check", order, requestStruct);
+				If response = Undefined Then
+					parameters.Insert("error", "acquiringOrderCheck");
+				Else				
+					//parameters.Insert("error", response.errorCode);
+					If response.errorCode = "" Then
+						struct.Insert("result", "ok");
+						Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);
+						If order.acquiringRequest = Enums.acquiringRequests.unbinding then
+							answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
+						ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
+							answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
+						else
+							answerKPO = Acquiring.executeRequest("process", order, parameters);		
 						EndIf;
+						If answerKPO.errorCode = "" Then
+							Acquiring.delOrderToQueue(order);
+						EndIf;
+						//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
+						//	parameters.Insert("error", "system");					
+						//EndIf;
 					EndIf;
-					If answerKPO.errorCode = "" Then
-						Acquiring.delOrderToQueue(order);
-					EndIf;
-					//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
-					//	parameters.Insert("error", "system");					
-					//EndIf;
 				EndIf;
+				CommitTransaction();
+			Except
+				RollbackTransaction();
+				Raise;
+			EndTry;
+			If Not TransactionActive() Then
+				UnlockDataForEdit(order);
 			EndIf;
 		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		
 			//parameters.Insert("error", "acquiringOrderRejected");			
