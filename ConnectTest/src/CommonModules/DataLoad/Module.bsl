@@ -127,7 +127,12 @@ Function initObjectItem(attributesStruct, requestParameter)
 		Else
 			catalogRef = Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
 		EndIf;
-		object = catalogRef.GetObject();
+		If catalogRef = Undefined Then
+			object = Undefined	
+		Else
+			object = catalogRef.GetObject();
+		EndIf;		
+		
 		If object = Undefined Then
 			If requestParameter.Property("notCreate") And requestParameter.notCreate Then
 				requestParameter.Delete("notCreate");
