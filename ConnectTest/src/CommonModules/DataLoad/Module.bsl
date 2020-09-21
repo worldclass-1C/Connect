@@ -127,8 +127,8 @@ Function initObjectItem(attributesStruct, requestParameter)
 		Else
 			catalogRef = Catalogs[attributesStruct.mdObjectName].GetRef(New UUID(requestParameter.uid));
 		EndIf;
-		If catalogRef = Undefined Then
-			object = Undefined	
+		If catalogRef = Undefined Or catalogRef.IsEmpty() Then
+			object = Undefined;
 		Else
 			object = catalogRef.GetObject();
 		EndIf;		
