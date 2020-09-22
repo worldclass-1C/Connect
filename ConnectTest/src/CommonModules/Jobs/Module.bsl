@@ -59,7 +59,7 @@ EndProcedure
 
 Function GetOrdersToCheck()
 	Query = New Query();
-	Query.Text = "SELECT TOP 100
+	Query.Text = "SELECT TOP 100 ALLOWED
 	|	acquiringOrdersQueue.order
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
@@ -106,7 +106,7 @@ EndProcedure
 
 Function GetOrdersToProcess()
 	Query = New Query();
-	Query.Text = "SELECT TOP 100
+	Query.Text = "SELECT TOP 100 ALLOWED
 	|	acquiringOrdersQueue.order AS order,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault.Code, """") AS languageCode,
