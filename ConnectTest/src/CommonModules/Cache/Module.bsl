@@ -59,11 +59,9 @@ Function GetCache(parameters, struсRequest) Export
 					arrData.Add(HTTP.decodeJSON(data));
 				EndIf
 			EndDo;
-			If FoundRow.cacheType=Catalogs.cacheTypes.bannerList 
-				OR FoundRow.cacheType=Catalogs.cacheTypes.rentedLockerList 
-				OR arrData.Count()>1 Then
+			If FoundRow.cacheType=Catalogs.cacheTypes.bannerList Then
 				strucRes.Insert(FoundRow.PredefinedDataName,arrData);
-			ElsIf arrData.Count()=1 Then
+			ElsIf arrData.Count()>0 Then
 				strucRes.Insert(FoundRow.PredefinedDataName,arrData[0]);
 			EndIf; 
 //			If arrData.Count()=1 and Not FoundRow.cacheType =   Then
