@@ -163,15 +163,16 @@ Function orderDetails(order)
 	|WHERE
 	|	acquiringOrderspayments.Ref = &order
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
+	|SELECT TOP 1
 	|	acquiringOrders.Ref AS order,
 	|	acquiringOrderIdentifiers.Ref AS orderId,
 	|	acquiringOrders.Code AS orderNumber,
 	|	acquiringOrders.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
 	|	acquiringOrders.user AS bindingUser,
-	|	acquiringOrders.creditCard,
-	|	ISNULL(acquiringOrders.creditCard.owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
+	|	acquiringOrders.creditCard AS creditCard,
+	|	ISNULL(acquiringOrders.creditCard.Owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
 	|	acquiringOrders.acquiringRequest AS acquiringRequest,
 	|	CASE
 	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
@@ -440,7 +441,7 @@ Function orderDetails(order)
 	|			ELSE holdingConnection.connection.key
 	|		END
 	|	END AS key,
-	|	acquiringOrders.registrationDate,
+	|	acquiringOrders.registrationDate AS registrationDate,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
 	|			THEN gymAcquiringProviderConnection.qrConnection.merchantID
@@ -469,16 +470,16 @@ Function orderDetails(order)
 	|	END AS authorization,
 	|	CASE
 	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN gymAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|			THEN gymAcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
 	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN chainAcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|			THEN chainAcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
 	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|			THEN AcquiringProviderConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|			THEN AcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
 	|		WHEN NOT gymConnection.qrConnection IS NULL
-	|			THEN gymConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
+	|			THEN gymConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
 	|		WHEN NOT chainConnection.qrConnection IS NULL
-	|			THEN chainConnection.qrConnection <> Value(Catalog.qrAcquiringConnections.EmptyRef)
-	|		ELSE false
+	|			THEN chainConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
+	|		ELSE FALSE
 	|	END AS hasQR
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
@@ -489,7 +490,7 @@ Function orderDetails(order)
 	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
 	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding		
+	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
 	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
 	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
@@ -501,17 +502,18 @@ Function orderDetails(order)
 	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
 	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
-	|		ON acquiringOrders.holding = gymConnection.holding
-	|		AND acquiringOrders.gym.chain = gymConnection.chain
+	|		ON acquiringOrders.holding = chainConnection.holding
+	|		AND acquiringOrders.gym.chain = chainConnection.chain
 	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
-	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym.chain = gymAcquiringProviderConnection.chain
-	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider,
+	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
+	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|WHERE
-	|	acquiringOrders.ref = &order
+	|	acquiringOrders.Ref = &order
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TemporaryDepositAmount";
 
