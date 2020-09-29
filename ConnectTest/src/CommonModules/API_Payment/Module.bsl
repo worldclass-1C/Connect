@@ -245,10 +245,26 @@ Procedure paymentStatus(parameters) Export
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
 	|		ON acquiringOrders.Ref = acquiringOrderIdentifiers.Owner
 	|WHERE
-	|	acquiringOrders.Ref = &order");
+	|	acquiringOrders.Ref = &order
+	|
+	|UNION ALL
+	|
+	|SELECT
+	|	acquiringOrderIdentifiers.Owner,
+	|	acquiringOrderIdentifiers.Owner.acquiringRequest,
+	|	ISNULL(ordersStates.state, VALUE(Enum.acquiringOrderStates.EmptyRef)) AS state,
+	|	acquiringOrderIdentifiers.Ref
+	|FROM
+	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
+	|		ON acquiringOrderIdentifiers.Owner = ordersStates.order
+	|WHERE
+	|	acquiringOrderIdentifiers.Ref = &identifier");
 
-	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
+	order 		= XMLValue(Type("catalogRef.acquiringOrders"), 				requestStruct.uid);
+	identifier 	= XMLValue(Type("CatalogRef.acquiringOrderIdentifiers"), 	requestStruct.uid);
 	query.SetParameter("order", order);
+	query.SetParameter("identifier", identifier);
 	result = query.Execute();
 	struct.Insert("result", "fail");
 	If result.IsEmpty() Then
@@ -291,9 +307,6 @@ Procedure paymentStatus(parameters) Export
 				RollbackTransaction();
 				Raise;
 			EndTry;
-			If Not TransactionActive() Then
-				UnlockDataForEdit(order);
-			EndIf;
 		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		
 			//parameters.Insert("error", "acquiringOrderRejected");			
 		ElsIf selection.state = Enums.acquiringOrderStates.EmptyRef() Then
@@ -303,7 +316,7 @@ Procedure paymentStatus(parameters) Export
 		EndIf;
 	EndIf;
 	If struct.result = "fail" Then
-		If response.errorCode = "send"  Then
+		If ValueIsFilled(response) and response.errorCode = "send"  Then
 			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
 		else
 			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
