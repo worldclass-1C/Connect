@@ -309,7 +309,7 @@ Procedure informationSourceAlert() Export
 	headers	= New Map();
 	headers.Insert("Content-Type", "application/json");
 		
-	query	= New Query("SELECT TOP 100
+	query	= New Query("SELECT DISTINCT TOP 100
 	|	usersChanges.Ref.holding AS holding,
 	|	usersChanges.Ref AS user,
 	|	CASE
@@ -326,15 +326,17 @@ Procedure informationSourceAlert() Export
 	|	Catalog.users.Changes AS usersChanges
 	|		LEFT JOIN Catalog.tokens AS tokensEmployee
 	|		ON (usersChanges.Ref = tokensEmployee.user)
-	|			AND (tokensEmployee.appType = VALUE(Enum.appTypes.Employee))
-	|			AND (tokensEmployee.lockDate = DATETIME(1, 1, 1))
+	|		AND (tokensEmployee.appType = VALUE(Enum.appTypes.Employee))
+	|		AND (tokensEmployee.lockDate = DATETIME(1, 1, 1))
 	|		LEFT JOIN Catalog.tokens AS tokensCustomer
 	|		ON (usersChanges.Ref = tokensCustomer.user)
-	|			AND (tokensCustomer.appType = VALUE(Enum.appTypes.Customer))
-	|			AND (tokensCustomer.lockDate = DATETIME(1, 1, 1))
+	|		AND (tokensCustomer.appType = VALUE(Enum.appTypes.Customer))
+	|		AND (tokensCustomer.lockDate = DATETIME(1, 1, 1))
 	|WHERE
 	|	usersChanges.Node = &Node
-	|TOTALS BY
+	|	AND usersChanges.Ref.holding <> VALUE(Catalog.Holdings.EmptyRef)
+	|TOTALS
+	|BY
 	|	holding");
 	
 	node	= GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn);
