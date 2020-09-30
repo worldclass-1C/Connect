@@ -107,4 +107,21 @@
       <handler>fileDELETE</handler>
     </methods>
   </urlTemplates>
+  <urlTemplates uuid="584e49d7-27fb-41c9-889a-26320f091424">
+    <name>ProcessRequest</name>
+    <synonym>
+      <key>ru</key>
+      <value>Process request</value>
+    </synonym>
+    <template>/*</template>
+    <methods uuid="338a7cf5-a315-4596-ae42-74f705980519">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>ProcessRequestPOST</handler>
+    </methods>
+  </urlTemplates>
 </mdclass:HTTPService>
