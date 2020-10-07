@@ -227,6 +227,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="517bbde8-da2c-4915-819b-4818aaaea5c7">
+    <name>contract</name>
+    <synonym>
+      <key>ru</key>
+      <value>Contract</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>36</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="b76aa4c0-e224-40d0-a8ce-3472bf3de256">
     <producedTypes>
       <objectType typeId="1196ce49-425c-49f5-b732-2fcf62125973" valueTypeId="d370e40f-7320-4d8e-8e37-fe8301d14904"/>

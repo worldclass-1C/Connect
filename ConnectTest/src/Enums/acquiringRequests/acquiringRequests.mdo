@@ -81,4 +81,11 @@
       <value>Qr register</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="a86f2720-94e6-4091-b14a-4c27304d14c9">
+    <name>autoPayment</name>
+    <synonym>
+      <key>ru</key>
+      <value>Auto payment</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

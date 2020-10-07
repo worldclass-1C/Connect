@@ -54,6 +54,7 @@ Procedure paymentPreparation(parameters) Export
 		orderStruct.Insert("orders", struct.docList);
 		orderStruct.Insert("gymId", struct.gymId);
 		orderStruct.Insert("paymentOptions", struct.paymentOptions);
+		orderStruct.Insert("autoPayment", ?(struct.Property("autoPayment"),struct.autoPayment, False));
 		order = Acquiring.newOrder(orderStruct);
 		//@skip-warning
 		struct.Insert("uid", XMLString(order));		
@@ -245,26 +246,12 @@ Procedure paymentStatus(parameters) Export
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
 	|		ON acquiringOrders.Ref = acquiringOrderIdentifiers.Owner
 	|WHERE
-	|	acquiringOrders.Ref = &order
-	|
-	|UNION ALL
-	|
-	|SELECT
-	|	acquiringOrderIdentifiers.Owner,
-	|	acquiringOrderIdentifiers.Owner.acquiringRequest,
-	|	ISNULL(ordersStates.state, VALUE(Enum.acquiringOrderStates.EmptyRef)) AS state,
-	|	acquiringOrderIdentifiers.Ref
-	|FROM
-	|	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
-	|		LEFT JOIN InformationRegister.ordersStates AS ordersStates
-	|		ON acquiringOrderIdentifiers.Owner = ordersStates.order
-	|WHERE
-	|	acquiringOrderIdentifiers.Ref = &identifier");
+	|	acquiringOrders.Ref = &order");
 
 	order 		= XMLValue(Type("catalogRef.acquiringOrders"), 				requestStruct.uid);
-	identifier 	= XMLValue(Type("CatalogRef.acquiringOrderIdentifiers"), 	requestStruct.uid);
+
 	query.SetParameter("order", order);
-	query.SetParameter("identifier", identifier);
+
 	result = query.Execute();
 	struct.Insert("result", "fail");
 	If result.IsEmpty() Then
@@ -333,13 +320,17 @@ Procedure bindCard(parameters) Export
 	tokenContext = parameters.tokenContext;	
 	struct = New Structure();
 	struct.Insert("result", "ok");
-	
+	customer = Catalogs.users.EmptyRef();
+	if not ValueIsFilled(tokenContext.user) and requestStruct.Property("customerId") then
+		customer = XMLValue(Type("CatalogRef.users"), requestStruct.customerId);
+	EndIf;	
 	orderStruct = New Structure();
 	orderStruct.Insert("acquiringAmount", 1);
-	orderStruct.Insert("user", tokenContext.user);
+	orderStruct.Insert("user", ?(requestStruct.Property("customerId"), customer, tokenContext.user));
 	orderStruct.Insert("holding", tokenContext.holding);	
 	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
+	orderStruct.Insert("contract", ?(requestStruct.Property("contract"), requestStruct.contract, ""));
 	order = Acquiring.newOrder(orderStruct);
 	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
@@ -397,6 +388,65 @@ Procedure unBindCard(parameters) Export
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-			
+					
 EndProcedure
 
+Procedure autoPayment(parameters) Export
+	//создать ордер
+	orderStruct = New Structure();
+	If parameters.Property("customerId") And parameters.customerId <> "" Then
+		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.customerId));
+	Else	
+		orderStruct.Insert("user", parameters.tokenContext.user);		
+	EndIf;
+	requestStruct = parameters.requestStruct;
+	orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.autoPayment);
+	orderStruct.Insert("holding", 			parameters.tokenContext.holding);
+	orderStruct.Insert("amount", 			requestStruct.amount);
+	orderStruct.Insert("acquiringAmount", 	requestStruct.amount);
+	orderStruct.Insert("orders", 			requestStruct.docList);
+	orderStruct.Insert("gymId", 			requestStruct.gymId);
+	orderStruct.Insert("autoPayment", 		true);
+	order = Acquiring.newOrder(orderStruct);
+	//отправить его send
+	answer = Acquiring.executeRequest("send", order);
+	If answer.errorCode = "" Then
+	//провести автоплатеж autoPayment
+		answerPayment = Acquiring.executeRequest("autoPayment", order);
+		If answerPayment.error = "" Then
+			//проверить статус оплаты
+			answerCheck = Acquiring.executeRequest("check", order);
+			If answerCheck.error = "" Then
+				answerKPO = New Structure();
+				answerKPO.Insert("result", "ok");
+				parameters.Insert("answerBody", HTTP.encodeJSON(answerKPO));
+			EndIf;
+		EndIf;
+	EndIf;
+	//Вернуть ответ
+	answerKPO = New Structure();
+	answerKPO.Insert("result", 		"error");
+	parameters.Insert("answerBody", HTTP.encodeJSON(answerKPO));
+EndProcedure
+
+Procedure changeCardAutoPayment(parameters) Export
+	
+	requestStruct = parameters.requestStruct;
+	struct = New Structure();
+	struct.Insert("result", "fail");
+	If requestStruct.Property("uid") Then
+		creditCard = XMLValue(Type("CatalogRef.creditCards"),requestStruct.uid);
+		if requestStruct.Property("autoPayment") then
+			creditCardObject = creditCard.GetObject();
+			creditCardObject.autopayment = requestStruct.autoPayment;
+			creditCardObject.write();
+			parametersNew = Service.getStructCopy(parameters);
+			parametersNew.requestName = "changeBankCard";
+			General.executeRequestMethod(parametersNew);
+			If parametersNew.error = "" Then
+				struct.Insert("result", "ok");
+			EndIf;
+		EndIf;	
+	EndIf;
+	
+EndProcedure

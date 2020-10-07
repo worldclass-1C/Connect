@@ -36,7 +36,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(
 				select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty()
 				And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60), "cancel", "reserve"))));
-			requestStruct.Insert("uid", XMLString(parameters.order));
+			requestStruct.Insert("orderId", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array;
 			For Each row In select.payments.Unload() Do
@@ -73,18 +73,19 @@ EndProcedure
 
 Procedure bindCard(parameters, additionalParameters) Export
 	query = New Query("SELECT
-					  |	acquiringOrders.creditCard,
-					  |	acquiringOrders.creditCard.Owner AS userId,
-					  |	acquiringOrders.creditCard.acquiringBank AS acquiringBank,
-					  |	acquiringOrders.creditCard.autopayment AS autopayment,
-					  |	acquiringOrders.creditCard.expiryDate AS expiryDate,
-					  |	acquiringOrders.creditCard.ownerName AS ownerName,
-					  |	acquiringOrders.creditCard.paymentSystem AS paymentSystem,
-					  |	acquiringOrders.creditCard.Description AS Description
-					  |FROM
-					  |	Catalog.acquiringOrders AS acquiringOrders
-					  |WHERE
-					  |	acquiringOrders.Ref = &order");
+	|	acquiringOrders.creditCard,
+	|	acquiringOrders.creditCard.Owner AS userId,
+	|	acquiringOrders.creditCard.acquiringBank AS acquiringBank,
+	|	acquiringOrders.creditCard.autopayment AS autopayment,
+	|	acquiringOrders.creditCard.expiryDate AS expiryDate,
+	|	acquiringOrders.creditCard.ownerName AS ownerName,
+	|	acquiringOrders.creditCard.paymentSystem AS paymentSystem,
+	|	acquiringOrders.creditCard.Description AS Description,
+	|	acquiringOrders.contract
+	|FROM
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|WHERE
+	|	acquiringOrders.Ref = &order");
 	query.SetParameter("order", parameters.order);
 
 	result = query.Execute();
@@ -102,6 +103,10 @@ Procedure bindCard(parameters, additionalParameters) Export
 			select.expiryDate), 2)));
 		requestStruct.Insert("ownerName", select.ownerName);
 		requestStruct.Insert("paymentSystem", String(select.paymentSystem));
+		if ValueIsFilled(select.contract) then
+			requestStruct.Insert("contract", select.contract);
+		EndIf;
+		
 		parametersNew.Insert("internalRequestMethod", True);
 		parametersNew.Insert("requestName", "paymentBindCardBack");
 		parametersNew.Insert("requestStruct", requestStruct);
@@ -142,3 +147,4 @@ Procedure unBindCard(parameters, additionalParameters) Export
 	EndIf;
 
 EndProcedure
+

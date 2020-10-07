@@ -123,7 +123,7 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "unBindCardBack" Then
 			Internal_API_Payment.unBindCard(parameters, additionalParameters);
 		ElsIf requestName = "getQr" Then
-			getQr(parameters,additionalParameters);				
+			getQr(parameters,additionalParameters);	
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -163,7 +163,6 @@ Function orderDetails(order)
 	|WHERE
 	|	acquiringOrderspayments.Ref = &order
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT TOP 1
 	|	acquiringOrders.Ref AS order,
@@ -480,7 +479,12 @@ Function orderDetails(order)
 	|		WHEN NOT chainConnection.qrConnection IS NULL
 	|			THEN chainConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
 	|		ELSE FALSE
-	|	END AS hasQR
+	|	END AS hasQR,
+	|	CASE
+	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.autoPayment)
+	|			THEN TRUE
+	|		ELSE FALSE
+	|	END AS autoPayment
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
@@ -513,7 +517,6 @@ Function orderDetails(order)
 	|WHERE
 	|	acquiringOrders.Ref = &order
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TemporaryDepositAmount";
 
@@ -565,7 +568,8 @@ Function answerStruct()
 	answer.Insert("registrationDate", Date(1,1,1));	
 	answer.Insert("merchantID", "");
 	answer.Insert("authorization", "");
-	answer.Insert("hasQR",false);	
+	answer.Insert("hasQR",false);
+	answer.Insert("autoPayment",false);	
 	Return answer;		
 EndFunction
 
@@ -773,6 +777,12 @@ Procedure getQr(parameters,additionalParameters) Export
 	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/bindFail.html");
 	If parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then
 		AcquiringRaiffeisen.getQr(parameters,additionalParameters);
+	EndIf;
+EndProcedure
+
+Procedure autoPayment(parameters,additionalParameters) Export
+	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
+		AcquiringSberbank.autoPayment(parameters);
 	EndIf;
 EndProcedure
 

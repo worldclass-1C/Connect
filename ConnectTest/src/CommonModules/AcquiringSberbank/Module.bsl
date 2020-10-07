@@ -13,11 +13,12 @@ Procedure sendOrder(parameters) Export
 	If ValueIsFilled(parameters.creditCard) Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 		requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
-		//requestParametrs.Add("features=AUTO_PAYMENT");
 	ElsIf parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 	EndIf;
-	
+	If parameters.Property("autoPayment") and parameters.autoPayment Then
+		requestParametrs.Add("features=AUTO_PAYMENT");
+	EndIf;
 	response = requestExecute(parameters, "register", requestParametrs);
 	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", responseStruct);		
@@ -96,10 +97,7 @@ Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 			
 	requestBody = New Structure();
 	requestBody.Insert("merchant" , parameters.merchantPay);
-	//requestBody.Insert("password", parameters.password);
-	//requestBody.Insert("orderId" ,XMLString(parameters.orderId));
 	requestBody.Insert("orderNumber" , parameters.orderNumber);
-	//requestBody.Insert("orderNumber" , XMLString(parameters.order));
 	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
@@ -205,6 +203,7 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("ownerName", response.cardAuthInfo.cardholderName);
 		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
 		creditCardStruct.Insert("paymentSystemCode", left(response.cardAuthInfo.maskedPan,2));
+		creditCardStruct.Insert("autoPayment", ?(parameters.Property("order") and ValueIsFilled(parameters.order),parameters.order.autoPayment, false));
 	Else
 		creditCardStruct.Insert("bindingId", "");					
 	EndIf; 
@@ -271,3 +270,26 @@ Function prepareDetails(parameters, parametersQuery)
 	Return HTTP.encodeJSON(details);
 	
 EndFunction
+
+Procedure autoPayment(parameters) Export
+	requestParametrs = New Array();
+	requestParametrs.Add("userName=" + parameters.user);
+	requestParametrs.Add("password=" + parameters.password);
+	requestParametrs.Add("mdOrder=" + parameters.orderNumber);
+	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
+	requestParametrs.Add("ip=" + parameters.ipAddress);	
+	response = requestExecute(parameters, "paymentOrderBinding", requestParametrs);
+	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+	parameters.Insert("response", responseStruct);		
+	If response.StatusCode = 200 Then
+		If responseStruct.Property("redirect") Then
+			parameters.Insert("errorCode", "");
+			orderIdentifier(parameters.order, responseStruct.orderId);
+		Else
+			parameters.Insert("errorCode", responseStruct.errorCode);
+			parameters.Insert("errorDescription", responseStruct.errorMessage);	
+		EndIf;
+	Else
+		parameters.Insert("errorCode", "acquiringConnection");		
+	EndIf;		
+EndProcedure
