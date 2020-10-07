@@ -271,6 +271,12 @@
         <value>reserveBalance</value>
       </code>
     </items>
+    <items id="34eaba91-f284-4d0b-8fcb-9dd85d50f6f2">
+      <name>events</name>
+      <code xsi:type="core:StringValue">
+        <value>events</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
