@@ -36,7 +36,6 @@ Procedure processOrder(parameters, additionalParameters) Export
 			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(
 				select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty()
 				And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60), "cancel", "reserve"))));
-			requestStruct.Insert("orderId", XMLString(parameters.order));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array;

@@ -271,14 +271,19 @@ Function prepareDetails(parameters, parametersQuery)
 	
 EndFunction
 
-Procedure autoPayment(parameters) Export
-	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("mdOrder=" + parameters.orderNumber);
-	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
-	requestParametrs.Add("ip=" + parameters.ipAddress);	
-	response = requestExecute(parameters, "paymentOrderBinding", requestParametrs);
+Procedure autoPayment(parameters,additionalParameters) Export
+	
+	xmlText = FormMessageSOAP(parameters,additionalParameters);
+		
+	headers = New Map;
+  	headers.Insert("Content-Type", 	"text/xml;charset=UTF-8");
+  	headers.Insert("SOAPAction", 	"http://engine.paymentgate.ru/webservices/merchant");
+ 
+  	HTTPQuery = New HTTPRequest("/payment/webservices/merchant-ws?wsdl", headers);
+  	HTTPQuery.SetBodyFromString(xmlText, "UTF-8");
+  	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+  	response = ConnectionHTTP.Post(HTTPQuery);
+ 	
 	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", responseStruct);		
 	If response.StatusCode = 200 Then
@@ -293,3 +298,17 @@ Procedure autoPayment(parameters) Export
 		parameters.Insert("errorCode", "acquiringConnection");		
 	EndIf;		
 EndProcedure
+
+Function FormMessageSOAP(parameters, additionalParameters)
+ 
+	Template = GetCommonTemplate("WSDLSberbank");
+	Text = Template.GetText();
+	Text = StrReplace(Text, "&order&", parameters.orderId);
+	Text = StrReplace(Text, "&bindingId&", XMLString(additionalParameters.requestStruct.card));
+	Text = StrReplace(Text, "&ip&", additionalParameters.ipAddress);
+	Params = "<params name=""orderNumber"" value="""+parameters.orderNumber+"""/>";
+	Params = Params +Chars.LF+ "<params name=""orderDescription"" value=""" + parameters.orderNumber + """/>";
+	Text = StrReplace(Text, "&params&", Params);
+	Return Text;
+	
+EndFunction

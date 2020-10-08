@@ -412,10 +412,13 @@ Procedure autoPayment(parameters) Export
 	answer = Acquiring.executeRequest("send", order);
 	If answer.errorCode = "" Then
 	//провести автоплатеж autoPayment
-		answerPayment = Acquiring.executeRequest("autoPayment", order);
+		answerPayment = Acquiring.executeRequest("autoPayment", order,parameters);
 		If answerPayment.errorCode = "" Then
 			//проверить статус оплаты
 			answerCheck = Acquiring.executeRequest("check", order);
+			while answerCheck.errorCode = "send" do
+				answerCheck = Acquiring.executeRequest("check", order);
+			EndDo;
 			If answerCheck.errorCode = "" Then
 				answerKPO = New Structure();
 				answerKPO.Insert("result", "ok");

@@ -80,6 +80,7 @@
   <commonTemplates>CommonTemplate.WorldclassApsProd</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsProdStaff</commonTemplates>
   <commonTemplates>CommonTemplate.WorldclassApsTestStaff</commonTemplates>
+  <commonTemplates>CommonTemplate.WSDLSberbank</commonTemplates>
   <commonModules>CommonModule.Account</commonModules>
   <commonModules>CommonModule.Acquiring</commonModules>
   <commonModules>CommonModule.AcquiringDemirBank</commonModules>

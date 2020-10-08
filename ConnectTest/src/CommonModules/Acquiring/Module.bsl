@@ -124,6 +124,8 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 			Internal_API_Payment.unBindCard(parameters, additionalParameters);
 		ElsIf requestName = "getQr" Then
 			getQr(parameters,additionalParameters);	
+		ElsIf  requestName = "autoPayment" Then 
+			autoPayment(parameters,additionalParameters);	
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -782,7 +784,7 @@ EndProcedure
 
 Procedure autoPayment(parameters,additionalParameters) Export
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.autoPayment(parameters);
+		AcquiringSberbank.autoPayment(parameters, additionalParameters);
 	EndIf;
 EndProcedure
 

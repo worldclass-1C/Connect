@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="cac6bfb5-ceee-4ec8-b66a-863756a4c0e6">
+  <name>WSDLSberbank</name>
+  <synonym>
+    <key>ru</key>
+    <value>WSDLSberbank</value>
+  </synonym>
+  <templateType>TextDocument</templateType>
+</mdclass:CommonTemplate>

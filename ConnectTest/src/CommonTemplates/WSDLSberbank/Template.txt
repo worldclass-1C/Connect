@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mer="http://engine.paymentgate.ru/webservices/merchant">
+    <soapenv:Header/>
+    <soapenv:Body>
+       <mer:paymentOrderBinding>
+          <order mdOrder="&order&" bindingId="&bindingId&" language="ru" ip="&ip&">
+             &params&
+          </order>
+       </mer:paymentOrderBinding>
+    </soapenv:Body>
+ </soapenv:Envelope>
