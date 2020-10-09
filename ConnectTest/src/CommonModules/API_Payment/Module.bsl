@@ -234,6 +234,17 @@ Procedure paymentStatus(parameters) Export
 	
 	requestStruct = parameters.requestStruct;	
 	struct = New Structure();
+	order 		= XMLValue(Type("catalogRef.acquiringOrders"), 				requestStruct.uid);
+	DataLock = New DataLock;
+	DataLockItem = DataLock.Add("InformationRegister.acquiringOrdersQueue");
+	DataLockItem.SetValue("order", order);
+	DataLockItem = DataLock.Add("Catalog.acquiringOrders");
+	DataLockItem.SetValue("ref", order);
+	DataLockItem = DataLock.Add("InformationRegister.ordersStates");
+	DataLockItem.SetValue("order", order);
+	BeginTransaction();
+	DataLock.Lock();
+	try
 	query = New Query("SELECT
 	|	acquiringOrders.Ref AS order,
 	|	acquiringOrders.acquiringRequest,
@@ -248,8 +259,6 @@ Procedure paymentStatus(parameters) Export
 	|WHERE
 	|	acquiringOrders.Ref = &order");
 
-	order 		= XMLValue(Type("catalogRef.acquiringOrders"), 				requestStruct.uid);
-
 	query.SetParameter("order", order);
 
 	result = query.Execute();
@@ -260,40 +269,29 @@ Procedure paymentStatus(parameters) Export
 		selection = result.Select();
 	    selection.Next();
 		If selection.state = Enums.acquiringOrderStates.send Then
-			DataLock = New DataLock;
-			DataLockItem = DataLock.Add("InformationRegister.acquiringOrdersQueue");
-			DataLockItem.SetValue("order", order);
-			BeginTransaction();
-			try	
-				DataLock.Lock();
-				response = Acquiring.executeRequest("check", order, requestStruct);
-				If response = Undefined Then
-					parameters.Insert("error", "acquiringOrderCheck");
-				Else				
-					//parameters.Insert("error", response.errorCode);
-					If response.errorCode = "" Then
-						struct.Insert("result", "ok");
-						Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);
-						If order.acquiringRequest = Enums.acquiringRequests.unbinding then
-							answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
-						ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
-							answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
-						else
-							answerKPO = Acquiring.executeRequest("process", order, parameters);		
-						EndIf;
-						If answerKPO.errorCode = "" Then
-							Acquiring.delOrderToQueue(order);
-						EndIf;
-						//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
-						//	parameters.Insert("error", "system");					
-						//EndIf;
+			response = Acquiring.executeRequest("check", order, requestStruct);
+			If response = Undefined Then
+				parameters.Insert("error", "acquiringOrderCheck");
+			Else				
+				//parameters.Insert("error", response.errorCode);
+				If response.errorCode = "" Then
+					struct.Insert("result", "ok");
+					Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success);
+					If order.acquiringRequest = Enums.acquiringRequests.unbinding then
+						answerKPO = Acquiring.executeRequest("unBindCardBack", order, parameters);
+					ElsIf order.acquiringRequest = Enums.acquiringRequests.binding Then 
+						answerKPO = Acquiring.executeRequest("bindCardBack", order, parameters);					
+					else
+						answerKPO = Acquiring.executeRequest("process", order, parameters);		
 					EndIf;
+					If answerKPO.errorCode = "" Then
+						Acquiring.delOrderToQueue(order);
+					EndIf;
+					//If answerKPO = Undefined or not answerKPO.errorCode = "" Then						
+					//	parameters.Insert("error", "system");					
+					//EndIf;
 				EndIf;
-				CommitTransaction();
-			Except
-				RollbackTransaction();
-				Raise;
-			EndTry;
+			EndIf;
 		ElsIf selection.state = Enums.acquiringOrderStates.rejected Then		
 			//parameters.Insert("error", "acquiringOrderRejected");			
 		ElsIf selection.state = Enums.acquiringOrderStates.EmptyRef() Then
@@ -309,9 +307,12 @@ Procedure paymentStatus(parameters) Export
 			Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
 		EndIf;
 	EndIf;
-	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
-				
+	CommitTransaction();
+	Except
+		RollbackTransaction();
+	EndTry;
+					
 EndProcedure
 
 Procedure bindCard(parameters) Export
