@@ -166,7 +166,7 @@ Function orderDetails(order)
 	|	acquiringOrderspayments.Ref = &order
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT TOP 1
+	|SELECT
 	|	acquiringOrders.Ref AS order,
 	|	acquiringOrderIdentifiers.Ref AS orderId,
 	|	acquiringOrders.Code AS orderNumber,
@@ -483,8 +483,8 @@ Function orderDetails(order)
 	|		ELSE FALSE
 	|	END AS hasQR,
 	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.autoPayment)
-	|			THEN TRUE
+	|		WHEN acquiringOrders.acquiringRequest = value(enum.acquiringRequests.autoPayment)
+	|			then true
 	|		ELSE FALSE
 	|	END AS autoPayment
 	|FROM
@@ -499,6 +499,7 @@ Function orderDetails(order)
 	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
 	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
 	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
 	|		ON acquiringOrders.holding = gymConnection.holding
 	|		AND acquiringOrders.gym = gymConnection.gym
@@ -507,14 +508,17 @@ Function orderDetails(order)
 	|		ON acquiringOrders.holding = holdingConnection.holding
 	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
 	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
 	|		ON acquiringOrders.holding = chainConnection.holding
 	|		AND acquiringOrders.gym.chain = chainConnection.chain
-	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
 	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
 	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
-	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider,
+	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
+	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef),
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|WHERE
 	|	acquiringOrders.Ref = &order
