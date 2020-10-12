@@ -231,6 +231,18 @@ Function requestExecute(parameters, requestName, requestParametrs)
 	Return connection.Get(request);
 EndFunction
 
+Function requestExecutePOST(parameters, requestName, requestParametrs)
+	requestURL = New Array();
+	requestURL.Add("/payment/rest/");
+	requestURL.Add(requestName);
+	requestURL.Add(".do?");
+	requestURL.Add(StrConcat(requestParametrs, "&"));	
+	request = New HTTPRequest(StrConcat(requestURL, ""));
+	parameters.Insert("requestBody", request.ResourceAddress);	
+	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
+	Return connection.Post(request);
+EndFunction
+
 Function prepareDetails(parameters, parametersQuery)
 	
 	details = New Structure();
@@ -273,23 +285,23 @@ EndFunction
 
 Procedure autoPayment(parameters,additionalParameters) Export
 	
-	xmlText = FormMessageSOAP(parameters,additionalParameters);
-		
-	headers = New Map;
-  	headers.Insert("Content-Type", 	"text/xml;charset=UTF-8");
-  	headers.Insert("SOAPAction", 	"http://engine.paymentgate.ru/webservices/merchant");
- 
-  	HTTPQuery = New HTTPRequest("/payment/webservices/merchant-ws?wsdl", headers);
-  	HTTPQuery.SetBodyFromString(xmlText, "UTF-8");
-  	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-  	response = ConnectionHTTP.Post(HTTPQuery);
- 	
+	requestParametrs = New Array();
+	requestParametrs.Add("userName=" + parameters.user);
+	requestParametrs.Add("password=" + parameters.password);
+	requestParametrs.Add("mdOrder=" + XMLString(parameters.orderId));
+	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
+	requestParametrs.Add("ip=" + additionalParameters.ipAddress);	
+	response = requestExecutePOST(parameters, "paymentOrderBinding", requestParametrs);
 	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", responseStruct);		
 	If response.StatusCode = 200 Then
-		If responseStruct.Property("redirect") Then
-			parameters.Insert("errorCode", "");
-			orderIdentifier(parameters.order, responseStruct.orderId);
+		If responseStruct.Property("errorCode") Then
+			If responseStruct.errorCode = 0 Then
+				parameters.Insert("errorCode", "");
+			Else
+				parameters.Insert("errorCode", responseStruct.errorCode);
+				parameters.Insert("errorDescription", responseStruct.errorMessage);
+			EndIf;
 		Else
 			parameters.Insert("errorCode", responseStruct.errorCode);
 			parameters.Insert("errorDescription", responseStruct.errorMessage);	
@@ -299,16 +311,3 @@ Procedure autoPayment(parameters,additionalParameters) Export
 	EndIf;		
 EndProcedure
 
-Function FormMessageSOAP(parameters, additionalParameters)
- 
-	Template = GetCommonTemplate("WSDLSberbank");
-	Text = Template.GetText();
-	Text = StrReplace(Text, "&order&", parameters.orderId);
-	Text = StrReplace(Text, "&bindingId&", XMLString(additionalParameters.requestStruct.card));
-	Text = StrReplace(Text, "&ip&", additionalParameters.ipAddress);
-	Params = "<params name=""orderNumber"" value="""+parameters.orderNumber+"""/>";
-	Params = Params +Chars.LF+ "<params name=""orderDescription"" value=""" + parameters.orderNumber + """/>";
-	Text = StrReplace(Text, "&params&", Params);
-	Return Text;
-	
-EndFunction

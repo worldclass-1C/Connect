@@ -407,29 +407,25 @@ Procedure autoPayment(parameters) Export
 	orderStruct.Insert("acquiringAmount", 	requestStruct.amount);
 	orderStruct.Insert("orders", 			requestStruct.docList);
 	orderStruct.Insert("gymId", 			requestStruct.gymId);
-	orderStruct.Insert("autoPayment", 		true);
+	orderStruct.Insert("creditCard", 		XMLValue(Type("CatalogRef.creditCards"),requestStruct.card));
 	order = Acquiring.newOrder(orderStruct);
 	//отправить его send
 	answer = Acquiring.executeRequest("send", order);
+	answerKPO = New Structure();
+	result = "error";
 	If answer.errorCode = "" Then
 	//провести автоплатеж autoPayment
 		answerPayment = Acquiring.executeRequest("autoPayment", order,parameters);
 		If answerPayment.errorCode = "" Then
 			//проверить статус оплаты
 			answerCheck = Acquiring.executeRequest("check", order);
-			while answerCheck.errorCode = "send" do
-				answerCheck = Acquiring.executeRequest("check", order);
-			EndDo;
 			If answerCheck.errorCode = "" Then
-				answerKPO = New Structure();
-				answerKPO.Insert("result", "ok");
-				parameters.Insert("answerBody", HTTP.encodeJSON(answerKPO));
-			EndIf;
+				result = "ok";
+			EndIf;			
 		EndIf;
 	EndIf;
 	//Вернуть ответ
-	answerKPO = New Structure();
-	answerKPO.Insert("result", 		"error");
+	answerKPO.Insert("result", 		result);
 	parameters.Insert("answerBody", HTTP.encodeJSON(answerKPO));
 EndProcedure
 
