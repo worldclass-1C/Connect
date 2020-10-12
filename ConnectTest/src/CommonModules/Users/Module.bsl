@@ -26,7 +26,7 @@ Function profile(user, appType) Export
 	|			THEN ""unauthorized""
 	|		ELSE REFPRESENTATION(users.owner.status)
 	|	END AS status, 
-	|	users.barcode AS barcode,
+	|	users.userCode AS barcode,
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
