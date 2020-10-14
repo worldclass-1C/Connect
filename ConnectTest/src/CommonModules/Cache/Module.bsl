@@ -264,11 +264,16 @@ Function getMyClubs(data,parameters) Export
 	Query = New Query(TextQuery());
 	For Each KeyVal In strucSeek Do
 		Query.SetParameter(KeyVal.Key, KeyVal.Value);
-	EndDo;
+	EndDo;	
 	resQuery = Query.ExecuteBatch();
-	gyms = New Array();
-	
 	common = resQuery[1].Unload();
+	
+	gyms = New ValueTable();
+	gyms.Columns.Add("ref",new TypeDescription("catalogref.gyms"));
+	gyms.Columns.Add("base",new TypeDescription("Boolean"));
+	
+	dateNow = CurrentDate();
+	
 	For each cacheVal in common Do
 		If cacheVal.NoData then
 			arrParams = New Array();
@@ -278,7 +283,20 @@ Function getMyClubs(data,parameters) Export
 		else
 			cacheData = HTTP.decodeJSON(cacheVal.data);
 			for each elem in cacheData do
-				gyms.Add(Service.getRef(elem, Type("CatalogRef.gyms")));
+				strucGym = New Structure("base,ref",false);
+				If TypeOf(elem)=Type("Structure") Then
+					//если контракт уже закончился, то пропускаем
+					If XMLValue(Type("date"),elem.d)<dateNow Then
+						Continue;
+					EndIf; 
+					strucGym.ref = Service.getRef(elem.c, Type("CatalogRef.gyms"));
+					If elem.property("b") and elem.b Then
+						strucGym.base= true
+					EndIf; 
+				Else
+					strucGym.ref = Service.getRef(elem, Type("CatalogRef.gyms"));
+				EndIf;
+				FillPropertyValues(gyms.Add(),strucGym);
 			EndDo;
 		EndIf;
 	EndDo;
