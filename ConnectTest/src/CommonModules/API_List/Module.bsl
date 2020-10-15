@@ -223,205 +223,215 @@ Function  getArrGyms(params) Export
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
 	query = New Query("SELECT
-	                  |	T.base AS base,
-	                  |	T.ref AS ref
-	                  |INTO TmyGyms
-	                  |FROM
-	                  |	&myGyms AS T
-	                  |;
-	                  |
-	                  |////////////////////////////////////////////////////////////////////////////////
-	                  |SELECT
-	                  |	gyms.Ref AS Ref,
-	                  |	gyms.latitude AS latitude,
-	                  |	gyms.longitude AS longitude,
-	                  |	ISNULL(gyms.segment.Description, """") AS segment,
-	                  |	ISNULL(gyms.segment.color, """") AS segmentColor,
-	                  |	gyms.phone AS phone,
-	                  |	gyms.photo AS photo,
-	                  |	gyms.weekdaysTime AS weekdaysTime,
-	                  |	gyms.holidaysTime AS holidaysTime,
-	                  |	CASE
-	                  |		WHEN gymstranslation.description IS NULL
-	                  |			THEN gyms.Description
-	                  |		WHEN gymstranslation.description = """"
-	                  |			THEN gyms.Description
-	                  |		ELSE gymstranslation.description
-	                  |	END AS Description,
-	                  |	CASE
-	                  |		WHEN gymstranslation.address IS NULL
-	                  |			THEN gyms.address
-	                  |		WHEN gymstranslation.address = """"
-	                  |			THEN gyms.address
-	                  |		ELSE gymstranslation.address
-	                  |	END AS address,
-	                  |	CASE
-	                  |		WHEN gymstranslation.nearestMetro IS NULL
-	                  |			THEN gyms.nearestMetro
-	                  |		WHEN gymstranslation.nearestMetro = ""[]""
-	                  |			THEN gyms.nearestMetro
-	                  |		ELSE gymstranslation.nearestMetro
-	                  |	END AS nearestMetro,
-	                  |	CASE
-	                  |		WHEN gymstranslation.state IS NULL
-	                  |			THEN gyms.state
-	                  |		WHEN gymstranslation.state = """"
-	                  |			THEN gyms.state
-	                  |		ELSE gymstranslation.state
-	                  |	END AS state,
-	                  |	gyms.order AS order,
-	                  |	NOT TmyGyms.ref IS NULL AS hasAccess,
-	                  |	ISNULL(TmyGyms.base, FALSE) AS base
-	                  |FROM
-	                  |	Catalog.gyms AS gyms
-	                  |		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	                  |		ON (gymstranslation.Ref = gyms.Ref)
-	                  |			AND (gymstranslation.language = &language)
-	                  |		LEFT JOIN TmyGyms AS TmyGyms
-	                  |		ON gyms.Ref = TmyGyms.ref
-	                  |WHERE
-	                  |	NOT &byArray
-	                  |	AND NOT gyms.DeletionMark
-	                  |	AND gyms.chain.Code = &chainCode
-	                  |	AND gyms.startDate <= &currentTime
-	                  |	AND gyms.endDate >= &currentTime
-	                  |	AND gyms.type <> VALUE(Enum.gymTypes.online)
-	                  |	AND CASE
-	                  |			WHEN &FilterType
-	                  |				THEN gyms.type = &type
-	                  |			ELSE TRUE
-	                  |		END
-	                  |
-	                  |UNION ALL
-	                  |
-	                  |SELECT DISTINCT
-	                  |	gyms.Ref,
-	                  |	gyms.latitude,
-	                  |	gyms.longitude,
-	                  |	ISNULL(gyms.segment.Description, """"),
-	                  |	ISNULL(gyms.segment.color, """"),
-	                  |	gyms.phone,
-	                  |	gyms.photo,
-	                  |	gyms.weekdaysTime,
-	                  |	gyms.holidaysTime,
-	                  |	CASE
-	                  |		WHEN gymstranslation.description IS NULL
-	                  |			THEN gyms.Description
-	                  |		WHEN gymstranslation.description = """"
-	                  |			THEN gyms.Description
-	                  |		ELSE gymstranslation.description
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.address IS NULL
-	                  |			THEN gyms.address
-	                  |		WHEN gymstranslation.address = """"
-	                  |			THEN gyms.address
-	                  |		ELSE gymstranslation.address
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.nearestMetro IS NULL
-	                  |			THEN gyms.nearestMetro
-	                  |		WHEN gymstranslation.nearestMetro = ""[]""
-	                  |			THEN gyms.nearestMetro
-	                  |		ELSE gymstranslation.nearestMetro
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.state IS NULL
-	                  |			THEN gyms.state
-	                  |		WHEN gymstranslation.state = """"
-	                  |			THEN gyms.state
-	                  |		ELSE gymstranslation.state
-	                  |	END,
-	                  |	gyms.order,
-	                  |	NOT TmyGyms.ref IS NULL,
-	                  |	ISNULL(TmyGyms.base, FALSE)
-	                  |FROM
-	                  |	Catalog.gyms AS gyms
-	                  |		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	                  |		ON (gymstranslation.Ref = gyms.Ref)
-	                  |			AND (gymstranslation.language = &language)
-	                  |		LEFT JOIN Catalog.chains AS chains
-	                  |		ON (chains.brand = gyms.brand)
-	                  |			AND (chains.holding = gyms.holding)
-	                  |		LEFT JOIN TmyGyms AS TmyGyms
-	                  |		ON gyms.Ref = TmyGyms.ref
-	                  |WHERE
-	                  |	NOT &byArray
-	                  |	AND NOT gyms.DeletionMark
-	                  |	AND gyms.startDate <= &currentTime
-	                  |	AND gyms.endDate >= &currentTime
-	                  |	AND gyms.type = VALUE(Enum.gymTypes.online)
-	                  |	AND gyms.brand = &brand
-	                  |	AND gyms.holding = &holding
-	                  |	AND CASE
-	                  |			WHEN &FilterType
-	                  |				THEN gyms.type = &type
-	                  |			ELSE TRUE
-	                  |		END
-	                  |
-	                  |UNION ALL
-	                  |
-	                  |SELECT
-	                  |	gyms.Ref,
-	                  |	gyms.latitude,
-	                  |	gyms.longitude,
-	                  |	ISNULL(gyms.segment.Description, """"),
-	                  |	ISNULL(gyms.segment.color, """"),
-	                  |	gyms.phone,
-	                  |	gyms.photo,
-	                  |	gyms.weekdaysTime,
-	                  |	gyms.holidaysTime,
-	                  |	CASE
-	                  |		WHEN gymstranslation.description IS NULL
-	                  |			THEN gyms.Description
-	                  |		WHEN gymstranslation.description = """"
-	                  |			THEN gyms.Description
-	                  |		ELSE gymstranslation.description
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.address IS NULL
-	                  |			THEN gyms.address
-	                  |		WHEN gymstranslation.address = """"
-	                  |			THEN gyms.address
-	                  |		ELSE gymstranslation.address
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.nearestMetro IS NULL
-	                  |			THEN gyms.nearestMetro
-	                  |		WHEN gymstranslation.nearestMetro = ""[]""
-	                  |			THEN gyms.nearestMetro
-	                  |		ELSE gymstranslation.nearestMetro
-	                  |	END,
-	                  |	CASE
-	                  |		WHEN gymstranslation.state IS NULL
-	                  |			THEN gyms.state
-	                  |		WHEN gymstranslation.state = """"
-	                  |			THEN gyms.state
-	                  |		ELSE gymstranslation.state
-	                  |	END,
-	                  |	gyms.order,
-	                  |	NOT TmyGyms.ref IS NULL,
-	                  |	ISNULL(TmyGyms.base, FALSE)
-	                  |FROM
-	                  |	Catalog.gyms AS gyms
-	                  |		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	                  |		ON (gymstranslation.Ref = gyms.Ref)
-	                  |			AND (gymstranslation.language = &language)
-	                  |		LEFT JOIN TmyGyms AS TmyGyms
-	                  |		ON gyms.Ref = TmyGyms.ref
-	                  |WHERE
-	                  |	&byArray
-	                  |	AND gyms.Ref IN(&Array)
-	                  |	AND NOT gyms.DeletionMark
-	                  |	AND CASE
-	                  |			WHEN &FilterType
-	                  |				THEN gyms.type = &type
-	                  |			ELSE TRUE
-	                  |		END
-	                  |
-	                  |ORDER BY
-	                  |	order,
-	                  |	Description");
+	|	T.base AS base,
+	|	T.ref AS ref
+	|INTO TmyGyms
+	|FROM
+	|	&myGyms AS T
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|Select
+	|	*,
+	|	Case
+	|		when data.base
+	|			then 1000000
+	|		else 0
+	|	end + Case
+	|		when data.hasAccess
+	|			then 1000
+	|		else 0
+	|	end as order
+	|from
+	|	(SELECT
+	|		gyms.Ref AS Ref,
+	|		gyms.latitude AS latitude,
+	|		gyms.longitude AS longitude,
+	|		ISNULL(gyms.segment.Description, """") AS segment,
+	|		ISNULL(gyms.segment.color, """") AS segmentColor,
+	|		gyms.phone AS phone,
+	|		gyms.photo AS photo,
+	|		gyms.weekdaysTime AS weekdaysTime,
+	|		gyms.holidaysTime AS holidaysTime,
+	|		CASE
+	|			WHEN gymstranslation.description IS NULL
+	|				THEN gyms.Description
+	|			WHEN gymstranslation.description = """"
+	|				THEN gyms.Description
+	|			ELSE gymstranslation.description
+	|		END AS Description,
+	|		CASE
+	|			WHEN gymstranslation.address IS NULL
+	|				THEN gyms.address
+	|			WHEN gymstranslation.address = """"
+	|				THEN gyms.address
+	|			ELSE gymstranslation.address
+	|		END AS address,
+	|		CASE
+	|			WHEN gymstranslation.nearestMetro IS NULL
+	|				THEN gyms.nearestMetro
+	|			WHEN gymstranslation.nearestMetro = ""[]""
+	|				THEN gyms.nearestMetro
+	|			ELSE gymstranslation.nearestMetro
+	|		END AS nearestMetro,
+	|		CASE
+	|			WHEN gymstranslation.state IS NULL
+	|				THEN gyms.state
+	|			WHEN gymstranslation.state = """"
+	|				THEN gyms.state
+	|			ELSE gymstranslation.state
+	|		END AS state,
+	|		NOT TmyGyms.ref IS NULL AS hasAccess,
+	|		ISNULL(TmyGyms.base, FALSE) AS base
+	|	FROM
+	|		Catalog.gyms AS gyms
+	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|			ON (gymstranslation.Ref = gyms.Ref)
+	|			AND (gymstranslation.language = &language)
+	|			LEFT JOIN TmyGyms AS TmyGyms
+	|			ON gyms.Ref = TmyGyms.ref
+	|	WHERE
+	|		NOT &byArray
+	|		AND
+	|		NOT gyms.DeletionMark
+	|		AND gyms.chain.Code = &chainCode
+	|		AND gyms.startDate <= &currentTime
+	|		AND gyms.endDate >= &currentTime
+	|		AND gyms.type <> VALUE(Enum.gymTypes.online)
+	|		AND CASE
+	|			WHEN &FilterType
+	|				THEN gyms.type = &type
+	|			ELSE TRUE
+	|		END
+	|
+	|	UNION ALL
+	|
+	|	SELECT DISTINCT
+	|		gyms.Ref,
+	|		gyms.latitude,
+	|		gyms.longitude,
+	|		ISNULL(gyms.segment.Description, """"),
+	|		ISNULL(gyms.segment.color, """"),
+	|		gyms.phone,
+	|		gyms.photo,
+	|		gyms.weekdaysTime,
+	|		gyms.holidaysTime,
+	|		CASE
+	|			WHEN gymstranslation.description IS NULL
+	|				THEN gyms.Description
+	|			WHEN gymstranslation.description = """"
+	|				THEN gyms.Description
+	|			ELSE gymstranslation.description
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.address IS NULL
+	|				THEN gyms.address
+	|			WHEN gymstranslation.address = """"
+	|				THEN gyms.address
+	|			ELSE gymstranslation.address
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.nearestMetro IS NULL
+	|				THEN gyms.nearestMetro
+	|			WHEN gymstranslation.nearestMetro = ""[]""
+	|				THEN gyms.nearestMetro
+	|			ELSE gymstranslation.nearestMetro
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.state IS NULL
+	|				THEN gyms.state
+	|			WHEN gymstranslation.state = """"
+	|				THEN gyms.state
+	|			ELSE gymstranslation.state
+	|		END,
+	|		NOT TmyGyms.ref IS NULL,
+	|		ISNULL(TmyGyms.base, FALSE)
+	|	FROM
+	|		Catalog.gyms AS gyms
+	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|			ON (gymstranslation.Ref = gyms.Ref)
+	|			AND (gymstranslation.language = &language)
+	|			LEFT JOIN Catalog.chains AS chains
+	|			ON (chains.brand = gyms.brand)
+	|			AND (chains.holding = gyms.holding)
+	|			LEFT JOIN TmyGyms AS TmyGyms
+	|			ON gyms.Ref = TmyGyms.ref
+	|	WHERE
+	|		NOT &byArray
+	|		AND
+	|		NOT gyms.DeletionMark
+	|		AND gyms.startDate <= &currentTime
+	|		AND gyms.endDate >= &currentTime
+	|		AND gyms.type = VALUE(Enum.gymTypes.online)
+	|		AND gyms.brand = &brand
+	|		AND gyms.holding = &holding
+	|		AND CASE
+	|			WHEN &FilterType
+	|				THEN gyms.type = &type
+	|			ELSE TRUE
+	|		END
+	|
+	|	UNION ALL
+	|
+	|	SELECT
+	|		gyms.Ref,
+	|		gyms.latitude,
+	|		gyms.longitude,
+	|		ISNULL(gyms.segment.Description, """"),
+	|		ISNULL(gyms.segment.color, """"),
+	|		gyms.phone,
+	|		gyms.photo,
+	|		gyms.weekdaysTime,
+	|		gyms.holidaysTime,
+	|		CASE
+	|			WHEN gymstranslation.description IS NULL
+	|				THEN gyms.Description
+	|			WHEN gymstranslation.description = """"
+	|				THEN gyms.Description
+	|			ELSE gymstranslation.description
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.address IS NULL
+	|				THEN gyms.address
+	|			WHEN gymstranslation.address = """"
+	|				THEN gyms.address
+	|			ELSE gymstranslation.address
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.nearestMetro IS NULL
+	|				THEN gyms.nearestMetro
+	|			WHEN gymstranslation.nearestMetro = ""[]""
+	|				THEN gyms.nearestMetro
+	|			ELSE gymstranslation.nearestMetro
+	|		END,
+	|		CASE
+	|			WHEN gymstranslation.state IS NULL
+	|				THEN gyms.state
+	|			WHEN gymstranslation.state = """"
+	|				THEN gyms.state
+	|			ELSE gymstranslation.state
+	|		END,
+	|		NOT TmyGyms.ref IS NULL,
+	|		ISNULL(TmyGyms.base, FALSE)
+	|	FROM
+	|		Catalog.gyms AS gyms
+	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|			ON (gymstranslation.Ref = gyms.Ref)
+	|			AND (gymstranslation.language = &language)
+	|			LEFT JOIN TmyGyms AS TmyGyms
+	|			ON gyms.Ref = TmyGyms.ref
+	|	WHERE
+	|		&byArray
+	|		AND gyms.Ref IN (&Array)
+	|		AND
+	|		NOT gyms.DeletionMark
+	|		AND CASE
+	|			WHEN &FilterType
+	|				THEN gyms.type = &type
+	|			ELSE TRUE
+	|		END) as Data
+	|ORDER BY
+	|	order DESC,
+	|	data.description");
 		
 		query.SetParameter("chainCode", stucParams.chainCode);
 		query.SetParameter("byArray", stucParams.byArray);
@@ -443,12 +453,13 @@ Function  getArrGyms(params) Export
 		query.SetParameter("type", gymtype);
 		
 		select = query.Execute().Select();
-
+		count=0;
 		While select.Next() Do
 			gymStruct = New Structure();
 			gymStruct.Insert("uid", XMLString(select.Ref));
 			gymStruct.Insert("name", select.description);
 			If Not stucParams.short Then
+				count=count+1;
 				gymStruct.Insert("gymId", gymStruct.uid);
 				gymStruct.Insert("type", "Club");
 				gymStruct.Insert("state", select.state);			
@@ -459,6 +470,7 @@ Function  getArrGyms(params) Export
 				gymStruct.Insert("holidaysTime", select.holidaysTime);
 				gymStruct.Insert("hasAccess", ?(stucParams.authorized, select.hasAccess, false));
 				gymStruct.Insert("base", ?(stucParams.authorized, select.base, false));
+				gymStruct.Insert("order", count);	
 				gymStruct.Insert("metro", HTTP.decodeJSON(select.nearestMetro, Enums.JSONValueTypes.array));
 			
 				coords = New Structure();
