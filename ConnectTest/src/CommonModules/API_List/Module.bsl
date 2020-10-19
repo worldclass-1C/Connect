@@ -215,7 +215,7 @@ Function  getArrGyms(params) Export
 											Catalogs.holdings.EmptyRef(),
 											False,
 											Undefined,
-											New Array());
+											Cache.tabGyms());
 	FillPropertyValues(stucParams, params);
 	if stucParams.brand = Enums.brandTypes.None then
 		stucParams.brand = Enums.brandTypes.WorldClass;
@@ -227,8 +227,7 @@ Function  getArrGyms(params) Export
 	|	T.ref AS ref
 	|INTO TmyGyms
 	|FROM
-	|	&myGyms AS T
-	|;
+	|	&myGyms AS T;
 	|////////////////////////////////////////////////////////////////////////////////
 	|Select
 	|	*,
@@ -441,6 +440,7 @@ Function  getArrGyms(params) Export
 		query.SetParameter("brand", stucParams.brand);
 		query.SetParameter("holding", stucParams.holding);
 		query.SetParameter("myGyms", stucParams.myGyms);
+		
 //		query.SetParameter("IsAppEmployee", stucParams.appType = Enums.appTypes.Employee);		
 		if stucParams.type = Undefined then
 			filterType = false;
