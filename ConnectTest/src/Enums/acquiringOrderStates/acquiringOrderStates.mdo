@@ -49,4 +49,11 @@
       <value>Отклонено</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="bc63fb1b-68aa-4fe9-beb6-fcd98ac1e492">
+    <name>done</name>
+    <synonym>
+      <key>ru</key>
+      <value>Done</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

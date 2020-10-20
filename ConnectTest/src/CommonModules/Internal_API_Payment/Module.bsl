@@ -26,6 +26,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 	result = query.Execute();
 
 	If Not result.IsEmpty() Then
+		Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.done);
 		parametersNew = Service.getStructCopy(additionalParameters);
 		requestStruct = New Structure;
 		select = result.Select();
@@ -55,10 +56,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 		//Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
 		//Service.logRequestBackground(parametersNew);
-		If select.state.isEmpty() And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60) Then
-			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
-		EndIf;
-
+		
 		If parametersNew.error <> "" Then
 				//Acquiring.addOrderToQueue(parameters.order, select.state);
 				parameters.Insert("errorCode", parametersNew.error);
@@ -66,6 +64,10 @@ Procedure processOrder(parameters, additionalParameters) Export
 					+ parametersNew.statusCode + chars.LF + parametersNew.answerBody;
 				parameters.Insert("response", Service.getErrorDescription(additionalParameters.language,
 					parametersNew.error, , Texts));
+				Acquiring.changeOrderState(parameters.order, select.state);
+		EndIf;
+		If select.state.isEmpty() And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60) Then
+			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
 		EndIf;
 	EndIf;
 
