@@ -91,6 +91,10 @@ Procedure ProcessQueue() Export
 				answerKPO = Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
 				If answerKPO.errorCode = "" Then
 					Acquiring.delOrderToQueue(OrdersToProcess.order);
+				Else
+					If OrdersToProcess.orderState = Null Then
+						Acquiring.addOrderToQueue(OrdersToProcess.order, Enums.acquiringOrderStates.rejected);
+					EndIf;
 				EndIf;
 			Else
 				Acquiring.delOrderToQueue(OrdersToProcess.order);
