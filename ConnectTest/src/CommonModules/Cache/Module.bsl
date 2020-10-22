@@ -246,6 +246,16 @@ Function TextQuery()
 
 EndFunction
 
+Function tabGyms() Export
+
+	gyms = New ValueTable();
+	gyms.Columns.Add("ref",new TypeDescription("catalogref.gyms"));
+	gyms.Columns.Add("base",new TypeDescription("Boolean"));
+	Return gyms;
+	
+EndFunction // ()
+
+ 
 Function getMyClubs(data,parameters) Export
 	
 	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
@@ -268,9 +278,7 @@ Function getMyClubs(data,parameters) Export
 	resQuery = Query.ExecuteBatch();
 	common = resQuery[1].Unload();
 	
-	gyms = New ValueTable();
-	gyms.Columns.Add("ref",new TypeDescription("catalogref.gyms"));
-	gyms.Columns.Add("base",new TypeDescription("Boolean"));
+	gyms = tabGyms();
 	
 	dateNow = CurrentDate();
 	
