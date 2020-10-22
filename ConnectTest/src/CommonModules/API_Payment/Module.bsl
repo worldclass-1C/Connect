@@ -103,7 +103,18 @@ Procedure payment(parameters) Export
 	|SELECT
 	|	&card
 	|WHERE
-	|	NOT &cardIsFilled");
+	|	NOT &cardIsFilled
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	acquiringOrdersdeposits.owner,
+	|	acquiringOrdersdeposits.type,
+	|	acquiringOrdersdeposits.min,
+	|	acquiringOrdersdeposits.max
+	|FROM
+	|	Catalog.acquiringOrders.deposits AS acquiringOrdersdeposits
+	|WHERE
+	|	acquiringOrdersdeposits.Ref = &order");
 
 	order = XMLValue(Type("catalogRef.acquiringOrders"), requestStruct.uid);
 	card = Catalogs.creditCards.EmptyRef();
@@ -173,12 +184,22 @@ Procedure payment(parameters) Export
 		If requestStruct.Property("deposits") And Service.isArray(requestStruct.deposits)
 			And requestStruct.deposits.Count() > 0 And orderObject <> Undefined Then
 			orderObject.payments.Clear();
+			limits = results[2].Unload();
 			For Each deposit In requestStruct.deposits Do
-				newRow = orderObject.payments.Add();
-				newRow.owner = owner;
-				newRow.type = deposit.type;
-				newRow.amount = deposit.paymentAmount;
-				newRow.details = HTTP.encodeJSON(deposit);
+				limit = limits.FindRows(New Structure("type, owner", deposit.type, owner));
+				If limit.Count() > 0 then
+					If deposit.paymentAmount > limit[0].min and deposit.paymentAmount <= limit[0].max then
+						newRow = orderObject.payments.Add();
+						newRow.owner = owner;
+						newRow.type = deposit.type;
+						newRow.amount = deposit.paymentAmount;
+						newRow.details = HTTP.encodeJSON(deposit);
+					Else
+						error = "deposits";
+					EndIf;
+				Else
+					error = "deposits";
+				EndIf;
 			EndDo;			
 			orderObject.Write();						
 		EndIf;
@@ -221,7 +242,7 @@ Procedure payment(parameters) Export
 	EndIf;
 
     If error <> "" Then
-    	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+   		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
     EndIf;
      
 //	struct.Insert("result", "Ok");

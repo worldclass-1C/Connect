@@ -308,6 +308,6 @@ Procedure autoPayment(parameters,additionalParameters) Export
 		EndIf;
 	Else
 		parameters.Insert("errorCode", "acquiringConnection");		
-	EndIf;		
+	EndIf;
 EndProcedure
 
