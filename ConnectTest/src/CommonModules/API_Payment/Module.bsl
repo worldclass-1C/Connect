@@ -203,8 +203,10 @@ Procedure payment(parameters) Export
 			EndDo;			
 			orderObject.Write();						
 		EndIf;
-		answer = Acquiring.executeRequest("process", order, parameters);
-		error = answer.errorCode;
+		If error = "" Then
+			answer = Acquiring.executeRequest("process", order, parameters);
+			error = answer.errorCode;
+		EndIf;
 	EndIf;
 	
 	//Отправляем в запрос в банк на оставшуюся сумму
