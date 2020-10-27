@@ -101,8 +101,7 @@ Procedure bindCard(parameters, additionalParameters) Export
 		requestStruct.Insert("acquiringBank", select.acquiringBank);
 		requestStruct.Insert("description", select.Description);
 		requestStruct.Insert("autopayment", select.autopayment);
-		requestStruct.Insert("expiryDate", String(Month(select.expiryDate)) + "/" + String(Right(Year(
-			select.expiryDate), 2)));
+		requestStruct.Insert("expiryDate", select.expiryDate); 
 		requestStruct.Insert("ownerName", select.ownerName);
 		requestStruct.Insert("paymentSystem", String(select.paymentSystem));
 		if ValueIsFilled(select.contract) then
