@@ -25,8 +25,9 @@ Function profile(user, appType) Export
 	|		WHEN users.owner.status IS NULL
 	|			THEN ""unauthorized""
 	|		ELSE REFPRESENTATION(users.owner.status)
-	|	END AS status, 
-	|	users.userCode AS barcode,
+	|	END AS status,
+	|	users.userCode AS userCode,
+	|	users.barcode AS barcode,
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
@@ -62,7 +63,7 @@ Function profile(user, appType) Export
 EndFunction
 
 Function initProfileStruct() Export
-	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, barcode, subscriptionEmail, subscriptionSms, rating", "", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", False, False, "");
+	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, userCode, barcode, subscriptionEmail, subscriptionSms, rating", "", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", "", False, False, "");
 EndFunction
 
 Procedure updateCache(val parameters) Export
