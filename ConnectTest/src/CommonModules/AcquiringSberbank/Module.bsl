@@ -203,7 +203,7 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("ownerName", response.cardAuthInfo.cardholderName);
 		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
 		creditCardStruct.Insert("paymentSystemCode", left(response.cardAuthInfo.maskedPan,2));
-		creditCardStruct.Insert("autoPayment", ?(parameters.Property("order") and ValueIsFilled(parameters.order),parameters.order.autoPayment, false));
+		creditCardStruct.Insert("autoPayment",false);
 	Else
 		creditCardStruct.Insert("bindingId", "");					
 	EndIf; 
