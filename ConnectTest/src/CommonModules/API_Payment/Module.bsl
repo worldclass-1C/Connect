@@ -245,7 +245,7 @@ Procedure payment(parameters) Export
 		EndIf;
 	EndIf;
 
-    If error <> "" Then
+    If not orderResult.IsEmpty() and error <> "" Then
    		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
     EndIf;
      
