@@ -377,7 +377,11 @@ Procedure unBindCard(parameters) Export
 	tokenContext = parameters.tokenContext;	
 	struct = New Structure();
 	struct.Insert("result", "ok");
-	
+	if requestStruct.Property("owner") and ValueIsFilled(requestStruct.owner) then
+		owner = XMLValue(Type("CatalogRef.users"), requestStruct.owner);
+	else
+		owner = tokenContext.user;
+	endif;
 	query = New Query("SELECT
 	|	creditCards.Ref AS creditCard,
 	|	NOT creditCards.inactive AS active
@@ -388,7 +392,7 @@ Procedure unBindCard(parameters) Export
 	|	AND creditCards.Owner = &owner");
 	
 	query.SetParameter("creditCard", XMLValue(Type("CatalogRef.creditCards"), requestStruct.uid));
-	query.SetParameter("owner", tokenContext.user);
+	query.SetParameter("owner", owner);
 	
 	result = query.Execute();
 	
