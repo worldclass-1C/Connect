@@ -542,17 +542,77 @@ EndProcedure
 
 Procedure generalcache(parameters) Export
 	
-	If Not Type("Structure") = TypeOf(parameters.requestStruct) Then
-		parameters.Insert("error","noValidRequest");
+	If Not requestIsStructure(parameters) Then
 		Return
 	EndIf;
 	
 	types = Undefined;
 	If Not parameters.requestStruct.Property("types",types) or Not  Type("Array") = TypeOf(types)  Then
-		parameters.Insert("error","noValidRequest");
+		noValidRequest(parameters);
 		Return
 	EndIf;
 	
+	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,languageCode,language,cacheTypes",
+												parameters.tokenContext.user,
+												parameters.tokenContext.holding,
+												parameters.tokenContext.chain,
+												parameters.languageCode,
+												parameters.language,
+												getCorrectTypes(types)));
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+
+EndProcedure
+
+Function requestIsStructure(parameters)
+	Res = true;
+	If Not Type("Structure") = TypeOf(parameters.requestStruct) Then
+		noValidRequest(parameters);
+		Res = False
+	EndIf;
+	
+	Return Res;
+EndFunction
+
+Procedure noValidRequest(parameters)
+	parameters.Insert("error","noValidRequest");
+EndProcedure
+
+Procedure clearcache(parameters) Export
+	
+	If Not requestIsStructure(parameters) Then
+		Return
+	EndIf;
+	
+	types = Undefined; date= Undefined;
+	If Not parameters.requestStruct.Property("types",types) or Not  Type("Array") = TypeOf(types)  Then
+		noValidRequest(parameters);
+		Return
+	EndIf;
+	If Not parameters.requestStruct.Property("date",date) Then
+		noValidRequest(parameters);
+		Return
+	EndIf;
+	
+	Try
+		date = XMLValue(type("Date"),date)
+	Except
+		noValidRequest(parameters);
+		Return
+	EndTry;
+	
+	struct = Cache.ClearCache(parameters,New Structure("user,holding,chain,languageCode,language,cacheTypes,date",
+												parameters.tokenContext.user,
+												parameters.tokenContext.holding,
+												parameters.tokenContext.chain,
+												parameters.languageCode,
+												parameters.language,
+												getCorrectTypes(types),
+												date));
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+
+EndProcedure
+
+Function getCorrectTypes(types)
 	arrTypes = New Array();
 	Predef = Metadata.Catalogs.cacheTypes.GetPredefinedNames();
 	For Each El In types Do
@@ -561,17 +621,9 @@ Procedure generalcache(parameters) Export
 		EndIf; 	
 	EndDo; 
 	
+	return arrTypes;
 	
-	struct = Cache.GetCache(parameters,New Structure("user,holding,chain,languageCode,language,cacheTypes",
-												parameters.tokenContext.user,
-												parameters.tokenContext.holding,
-												parameters.tokenContext.chain,
-												parameters.languageCode,
-												parameters.language,
-												arrTypes));
-	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
-
-EndProcedure
+EndFunction
 
 Procedure userCache(parameters) Export
 	

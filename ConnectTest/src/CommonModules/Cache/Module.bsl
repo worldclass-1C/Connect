@@ -2,7 +2,6 @@
 //			user 
 //			chain
 //			cacheTypes - массив cacheTypes
-
 Function GetCache(parameters, struсRequest) Export
 	
 	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
@@ -80,6 +79,43 @@ Function GetCache(parameters, struсRequest) Export
 	EndIf;
 
 	Return Result;
+
+EndFunction
+
+Function ClearCache(parameters, struсRequest) Export
+	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes,date", 
+								Catalogs.users.EmptyRef(), 
+								Catalogs.chains.EmptyRef(),
+								Catalogs.holdings.EmptyRef(),
+								CurrentUniversalDate(), 
+								"",
+								Catalogs.languages.EmptyRef(),
+								New Array,
+								CurrentUniversalDate());
+
+	FillPropertyValues(strucSeek, struсRequest);
+	
+	If strucSeek.cacheTypes.Count()>0 Then
+		Query = New Query(TextClearQuery());
+		For Each KeyVal In strucSeek Do
+			Query.SetParameter(KeyVal.Key, KeyVal.Value);
+		EndDo;
+		resQuery = Query.ExecuteBatch();
+		tab = resQuery[0].Unload();
+		
+		For Each str In tab Do
+			Set = InformationRegisters.cacheIndex.CreateRecordSet();
+			Set.Filter.user.Set(str.user);
+			Set.Filter.cacheType.Set(str.cacheType);
+			Set.Filter.holding.Set(str.holding);
+			Set.Filter.chain.Set(str.chain);
+			Set.Filter.cacheInformation.Set(str.cacheInformation);
+			Set.Write();
+			str.cacheInformation.GetObject().Delete();
+		EndDo;
+	EndIf;
+
+	Return "";
 
 EndFunction
 
@@ -246,6 +282,25 @@ Function TextQuery()
 
 EndFunction
 
+Function TextClearQuery()
+	Return "SELECT
+	|	CI.*
+	|FROM
+	|	InformationRegister.cacheIndex AS CI
+	|		LEFT JOIN Catalog.chains.cacheTypes AS CCT
+	|		ON CCT.Ref = &chain
+	|		AND CCT.cacheType = CI.cacheType
+	|WHERE
+	|	CI.cacheType IN (&cacheTypes)
+	|	AND CI.user = &user
+	|	AND (CI.chain = &chain
+	|	OR CI.chain = VALUE(Catalog.chains.EmptyRef))
+	|	AND CI.holding = &holding
+	|	and CCT.isUpdated
+	|	AND CI.cacheInformation.registrationDate < &date"
+
+EndFunction
+
 Function tabGyms() Export
 
 	gyms = New ValueTable();
@@ -255,7 +310,6 @@ Function tabGyms() Export
 	
 EndFunction // ()
 
- 
 Function getMyClubs(data,parameters) Export
 	
 	strucSeek = New Structure("user,chain,holding,date,languageCode,language,cacheTypes", 
