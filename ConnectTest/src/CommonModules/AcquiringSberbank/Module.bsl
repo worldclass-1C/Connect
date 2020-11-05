@@ -196,7 +196,7 @@ Function bindCardParameters(parameters) Export
 	If response.Property("bindingInfo") Then		
 		creditCardStruct.Insert("bindingId", response.bindingInfo.bindingId);
 		creditCardStruct.Insert("userId", response.bindingInfo.clientId);
-		creditCardStruct.Insert("acquiringBank", "Sberbank");
+		creditCardStruct.Insert("acquiringBank", parameters.acquiringProvider);
 		creditCardStruct.Insert("active", True);
 		creditCardStruct.Insert("autopayment", False);
 		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.cardAuthInfo.expiration + "01")));
