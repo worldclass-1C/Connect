@@ -78,8 +78,12 @@ Function sendPush(parameters) Export
 		body.Insert("data", data);
 		If isNotBackgroundPush Then			
 			body.Insert("title", parameters.title);
-			body.Insert("sound", "default");
-			body.Insert("text", parameters.text);
+			body.Insert("sound", "default");			
+			If parameters.systemType = Enums.systemTypes.iOS Then
+				body.Insert("body", parameters.text);
+			else
+				body.Insert("text", parameters.text);
+			EndIf;	
 			body.Insert("badge", parameters.badge);
 		EndIf;		
 
