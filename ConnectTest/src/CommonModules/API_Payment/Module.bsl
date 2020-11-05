@@ -424,8 +424,8 @@ EndProcedure
 Procedure autoPayment(parameters) Export
 	//создать ордер
 	orderStruct = New Structure();
-	If parameters.Property("customerId") And parameters.customerId <> "" Then
-		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.customerId));
+	If parameters.requestStruct.Property("customerId") And parameters.requestStruct.customerId <> "" Then
+		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.requestStruct.customerId));
 	Else	
 		orderStruct.Insert("user", parameters.tokenContext.user);		
 	EndIf;
