@@ -47,6 +47,8 @@ Procedure executeRequestMethod(parameters) Export
 //			API_Info.usersummarycache(parameters);
 		ElsIf parameters.requestName = "generalcache" Then 	
 			 API_Info.generalcache(parameters);
+		ElsIf parameters.requestName = "clearcache" Then 	
+			 API_Info.clearcache(parameters);
 		//ElsIf parameters.requestName = "usersummary" Then 
 		//	API_Info.usersummary(parameters);
 		//ElsIf parameters.requestName = "usercache" Then 
