@@ -450,6 +450,7 @@ Procedure autoPayment(parameters) Export
 			answerCheck = Acquiring.executeRequest("check", order);
 			If answerCheck.errorCode = "" Then
 				result = "ok";
+				answerKPO.Insert("details", HTTP.decodeJSON(order.payments[0].details, Enums.JSONValueTypes.structure));
 			EndIf;			
 		EndIf;
 	EndIf;
