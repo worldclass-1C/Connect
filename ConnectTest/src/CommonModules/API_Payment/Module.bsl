@@ -451,6 +451,7 @@ Procedure autoPayment(parameters) Export
 			If answerCheck.errorCode = "" Then
 				result = "ok";
 				answerKPO.Insert("details", HTTP.decodeJSON(order.payments[0].details, Enums.JSONValueTypes.structure));
+				answerKPO.details.Insert("uid", XMLString(order));
 			EndIf;			
 		EndIf;
 	EndIf;
