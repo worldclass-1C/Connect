@@ -309,7 +309,7 @@ Procedure informationSourceAlert() Export
 	headers	= New Map();
 	headers.Insert("Content-Type", "application/json");
 		
-	query	= New Query("SELECT DISTINCT TOP 100
+	query	= New Query("SELECT DISTINCT TOP 500
 	|	usersChanges.Ref.holding AS holding,
 	|	usersChanges.Ref AS user,
 	|	CASE
