@@ -361,6 +361,7 @@ Procedure bindCard(parameters) Export
 	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
 		struct.Insert("uid", XMLString(order));
+		struct.Insert("orderId", XMLString(order));
 		struct.Insert("formUrl", answer.formUrl);
 		struct.Insert("returnUrl", answer.returnUrl);
 		struct.Insert("failUrl", answer.failUrl);	
