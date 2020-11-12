@@ -188,11 +188,11 @@ Procedure payment(parameters) Export
 			For Each deposit In requestStruct.deposits Do
 				limit = limits.FindRows(New Structure("type, owner", deposit.type, owner));
 				If limit.Count() > 0 then
-					If deposit.paymentAmount > limit[0].min and deposit.paymentAmount <= limit[0].max then
+					If Round(deposit.paymentAmount,2) > limit[0].min and Round(deposit.paymentAmount,2) <= limit[0].max then
 						newRow = orderObject.payments.Add();
 						newRow.owner = owner;
 						newRow.type = deposit.type;
-						newRow.amount = deposit.paymentAmount;
+						newRow.amount = Round(deposit.paymentAmount,2);
 						newRow.details = HTTP.encodeJSON(deposit);
 					Else
 						error = "deposits";
