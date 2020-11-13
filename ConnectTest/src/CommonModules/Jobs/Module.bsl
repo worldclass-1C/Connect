@@ -168,7 +168,8 @@ Function GetOrdersToProcess()
 	|		ON ordersStates.order = acquiringOrders.Ref
 	|WHERE
 	|	ordersStates.state IS NULL
-	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)";
+	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|	AND acquiringOrders.acquiringRequest <> VALUE(enum.acquiringRequests.autoPayment)";
 	Query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	Return Query.Execute().Select();
 EndFunction
