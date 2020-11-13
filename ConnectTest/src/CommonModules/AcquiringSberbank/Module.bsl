@@ -286,7 +286,12 @@ EndFunction
 Procedure autoPayment(parameters,additionalParameters) Export
 	
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
+	if additionalParameters.Property("customerCode") then
+		requestParametrs.Add("userName=" + additionalParameters.customerCode);
+	else
+		requestParametrs.Add("userName=" + parameters.user);
+	EndIf;
+	
 	requestParametrs.Add("password=" + parameters.password);
 	requestParametrs.Add("mdOrder=" + XMLString(parameters.orderId));
 	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));

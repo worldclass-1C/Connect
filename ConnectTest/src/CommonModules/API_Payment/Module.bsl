@@ -425,6 +425,9 @@ EndProcedure
 Procedure autoPayment(parameters) Export
 	//создать ордер
 	orderStruct = New Structure();
+	customerCode = "";
+	parameters.requestStruct.Property("customerCode", customerCode);
+
 	If parameters.requestStruct.Property("customerId") And parameters.requestStruct.customerId <> "" Then
 		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.requestStruct.customerId));
 	Else	
@@ -446,6 +449,10 @@ Procedure autoPayment(parameters) Export
 	If answer.errorCode = "" Then
 	//провести автоплатеж autoPayment
 		answerPayment = Acquiring.executeRequest("autoPayment", order,parameters);
+		If answerPayment.errorCode <> "" and ValueIsFilled(customerCode) Then
+			parameters.Insert("customerCode", customerCode);
+			answerPayment = Acquiring.executeRequest("autoPayment", order, parameters);
+		EndIf;
 		If answerPayment.errorCode = "" Then
 			//проверить статус оплаты
 			answerCheck = Acquiring.executeRequest("check", order);
