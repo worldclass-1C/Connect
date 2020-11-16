@@ -344,20 +344,22 @@ Function getMyClubs(data,parameters) Export
 			BackgroundJobs.Execute("Cache.AskCache",arrParams );
 		else
 			cacheData = HTTP.decodeJSON(cacheVal.data);
-			strucGym = New Structure("base,ref",false);
-			If TypeOf(cacheData)=Type("Structure") Then
-				//если контракт уже закончился, то пропускаем
-				If XMLValue(Type("date"),cacheData.d)<dateNow Then
-					Continue;
-				EndIf; 
-				strucGym.ref = Service.getRef(cacheData.c, Type("CatalogRef.gyms"));
-				If cacheData.property("b") and cacheData.b Then
-					strucGym.base= true
-				EndIf; 
-			Else
-				strucGym.ref = Service.getRef(cacheData, Type("CatalogRef.gyms"));
-			EndIf;
-			FillPropertyValues(gyms.Add(),strucGym);
+			For Each elCache In cacheData Do
+				strucGym = New Structure("base,ref",false);
+				If TypeOf(elCache)=Type("Structure") Then
+					//если контракт уже закончился, то пропускаем
+					If XMLValue(Type("date"),elCache.d)<dateNow Then
+						Continue;
+					EndIf; 
+					strucGym.ref = Service.getRef(elCache.c, Type("CatalogRef.gyms"));
+					If elCache.property("b") and elCache.b Then
+						strucGym.base= true
+					EndIf; 
+				Else
+					strucGym.ref = Service.getRef(elCache, Type("CatalogRef.gyms"));
+				EndIf;
+				FillPropertyValues(gyms.Add(),strucGym);
+			EndDo;
 		EndIf;
 	EndDo;
 	
