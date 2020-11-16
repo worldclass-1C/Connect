@@ -444,15 +444,16 @@ Procedure autoPayment(parameters) Export
 	order = Acquiring.newOrder(orderStruct);
 	//отправить его send
 	answer = Acquiring.executeRequest("send", order);
+	If answer.errorCode <> "" and ValueIsFilled(customerCode) Then
+		parameters.Insert("customerCode", customerCode);
+		answer = Acquiring.executeRequest("send", order, parameters);
+	EndIf;
+	
 	answerKPO = New Structure();
 	result = "error";
 	If answer.errorCode = "" Then
 	//провести автоплатеж autoPayment
 		answerPayment = Acquiring.executeRequest("autoPayment", order,parameters);
-		If answerPayment.errorCode <> "" and ValueIsFilled(customerCode) Then
-			parameters.Insert("customerCode", customerCode);
-			answerPayment = Acquiring.executeRequest("autoPayment", order, parameters);
-		EndIf;
 		If answerPayment.errorCode = "" Then
 			//проверить статус оплаты
 			answerCheck = Acquiring.executeRequest("check", order);

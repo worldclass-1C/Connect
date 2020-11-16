@@ -109,7 +109,7 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 	parameters.Insert("requestName", requestName);	
 	If parameters.errorCode = "" Then
 		If requestName = "send" Then
-			sendOrder(parameters);
+			sendOrder(parameters, additionalParameters);
 		ElsIf requestName = "check" Then
 			checkOrder(parameters, additionalParameters);
 		ElsIf requestName = "unBindCard" Then
@@ -649,7 +649,7 @@ Procedure executeRequestBackground(requestName, order, additionalParameters = Un
 	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
 EndProcedure
 
-Procedure sendOrder(parameters)
+Procedure sendOrder(parameters, additionalParameters = Undefined)
 	parameters.Insert("errorCode", "acquiringOrderSend");
 	If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
@@ -660,7 +660,7 @@ Procedure sendOrder(parameters)
 	EndIf;
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.sendOrder(parameters);
+		AcquiringSberbank.sendOrder(parameters, additionalParameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
 		If parameters.acquiringRequest <> Enums.acquiringRequests.binding Then
 			AcquiringDemirBank.sendOrder(parameters);
