@@ -188,11 +188,11 @@ Procedure payment(parameters) Export
 			For Each deposit In requestStruct.deposits Do
 				limit = limits.FindRows(New Structure("type, owner", deposit.type, owner));
 				If limit.Count() > 0 then
-					If deposit.paymentAmount > limit[0].min and deposit.paymentAmount <= limit[0].max then
+					If Round(deposit.paymentAmount,2) > limit[0].min and Round(deposit.paymentAmount,2) <= limit[0].max then
 						newRow = orderObject.payments.Add();
 						newRow.owner = owner;
 						newRow.type = deposit.type;
-						newRow.amount = deposit.paymentAmount;
+						newRow.amount = Round(deposit.paymentAmount,2);
 						newRow.details = HTTP.encodeJSON(deposit);
 					Else
 						error = "deposits";
@@ -425,6 +425,9 @@ EndProcedure
 Procedure autoPayment(parameters) Export
 	//создать ордер
 	orderStruct = New Structure();
+	customerCode = "";
+	parameters.requestStruct.Property("customerCode", customerCode);
+
 	If parameters.requestStruct.Property("customerId") And parameters.requestStruct.customerId <> "" Then
 		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.requestStruct.customerId));
 	Else	
@@ -441,6 +444,11 @@ Procedure autoPayment(parameters) Export
 	order = Acquiring.newOrder(orderStruct);
 	//отправить его send
 	answer = Acquiring.executeRequest("send", order);
+	If answer.errorCode <> "" and ValueIsFilled(customerCode) Then
+		parameters.Insert("customerCode", customerCode);
+		answer = Acquiring.executeRequest("send", order, parameters);
+	EndIf;
+	
 	answerKPO = New Structure();
 	result = "error";
 	If answer.errorCode = "" Then

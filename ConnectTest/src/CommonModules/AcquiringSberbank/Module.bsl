@@ -1,17 +1,21 @@
 
-Procedure sendOrder(parameters) Export
+Procedure sendOrder(parameters, additionalParameters = Undefined) Export
 			
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
-	requestParametrs.Add("amount=" + Format(parameters.acquiringAmount * 100,"NFD=0; NG=0"));
-	requestParametrs.Add("returnUrl=" + parameters.returnUrl);
-	requestParametrs.Add("failUrl=" + parameters.failUrl);
+	requestParametrs.Add("userName=" 		+ parameters.user);
+	requestParametrs.Add("password=" 		+ parameters.password);
+	requestParametrs.Add("orderNumber=" 	+ parameters.orderNumber);
+	requestParametrs.Add("amount=" 			+ Format(parameters.acquiringAmount * 100,"NFD=0; NG=0"));
+	requestParametrs.Add("returnUrl=" 		+ parameters.returnUrl);
+	requestParametrs.Add("failUrl=" 		+ parameters.failUrl);
 	requestParametrs.Add("pageView=DESKTOP");
 	
 	If ValueIsFilled(parameters.creditCard) Then
-		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
+		If additionalParameters <> Undefined and additionalParameters.Property("customerCode") then
+			requestParametrs.Add("clientId=" + additionalParameters.customerCode);
+		else
+			requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
+		EndIf;
 		requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
 	ElsIf parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
@@ -41,9 +45,9 @@ EndProcedure
 Procedure checkOrder(parameters) Export
 			
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("orderId=" + XMLString(parameters.orderId));
+	requestParametrs.Add("userName=" 	+ parameters.user);
+	requestParametrs.Add("password=" 	+ parameters.password);
+	requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
 	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
 			
 	requestURL = New Array();
@@ -96,8 +100,8 @@ EndProcedure
 Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
 			
 	requestBody = New Structure();
-	requestBody.Insert("merchant" , parameters.merchantPay);
-	requestBody.Insert("orderNumber" , parameters.orderNumber);
+	requestBody.Insert("merchant" , 	parameters.merchantPay);
+	requestBody.Insert("orderNumber" , 	parameters.orderNumber);
 	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
@@ -141,9 +145,9 @@ EndProcedure
 Procedure reverseOrder(parameters) Export
 			
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("orderId=" + XMLString(parameters.orderId));
+	requestParametrs.Add("userName="	+ parameters.user);
+	requestParametrs.Add("password=" 	+ parameters.password);
+	requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
 		
 	response = requestExecute(parameters, "reverse", requestParametrs);		
 	If response.StatusCode = 200 Then
@@ -166,9 +170,9 @@ EndProcedure
 Procedure unBindCard(parameters) Export
 			
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));	
+	requestParametrs.Add("userName=" 	+ parameters.user);
+	requestParametrs.Add("password=" 	+ parameters.password);
+	requestParametrs.Add("bindingId=" 	+ XMLString(parameters.creditCard));	
 	
 	response = requestExecute(parameters, "unBindCard", requestParametrs);	
 	
@@ -286,11 +290,11 @@ EndFunction
 Procedure autoPayment(parameters,additionalParameters) Export
 	
 	requestParametrs = New Array();
-	requestParametrs.Add("userName=" + parameters.user);
-	requestParametrs.Add("password=" + parameters.password);
-	requestParametrs.Add("mdOrder=" + XMLString(parameters.orderId));
-	requestParametrs.Add("bindingId=" + XMLString(parameters.creditCard));
-	requestParametrs.Add("ip=" + additionalParameters.ipAddress);	
+	requestParametrs.Add("userName=" 	+ parameters.user);	
+	requestParametrs.Add("password=" 	+ parameters.password);
+	requestParametrs.Add("mdOrder=" 	+ XMLString(parameters.orderId));
+	requestParametrs.Add("bindingId=" 	+ XMLString(parameters.creditCard));
+	requestParametrs.Add("ip=" 			+ additionalParameters.ipAddress);	
 	response = requestExecutePOST(parameters, "paymentOrderBinding", requestParametrs);
 	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", responseStruct);		
