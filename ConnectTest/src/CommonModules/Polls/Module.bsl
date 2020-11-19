@@ -300,9 +300,44 @@ Procedure AddAnswer(Tab, question, answer,openAnswer, Cnt=0)
 		newRow.ЭлементарныйВопрос = newRow.Вопрос.ЭлементарныйВопрос;
 		newRow.НомерЯчейки = Cnt;
 		newRow.ОткрытыйОтвет = openAnswer;
-		newRow.Ответ = answer;
+		newRow.Ответ = Typization(newRow.Вопрос.ЭлементарныйВопрос,answer);
 	EndIf	
 EndProcedure	
+
+Function Typization(ElementaryQuestion,answer);
+	res = answer;
+	TypeAnswer = ElementaryQuestion.ТипОтвета;
+	TypesAnswer = Enums.ТипыОтветовНаВопрос;
+	If TypeAnswer = TypesAnswer.Булево Then
+		res = Boolean(answer);
+	ElsIf TypeAnswer = TypesAnswer.строка Then
+		res = String(answer);
+	ElsIf TypeAnswer = TypesAnswer.Текст Then
+		res = String(answer);
+	ElsIf TypeAnswer = TypesAnswer.Число Then
+		res = Number(answer);
+	ElsIf TypeAnswer = TypesAnswer.Дата Then
+		res = XMLValue(type("Date"),answer)
+	ElsIf TypeAnswer = TypesAnswer.ЗначениеИнформационнойБазы Then
+		res = Undefined;
+		For Each lType In TypesDB() Do
+			If ElementaryQuestion.ValueType.ContainsType(lType) Then
+				res = XMLValue(lType, answer);
+				Break;
+			EndIf;
+		EndDo; 
+	EndIf;
+	Return res;
+EndFunction	
+
+Function TypesDB() //!!! при добавлении типов доопределить
+	Res = New Array;
+	Res.Add(Type("CatalogRef.gyms"));
+	Res.Add(Type("CatalogRef.products"));
+	Res.Add(Type("CatalogRef.employees"));
+	
+	return Res;
+EndFunction
 
 Procedure FillAnswer(ElementaryQuestion, repository,StructQuestion, variant=Undefined)
 	
