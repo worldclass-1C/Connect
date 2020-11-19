@@ -47,6 +47,12 @@ Procedure executeRequestMethod(parameters) Export
 //			API_Info.usersummarycache(parameters);
 		ElsIf parameters.requestName = "generalcache" Then 	
 			 API_Info.generalcache(parameters);
+		ElsIf parameters.requestName = "polllist" Then 	
+			 API_Info.polllist(parameters);
+		ElsIf parameters.requestName = "pollinfo" Then 	
+			 API_Info.pollInfo(parameters);	
+			 ElsIf parameters.requestName = "pollanswer" Then 	
+			 API_Info.pollanswer(parameters);	 	 
 		ElsIf parameters.requestName = "clearcache" Then 	
 			 API_Info.clearcache(parameters);
 		//ElsIf parameters.requestName = "usersummary" Then 

@@ -734,3 +734,73 @@ Procedure fileInfo(parameters) Export
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure
+
+Procedure polllist(parameters) Export
+	parameters.Insert("answerBody", 
+				HTTP.encodeJSON(
+						Polls.list(
+								New Structure("chain",
+												parameters.tokenContext.chain))));	
+EndProcedure
+
+Procedure pollInfo(parameters) Export
+	
+	If Not requestIsStructure(parameters) Then
+		Return
+	EndIf;
+	
+	pollId = Undefined;
+	If Not parameters.requestStruct.Property("pollId",pollId)   Then
+		noValidRequest(parameters);
+		Return
+	EndIf;
+	struct = Polls.poll(New Structure("user,poll", 
+							parameters.tokenContext.user,
+							XMLValue(Type("DocumentRef.НазначениеОпросов"), pollId) ));
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+
+EndProcedure
+
+Procedure pollanswer(parameters) Export
+	
+	If Not requestIsStructure(parameters) Then
+		Return
+	EndIf;
+	
+	pollId = Undefined; questionId = Undefined;
+	answer = Undefined; openAnswer = Undefined;
+	variantsInput = Undefined;
+	If Not parameters.requestStruct.Property("pollId",pollId)   Then
+		noValidRequest(parameters);
+		Return
+	EndIf;
+	If Not parameters.requestStruct.Property("questionId",questionId)   Then
+		noValidRequest(parameters);
+		Return
+	EndIf;	
+	
+	parameters.requestStruct.Property("answer",answer);
+	parameters.requestStruct.Property("openAnswer",openAnswer);
+	parameters.requestStruct.Property("variants",variantsInput);
+
+	variants = New Array;
+	If  TypeOf(variantsInput)=Type("Array") Then
+		For Each el in variantsInput  Do
+			strucVariant = New Structure("openAnswer");
+			FillPropertyValues(strucVariant,el);
+			strucVariant.Insert("variant", XMLValue(Type("CatalogRef.ВариантыОтветовАнкет"), el.variantId));
+			variants.Add(strucVariant);
+		EndDo	
+	EndIf;	
+	
+	struct = Polls.pollanswer(New Structure("user,poll,question,variants,answer,openAnswer",
+													parameters.tokenContext.user,
+													XMLValue(Type("DocumentRef.НазначениеОпросов"), pollId),
+													XMLValue(Type("CatalogRef.ВопросыШаблонаАнкеты"), questionId),
+													variants,
+													answer,
+													openAnswer));
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+
+EndProcedure
