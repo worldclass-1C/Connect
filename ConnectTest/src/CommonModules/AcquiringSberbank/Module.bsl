@@ -1,5 +1,5 @@
 
-Procedure sendOrder(parameters, additionalParameters = Undefined) Export
+Procedure sendOrder(parameters) Export
 			
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" 		+ parameters.user);
@@ -11,8 +11,8 @@ Procedure sendOrder(parameters, additionalParameters = Undefined) Export
 	requestParametrs.Add("pageView=DESKTOP");
 	
 	If ValueIsFilled(parameters.creditCard) Then
-		If additionalParameters <> Undefined and additionalParameters.Property("customerCode") then
-			requestParametrs.Add("clientId=" + additionalParameters.customerCode);
+		If parameters.Property("customerCode") then
+			requestParametrs.Add("clientId=" + parameters.customerCode);
 		else
 			requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 		EndIf;
@@ -20,7 +20,7 @@ Procedure sendOrder(parameters, additionalParameters = Undefined) Export
 	ElsIf parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		requestParametrs.Add("clientId=" + XMLString(parameters.bindingUser));
 	EndIf;
-	If parameters.Property("autoPayment") and parameters.autoPayment Then
+	If parameters.connectionType = Enums.ConnectionTypes.autoPayment Then
 		requestParametrs.Add("features=AUTO_PAYMENT");
 	EndIf;
 	response = requestExecute(parameters, "register", requestParametrs);
@@ -31,7 +31,7 @@ Procedure sendOrder(parameters, additionalParameters = Undefined) Export
 			parameters.Insert("orderId", responseStruct.orderId);
 			parameters.Insert("formUrl", responseStruct.formUrl);
 			parameters.Insert("errorCode", "");
-			orderIdentifier(parameters.order, responseStruct.orderId);
+			Acquiring.orderIdentifier(parameters.order,, responseStruct.orderId);
 		Else
 			parameters.Insert("errorCode", responseStruct.errorCode);
 			parameters.Insert("errorDescription", responseStruct.errorMessage);	
@@ -97,24 +97,24 @@ Procedure checkOrder(parameters) Export
 		
 EndProcedure
 
-Procedure checkOrderAppleGoogle(parameters, additionalParameters) Export
+Procedure checkOrderAppleGoogle(parameters) Export
 			
 	requestBody = New Structure();
-	requestBody.Insert("merchant" , 	parameters.merchantPay);
+	requestBody.Insert("merchant" , 	parameters.merchantID);
 	requestBody.Insert("orderNumber" , 	parameters.orderNumber);
-	requestBody.Insert("paymentToken" , ?(additionalParameters=Undefined,"",additionalParameters.paymentData));
+	requestBody.Insert("paymentToken" , ?(parameters.Property("paymentData"),"", parameters.paymentData));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
-		amount =  parameters.order.acquiringAmount - parameters.order.payments.Total("amount");	
+		amount =  parameters.acquiringAmount;	
 		requestBody.Insert("amount", amount*100);	
 		requestBody.Insert("returnUrl", "https://solutions.worldclass.ru/banking/success.html");
 		requestBody.Insert("failUrl", "https://solutions.worldclass.ru/banking/fail.html");
 	EndIf;
 		
 	requestURL = New Array();
-	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
+	If parameters.acquiringRequest = enums.acquiringRequests.googlePay Then
 		Connection = "/payment/google/payment.do";
-	ElsIf parameters.order.acquiringRequest = enums.acquiringRequests.applePay Then
+	ElsIf parameters.acquiringRequest = enums.acquiringRequests.applePay Then
 		 Connection ="/payment/applepay/payment.do";
 	EndIf;
 	Body = HTTP.encodeJSON(requestBody);
@@ -214,15 +214,6 @@ Function bindCardParameters(parameters) Export
 	Return creditCardStruct;
 EndFunction
 
-Function orderIdentifier(order, orderId)
-	orderIdentifierRef = Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderId));
-	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
-	orderIdentifier.SetNewObjectRef(orderIdentifierRef);
-	orderIdentifier.Owner = order;
-	orderIdentifier.Write();
-	Return orderIdentifier.Ref;	
-EndFunction 
-
 Function requestExecute(parameters, requestName, requestParametrs)
 	requestURL = New Array();
 	requestURL.Add("/payment/rest/");
@@ -287,14 +278,14 @@ Function prepareDetails(parameters, parametersQuery)
 	
 EndFunction
 
-Procedure autoPayment(parameters,additionalParameters) Export
+Procedure autoPayment(parameters) Export
 	
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" 	+ parameters.user);	
 	requestParametrs.Add("password=" 	+ parameters.password);
 	requestParametrs.Add("mdOrder=" 	+ XMLString(parameters.orderId));
 	requestParametrs.Add("bindingId=" 	+ XMLString(parameters.creditCard));
-	requestParametrs.Add("ip=" 			+ additionalParameters.ipAddress);	
+	requestParametrs.Add("ip=" 			+ parameters.ipAddress);	
 	response = requestExecutePOST(parameters, "paymentOrderBinding", requestParametrs);
 	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", responseStruct);		

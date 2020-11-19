@@ -86,7 +86,7 @@ Function decodeJSON(val body, val JSONValueType = "", ReadToMap = False, isXDTOS
 		If isXDTOSerializer Then
 			RequestStruct = XDTOSerializer.ReadJSON(JSONReader)	
 		Else		
-			RequestStruct = ReadJSON(JSONReader, ReadToMap);
+       			RequestStruct = ReadJSON(JSONReader, ReadToMap);
 		EndIf;
 		JSONReader.Close();
 		Return RequestStruct;

@@ -242,6 +242,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="78cac1ca-86dc-4ca3-a8b3-49e66142d84d">
+    <name>connectionType</name>
+    <synonym>
+      <key>en</key>
+      <value>Connection type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип подключения</value>
+    </synonym>
+    <type>
+      <types>EnumRef.ConnectionTypes</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="b76aa4c0-e224-40d0-a8ce-3472bf3de256">
     <producedTypes>
       <objectType typeId="1196ce49-425c-49f5-b732-2fcf62125973" valueTypeId="d370e40f-7320-4d8e-8e37-fe8301d14904"/>

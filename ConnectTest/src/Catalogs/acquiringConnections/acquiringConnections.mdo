@@ -204,10 +204,10 @@
     <dataHistory>Use</dataHistory>
   </attributes>
   <attributes uuid="e10d374c-0b13-44e0-86a2-25387888d396">
-    <name>merchantPay</name>
+    <name>merchantID</name>
     <synonym>
       <key>en</key>
-      <value>Merchant pay</value>
+      <value>Merchant ID</value>
     </synonym>
     <type>
       <types>String</types>

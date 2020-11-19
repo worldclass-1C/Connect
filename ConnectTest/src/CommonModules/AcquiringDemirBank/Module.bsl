@@ -48,7 +48,7 @@ Procedure sendOrder(parameters) Export
 	parameters.insert("orderid", XMLString(new UUID()));
 	parameters.insert("formurl", fileName.URL+"/"+ XMLString(parameters.order) +".html");
 	parameters.insert("errorcode", "");
-	orderidentifier(parameters.order, XMLString(parameters.order));
+	Acquiring.orderidentifier(parameters.order, ,XMLString(parameters.order));
 		
 EndProcedure
 
@@ -56,11 +56,3 @@ Procedure checkOrder(parameters) Export
 	parameters.errorCode = "noData";
 EndProcedure
 
-Function orderIdentifier(order, orderId)
-	orderIdentifierRef = Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderId));
-	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
-	orderIdentifier.SetNewObjectRef(orderIdentifierRef);
-	orderIdentifier.Owner = order;
-	orderIdentifier.Write();
-	Return orderIdentifier.Ref;	
-EndFunction 

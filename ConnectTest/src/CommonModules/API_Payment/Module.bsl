@@ -54,6 +54,7 @@ Procedure paymentPreparation(parameters) Export
 		orderStruct.Insert("orders", struct.docList);
 		orderStruct.Insert("gymId", struct.gymId);
 		orderStruct.Insert("paymentOptions", struct.paymentOptions);
+		orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);
 		orderStruct.Insert("autoPayment", ?(struct.Property("autoPayment"),struct.autoPayment, False));
 		order = Acquiring.newOrder(orderStruct);
 		//@skip-warning
@@ -174,8 +175,8 @@ Procedure payment(parameters) Export
 			 Else
 			 	error = "acquiringCard";
 			 EndIf;
-		ElsIf isQr Then
-			 orderObject.acquiringRequest = enums.acquiringRequests.qrRegister; 
+		ElsIf isQr Then 
+			 orderObject.connectionType	  = Enums.ConnectionTypes.qr;
 		EndIf;
 	EndIf;
 
@@ -441,6 +442,7 @@ Procedure autoPayment(parameters) Export
 	orderStruct.Insert("orders", 			requestStruct.docList);
 	orderStruct.Insert("gymId", 			requestStruct.gymId);
 	orderStruct.Insert("creditCard", 		XMLValue(Type("CatalogRef.creditCards"),requestStruct.card));
+	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.autoPayment);
 	order = Acquiring.newOrder(orderStruct);
 	//отправить его send
 	answer = Acquiring.executeRequest("send", order);
@@ -488,5 +490,33 @@ Procedure changeCardAutoPayment(parameters) Export
 			EndIf;
 		EndIf;	
 	EndIf;
+	
+EndProcedure
+
+Procedure paymentDetails(parameters) Export
+	
+	orderStruct = New Structure();
+	If parameters.requestStruct.Property("customerId") And parameters.requestStruct.customerId <> "" Then
+		orderStruct.Insert("user", XMLValue(Type("CatalogRef.users"), parameters.requestStruct.customerId));
+	Else	
+		orderStruct.Insert("user", parameters.tokenContext.user);		
+	EndIf;
+	answerKPO = New Structure();
+	result = "error";
+	requestStruct = parameters.requestStruct;
+	orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.register);
+	orderStruct.Insert("holding", 			parameters.tokenContext.holding);
+	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.onlineStore);
+	order 				= Acquiring.newOrder(orderStruct);
+	orderIdentifier 	= Acquiring.orderIdentifier(order, requestStruct.orderNumber);
+	answerCheck 		= Acquiring.executeRequest("check", order);
+	If answerCheck.errorCode = "" Then
+		result = "ok";
+		answerKPO.Insert("details", HTTP.decodeJSON(order.payments[0].details, Enums.JSONValueTypes.structure));
+		answerKPO.details.Insert("uid", XMLString(order));
+	EndIf;
+	//Вернуть ответ
+	answerKPO.Insert("result", 		result);
+	parameters.Insert("answerBody", HTTP.encodeJSON(answerKPO));
 	
 EndProcedure

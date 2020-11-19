@@ -153,7 +153,6 @@
   <constants>Constant.acquiringURL</constants>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
-  <catalogs>Catalog.qrAcquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>
   <catalogs>Catalog.acquiringOrderIdentifiers</catalogs>
   <catalogs>Catalog.acquiringOrders</catalogs>
@@ -212,6 +211,7 @@
   <enums>Enum.systemTypes</enums>
   <enums>Enum.typeOfExternalRefs</enums>
   <enums>Enum.meetingStatusesZoom</enums>
+  <enums>Enum.ConnectionTypes</enums>
   <reports>Report.applicationVersions</reports>
   <reports>Report.registeredMessages</reports>
   <reports>Report.statisticsByDay</reports>
