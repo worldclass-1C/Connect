@@ -1,8 +1,8 @@
-Procedure getQr(parameters,additionalParameters) Export
+Procedure getQr(parameters) Export
 	
 	body = new structure;
-	currentDate = XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate(),additionalParameters.tokenContext.timeZone))+".107227"+?(StandardTimeOffset(additionalParameters.tokenContext.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(additionalParameters.tokenContext.timeZone),"DF=HH:mm");
-	dateEnd		= XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate()+20*60,additionalParameters.tokenContext.timeZone))+".107227"+?(StandardTimeOffset(additionalParameters.tokenContext.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(additionalParameters.tokenContext.timeZone),"DF=HH:mm");
+	currentDate = XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate(),parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
+	dateEnd		= XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate()+20*60,parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
 	body.Insert("account", 				parameters.user);
 	body.Insert("amount", 				parameters.acquiringAmount);
 	body.Insert("createDate", 			currentDate);
@@ -24,11 +24,11 @@ Procedure getQr(parameters,additionalParameters) Export
 	parameters.Insert("response", responseStruct);
 	If responseStruct.Property("code") and responseStruct.code = "SUCCESS" then
 		If responseStruct.Property("qrId") then
-			orderIdentifier(parameters.order, responseStruct.qrId);
+			Acquiring.orderIdentifier(parameters.order, responseStruct.qrId);
 		EndIf;
 		parameters.Insert("orderId", XMLString(parameters.order));
-		If additionalParameters.Property("tokenContext") And additionalParameters.tokenContext.Property("systemType") Then
-			SystemType = additionalParameters.tokenContext.systemType;
+		If parameters.Property("systemType") Then
+			SystemType = parameters.systemType;
 		EndIf;
 		if (SystemType.IsEmpty()) or SystemType = Enums.systemTypes.Web then  
 			parameters.Insert("formUrl", responseStruct.qrUrl);
@@ -52,7 +52,7 @@ Procedure checkStatus(parameters) Export
 	parameters.Insert("requestBody", URL);	
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, ,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	requestHTTP = New HTTPRequest(URL);
-	requestHTTP.Headers.Insert("Authorization", "Bearer "+parameters.authorization);
+	requestHTTP.Headers.Insert("Authorization", "Bearer "+parameters.key);
 	answerHTTP = ConnectionHTTP.Get(requestHTTP);
 	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 	parameters.Insert("response", answerStruct);
@@ -89,14 +89,6 @@ Procedure checkStatus(parameters) Export
 	EndIf;		
 		
 EndProcedure
-
-Function orderIdentifier(order, orderId)
-	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
-	orderIdentifier.Description = orderId;
-	orderIdentifier.Owner = order;
-	orderIdentifier.Write();
-	Return orderIdentifier.Ref;	
-EndFunction 
 
 Function prepareDetails(parameters, parametersQuery)
 	

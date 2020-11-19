@@ -181,7 +181,6 @@
   <catalogs>Catalog.ШаблоныАнкет</catalogs>
   <catalogs>Catalog.accounts</catalogs>
   <catalogs>Catalog.acquiringConnections</catalogs>
-  <catalogs>Catalog.qrAcquiringConnections</catalogs>
   <catalogs>Catalog.acquiringLogs</catalogs>
   <catalogs>Catalog.acquiringOrderIdentifiers</catalogs>
   <catalogs>Catalog.acquiringOrders</catalogs>
@@ -249,6 +248,7 @@
   <enums>Enum.systemTypes</enums>
   <enums>Enum.typeOfExternalRefs</enums>
   <enums>Enum.meetingStatusesZoom</enums>
+  <enums>Enum.ConnectionTypes</enums>
   <reports>Report.АнализОпроса</reports>
   <reports>Report.АналитическийОтчетПоАнкетированию</reports>
   <reports>Report.applicationVersions</reports>

@@ -348,8 +348,8 @@
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>9</precision>
-        <scale>6</scale>
+        <precision>11</precision>
+        <scale>7</scale>
       </numberQualifiers>
     </type>
     <format>
@@ -414,8 +414,8 @@
     <type>
       <types>Number</types>
       <numberQualifiers>
-        <precision>9</precision>
-        <scale>6</scale>
+        <precision>11</precision>
+        <scale>7</scale>
       </numberQualifiers>
     </type>
     <format>

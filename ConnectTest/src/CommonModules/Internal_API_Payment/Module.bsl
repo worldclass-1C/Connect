@@ -32,8 +32,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 		select = result.Select();
 		select.Next();
 		If select.acquiringRequest = Enums.acquiringRequests.register Or select.acquiringRequest
-			= Enums.acquiringRequests.applePay Or select.acquiringRequest = Enums.acquiringRequests.googlePay
-			Or select.acquiringRequest = Enums.acquiringRequests.qrRegister Then
+			= Enums.acquiringRequests.applePay Or select.acquiringRequest = Enums.acquiringRequests.googlePay Then
 			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(
 				select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty()
 				And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60), "cancel", "reserve"))));
@@ -53,12 +52,9 @@ Procedure processOrder(parameters, additionalParameters) Export
 		EndIf;
 		parametersNew.Insert("requestStruct", requestStruct);
 		parametersNew.Insert("internalRequestMethod", True);
-		//Acquiring.delOrderToQueue(parameters.order);
 		General.executeRequestMethod(parametersNew);
-		//Service.logRequestBackground(parametersNew);
-		
+			
 		If parametersNew.error <> "" Then
-				//Acquiring.addOrderToQueue(parameters.order, select.state);
 				parameters.Insert("errorCode", parametersNew.error);
 				Texts = String(parametersNew.requestName) + chars.LF + parametersNew.requestBody + chars.LF
 					+ parametersNew.statusCode + chars.LF + parametersNew.answerBody;

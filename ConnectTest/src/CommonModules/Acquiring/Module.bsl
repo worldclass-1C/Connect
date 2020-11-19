@@ -50,6 +50,20 @@ Function newOrder(parameters) Export
 	Return orderObject.ref;
 EndFunction
 
+Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined) Export	
+	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
+	If ValueIsFilled(orderUid) Then
+		orderIdentifierRef = Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderUid));
+		orderIdentifier.SetNewObjectRef(orderIdentifierRef);
+	EndIf;
+	If ValueIsFilled(orderNumber) Then
+		orderIdentifier.Description = orderNumber;
+	EndIf;
+	orderIdentifier.Owner = order;
+	orderIdentifier.Write();
+	Return orderIdentifier.Ref;	
+EndFunction
+
 Function findOrder(orderId) Export
 	
 	query = New Query("SELECT
@@ -105,13 +119,13 @@ Function paymentSystem(val code) Export
 EndFunction
 
 Function executeRequest(requestName, order, additionalParameters = Undefined) Export
-	parameters = orderDetails(order);
+	parameters = paymentParameters(order, additionalParameters);
 	parameters.Insert("requestName", requestName);	
 	If parameters.errorCode = "" Then
 		If requestName = "send" Then
-			sendOrder(parameters, additionalParameters);
+			sendOrder(parameters);
 		ElsIf requestName = "check" Then
-			checkOrder(parameters, additionalParameters);
+			checkOrder(parameters);
 		ElsIf requestName = "unBindCard" Then
 			unBindCard(parameters);
 		ElsIf requestName = "reverse" Then
@@ -123,9 +137,9 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "unBindCardBack" Then
 			Internal_API_Payment.unBindCard(parameters, additionalParameters);
 		ElsIf requestName = "getQr" Then
-			getQr(parameters,additionalParameters);	
+			getQr(parameters);	
 		ElsIf  requestName = "autoPayment" Then 
-			autoPayment(parameters,additionalParameters);	
+			autoPayment(parameters);	
 		EndIf;
 	EndIf;
 	Service.logAcquiringBackground(parameters);
@@ -152,382 +166,13 @@ Function newCard(parameters)
 	EndIf;
 EndFunction
 
-Function orderDetails(order)
+Function paymentParameters(order, parameters)
 	
 	answer = answerStruct();
-			
-	query = New Query();
-	query.text = "SELECT
-	|	SUM(acquiringOrderspayments.amount) AS amount
-	|INTO TemporaryDepositAmount
-	|FROM
-	|	Catalog.acquiringOrders.payments AS acquiringOrderspayments
-	|WHERE
-	|	acquiringOrderspayments.Ref = &order
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	acquiringOrders.Ref AS order,
-	|	acquiringOrderIdentifiers.Ref AS orderId,
-	|	acquiringOrders.Code AS orderNumber,
-	|	acquiringOrders.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
-	|	acquiringOrders.user AS bindingUser,
-	|	acquiringOrders.creditCard AS creditCard,
-	|	ISNULL(acquiringOrders.creditCard.Owner, VALUE(Catalog.users.EmptyRef)) AS ownerCreditCard,
-	|	acquiringOrders.acquiringRequest AS acquiringRequest,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.acquiringProvider
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.acquiringProvider
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.acquiringProvider
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.acquiringProvider
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.acquiringProvider
-	|				ELSE holdingConnection.qrConnection.acquiringProvider
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.acquiringProvider
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.acquiringProvider
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.acquiringProvider
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.acquiringProvider
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.acquiringProvider
-	|			ELSE holdingConnection.connection.acquiringProvider
-	|		END
-	|	END AS acquiringProvider,
-	|	ISNULL(CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.server
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.server
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.server
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.server
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.server
-	|				ELSE holdingConnection.qrConnection.server
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.server
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.server
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.server
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.server
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.server
-	|			ELSE holdingConnection.connection.server
-	|		END
-	|	END, """") AS server,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(Enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.port
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.port
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.port
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.port
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.port
-	|				ELSE holdingConnection.qrConnection.port
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.port
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.port
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.port
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.port
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.port
-	|			ELSE holdingConnection.connection.port
-	|		END
-	|	END AS port,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.user
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.user
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.user
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.user
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.user
-	|				ELSE holdingConnection.qrConnection.user
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.user
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.user
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.user
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.user
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.user
-	|			ELSE holdingConnection.connection.user
-	|		END
-	|	END AS user,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.password
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.password
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.password
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.password
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.password
-	|				ELSE holdingConnection.qrConnection.password
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.password
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.password
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.password
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.password
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.password
-	|			ELSE holdingConnection.connection.password
-	|		END
-	|	END AS password,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.timeout
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.timeout
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.timeout
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.timeout
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.timeout
-	|				ELSE holdingConnection.qrConnection.timeout
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.timeout
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.timeout
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.timeout
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.timeout
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.timeout
-	|			ELSE holdingConnection.connection.timeout
-	|		END
-	|	END AS timeout,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.secureConnection
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.secureConnection
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.secureConnection
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.secureConnection
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.secureConnection
-	|				ELSE holdingConnection.qrConnection.secureConnection
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.secureConnection
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.secureConnection
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.secureConnection
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.secureConnection
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.secureConnection
-	|			ELSE holdingConnection.connection.secureConnection
-	|		END
-	|	END AS secureConnection,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN CASE
-	|				WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN gymAcquiringProviderConnection.qrConnection.UseOSAuthentication
-	|				WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|					THEN chainAcquiringProviderConnection.qrConnection.UseOSAuthentication
-	|				WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|					THEN AcquiringProviderConnection.qrConnection.UseOSAuthentication
-	|				WHEN NOT gymConnection.qrConnection IS NULL
-	|					THEN gymConnection.qrConnection.UseOSAuthentication
-	|				WHEN NOT chainConnection.qrConnection IS NULL
-	|					THEN chainConnection.qrConnection.UseOSAuthentication
-	|				ELSE holdingConnection.qrConnection.UseOSAuthentication
-	|			END
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.UseOSAuthentication
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.UseOSAuthentication
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.UseOSAuthentication
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.UseOSAuthentication
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.UseOSAuthentication
-	|			ELSE holdingConnection.connection.UseOSAuthentication
-	|		END
-	|	END AS UseOSAuthentication,
-	|	"""" AS errorDescription,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN """"
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.merchantPay
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.merchantPay
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.merchantPay
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.merchantPay
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.merchantPay
-	|			ELSE holdingConnection.connection.merchantPay
-	|		END
-	|	END AS merchantPay,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = VALUE(enum.acquiringRequests.qrRegister)
-	|			THEN """"
-	|		ELSE CASE
-	|			WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|				THEN gymAcquiringProviderConnection.connection.key
-	|			WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|				THEN chainAcquiringProviderConnection.connection.key
-	|			WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|				THEN AcquiringProviderConnection.connection.key
-	|			WHEN NOT gymConnection.connection IS NULL
-	|				THEN gymConnection.connection.key
-	|			WHEN NOT chainConnection.connection IS NULL
-	|				THEN chainConnection.connection.key
-	|			ELSE holdingConnection.connection.key
-	|		END
-	|	END AS key,
-	|	acquiringOrders.registrationDate AS registrationDate,
-	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN gymAcquiringProviderConnection.qrConnection.merchantID
-	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN chainAcquiringProviderConnection.qrConnection.merchantID
-	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|			THEN AcquiringProviderConnection.qrConnection.merchantID
-	|		WHEN NOT gymConnection.qrConnection IS NULL
-	|			THEN gymConnection.qrConnection.merchantID
-	|		WHEN NOT chainConnection.qrConnection IS NULL
-	|			THEN chainConnection.qrConnection.merchantID
-	|		ELSE holdingConnection.qrConnection.merchantID
-	|	END AS merchantID,
-	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN gymAcquiringProviderConnection.qrConnection.authorization
-	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN chainAcquiringProviderConnection.qrConnection.authorization
-	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|			THEN AcquiringProviderConnection.qrConnection.authorization
-	|		WHEN NOT gymConnection.qrConnection IS NULL
-	|			THEN gymConnection.qrConnection.authorization
-	|		WHEN NOT chainConnection.qrConnection IS NULL
-	|			THEN chainConnection.qrConnection.authorization
-	|		ELSE holdingConnection.qrConnection.authorization
-	|	END AS authorization,
-	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN gymAcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
-	|		WHEN NOT chainAcquiringProviderConnection.qrConnection IS NULL
-	|			THEN chainAcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
-	|		WHEN NOT AcquiringProviderConnection.qrConnection IS NULL
-	|			THEN AcquiringProviderConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
-	|		WHEN NOT gymConnection.qrConnection IS NULL
-	|			THEN gymConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
-	|		WHEN NOT chainConnection.qrConnection IS NULL
-	|			THEN chainConnection.qrConnection <> VALUE(Catalog.qrAcquiringConnections.EmptyRef)
-	|		ELSE FALSE
-	|	END AS hasQR,
-	|	CASE
-	|		WHEN acquiringOrders.acquiringRequest = value(enum.acquiringRequests.autoPayment)
-	|			then true
-	|		ELSE FALSE
-	|	END AS autoPayment
-	|FROM
-	|	Catalog.acquiringOrders AS acquiringOrders
-	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
-	|		ON acquiringOrderIdentifiers.Owner = acquiringOrders.Ref
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
-	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
-	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
-	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
-	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref)
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
-	|		ON acquiringOrders.holding = gymConnection.holding
-	|		AND acquiringOrders.gym = gymConnection.gym
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
-	|		ON acquiringOrders.holding = holdingConnection.holding
-	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
-	|		ON acquiringOrders.holding = chainConnection.holding
-	|		AND acquiringOrders.gym.chain = chainConnection.chain
-	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
-	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
-	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
-	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef),
-	|	TemporaryDepositAmount AS TemporaryDepositAmount
-	|WHERE
-	|	acquiringOrders.Ref = &order
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|DROP TemporaryDepositAmount";
-
-	query.SetParameter("order", order);	
-	result = query.Execute();
+	queryConnection = New query;
+	queryConnection.Text = ConnectionQueryText();
+	queryConnection.SetParameter("order", order);
+	result = queryConnection.Execute();
 	If result.IsEmpty() Then
 		answer.Insert("errorCode", "acquiringConnectionSetup");
 	Else	
@@ -538,10 +183,128 @@ Function orderDetails(order)
 		Else	
 			FillPropertyValues(answer, select);
 		EndIf;	 
-	EndIf;	
-	
-	Return answer;
-	
+	EndIf;
+	if ValueIsFilled(parameters) Then
+		If parameters.Property("customerCode") then
+			answer.Insert("customerCode", parameters.customerCode);
+		EndIf;
+		If parameters.Property("paymentData") then
+			answer.Insert("paymentData", parameters.paymentData);
+		EndIf;
+		If parameters.Property("ipAddress") then
+			answer.Insert("ipAddress", parameters.ipAddress);
+		EndIf;
+				
+		If parameters.Property("tokenContext") Then 
+			answer.Insert("timeZone", parameters.tokenContext.timeZone);
+			If parameters.tokenContext.Property("systemType") Then
+				answer.Insert("systemType", parameters.tokenContext.systemType);
+			EndIf;
+		EndIf;
+	EndIf;
+	Return answer;		
+EndFunction
+
+Function ConnectionQueryText()
+	text = "SELECT
+	|	SUM(acquiringOrderspayments.amount) AS amount
+	|INTO TemporaryDepositAmount
+	|FROM
+	|	Catalog.acquiringOrders.payments AS acquiringOrderspayments
+	|WHERE
+	|	acquiringOrderspayments.Ref = &order
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection
+	|		ELSE holdingConnection.connection
+	|	END AS paymentConnection,
+	|	acquiringOrders.Ref AS order,
+	|	acquiringOrderIdentifiers.Ref AS orderIdentifier
+	|INTO Connection
+	|FROM
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	|		ON acquiringOrderIdentifiers.Owner = acquiringOrders.Ref
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
+	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
+	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
+	|		AND acquiringOrders.connectionType = gymAcquiringProviderConnection.connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
+	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
+	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref)
+	|		AND acquiringOrders.connectionType = AcquiringProviderConnection.connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
+	|		ON acquiringOrders.holding = gymConnection.holding
+	|		AND acquiringOrders.gym = gymConnection.gym
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND acquiringOrders.connectionType = gymConnection.connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
+	|		ON acquiringOrders.holding = holdingConnection.holding
+	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)
+	|		AND acquiringOrders.connectionType = holdingConnection.connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
+	|		ON acquiringOrders.holding = chainConnection.holding
+	|		AND acquiringOrders.gym.chain = chainConnection.chain
+	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
+	|		AND acquiringOrders.connectionType = chainConnection.connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
+	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
+	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
+	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef)
+	|		AND acquiringOrders.connectionType = chainAcquiringProviderConnection.connectionType
+	|WHERE
+	|	acquiringOrders.Ref = &order
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	Connection.paymentConnection.acquiringProvider AS acquiringProvider,
+	|	Connection.paymentConnection.server AS server,
+	|	Connection.paymentConnection.port AS port,
+	|	Connection.paymentConnection.user AS user,
+	|	Connection.paymentConnection.password AS password,
+	|	Connection.paymentConnection.timeout AS timeout,
+	|	Connection.paymentConnection.secureConnection AS secureConnection,
+	|	Connection.paymentConnection.UseOSAuthentication AS UseOSAuthentication,
+	|	Connection.paymentConnection.merchantID AS merchantID,
+	|	Connection.paymentConnection.key AS key,
+	|	Connection.order.connectionType AS connectionType,
+	|	Connection.orderIdentifier AS orderId,
+	|	CASE
+	|		WHEN Connection.order.connectionType = VALUE(Enum.ConnectionTypes.onlineStore)
+	|			THEN Connection.orderIdentifier.Description
+	|		ELSE Connection.order.Code
+	|	END AS orderNumber,
+	|	Connection.order.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
+	|	Connection.order.user AS bindingUser,
+	|	Connection.order.creditCard AS creditCard,
+	|	Connection.order.creditCard.Owner AS ownerCreditCard,
+	|	Connection.order.acquiringRequest AS acquiringRequest,
+	|	Connection.order
+	|FROM
+	|	Connection AS Connection,
+	|	TemporaryDepositAmount AS TemporaryDepositAmount
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TemporaryDepositAmount";
+	return text;
 EndFunction
 
 Function answerStruct()
@@ -560,7 +323,6 @@ Function answerStruct()
 	answer.Insert("port", 0);
 	answer.Insert("user", "");
 	answer.Insert("password", "");
-	answer.Insert("merchantPay", "");
 	answer.Insert("timeout", 0);
 	answer.Insert("secureConnection", False);
 	answer.Insert("UseOSAuthentication", False);
@@ -574,13 +336,12 @@ Function answerStruct()
 	answer.Insert("registrationDate", Date(1,1,1));	
 	answer.Insert("merchantID", "");
 	answer.Insert("authorization", "");
-	answer.Insert("hasQR",false);
-	answer.Insert("autoPayment",false);	
+	answer.Insert("connectionType", Enums.ConnectionTypes.EmptyRef());
 	Return answer;		
 EndFunction
 
 Procedure creditCardsPreparation(paymentOption, parameters, order) Export
-	orderParams = orderDetails(order);
+	orderParams = paymentParameters(order, parameters);
 	For Each elementOfArray  in paymentOption do
 			If elementOfArray.Property("cards") Then 
 				If elementOfArray.cards.Count() > 0 Then
@@ -598,7 +359,7 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 					If parameters.Property("tokenContext") And parameters.tokenContext.Property("systemType") Then
 						SystemType = parameters.tokenContext.systemType;
 					EndIf;
-					If (Not SystemType.IsEmpty()) and ValueIsFilled(orderParams.merchantPay) Then
+					If (Not SystemType.IsEmpty()) and ValueIsFilled(orderParams.merchantID) and orderParams.connectionType = enums.ConnectionTypes.main Then
 						If SystemType = Enums.systemTypes.iOS Then
 							cardStruct = New Structure("type, name, uid, amount", "applePay", "Apple Pay", "applePay", amount);
 							elementOfArray.cards.insert(0, cardStruct);
@@ -607,7 +368,7 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 							elementOfArray.cards.insert(0, cardStruct);
 						EndIf;
 					EndIf;
-					If ValueIsFilled(orderParams.hasQR) and orderParams.hasQR then
+					If hasConnection(order, enums.ConnectionTypes.qr) then
 						cardStruct = New Structure("type, name, uid, amount", "qr", NStr("ru='Оплата по QR коду';en='Payment by QR code'", parameters.languageCode), "qr", amount);
 						elementOfArray.cards.add(cardStruct);
 					EndIf;
@@ -623,6 +384,96 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 			EndIf;	
 	EndDo;
 EndProcedure
+
+Function hasConnection(order, connectionType)
+	query = New query;
+	query.SetParameter("order", order);
+	query.SetParameter("connectionType", connectionType);
+	query.Text = "SELECT
+	|	SUM(acquiringOrderspayments.amount) AS amount
+	|INTO TemporaryDepositAmount
+	|FROM
+	|	Catalog.acquiringOrders.payments AS acquiringOrderspayments
+	|WHERE
+	|	acquiringOrderspayments.Ref = &order
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection
+	|		ELSE holdingConnection.connection
+	|	END AS paymentConnection
+	|INTO TemporaryConnection
+	|FROM
+	|	Catalog.acquiringOrders AS acquiringOrders
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
+	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
+	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
+	|		AND gymAcquiringProviderConnection.connectionType = &connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
+	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
+	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref)
+	|		AND AcquiringProviderConnection.connectionType = &connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
+	|		ON acquiringOrders.holding = gymConnection.holding
+	|		AND acquiringOrders.gym = gymConnection.gym
+	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND gymConnection.connectionType = &connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
+	|		ON acquiringOrders.holding = holdingConnection.holding
+	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)
+	|		AND holdingConnection.connectionType = &connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
+	|		ON acquiringOrders.holding = chainConnection.holding
+	|		AND acquiringOrders.gym.chain = chainConnection.chain
+	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
+	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
+	|		AND chainConnection.connectionType = &connectionType
+	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
+	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
+	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
+	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
+	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef)
+	|		AND chainAcquiringProviderConnection.connectionType = &connectionType
+	|WHERE
+	|	acquiringOrders.Ref = &order
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	TemporaryConnection.paymentConnection
+	|FROM
+	|	TemporaryConnection AS TemporaryConnection
+	|WHERE
+	|	TemporaryConnection.paymentConnection <> VALUE(Catalog.acquiringConnections.EmptyRef)
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TemporaryDepositAmount
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP TemporaryConnection";
+	result = query.Execute();
+	If result.IsEmpty() then
+		return false;
+	EndIf;
+	return true;
+EndFunction
 
 Procedure addOrderToQueue(order, state) Export
 	record = InformationRegisters.acquiringOrdersQueue.CreateRecordManager();
@@ -649,7 +500,7 @@ Procedure executeRequestBackground(requestName, order, additionalParameters = Un
 	BackgroundJobs.Execute("Acquiring.executeRequest", array, New UUID());
 EndProcedure
 
-Procedure sendOrder(parameters, additionalParameters = Undefined)
+Procedure sendOrder(parameters)
 	parameters.Insert("errorCode", "acquiringOrderSend");
 	If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
 		parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
@@ -660,7 +511,7 @@ Procedure sendOrder(parameters, additionalParameters = Undefined)
 	EndIf;
 	parameters.Insert("formUrl", "");
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.sendOrder(parameters, additionalParameters);
+		AcquiringSberbank.sendOrder(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
 		If parameters.acquiringRequest <> Enums.acquiringRequests.binding Then
 			AcquiringDemirBank.sendOrder(parameters);
@@ -671,14 +522,14 @@ Procedure sendOrder(parameters, additionalParameters = Undefined)
 	EndIf;
 EndProcedure
 
-Procedure checkOrder(parameters, additionalParameters) 
+Procedure checkOrder(parameters) 
 	parameters.Insert("errorCode", "acquiringOrderCheck");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		If (parameters.order.acquiringRequest = enums.acquiringRequests.applePay
-	   or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay) and additionalParameters<>Undefined
-	   and additionalParameters.Property("paymentData") Then
+	    or parameters.order.acquiringRequest = enums.acquiringRequests.googlePay)
+	   and parameters.Property("paymentData") Then
 	   		parametersNew = Service.getStructCopy(parameters);
-			AcquiringSberbank.checkOrderAppleGoogle(parametersNew, additionalParameters);
+			AcquiringSberbank.checkOrderAppleGoogle(parametersNew);
 			Service.logAcquiringBackground(parametersNew);
 		EndIf;
 		AcquiringSberbank.checkOrder(parameters);
@@ -778,17 +629,17 @@ Procedure changeOrderState(order, state) Export
 	record.Write();
 EndProcedure
 
-Procedure getQr(parameters,additionalParameters) Export
+Procedure getQr(parameters) Export
 	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
 	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/bindFail.html");
 	If parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then
-		AcquiringRaiffeisen.getQr(parameters,additionalParameters);
+		AcquiringRaiffeisen.getQr(parameters);
 	EndIf;
 EndProcedure
 
-Procedure autoPayment(parameters,additionalParameters) Export
+Procedure autoPayment(parameters) Export
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
-		AcquiringSberbank.autoPayment(parameters, additionalParameters);
+		AcquiringSberbank.autoPayment(parameters);
 	EndIf;
 EndProcedure
 
