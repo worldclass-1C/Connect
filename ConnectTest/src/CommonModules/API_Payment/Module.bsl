@@ -509,7 +509,7 @@ Procedure paymentDetails(parameters) Export
 	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.onlineStore);
 	order 				= Acquiring.newOrder(orderStruct);
 	orderIdentifier 	= Acquiring.orderIdentifier(order, requestStruct.orderNumber);
-	answerCheck 		= Acquiring.executeRequest("check", order);
+	answerCheck 		= Acquiring.executeRequest("check", order, requestStruct);
 	If answerCheck.errorCode = "" Then
 		result = "ok";
 		answerKPO.Insert("details", HTTP.decodeJSON(order.payments[0].details, Enums.JSONValueTypes.structure));

@@ -86,6 +86,8 @@ Procedure executeRequestMethod(parameters) Export
 			API_Payment.payment(parameters);
 		ElsIf parameters.requestName = "autopayment" Then
 			API_Payment.autoPayment(parameters);
+		ElsIf parameters.requestName = "paymentdetails" Then
+			API_Payment.paymentDetails(parameters);
 		ElsIf parameters.requestName = "paymentstatus" Then
 			API_Payment.paymentStatus(parameters); 
 		ElsIf parameters.requestName = "bindcardlist" Then

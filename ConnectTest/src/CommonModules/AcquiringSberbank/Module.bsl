@@ -47,7 +47,10 @@ Procedure checkOrder(parameters) Export
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" 	+ parameters.user);
 	requestParametrs.Add("password=" 	+ parameters.password);
-	requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
+	If parameters.connectionType <> Enums.ConnectionTypes.onlineStore then
+		requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
+	EndIf;
+	
 	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
 			
 	requestURL = New Array();
