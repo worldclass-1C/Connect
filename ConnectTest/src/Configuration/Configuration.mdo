@@ -163,6 +163,7 @@
   <scheduledJobs>ScheduledJob.ProcessQueue</scheduledJobs>
   <scheduledJobs>ScheduledJob.clearHistory</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendRestrictionChanges</scheduledJobs>
+  <scheduledJobs>ScheduledJob.CleaOldCacheRecord</scheduledJobs>
   <commonCommands>CommonCommand.НачатьИнтервью</commonCommands>
   <commonCommands>CommonCommand.getUid</commonCommands>
   <commonCommands>CommonCommand.Рublish</commonCommands>
