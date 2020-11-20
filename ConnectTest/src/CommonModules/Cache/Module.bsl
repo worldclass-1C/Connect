@@ -365,3 +365,37 @@ Function getMyClubs(data,parameters) Export
 	
 	Return gyms;
 EndFunction
+Procedure ClearCacheRecord() Export
+	Message(CurrentDate());
+	Query = Новый Query;
+	Query.Text = 
+		"SELECT TOP 10000
+		|	S.holding AS holding,
+		|	S.cacheType AS cacheType,
+		|	S.user AS user,
+		|	S.chain AS chain,
+		|	S.cacheInformation AS cacheInformation
+		|FROM
+		|	InformationRegister.cacheIndex AS S
+		|WHERE
+		|	S.cacheInformation.endRotation <= &Date";
+	
+	Query.SetParameter("Date", CurrentUniversalDate());
+	
+	Select = Query.Execute().Select();
+	 cnt=0;
+	While Select.Next() Do
+		RecordSet = InformationRegisters.cacheIndex.CreateRecordSet();
+		RecordSet.Filter.holding.Set(Select.holding);   
+		RecordSet.Filter.cacheType.Set(Select.cacheType);  
+		RecordSet.Filter.user.Set(Select.user);  
+		RecordSet.Filter.chain.Set(Select.chain); 
+		RecordSet.Filter.cacheInformation.Set(Select.cacheInformation);
+		RecordSet.Write();
+		Select.cacheInformation.GetObject().Delete();
+		cnt=cnt+1
+	EndDo;
+	Message(CurrentDate());
+	
+	Message(cnt)
+EndProcedure
