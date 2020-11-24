@@ -188,7 +188,6 @@
   <catalogs>Catalog.analytics</catalogs>
   <catalogs>Catalog.appAnalytics</catalogs>
   <catalogs>Catalog.cacheInformations</catalogs>
-  <catalogs>Catalog.DELETE_cacheTypes</catalogs>
   <catalogs>Catalog.cacheTypes</catalogs>
   <catalogs>Catalog.cancellationReasons</catalogs>
   <catalogs>Catalog.chains</catalogs>

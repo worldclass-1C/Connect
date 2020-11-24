@@ -277,6 +277,12 @@
         <value>events</value>
       </code>
     </items>
+    <items id="93bbdb5e-0b95-45bf-a2a8-098fbf85827a">
+      <name>polls</name>
+      <code xsi:type="core:StringValue">
+        <value>polls</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
