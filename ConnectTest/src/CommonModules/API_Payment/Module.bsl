@@ -122,7 +122,7 @@ Procedure payment(parameters) Export
 	isApplePay = false;
 	isGooglePay = false;
 	isQr = false;
-	If requestStruct.Property("card") and not requestStruct.card = Undefined Then
+	If requestStruct.Property("card") and ValueIsFilled(requestStruct.card) Then
 		If requestStruct.card = "applePay" Then
 			isApplePay = true;
 		ElsIf requestStruct.card = "googlePay" Then
