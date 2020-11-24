@@ -88,12 +88,14 @@ Procedure ProcessQueue() Export
 			Acquiring.executeRequest("unBindCardBack", OrdersToProcess.order, parameters);
 		else
 			If OrdersToProcess.try < 30 then
-				answerKPO = Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
-				If answerKPO.errorCode = "" Then
-					Acquiring.delOrderToQueue(OrdersToProcess.order);
-				Else
-					If OrdersToProcess.orderState = Null Then
-						Acquiring.addOrderToQueue(OrdersToProcess.order, Enums.acquiringOrderStates.rejected);
+				If not ValueIsFilled(OrdersToProcess.newOrder) then
+					answerKPO = Acquiring.executeRequest("process", OrdersToProcess.order, parameters);
+					If answerKPO.errorCode = "" Then
+						Acquiring.delOrderToQueue(OrdersToProcess.order);
+					Else
+						If OrdersToProcess.orderState = Null Then
+							Acquiring.addOrderToQueue(OrdersToProcess.order, Enums.acquiringOrderStates.rejected);
+						EndIf;
 					EndIf;
 				EndIf;
 			Else
@@ -110,7 +112,25 @@ EndProcedure
 
 Function GetOrdersToProcess()
 	Query = New Query();
-	Query.Text = "SELECT TOP 100 ALLOWED
+	Query.Text = "SELECT
+	|	acquiringOrders.Ref AS Ref,
+	|	ordersStates.state AS state,
+	|	acquiringOrdersorders.uid AS uid,
+	|	acquiringOrders.registrationDate AS registrationDate
+	|INTO tempNoStatus
+	|FROM
+	|	Catalog.acquiringOrders.orders AS acquiringOrdersorders
+	|		LEFT JOIN Catalog.acquiringOrders AS acquiringOrders
+	|			LEFT JOIN InformationRegister.ordersStates AS ordersStates
+	|			ON (ordersStates.order = acquiringOrders.Ref)
+	|		ON acquiringOrdersorders.Ref = acquiringOrders.Ref
+	|WHERE
+	|	ordersStates.state IS NULL
+	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|	AND acquiringOrders.acquiringRequest <> VALUE(enum.acquiringRequests.autoPayment)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT TOP 100 ALLOWED
 	|	acquiringOrdersQueue.order AS order,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault.Code, """") AS languageCode,
@@ -123,7 +143,8 @@ Function GetOrdersToProcess()
 	|	acquiringOrdersQueue.orderState,
 	|	COUNT(DISTINCT ISNULL(acquiringLogs.Ref, 0)) AS try,
 	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion AS appVersion,
-	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType AS systemType
+	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType AS systemType,
+	|	NULL AS newOrder
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|		LEFT JOIN Catalog.acquiringLogs AS acquiringLogs
@@ -148,28 +169,30 @@ Function GetOrdersToProcess()
 	|
 	|UNION ALL
 	|
-	|SELECT
-	|	acquiringOrders.Ref,
-	|	ISNULL(acquiringOrders.Ref.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
-	|	ISNULL(acquiringOrders.Ref.holding.languageDefault.code, """"),
-	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
-	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.user.userCode, """"),
-	|	ISNULL(acquiringOrders.Ref.holding.tokenDefault.deviceModel, """"),
-	|	acquiringOrders.Ref.holding.tokenDefault,
-	|	acquiringOrders.Ref.holding,
-	|	acquiringOrders.Ref.acquiringRequest,
-	|	ordersStates.state,
+	|SELECT DISTINCT
+	|	tempNoStatus.Ref,
+	|	ISNULL(tempNoStatus.Ref.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
+	|	ISNULL(tempNoStatus.Ref.holding.languageDefault.code, """"),
+	|	ISNULL(tempNoStatus.Ref.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
+	|	ISNULL(tempNoStatus.Ref.holding.tokenDefault.user.userCode, """"),
+	|	ISNULL(tempNoStatus.Ref.holding.tokenDefault.deviceModel, """"),
+	|	tempNoStatus.Ref.holding.tokenDefault,
+	|	tempNoStatus.Ref.holding,
+	|	tempNoStatus.Ref.acquiringRequest,
+	|	tempNoStatus.state,
 	|	0,
-	|	acquiringOrders.holding.tokenDefault.appVersion,
-	|	acquiringOrders.holding.tokenDefault.systemType
+	|	tempNoStatus.Ref.holding.tokenDefault.appVersion,
+	|	tempNoStatus.Ref.holding.tokenDefault.systemType,
+	|	acquiringOrdersorders.Ref
 	|FROM
-	|	InformationRegister.ordersStates AS ordersStates
-	|		RIGHT JOIN Catalog.acquiringOrders AS acquiringOrders
-	|		ON ordersStates.order = acquiringOrders.Ref
-	|WHERE
-	|	ordersStates.state IS NULL
-	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)
-	|	AND acquiringOrders.acquiringRequest <> VALUE(enum.acquiringRequests.autoPayment)";
+	|	tempNoStatus AS tempNoStatus
+	|		LEFT JOIN Catalog.acquiringOrders.orders AS acquiringOrdersorders
+	|		ON acquiringOrdersorders.uid = tempNoStatus.uid
+	|		AND acquiringOrdersorders.Ref.registrationDate > tempNoStatus.registrationDate
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|DROP tempNoStatus";
 	Query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
 	Return Query.Execute().Select();
 EndFunction
