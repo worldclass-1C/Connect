@@ -352,7 +352,7 @@ Procedure creditCardsPreparation(paymentOption, parameters, order) Export
 							amount = card.amount;
 							Break;	
 						EndIf;
-						index = index+1;
+						//index = index+1;
 					EndDo;
 					elementOfArray.cards.Delete(index);
 					SystemType = Enums.systemTypes.EmptyRef();
