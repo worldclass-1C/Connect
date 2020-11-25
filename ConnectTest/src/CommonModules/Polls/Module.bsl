@@ -531,7 +531,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 		EndDo; 
 	EndIf;
 	
-	StructQuestion.Insert("variants", Array);
+	StructQuestion.Insert("answerList", Array);
 EndProcedure	
 
 Procedure FillElementaryQuestion(ElementaryQuestion,repository,StructQuestion,FillWording = False,FillKind = False)
