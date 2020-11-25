@@ -768,7 +768,7 @@ Procedure pollanswer(parameters) Export
 	EndIf;
 	
 	pollId = Undefined; questionId = Undefined;
-	answer = Undefined; openAnswer = Undefined;
+	//answer = Undefined; comment = Undefined;
 	variantsInput = Undefined;
 	If Not parameters.requestStruct.Property("pollId",pollId)   Then
 		noValidRequest(parameters);
@@ -779,27 +779,48 @@ Procedure pollanswer(parameters) Export
 		Return
 	EndIf;	
 	
-	parameters.requestStruct.Property("answer",answer);
-	parameters.requestStruct.Property("openAnswer",openAnswer);
-	parameters.requestStruct.Property("variants",variantsInput);
+	parameters.requestStruct.Property("answerList",variantsInput);
 
 	variants = New Array;
 	If  TypeOf(variantsInput)=Type("Array") Then
 		For Each el in variantsInput  Do
-			strucVariant = New Structure("openAnswer");
+			strucVariant = New Structure("comment,answer,variantId");
 			FillPropertyValues(strucVariant,el);
-			strucVariant.Insert("variant", XMLValue(Type("CatalogRef.ВариантыОтветовАнкет"), el.variantId));
+			If ValueIsFilled(strucVariant.variantId) Then
+				strucVariant.Insert("variant", XMLValue(Type("CatalogRef.ВариантыОтветовАнкет"), strucVariant.variantId));
+			EndIf;
 			variants.Add(strucVariant);
-		EndDo	
+		EndDo
 	EndIf;	
 	
-	struct = Polls.pollanswer(New Structure("user,poll,question,variants,answer,openAnswer",
+	struct = Polls.pollanswer(New Structure("user,poll,question,variants",
 													parameters.tokenContext.user,
 													XMLValue(Type("DocumentRef.НазначениеОпросов"), pollId),
 													XMLValue(Type("CatalogRef.ВопросыШаблонаАнкеты"), questionId),
-													variants,
-													answer,
-													openAnswer));
+													variants));
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
+
+EndProcedure
+
+Procedure pollComplete(parameters) Export
+	
+	If Not requestIsStructure(parameters) Then
+		Return
+	EndIf;
+	
+	pollId = Undefined; 
+
+	If Not parameters.requestStruct.Property("pollId",pollId)   Then
+		noValidRequest(parameters);
+		Return
+	ElsIf Not ValueIsFilled(pollId) Then
+		Return
+	EndIf;
+
+	struct = Polls.pollComplete(New Structure("user, poll",
+													parameters.tokenContext.user,
+													XMLValue(Type("DocumentRef.НазначениеОпросов"), pollId)));
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));	
 

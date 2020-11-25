@@ -130,8 +130,6 @@
     <types>Number</types>
     <types>CatalogRef.ВариантыОтветовАнкет</types>
     <types>CatalogRef.gyms</types>
-    <types>CatalogRef.employees</types>
-    <types>CatalogRef.products</types>
     <numberQualifiers>
       <precision>15</precision>
       <scale>3</scale>
