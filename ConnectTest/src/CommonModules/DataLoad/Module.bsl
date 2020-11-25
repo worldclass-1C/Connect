@@ -28,6 +28,9 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined, bra
 					If attributesStruct.mdType <> "informationRegister" Then
 						items.Add(object.Ref);
 					EndIf;
+					If attributesStruct.Property("fillOwnersAttribute") and attributesStruct.fillOwnersAttribute Then
+						fillOwnersAttributes(object, attributesStruct, requestParameter);
+					EndIf;
 				EndIf;
 			EndDo;
 		EndIf;
@@ -36,6 +39,17 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined, bra
 	Return items;
 
 EndFunction
+
+Procedure fillOwnersAttributes(object, attributesStruct, parameters)
+	If attributesStruct.mdObjectName = "users" Then
+		If parameters.Property("phoneNumber") and ValueIsFilled(parameters.phoneNumber)Then
+			ownerObject = object.ref.owner.GetObject();
+			ownerObject.code = parameters.phoneNumber;
+			ownerObject.Write();
+		EndIf;
+	EndIf;
+endprocedure
+
 
 Function getValueTable() Export
 	ValueTable = New ValueTable();
