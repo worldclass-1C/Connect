@@ -105,7 +105,7 @@ Procedure checkOrderAppleGoogle(parameters) Export
 	requestBody = New Structure();
 	requestBody.Insert("merchant" , 	parameters.merchantID);
 	requestBody.Insert("orderNumber" , 	parameters.orderNumber);
-	requestBody.Insert("paymentToken" , ?(parameters.Property("paymentData"),"", parameters.paymentData));
+	requestBody.Insert("paymentToken" , ?(parameters.Property("paymentData"),parameters.paymentData, ""));
 	
 	If parameters.order.acquiringRequest = enums.acquiringRequests.googlePay Then
 		amount =  parameters.acquiringAmount;	
