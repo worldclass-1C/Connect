@@ -19,7 +19,7 @@ Procedure bindCardList(parameters) Export
 		cardStruct = New Structure();
 		cardStruct.Insert("uid", XMLString(select.creditCard));
 		cardStruct.Insert("name", select.name);
-		cardStruct.Insert("paymentSystem", select.paymentSystem);
+		cardStruct.Insert("paymentSystem", Lower(select.paymentSystem));
 		array.Add(cardStruct);
 	EndDo;		
 	parameters.Insert("answerBody", HTTP.encodeJSON(array));	
