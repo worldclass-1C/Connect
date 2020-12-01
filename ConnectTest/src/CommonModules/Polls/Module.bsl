@@ -1,26 +1,32 @@
 Function list(struct) Export
 	Res = New Array;
 	chain = struct.chain;
-	If ValueIsFilled(chain) Then 
+	user = struct.user;
+	If ValueIsFilled(chain) and  ValueIsFilled(user) Then 
 		Query = new Query("SELECT
-		|	P.Ref AS ref,
-		|	P.ДатаОкончания AS endDate,
-		|	P.Наименование AS title,
-		|	P.Posted AS isCompleted
-		|FROM
-		|	Document.НазначениеОпросов AS P
-		|WHERE
-		|	P.Posted
-		|	AND NOT P.DeletionMark
-		|	AND (P.ДатаНачала = DATETIME(1, 1, 1)
-		|	OR BEGINOFPERIOD(P.ДатаНачала, DAY) < &CurrentDate)
-		|	AND (P.ДатаОкончания = DATETIME(1, 1, 1)
-		|	OR ENDOFPERIOD(P.ДатаОкончания, DAY) > &CurrentDate)
-		|	AND P.chain = &chain");
+		                  |	P.Ref AS ref,
+		                  |	P.ДатаОкончания AS endDate,
+		                  |	P.Наименование AS title,
+		                  |	ISNULL(A.Posted, FALSE) AS isCompleted
+		                  |FROM
+		                  |	Document.НазначениеОпросов AS P
+		                  |		LEFT JOIN Document.Анкета AS A
+		                  |		ON A.Опрос = P.Ref
+		                  |			AND (A.Респондент = &user
+		                  |				AND NOT A.DeletionMark)
+		                  |WHERE
+		                  |	P.Posted
+		                  |	AND NOT P.DeletionMark
+		                  |	AND (P.ДатаНачала = DATETIME(1, 1, 1)
+		                  |			OR BEGINOFPERIOD(P.ДатаНачала, DAY) < &CurrentDate)
+		                  |	AND (P.ДатаОкончания = DATETIME(1, 1, 1)
+		                  |			OR ENDOFPERIOD(P.ДатаОкончания, DAY) > &CurrentDate)
+		                  |	AND P.chain = &chain");
 	
 		Query.SetParameter("CurrentDate",CurrentDate());
 		Query.SetParameter("chain",chain);
-	
+		Query.SetParameter("user",user);
+		
 		Select = Query.Execute().Select();
 		While Select.Next() Do
 			Res.Add(New Structure("pollId,endDate,title,isCompleted",
@@ -287,7 +293,7 @@ Function poll(struct) Export
 EndFunction
 
 Function pollanswer(struct) Export
-	Res = "no action";
+	Res = New Structure("Result", "no action");
 	
 	Query = new Query("SELECT TOP 1
 	|	Q.Ref AS ref
@@ -322,34 +328,49 @@ Function pollanswer(struct) Export
 	Query.SetParameter("question",struct.question);
 	resQuery = Query.ExecuteBatch();
 	elementaryQuestions = resQuery[1].Unload();
-	IF elementaryQuestions.Count()=0 Then
+	IF elementaryQuestions.Count()=0 
+		Or NOT ValueIsFilled(struct.user)
+		Or NOT ValueIsFilled(struct.poll)
+		Then
 		return Res
 	EndIf;
 	elementaryQuestionInfo=   elementaryQuestions[0];
 	
+	CurrentDate = CurrentDate();
+
 	Select = resQuery[0].Select();
 	If Select.Next() Then
 		obj = Select.ref.GetObject();
 		//очистка старых значений
 		For Each str in obj.Состав.FindRows(New Structure("Вопрос",struct.question)) Do
 			obj.Состав.Delete(str)
-		EndDo;
-		If struct.variants.Count()>0 Then
-			Cnt = 0;
-			For Each answerInfo in struct.variants Do
-				AddAnswer( obj.Состав, struct.question, answerInfo, elementaryQuestionInfo, Cnt);
-				Cnt=Cnt+1
-			EndDo	
+		EndDo;	
+	Else
+		obj = Documents.Анкета.CreateDocument();
+		obj.Опрос = Query.Parameters.poll;
+		obj.ШаблонАнкеты = Query.Parameters.ШаблонАнкеты;
+		obj.Респондент = Query.Parameters.user;
+		obj.РежимАнкетирования=Enums.РежимыАнкетирования.Анкета;
+		obj.Date = CurrentDate;
+	EndIf;
+	obj.ДатаРедактирования = CurrentDate;
+	If struct.variants.Count()>0 Then
+		Cnt = 0;
+		For Each answerInfo in struct.variants Do
+			AddAnswer( obj.Состав, struct.question, answerInfo, elementaryQuestionInfo, Cnt);
+			Cnt=Cnt+1
+		EndDo	
 //		Else
 //			AddAnswer( obj.Состав, struct.question, struct.answer,struct.comment);
-		EndIf;
-		
-		Try 
-			obj.Write(DocumentWriteMode.Write);
-			Res = "OK"
-		Except
-		EndTry;
 	EndIf;
+	
+	Try 
+		obj.Write(DocumentWriteMode.Write);
+		Res.Result = "OK"
+	Except
+		lErrorInfo = ErrorInfo()
+	EndTry;
+
 	
 	Return Res
 
@@ -513,7 +534,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 				struct.insert("maxValue", elemQuestInfo.maxValue);
 			EndIf;
 		Else
-			struct.Insert("type","new_type_error");//не смогли определить, видимо, появился новый тип
+			typeAnswer="new_type_error"//не смогли определить, видимо, появился новый тип
 		EndIf;
 		FillAnswer(elemQuestInfo,repository,struct);
 		Array.Add(struct)

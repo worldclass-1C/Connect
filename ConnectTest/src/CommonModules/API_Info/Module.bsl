@@ -739,8 +739,9 @@ Procedure polllist(parameters) Export
 	parameters.Insert("answerBody", 
 				HTTP.encodeJSON(
 						Polls.list(
-								New Structure("chain",
-												parameters.tokenContext.chain))));	
+								New Structure("user,chain",
+											parameters.tokenContext.user,
+											parameters.tokenContext.chain))));
 EndProcedure
 
 Procedure pollInfo(parameters) Export
