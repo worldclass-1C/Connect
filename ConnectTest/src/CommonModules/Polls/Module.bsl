@@ -513,7 +513,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 				struct.insert("maxValue", elemQuestInfo.maxValue);
 			EndIf;
 		Else
-			typeAnswer="new_type_error"//не смогли определить, видимо, появился новый тип
+			struct.Insert("type","new_type_error");//не смогли определить, видимо, появился новый тип
 		EndIf;
 		FillAnswer(elemQuestInfo,repository,struct);
 		Array.Add(struct)
