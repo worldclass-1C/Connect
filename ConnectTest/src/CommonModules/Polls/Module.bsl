@@ -293,7 +293,7 @@ Function poll(struct) Export
 EndFunction
 
 Function pollanswer(struct) Export
-	Res = New Structure("Result", "no action");
+	Res = New Structure("result", "no action");
 	
 	Query = new Query("SELECT TOP 1
 	|	Q.Ref AS ref
@@ -366,9 +366,9 @@ Function pollanswer(struct) Export
 	
 	Try 
 		obj.Write(DocumentWriteMode.Write);
-		Res.Result = "OK"
+		Res.result = "OK"
 	Except
-		lErrorInfo = ErrorInfo()
+	//	lErrorInfo = ErrorInfo()
 	EndTry;
 
 	
@@ -377,7 +377,7 @@ Function pollanswer(struct) Export
 EndFunction
 
 Function pollComplete(struct) Export
-	Res = "no action";
+	Res = new Structure("result", "no action");
 	
 	Query = new Query("SELECT TOP 1
 		|	Q.Ref AS ref
@@ -395,7 +395,7 @@ Function pollComplete(struct) Export
 		obj = Select.ref.GetObject();
 		Try 
 			obj.Write(DocumentWriteMode.Posting);
-			Res = "OK"
+			Res.result= "OK"
 		Except
 		EndTry;
 	EndIf;
