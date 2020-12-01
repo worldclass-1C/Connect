@@ -19,7 +19,7 @@ Procedure bindCardList(parameters) Export
 		cardStruct = New Structure();
 		cardStruct.Insert("uid", XMLString(select.creditCard));
 		cardStruct.Insert("name", select.name);
-		cardStruct.Insert("paymentSystem", select.paymentSystem);
+		cardStruct.Insert("paymentSystem", Lower(select.paymentSystem));
 		array.Add(cardStruct);
 	EndDo;		
 	parameters.Insert("answerBody", HTTP.encodeJSON(array));	
@@ -353,11 +353,12 @@ Procedure bindCard(parameters) Export
 	EndIf;	
 	orderStruct = New Structure();
 	orderStruct.Insert("acquiringAmount", 1);
-	orderStruct.Insert("user", ?(requestStruct.Property("customerId"), customer, tokenContext.user));
-	orderStruct.Insert("holding", tokenContext.holding);	
-	orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.binding);	
+	orderStruct.Insert("user", 				?(requestStruct.Property("customerId"), customer, tokenContext.user));
+	orderStruct.Insert("holding", 			tokenContext.holding);	
+	orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.binding);
+	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
-	orderStruct.Insert("contract", ?(requestStruct.Property("contract"), requestStruct.contract, ""));
+	orderStruct.Insert("contract", 			?(requestStruct.Property("contract"), requestStruct.contract, ""));
 	order = Acquiring.newOrder(orderStruct);
 	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
@@ -405,10 +406,11 @@ Procedure unBindCard(parameters) Export
 		select.Next();
 		If select.active Then
 			orderStruct = New Structure();
-			orderStruct.Insert("user", tokenContext.user);
-			orderStruct.Insert("holding", tokenContext.holding);			
-			orderStruct.Insert("creditCard", select.creditCard);
-			orderStruct.Insert("acquiringRequest", Enums.acquiringRequests.unbinding);
+			orderStruct.Insert("user", 				tokenContext.user);
+			orderStruct.Insert("holding", 			tokenContext.holding);			
+			orderStruct.Insert("creditCard", 		select.creditCard);
+			orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.unbinding);
+			orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);
 			orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 			order = Acquiring.newOrder(orderStruct);
 			answer = Acquiring.executeRequest("unBindCard", order);

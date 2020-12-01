@@ -10,6 +10,6 @@ Function attributesStructure() Export
 	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionEmail", "noSubscriptionEmail", "boolean");
 	DataLoad.addRowInAttributesTable(attributesTable, "notSubscriptionSms", "noSubscriptionSms", "boolean");
 	
-	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct", True, "users", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure());
+	Return New Structure("fillHolding, mdObjectName, mdType, actType, attributesTable, attributesTableForNewItem, mdStruct, fillOwnersAttribute", True, "users", "catalog", "write", attributesTable, attributesTableForNewItem, New Structure(), true);
 		
 EndFunction

@@ -65,6 +65,9 @@ Procedure processOrder(parameters, additionalParameters) Export
 		If select.state.isEmpty() And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60) Then
 			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
 		EndIf;
+		If requestStruct.Property("request") and requestStruct.request = "reserve" Then
+			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
+		EndIf;
 	EndIf;
 
 EndProcedure
