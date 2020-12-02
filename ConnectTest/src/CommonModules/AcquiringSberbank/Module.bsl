@@ -42,64 +42,6 @@ Procedure sendOrder(parameters) Export
 		
 EndProcedure
 
-Procedure checkOrder(parameters) Export
-			
-	requestParametrs = New Array();
-	requestParametrs.Add("userName=" 	+ parameters.user);
-	requestParametrs.Add("password=" 	+ parameters.password);
-	If parameters.connectionType <> Enums.ConnectionTypes.onlineStore then
-		requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
-	EndIf;
-	
-	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
-			
-	requestURL = New Array();
-	requestURL.Add("/payment/rest/getOrderStatusExtended.do?");
-	requestURL.Add(StrConcat(requestParametrs, "&"));
-	
-	URL = StrConcat(requestURL, "");
-	parameters.Insert("requestBody", URL);	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-	
-	requestHTTP = New HTTPRequest(URL);
-	answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-	parameters.Insert("response", answerStruct);
-	If answerHTTP.StatusCode = 200 Then
-		If answerStruct.Property("actionCode") then						
-			If answerStruct.actionCode = 0 Then			
-				parameters.Insert("errorCode", "");
-				orderObject = parameters.order.GetObject();
-				newRow = orderObject.payments.Add();
-				newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
-				newRow.type = "card";
-				newRow.amount = parameters.acquiringAmount;			
-				newRow.details = prepareDetails(answerStruct, parameters);			
-				orderObject.Write();
-			//ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
-			//	parameters.Insert("errorCode", "send");
-			//	parameters.Insert("errorDescription", answerStruct.actionCodeDescription);;
-			ElsIf answerStruct.actionCode = -1 Or answerStruct.actionCode = 1001 
-			   Or answerStruct.actionCode = 51018 Then
-				parameters.Insert("errorCode", "fail");
-				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
-			Else
-				parameters.Insert("errorCode", "rejected");
-				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
-			EndIf;
-		Else
-			parameters.Insert("errorCode", "rejected");
-			If answerStruct.Property("errorMessage") then
-				parameters.Insert("errorDescription", answerStruct.errorMessage);
-			EndIf;
-		EndIf;
-	Else
-		parameters.Insert("result", "fail");
-		parameters.Insert("errorCode", "acquiringConnection");		
-	EndIf;		
-		
-EndProcedure
-
 Procedure checkOrderAppleGoogle(parameters) Export
 			
 	requestBody = New Structure();
@@ -307,5 +249,64 @@ Procedure autoPayment(parameters) Export
 	Else
 		parameters.Insert("errorCode", "acquiringConnection");		
 	EndIf;
+EndProcedure
+
+Procedure checkOrder(parameters) Export
+			
+	requestParametrs = New Array();
+	requestParametrs.Add("userName=" 	+ parameters.user);
+	requestParametrs.Add("password=" 	+ parameters.password);
+	If parameters.connectionType <> Enums.ConnectionTypes.onlineStore then
+		requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
+	EndIf;
+
+	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
+			
+	requestURL = New Array();
+	requestURL.Add("/payment/rest/getOrderStatusExtended.do?");
+	requestURL.Add(StrConcat(requestParametrs, "&"));
+	
+	
+	URL = StrConcat(requestURL, "");
+	parameters.Insert("requestBody", URL);	
+	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+	
+	requestHTTP = New HTTPRequest(URL);
+	answerHTTP = ConnectionHTTP.Get(requestHTTP);
+	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+	parameters.Insert("response", answerStruct);
+	If answerHTTP.StatusCode = 200 Then
+		If answerStruct.Property("actionCode") then						
+			If answerStruct.actionCode = 0 Then			
+				parameters.Insert("errorCode", "");
+				orderObject = parameters.order.GetObject();
+				newRow = orderObject.payments.Add();
+				newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+				newRow.type = "card";
+				newRow.amount = parameters.acquiringAmount;			
+				newRow.details = prepareDetails(answerStruct, parameters);			
+				orderObject.Write();
+			ElsIf answerStruct.actionCode = -100 Or answerStruct.actionCode = 151019 then
+				parameters.Insert("errorCode", "send");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);	
+			ElsIf answerStruct.actionCode = -1 Or answerStruct.actionCode = 1001 
+			   Or answerStruct.actionCode = 51018 Then
+				parameters.Insert("errorCode", "fail");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+			Else
+				parameters.Insert("errorCode", "rejected");
+				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+			EndIf;
+		Else
+			parameters.Insert("errorCode", "rejected");
+			If answerStruct.Property("errorMessage") then
+				parameters.Insert("errorDescription", answerStruct.errorMessage);
+			EndIf;
+		EndIf;
+	Else
+		parameters.Insert("result", "fail");
+		parameters.Insert("errorCode", "acquiringConnection");		
+	EndIf;		
+		
 EndProcedure
 
