@@ -64,6 +64,7 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.acquiringOrders.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.acquiringOrders.Form.ListForm</defaultListForm>
   <attributes uuid="3bed062b-7c4c-486e-83ef-6f62cc58b432">
     <name>acquiringAmount</name>
     <synonym>
@@ -566,6 +567,15 @@
     <synonym>
       <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="30c099e5-66c5-44fd-99ba-97f6109a0798">
+    <name>ListForm</name>
+    <synonym>
+      <key>ru</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>

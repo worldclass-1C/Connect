@@ -85,7 +85,8 @@ function getEmptyTable()
 	|	"""" AS State,
 	|	"""" AS Number,
 	|	"""" AS Operation,
-	|	"""" As Club";
+	|	"""" As Club,
+	|	0	 As AmountKPO";
 	return query.Execute().Unload();
 EndFunction
 
@@ -96,7 +97,8 @@ function GetQueryText()
 	|	PRESENTATION(ЗаявкаНаОплату.СтатусДокумента) AS StateKPO,
 	|	ЗаявкаНаОплату.Номер AS Number,
 	|	PRESENTATION(ЗаявкаНаОплату.ВидОперации) AS Operation,
-	|	PRESENTATION(ЗаявкаНаОплату.Клуб) AS Club
+	|	PRESENTATION(ЗаявкаНаОплату.Клуб) AS Club,
+	|	ЗаявкаНаОплату.Сумма AS AmountKPO
 	|FROM
 	|	Документ.ЗаявкаНаОплату AS ЗаявкаНаОплату
 	|WHERE
@@ -110,7 +112,8 @@ function GetQueryText()
 	|	"""",
 	|	"""",
 	|	"""",
-	|	""""";
+	|	"""",
+	|	0";
 EndFunction
 
 function GetQueryParams(startDate, endDate)
