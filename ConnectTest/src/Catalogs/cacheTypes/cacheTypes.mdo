@@ -283,6 +283,12 @@
         <value>polls</value>
       </code>
     </items>
+    <items id="a77bf6e3-6958-41a8-be50-106b4a8fd9cf">
+      <name>podcast</name>
+      <code xsi:type="core:StringValue">
+        <value>podcast</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
