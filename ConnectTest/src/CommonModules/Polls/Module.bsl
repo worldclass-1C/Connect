@@ -86,6 +86,7 @@ Function poll(struct) Export
 	|
 	|
 	|
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	ВопросыШаблонаАнкеты.Ref AS questionRef,
@@ -139,12 +140,14 @@ Function poll(struct) Export
 	|
 	|
 	|
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	ВариантыОтветовАнкет.Owner AS ElementaryQuestion,
 	|	ВариантыОтветовАнкет.Ref AS variant,
 	|	ВариантыОтветовАнкет.Presentation AS title,
-	|	ВариантыОтветовАнкет.ТребуетОткрытогоОтвета AS needComment
+	|	ВариантыОтветовАнкет.ТребуетОткрытогоОтвета AS needComment,
+	|	РеквизитДопУпорядочивания AS order
 	|FROM
 	|	ЭлементарныеВопросы AS ЭлементарныеВопросы
 	|		INNER JOIN Catalog.ВариантыОтветовАнкет AS ВариантыОтветовАнкет
@@ -154,6 +157,7 @@ Function poll(struct) Export
 	|ORDER BY
 	|	ВариантыОтветовАнкет.РеквизитДопУпорядочивания
 	|;
+	|
 	|
 	|
 	|
@@ -192,6 +196,7 @@ Function poll(struct) Export
 	|	ЭлементарныеВопросы AS ЭлементарныеВопросы
 	|;
 	|
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	ОтветыНаВопросыАнкет.Вопрос AS question,
@@ -210,6 +215,7 @@ Function poll(struct) Export
 	|		INNER JOIN Document.Анкета.Состав AS ОтветыНаВопросыАнкет
 	|		ON Data.Ref = ОтветыНаВопросыАнкет.Ref
 	|;
+	|
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -538,14 +544,14 @@ Procedure FillVariants(Select,repository,StructQuestion)
 		EndIf;
 		FillAnswer(elemQuestInfo,repository,struct);
 		Array.Add(struct)
-
 	Else 
 		StructQuestion.insert("type", elemQuestInfo.typeAnswer);
 		For Each row In Find Do
 			struct = new Structure("title,needComment");
 			FillPropertyValues(struct,row);
 			struct.Insert("uid", XMLString(row.variant));
-		
+			struct.Insert("order", row.order);
+			
 			FillAnswer(elemQuestInfo,repository,struct,row);
 
 			Array.Add(struct)
