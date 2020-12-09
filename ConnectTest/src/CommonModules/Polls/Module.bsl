@@ -459,7 +459,7 @@ Function TypesDB() //!!! при добавлении типов доопреде
 	return Res;
 EndFunction
 
-Procedure FillAnswer(elemQuestInfo, repository,StructQuestion, variantInfo=Undefined,question=Undefined)
+Procedure FillAnswer(elemQuestInfo, repository,StructQuestion,question=Undefined, variantInfo=Undefined)
 	ElementaryQuestion =elemQuestInfo.ElementaryQuestion;
 	If Not ValueIsFilled(ElementaryQuestion) Then Return EndIf;
 	findStruct = New Structure("ElementaryQuestion", ElementaryQuestion);
@@ -468,9 +468,8 @@ Procedure FillAnswer(elemQuestInfo, repository,StructQuestion, variantInfo=Undef
 	If isVariant Then 
 		variant = variantInfo.variant;
 		findStruct.Insert("answer", variant)
-	Else
-		findStruct.Insert("question", question)
 	EndIf; 
+	findStruct.Insert("question", question);
 	
 	Find = repository.answers.FindRows(findStruct);
 	If Find.Count()=0 Then Return EndIf; 
@@ -544,7 +543,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 		Else
 			typeAnswer="new_type_error"//не смогли определить, видимо, появился новый тип
 		EndIf;
-		FillAnswer(elemQuestInfo,repository,struct,,Select.questionRef);
+		FillAnswer(elemQuestInfo,repository,struct,);
 		Array.Add(struct)
 	Else 
 		StructQuestion.insert("type", elemQuestInfo.typeAnswer);
@@ -554,7 +553,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 			struct.Insert("uid", XMLString(row.variant));
 			struct.Insert("order", row.order);
 			
-			FillAnswer(elemQuestInfo,repository,struct,row);
+			FillAnswer(elemQuestInfo,repository,struct,Select.questionRef,row);
 
 			Array.Add(struct)
 		EndDo; 
