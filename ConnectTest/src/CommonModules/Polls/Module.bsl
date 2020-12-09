@@ -543,7 +543,7 @@ Procedure FillVariants(Select,repository,StructQuestion)
 		Else
 			typeAnswer="new_type_error"//не смогли определить, видимо, появился новый тип
 		EndIf;
-		FillAnswer(elemQuestInfo,repository,struct,);
+		FillAnswer(elemQuestInfo,repository,struct,Select.questionRef);
 		Array.Add(struct)
 	Else 
 		StructQuestion.insert("type", elemQuestInfo.typeAnswer);
