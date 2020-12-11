@@ -24,22 +24,25 @@ Procedure sendOrder(parameters) Export
 		requestParametrs.Add("features=AUTO_PAYMENT");
 	EndIf;
 	response = requestExecute(parameters, "register", requestParametrs);
-	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-	parameters.Insert("response", responseStruct);		
-	If response.StatusCode = 200 Then
-		If responseStruct.Property("orderId") Then
-			parameters.Insert("orderId", responseStruct.orderId);
-			parameters.Insert("formUrl", responseStruct.formUrl);
-			parameters.Insert("errorCode", "");
-			Acquiring.orderIdentifier(parameters.order,, responseStruct.orderId);
+	If response <> Undefined Then
+		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+		parameters.Insert("response", responseStruct);		
+		If response.StatusCode = 200 Then
+			If responseStruct.Property("orderId") Then
+				parameters.Insert("orderId", responseStruct.orderId);
+				parameters.Insert("formUrl", responseStruct.formUrl);
+				parameters.Insert("errorCode", "");
+				Acquiring.orderIdentifier(parameters.order,, responseStruct.orderId);
+			Else
+				parameters.Insert("errorCode", responseStruct.errorCode);
+				parameters.Insert("errorDescription", responseStruct.errorMessage);	
+			EndIf;
 		Else
-			parameters.Insert("errorCode", responseStruct.errorCode);
-			parameters.Insert("errorDescription", responseStruct.errorMessage);	
+			parameters.Insert("errorCode", "acquiringConnection");		
 		EndIf;
 	Else
-		parameters.Insert("errorCode", "acquiringConnection");		
-	EndIf;		
-		
+		parameters.Insert("errorCode", "acquiringConnection");				
+	EndIf;	
 EndProcedure
 
 Procedure checkOrderAppleGoogle(parameters) Export
@@ -95,7 +98,7 @@ Procedure reverseOrder(parameters) Export
 	requestParametrs.Add("orderId=" 	+ XMLString(parameters.orderId));
 		
 	response = requestExecute(parameters, "reverse", requestParametrs);		
-	If response.StatusCode = 200 Then
+	If response <> Undefined and response.StatusCode = 200 Then
 		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 		parameters.Insert("response", responseStruct);
 		If responseStruct.Property("errorCode") And responseStruct.errorCode <> "0" Then
@@ -121,7 +124,7 @@ Procedure unBindCard(parameters) Export
 	
 	response = requestExecute(parameters, "unBindCard", requestParametrs);	
 	
-	If response.StatusCode = 200 Then
+	If response <> Undefined and response.StatusCode = 200 Then
 		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
 		parameters.Insert("response", responseStruct);				
 		If responseStruct.Property("errorCode") And responseStruct.errorCode <> "0" Then
@@ -159,7 +162,7 @@ Function bindCardParameters(parameters) Export
 	Return creditCardStruct;
 EndFunction
 
-Function requestExecute(parameters, requestName, requestParametrs)
+Function requestExecute(parameters, requestName, requestParametrs, operation = "get")
 	requestURL = New Array();
 	requestURL.Add("/payment/rest/");
 	requestURL.Add(requestName);
@@ -167,20 +170,19 @@ Function requestExecute(parameters, requestName, requestParametrs)
 	requestURL.Add(StrConcat(requestParametrs, "&"));	
 	request = New HTTPRequest(StrConcat(requestURL, ""));
 	parameters.Insert("requestBody", request.ResourceAddress);	
-	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
-	Return connection.Get(request);
-EndFunction
+	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 
-Function requestExecutePOST(parameters, requestName, requestParametrs)
-	requestURL = New Array();
-	requestURL.Add("/payment/rest/");
-	requestURL.Add(requestName);
-	requestURL.Add(".do?");
-	requestURL.Add(StrConcat(requestParametrs, "&"));	
-	request = New HTTPRequest(StrConcat(requestURL, ""));
-	parameters.Insert("requestBody", request.ResourceAddress);	
-	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);	
-	Return connection.Post(request);
+	try
+		If operation = "get" Then
+			result = connection.Get(request);
+		Else
+			result = connection.Post(request);
+		EndIf;
+	Except
+		result = Undefined;
+	EndTry;
+			
+	Return result;
 EndFunction
 
 Function prepareDetails(parameters, parametersQuery)
@@ -231,10 +233,11 @@ Procedure autoPayment(parameters) Export
 	requestParametrs.Add("mdOrder=" 	+ XMLString(parameters.orderId));
 	requestParametrs.Add("bindingId=" 	+ XMLString(parameters.creditCard));
 	requestParametrs.Add("ip=" 			+ parameters.ipAddress);	
-	response = requestExecutePOST(parameters, "paymentOrderBinding", requestParametrs);
-	responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-	parameters.Insert("response", responseStruct);		
-	If response.StatusCode = 200 Then
+	response = requestExecute(parameters, "paymentOrderBinding", requestParametrs, "post");
+		
+	If response <> Undefined and response.StatusCode = 200 Then
+		responseStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+		parameters.Insert("response", responseStruct);	
 		If responseStruct.Property("errorCode") Then
 			If responseStruct.errorCode = 0 Then
 				parameters.Insert("errorCode", "");
