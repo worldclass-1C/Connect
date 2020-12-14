@@ -357,8 +357,13 @@ Procedure informationSourceAlert() Export
 				HTTPRequest = New HTTPRequest(queryStruct.URL
 					+ queryStruct.requestReceiver, headers);
 				HTTPRequest.SetBodyFromString(HTTP.encodeJSON(structHTTPRequest));
-				response = HTTPConnection.Post(HTTPRequest);
-				If response.StatusCode = 200 Then
+				try
+					response = HTTPConnection.Post(HTTPRequest);
+				Except
+					response = Undefined;
+				EndTry;
+				
+				If response <> Undefined and response.StatusCode = 200 Then
 					ExchangePlans.DeleteChangeRecords(node, select.user);
 				EndIf;
 			EndDo;
