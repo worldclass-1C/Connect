@@ -256,6 +256,7 @@
   <reports>Report.statisticsByDay</reports>
   <reports>Report.statisticsByMonth</reports>
   <reports>Report.ecquiringData</reports>
+  <reports>Report.PollAnswers</reports>
   <dataProcessors>DataProcessor.ДоступныеАнкеты</dataProcessors>
   <dataProcessors>DataProcessor.sendPush</dataProcessors>
   <dataProcessors>DataProcessor.DataSync_tConnect_Connect</dataProcessors>

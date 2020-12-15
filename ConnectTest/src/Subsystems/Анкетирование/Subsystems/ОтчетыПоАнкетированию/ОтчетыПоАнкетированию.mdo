@@ -9,5 +9,6 @@
   <includeInCommandInterface>true</includeInCommandInterface>
   <content>Report.АнализОпроса</content>
   <content>Report.АналитическийОтчетПоАнкетированию</content>
+  <content>Report.PollAnswers</content>
   <parentSubsystem>Subsystem.Анкетирование</parentSubsystem>
 </mdclass:Subsystem>
