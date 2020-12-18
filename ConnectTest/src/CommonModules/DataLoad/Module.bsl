@@ -15,7 +15,7 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined, bra
 				If object <> Undefined Then
 					For Each attribute In attributesStruct.attributesTable Do
 						fillField(object, attribute, attributesStruct, requestParameter);
-					EndDo;
+					EndDo;					
 					fillPredefinedField(object, attributesStruct, holding, owner, brand);
 					If attributesStruct.actType = "write" Then
 						object.Write();

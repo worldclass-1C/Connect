@@ -10,16 +10,16 @@ Function profile(user, appType) Export
 	|			THEN UNDEFINED
 	|		ELSE users.owner.birthday
 	|	END AS birthday,
-	|	users.owner.canUpdatePersonalData AS canUpdatePersonalData,
-	|	users.owner.email AS email,
-	|	users.owner.firstName AS firstName,
-	|	users.owner.lastName AS lastName,
-	|	users.owner.secondName AS secondName,
+	|	users.canUpdatePersonalData AS canUpdatePersonalData,
+	|	users.email AS email,
+	|	users.firstName AS firstName,
+	|	users.lastName AS lastName,
+	|	users.secondName AS secondName,
 	|	users.owner.code AS phone,
 	|	CASE
-	|		WHEN users.owner.gender = """"
+	|		WHEN users.gender = """"
 	|			THEN ""none""
-	|		ELSE users.owner.gender
+	|		ELSE users.gender
 	|	END AS gender,
 	|	CASE
 	|		WHEN users.owner.status IS NULL
@@ -32,7 +32,7 @@ Function profile(user, appType) Export
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
 	|	"""" AS rating,
-	|	users.owner.photo AS photo,
+	|	users.photo AS photo,
 	|	users.ref AS owner
 	|FROM
 	|	Catalog.users AS users

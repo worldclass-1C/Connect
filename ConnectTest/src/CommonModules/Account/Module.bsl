@@ -61,6 +61,13 @@ Function getFromExternalSystem(val parameters, val parametrName,
 
 EndFunction
 
+Function changeUser(tokenContext, user) Export
+	Token.editProperty(tokenContext.token, New Structure("user", user));
+	authKey = XMLString(tokenContext.token) + tempPassword();
+	userProfile = Users.profile(user, tokenContext.appType);	
+	Return New Structure("response, error", New Structure("userProfile, token", userProfile, authKey), "");
+EndFunction
+
 Function getStatus(account)
 	
 	querry = New Query("SELECT

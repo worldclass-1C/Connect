@@ -160,8 +160,15 @@
         <value>Tilda</value>
       </code>
     </items>
+    <items id="cfa12be3-0ba0-4334-8e7d-151b5a68e39c">
+      <name>NotPhone</name>
+      <description>Not phone</description>
+      <code xsi:type="core:StringValue">
+        <value>NotPhone</value>
+      </code>
+    </items>
   </predefined>
-  <predefinedDataUpdate>DontAutoUpdate</predefinedDataUpdate>
+  <predefinedDataUpdate>AutoUpdate</predefinedDataUpdate>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.accounts.Form.ItemForm</defaultObjectForm>
