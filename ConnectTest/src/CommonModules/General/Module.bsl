@@ -26,7 +26,7 @@ Procedure executeRequestMethod(parameters) Export
 			addUser(parameters);
 		ElsIf parameters.requestName = "addusertotoken" Then
 			addUserToToken(parameters);
-		ElsIf parameters.requestName = "changeUserInToken" Then
+		ElsIf parameters.requestName = "changeuserintoken" Then
 			changeUserInToken(parameters);
 		ElsIf parameters.requestName = "registerdevice" Then
 			registerDevice(parameters);
