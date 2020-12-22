@@ -10,5 +10,7 @@
   <content>Report.АнализОпроса</content>
   <content>Report.АналитическийОтчетПоАнкетированию</content>
   <content>Report.PollAnswers</content>
+  <content>Report.CalculationPollAnswers</content>
+  <content>Report.PollCustomerData</content>
   <parentSubsystem>Subsystem.Анкетирование</parentSubsystem>
 </mdclass:Subsystem>

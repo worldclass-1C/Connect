@@ -420,7 +420,7 @@ Procedure AddAnswer(Tab, question, answerInfo,elementaryQuestionInfo, Cnt=0)
 		newRow.ЭлементарныйВопрос = newRow.Вопрос.ЭлементарныйВопрос;
 		newRow.НомерЯчейки = Cnt;
 		newRow.ОткрытыйОтвет = comment;
-		newRow.Ответ = Typization(newRow.Вопрос.ЭлементарныйВопрос,answer);
+		newRow.Ответ = Typization(newRow.ЭлементарныйВопрос,answer);
 	EndIf	
 EndProcedure	
 
