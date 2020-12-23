@@ -227,7 +227,7 @@
     <type>
       <types>String</types>
       <stringQualifiers>
-        <length>150</length>
+        <length>1024</length>
       </stringQualifiers>
     </type>
     <fullTextSearch>Use</fullTextSearch>
