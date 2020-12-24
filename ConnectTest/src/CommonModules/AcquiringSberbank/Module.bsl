@@ -152,7 +152,7 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("active", True);
 		creditCardStruct.Insert("autopayment", False);
 		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.cardAuthInfo.expiration + "01")));
-		creditCardStruct.Insert("ownerName", response.cardAuthInfo.cardholderName);
+		creditCardStruct.Insert("ownerName", ?(response.cardAuthInfo.Property("cardholderName"),response.cardAuthInfo.cardholderName,""));
 		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
 		creditCardStruct.Insert("paymentSystemCode", left(response.cardAuthInfo.maskedPan,2));
 		creditCardStruct.Insert("autoPayment",false);

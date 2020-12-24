@@ -18,7 +18,10 @@ Function createItems(requestName, holding, requestStruct, owner = Undefined, bra
 					EndDo;					
 					fillPredefinedField(object, attributesStruct, holding, owner, brand);
 					If attributesStruct.actType = "write" Then
-						object.Write();
+						try
+							object.Write();
+						Except
+						EndTry;							
 					ElsIf attributesStruct.actType = "delete" Then
 						object.Read();
 						If object.Selected() Then
@@ -45,7 +48,10 @@ Procedure fillOwnersAttributes(object, attributesStruct, parameters)
 		If parameters.Property("phoneNumber") and ValueIsFilled(parameters.phoneNumber)Then
 			ownerObject = object.ref.owner.GetObject();
 			ownerObject.code = parameters.phoneNumber;
-			ownerObject.Write();
+			try
+				ownerObject.Write();
+			Except
+			EndTry;	
 		EndIf;
 	EndIf;
 endprocedure

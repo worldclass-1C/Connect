@@ -224,6 +224,8 @@ Procedure payment(parameters) Export
 			Acquiring.changeOrderState(order, ?(aquiringAmount = 0, Enums.acquiringOrderStates.success, Enums.acquiringOrderStates.send));
 			if aquiringAmount = 0 then
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.success); 
+				answerKPO = Acquiring.executeRequest("process", order, parameters);
+				error = answerKPO.errorCode;
 			Else
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send); 
 			endif;
