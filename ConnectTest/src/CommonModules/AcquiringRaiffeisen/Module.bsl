@@ -58,7 +58,7 @@ Procedure checkStatus(parameters) Export
 	parameters.Insert("response", answerStruct);
 	If answerHTTP.StatusCode = 200 Then
 		If answerStruct.Property("paymentStatus") then						
-			If answerStruct.paymentStatus = "SUCSESS" Then			
+			If answerStruct.paymentStatus = "SUCCESS" Then			
 				parameters.Insert("errorCode", "");
 				orderObject = parameters.order.GetObject();
 				newRow = orderObject.payments.Add();
