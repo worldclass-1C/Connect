@@ -65,6 +65,7 @@ Function sendPush(parameters) Export
 		EndIf;
 		
 		HTTPConnection = New HTTPConnection("fcm.googleapis.com/fcm/send", , , , , , New OpenSSLSecureConnection());
+		body = New Structure();
 		
 		data = New Structure();
 		data.Insert("action", parameters.action);
@@ -72,10 +73,23 @@ Function sendPush(parameters) Export
 			data.Insert("objectId", parameters.objectId);
 			data.Insert("objectType", parameters.objectType);
 			data.Insert("noteId", XMLString(parameters.message));
-		EndIf;
+			
+			If parameters.action = "updateSchedule" Then
+				linkData = New Structure();
+				linkData.Insert("docId", parameters.objectId);
+				linkData.Insert("docType", parameters.objectType);
+				linkData.Insert("gym", XMLString(parameters.gym));
+
+				link = New Structure();
+				link.Insert("route", "activityDetails");
+				link.Insert("data", HTTP.encodeJSON(linkData));
+				data.Insert("link", link);
+				body.Insert("link", link);				
+			EndIf;
+		EndIf;		
 		
-		body = New Structure();
 		body.Insert("data", data);
+		body.Insert("action", parameters.action);
 		If isNotBackgroundPush Then			
 			body.Insert("title", parameters.title);
 			body.Insert("sound", "default");			
@@ -568,6 +582,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	messages.Ref.action AS action,
 	|	messages.Ref.objectId AS objectId,
 	|	messages.Ref.objectType AS objectType,
+	|	messages.Ref.gym AS gym,
 	|	&nodeMessagesToSend AS nodeMessagesToSend,
 	|	MAX(ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef))) AS token,
 	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
@@ -622,6 +637,7 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 	|	TT.action AS action,
 	|	TT.objectId AS objectId,
 	|	TT.objectType AS objectType,
+	|	TT.gym AS gym,
 	|	TT.nodeMessagesToSend AS nodeMessagesToSend,
 	|	TT.deviceToken AS deviceToken,
 	|	TT.token AS token,
