@@ -14,7 +14,7 @@ Function sendSMS(parameters, answer) Export
 	"&login=&password=";
 
 	requestHTTP = New HTTPRequest("/M2M/m2m_api.asmx/SendMessages", Headers);
-	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 
 	answerBody = ConnectionHTTP.Post(requestHTTP);
 	answerString = "";
@@ -66,7 +66,7 @@ Function checkSmsStatus(parameters, answer) Export
 	JSONString = "messageID=" + parameters.id + "&login=&password=";
 
 	requestHTTP = New HTTPRequest("/M2M/m2m_api.asmx/GetMessageStatus", Headers);
-	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 
 	answerBody = ConnectionHTTP.Post(requestHTTP);
 

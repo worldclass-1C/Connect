@@ -168,7 +168,7 @@ Function prepareResponse(parameters) Export
 		response.Headers.Insert("Access-Control-Allow-Origin", parameters.origin);
 	EndIf;
 	If parameters.answerBody <> "" Then
-		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+		response.SetBodyFromString(parameters.answerBody, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 	EndIf;
 	Return response;
 EndFunction

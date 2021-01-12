@@ -23,7 +23,7 @@ Headers.insert("authorization", "Basic " + Crypto.EncryptBase64(parameters.user 
 Headers.insert("Content-Type", "application/json");
 
 requestHTTP = New HTTPRequest("/message", Headers);
-requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 
 answerBody = ConnectionHTTP.Post(requestHTTP);
 JSONStructure = "";

@@ -6,7 +6,7 @@ Function sendSMS(parameters, answer) Export
 	URL = "/modules/send_sms.php";
 	requestHTTP = New HTTPRequest(URL, headers);	
 	parametersStr = "username=" + parameters.user +	"&password=" + parameters.password + "&to=" + parameters.phone + "&from=" + parameters.senderName + "&coding=2" + "&text=" + parameters.text;	
-	requestHTTP.SetBodyFromString(parametersStr,,ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(parametersStr,,GeneralReuse.getByteOrderMarkUse());
 	answerHTTP = ConnectionHTTP.Post(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());	
 	ReaderHTML = New HTMLReader;
@@ -34,7 +34,7 @@ Function checkSmsStatus(parameters, answer) Export
 	URL = "/modules/sms_status.php";	
 	requestHTTP = New HTTPRequest(URL, headers);	
 	parametersStr = "username=" + parameters.user +	"&password=" + parameters.password + "&id=" + parameters.id;	
-	requestHTTP.SetBodyFromString(parametersStr,,ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(parametersStr,,GeneralReuse.getByteOrderMarkUse());
 	answerHTTP = ConnectionHTTP.Post(requestHTTP);
 	answerBody = TrimAll(answerHTTP.GetBodyAsString());	
 	ReaderHTML = New HTMLReader;

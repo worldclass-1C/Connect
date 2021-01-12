@@ -25,7 +25,7 @@ Function sendSMS(parameters, answer) Export
 		Headers.insert("Content-Type", "application/json; charset=utf-8");
 
 		requestHTTP = New HTTPRequest("/rest/Sms/Send", Headers);
-		requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+		requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 
 		answerBody = ConnectionHTTP.Post(requestHTTP);
 

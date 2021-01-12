@@ -26,7 +26,7 @@ Function sendSMS(parameters, answer) Export
 	Headers.insert("Content-Type", "application/json; charset=utf-8");
 	
 	requestHTTP = New HTTPRequest("/apiSms/create", Headers);
-	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 	
 	answerBody = ConnectionHTTP.Post(requestHTTP);
 	error = "";
@@ -97,7 +97,7 @@ Function checkSmsStatus(parameters, answer) Export
 	Headers.insert("Content-Type", "application/json; charset=utf-8");
 	
 	requestHTTP = New HTTPRequest("/apiSms/get", Headers);
-	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+	requestHTTP.SetBodyFromString(JSONString, TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 	
 	answerBody = ConnectionHTTP.Post(requestHTTP);
 	error = "";

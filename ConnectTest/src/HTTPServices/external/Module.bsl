@@ -40,7 +40,7 @@ Function pingGet(Request)
 	
 	response = New HTTPServiceResponse(200);
 	response.Headers.Insert("Content-type", "application/json;  charset=utf-8");
-	response.SetBodyFromString(HTTP.encodeJSON(array), TextEncoding.UTF8, ByteOrderMarkUsage.DontUse);
+	response.SetBodyFromString(HTTP.encodeJSON(array), TextEncoding.UTF8, GeneralReuse.getByteOrderMarkUse());
 	Return response;
 	
 EndFunction

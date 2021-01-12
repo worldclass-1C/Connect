@@ -34,3 +34,8 @@ Function getLanguage(code = Undefined) Export
 		Return Catalogs.languages.FindByCode(code);
 	EndIf;	
 EndFunction
+
+Function getByteOrderMarkUse(use="DontUse") Export	
+	Return ByteOrderMarkUsage[use];		
+EndFunction
+
