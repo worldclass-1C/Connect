@@ -148,7 +148,7 @@ Function prepareRequestBody(parameters) Export
 	
 	struct.Insert("appVersion", tokenContext.appVersion);
 	struct.Insert("systemType", TrimAll(tokenContext.systemType));
-	struct.Insert("brand", tokenContext.brand);
+	struct.Insert("brand", TrimAll(tokenContext.brand));
 	
 	Return HTTP.encodeJSON(struct, ?(parameters.Property("isXDTOSerializer"),parameters.isXDTOSerializer,false));
 
