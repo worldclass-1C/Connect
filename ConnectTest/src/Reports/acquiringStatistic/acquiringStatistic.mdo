@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="cf7e2d3e-ad9b-4f73-b6d4-4d335d5515b5">
+  <producedTypes>
+    <objectType typeId="8cf6a075-2443-4ac8-a700-3bbb2e61e76a" valueTypeId="8e86f515-7c2a-4af3-9749-f69bc7c2dfc9"/>
+    <managerType typeId="37fcead7-604d-4a32-881c-30978985df8d" valueTypeId="fc0feaae-fc8c-4cff-b483-9774af8d1b1b"/>
+  </producedTypes>
+  <name>acquiringStatistic</name>
+  <synonym>
+    <key>ru</key>
+    <value>Acquiring statistic</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+</mdclass:Report>

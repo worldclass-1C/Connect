@@ -46,16 +46,78 @@ EndFunction
 Procedure fillOwnersAttributes(object, attributesStruct, parameters)
 	If attributesStruct.mdObjectName = "users" Then
 		If parameters.Property("phoneNumber") and ValueIsFilled(parameters.phoneNumber)Then
-			ownerObject = object.ref.owner.GetObject();
-			ownerObject.code = parameters.phoneNumber;
-			try
-				ownerObject.Write();
-			Except
-			EndTry;	
+			owner = object.ref.owner;
+			if not owner.code = parameters.phoneNumber then
+				newAccount = findAccount(parameters.phoneNumber, owner);
+				if newAccount = Undefined then
+					ownerObject = owner.GetObject();
+					ownerObject.code = parameters.phoneNumber;
+					ownerObject.Write();
+				else
+					object.owner = newAccount;
+					object.write();
+					unableTokens(object.Ref);
+					rebindUser(newAccount);
+				EndIf;	
+			EndIf;
 		EndIf;
 	EndIf;
 endprocedure
 
+Procedure unableTokens(user)
+	
+	query = new query;
+	query.Text = "SELECT
+	|	tokens.Ref
+	|FROM
+	|	Catalog.tokens AS tokens
+	|WHERE
+	|	tokens.user = &user";
+	query.SetParameter("user", user);
+	selection = query.Execute().select();
+	while selection.Next() do
+		token.block(selection.ref);
+	EndDo;
+	
+EndProcedure
+
+Procedure rebindUser(account)
+	
+	query = new query;
+	query.Text = "SELECT
+	|	users.Ref
+	|FROM
+	|	Catalog.users AS users
+	|WHERE
+	|	users.Owner = &Owner";
+	query.SetParameter("Owner", account);
+	selection = query.Execute().Select();
+	while selection.Next() do
+		userObj = selection.Ref.GetObject();
+		userObj.owner = Catalogs.accounts.NotPhone;
+		userObj.write();
+	EndDo;
+	
+EndProcedure
+
+Function findAccount(phoneNumber, owner)
+	query = new query;
+	query.Text = "SELECT
+	|	accounts.Ref
+	|FROM
+	|	Catalog.accounts AS accounts
+	|WHERE
+	|	accounts.Code = &Code
+	|	AND accounts.Ref <> &Ref";
+	query.SetParameter("Code", phoneNumber);
+	query.SetParameter("Ref", owner);
+	selection = query.Execute().Select();
+	accountRef = Undefined;
+	if selection.Next() Then
+		accountRef = selection.Ref;
+	EndIf;
+	return accountRef;
+EndFunction	
 
 Function getValueTable() Export
 	ValueTable = New ValueTable();
