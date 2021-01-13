@@ -522,9 +522,8 @@ EndProcedure
 Procedure changeUserInToken(parameters)
 	tokenContext = parameters.tokenContext;
 	requestStruct = parameters.requestStruct;
-	user = Catalogs.users.GetRef(New UUID(requestStruct.uid));
-	userObject = user.GetObject();
-	If userObject = Undefined Then
+	user = Catalogs.users.GetRef(New UUID(requestStruct.uid));	
+	If IsBlankString(user.DataVersion) Then
 		answerStruct = Account.getFromExternalSystem(parameters, "uid", requestStruct.uid, Catalogs.accounts.NotPhone);
 	Else
 		answerStruct = Account.changeUser(tokenContext, user);			
