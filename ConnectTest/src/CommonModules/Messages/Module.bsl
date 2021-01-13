@@ -82,8 +82,7 @@ Function sendPush(parameters) Export
 
 				link = New Structure();
 				link.Insert("route", "activityDetails");
-				link.Insert("data", HTTP.encodeJSON(linkData));
-				data.Insert("link", link);
+				link.Insert("data", HTTP.encodeJSON(linkData));				
 				body.Insert("link", link);				
 			EndIf;
 		EndIf;		
