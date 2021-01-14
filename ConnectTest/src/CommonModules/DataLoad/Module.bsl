@@ -47,7 +47,7 @@ Procedure fillOwnersAttributes(object, attributesStruct, parameters)
 	If attributesStruct.mdObjectName = "users" Then
 		If parameters.Property("phoneNumber") and ValueIsFilled(parameters.phoneNumber)Then
 			owner = object.ref.owner;
-			if not owner.code = parameters.phoneNumber then
+			if not owner.code = parameters.phoneNumber and owner<>Catalogs.accounts.NotPhone then
 				newAccount = findAccount(parameters.phoneNumber, owner);
 				if newAccount = Undefined then
 					ownerObject = owner.GetObject();

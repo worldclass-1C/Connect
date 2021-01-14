@@ -122,7 +122,7 @@ Function GetOrdersToProcess()
 	|	Catalog.acquiringOrders.orders AS acquiringOrdersorders
 	|		LEFT JOIN Catalog.acquiringOrders AS acquiringOrders
 	|			LEFT JOIN InformationRegister.ordersStates AS ordersStates
-	|			ON (ordersStates.order = acquiringOrders.Ref)
+	|			ON ordersStates.order = acquiringOrders.Ref
 	|		ON acquiringOrdersorders.Ref = acquiringOrders.Ref
 	|WHERE
 	|	ordersStates.state IS NULL
@@ -130,7 +130,7 @@ Function GetOrdersToProcess()
 	|	AND acquiringOrders.acquiringRequest <> VALUE(enum.acquiringRequests.autoPayment)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT TOP 100 ALLOWED
+	|SELECT ALLOWED TOP 100
 	|	acquiringOrdersQueue.order AS order,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault.Code, """") AS languageCode,
@@ -144,7 +144,8 @@ Function GetOrdersToProcess()
 	|	COUNT(DISTINCT ISNULL(acquiringLogs.Ref, 0)) AS try,
 	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion AS appVersion,
 	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType AS systemType,
-	|	NULL AS newOrder
+	|	NULL AS newOrder,
+	|	acquiringOrdersQueue.order.holding.tokenDefault.chain.brand AS brand
 	|FROM
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|		LEFT JOIN Catalog.acquiringLogs AS acquiringLogs
@@ -165,7 +166,8 @@ Function GetOrdersToProcess()
 	|	ISNULL(acquiringOrdersQueue.order.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)),
 	|	ISNULL(acquiringOrdersQueue.order.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)),
 	|	acquiringOrdersQueue.order.holding.tokenDefault.appVersion,
-	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType
+	|	acquiringOrdersQueue.order.holding.tokenDefault.systemType,
+	|	acquiringOrdersQueue.order.holding.tokenDefault.chain.brand
 	|
 	|UNION ALL
 	|
@@ -183,14 +185,14 @@ Function GetOrdersToProcess()
 	|	0,
 	|	tempNoStatus.Ref.holding.tokenDefault.appVersion,
 	|	tempNoStatus.Ref.holding.tokenDefault.systemType,
-	|	acquiringOrdersorders.Ref
+	|	acquiringOrdersorders.Ref,
+	|	acquiringOrdersorders.Ref.holding.tokenDefault.chain.brand
 	|FROM
 	|	tempNoStatus AS tempNoStatus
 	|		LEFT JOIN Catalog.acquiringOrders.orders AS acquiringOrdersorders
 	|		ON acquiringOrdersorders.uid = tempNoStatus.uid
 	|		AND acquiringOrdersorders.Ref.registrationDate > tempNoStatus.registrationDate
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP tempNoStatus";
 	Query.SetParameter("CurrentDate", ToUniversalTime(CurrentDate()));
@@ -202,6 +204,7 @@ Function GetParametersToSend(DataSelect)
 	Parameters.Insert("language", DataSelect.language);
 	Parameters.Insert("authKey", string(DataSelect.tokenDefault.UUID()));
 	Parameters.Insert("requestName", "process");
+	Parameters.Insert("brand", DataSelect.brand);
 	Parameters.Insert("languageCode", DataSelect.languageCode);
 	TokenContext = New structure();
 	TokenContext.Insert("user", DataSelect.userCode);
