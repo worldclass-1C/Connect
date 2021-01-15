@@ -40,7 +40,8 @@ function GetKPOData(holding,startDate, endDate)
 	|	holding.tokenDefault AS tokenDefault,
 	|	holding.ref AS holding,
 	|	holding.tokenDefault.appVersion AS appVersion,
-	|	holding.tokenDefault.systemType AS systemType
+	|	holding.tokenDefault.systemType AS systemType,
+	|	holding.tokenDefault.chain.brand AS brand
 	|FROM
 	|	Catalog.holdings AS holding
 	|WHERE
@@ -128,6 +129,7 @@ Function GetParametersToSend(DataSelect)
 	Parameters.Insert("language", DataSelect.language);
 	Parameters.Insert("authKey", string(DataSelect.tokenDefault.UUID()));
 	Parameters.Insert("requestName", "request");
+	Parameters.Insert("brand", DataSelect.brand);
 	Parameters.Insert("languageCode", DataSelect.languageCode);
 	TokenContext = New structure();
 	TokenContext.Insert("user", DataSelect.userCode);
