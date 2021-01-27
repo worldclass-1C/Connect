@@ -72,6 +72,8 @@ Procedure gymSchedule(parameters) Export
 					|		ELSE FALSE
 					|	END) AS canRecord,
 					|	MAX(CASE
+					|		when &currentTime < classesSchedule.startRegistration
+					|			then false
 					|		WHEN NOT classesSchedule.isPrePaid
 					|			THEN TRUE
 					|		WHEN DATEDIFF(&currentTime, classesSchedule.period, HOUR) > 8
