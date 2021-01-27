@@ -46,7 +46,7 @@ EndProcedure
 Procedure checkStatus(parameters) Export
 	
 	requestURL = New Array();
-	requestURL.Add("/api/sbp/v1/qr/"+parameters.orderId.description+"/payment-info");
+	requestURL.Add("/api/sbp/v1/qr/"+?(ValueIsFilled(parameters.orderId), parameters.orderId.description, "")+"/payment-info");
 		
 	URL = StrConcat(requestURL, "");
 	parameters.Insert("requestBody", URL);	
