@@ -190,7 +190,7 @@ Procedure AskCache(parameters, struсRequest) Export
 	EndDo;
 	
 	General.executeRequestMethod(
-		New Structure("requestName,requestStruct,internalRequestMethod,tokenContext,language,authKey,languageCode",
+		New Structure("requestName,requestStruct,internalRequestMethod,tokenContext,language,authKey,languageCode,brand",
 				"AskCache",
 				struсRequest,
 				True,
@@ -199,7 +199,8 @@ Procedure AskCache(parameters, struсRequest) Export
 				parameters.tokenContext,
 				parameters.language,
 				parameters.authKey,
-				parameters.languageCode));
+				parameters.languageCode,
+				parameters.brand));
 EndProcedure
 
 Procedure UpdateCache(parameters) Export
