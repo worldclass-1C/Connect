@@ -725,41 +725,42 @@ Procedure executeExternalRequest(parameters)
 
 	query = New Query;
 	query.text = "SELECT
-				 |	matchingRequestsInformationSources.performBackground AS performBackground,
-				 |	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
-				 |	matchingRequestsInformationSources.HTTPRequestType AS HTTPRequestType,
-				 |	matchingRequestsInformationSources.Attribute AS Attribute,
-				 |	matchingRequestsInformationSources.staffOnly AS staffOnly,
-				 |	matchingRequestsInformationSources.mockServerMode AS mockServerMode,
-				 |	holdingsConnectionsInformationSources.URL AS URL,
-				 |	holdingsConnectionsInformationSources.server AS server,
-				 |	CASE
-				 |		WHEN holdingsConnectionsInformationSources.port = 0
-				 |			THEN UNDEFINED
-				 |		ELSE holdingsConnectionsInformationSources.port
-				 |	END AS port,
-				 |	holdingsConnectionsInformationSources.user AS user,
-				 |	holdingsConnectionsInformationSources.password AS password,
-				 |	holdingsConnectionsInformationSources.timeout AS timeout,
-				 |	holdingsConnectionsInformationSources.secureConnection AS secureConnection,
-				 |	holdingsConnectionsInformationSources.UseOSAuthentication AS UseOSAuthentication,
-				 |	CASE
-				 |		WHEN matchingRequestsInformationSources.mockServerMode
-				 |			THEN matchingRequestsInformationSources.Ref.defaultResponse
-				 |		ELSE """"
-				 |	END AS defaultResponse,
-				 |	matchingRequestsInformationSources.Ref.disableLogging AS disableLogging
-				 |FROM
-				 |	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
-				 |		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
-				 |		ON holdingsConnectionsInformationSources.informationSource = matchingRequestsInformationSources.informationSource
-				 |		AND (matchingRequestsInformationSources.requestSource = &requestName)
-				 |		AND (NOT matchingRequestsInformationSources.notUse)
-				 |WHERE
-				 |	holdingsConnectionsInformationSources.holding = &holding
-				 |	AND
-				 |	NOT matchingRequestsInformationSources.requestReceiver IS NULL
-				 |	AND holdingsConnectionsInformationSources.language = &language";
+	|	matchingRequestsInformationSources.performBackground AS performBackground,
+	|	matchingRequestsInformationSources.requestReceiver AS requestReceiver,
+	|	matchingRequestsInformationSources.HTTPRequestType AS HTTPRequestType,
+	|	matchingRequestsInformationSources.Attribute AS Attribute,
+	|	matchingRequestsInformationSources.staffOnly AS staffOnly,
+	|	matchingRequestsInformationSources.mockServerMode AS mockServerMode,
+	|	holdingsConnectionsInformationSources.URL AS URL,
+	|	holdingsConnectionsInformationSources.server AS server,
+	|	CASE
+	|		WHEN holdingsConnectionsInformationSources.port = 0
+	|			THEN UNDEFINED
+	|		ELSE holdingsConnectionsInformationSources.port
+	|	END AS port,
+	|	holdingsConnectionsInformationSources.user AS user,
+	|	holdingsConnectionsInformationSources.password AS password,
+	|	holdingsConnectionsInformationSources.timeout AS timeout,
+	|	holdingsConnectionsInformationSources.secureConnection AS secureConnection,
+	|	holdingsConnectionsInformationSources.UseOSAuthentication AS UseOSAuthentication,
+	|	CASE
+	|		WHEN matchingRequestsInformationSources.mockServerMode
+	|			THEN matchingRequestsInformationSources.Ref.defaultResponse
+	|		ELSE """"
+	|	END AS defaultResponse,
+	|	matchingRequestsInformationSources.Ref.disableLogging AS disableLogging,
+	|	holdingsConnectionsInformationSources.holding.tokenDefault.chain.brand AS brand
+	|FROM
+	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
+	|		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
+	|		ON holdingsConnectionsInformationSources.informationSource = matchingRequestsInformationSources.informationSource
+	|		AND (matchingRequestsInformationSources.requestSource = &requestName)
+	|		AND (NOT matchingRequestsInformationSources.notUse)
+	|WHERE
+	|	holdingsConnectionsInformationSources.holding = &holding
+	|	AND
+	|	NOT matchingRequestsInformationSources.requestReceiver IS NULL
+	|	AND holdingsConnectionsInformationSources.language = &language";
 
 	query.SetParameter("holding", tokenContext.holding);
 	query.SetParameter("language", language);
