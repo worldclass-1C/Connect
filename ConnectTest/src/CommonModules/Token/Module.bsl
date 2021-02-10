@@ -55,7 +55,7 @@ EndProcedure
 Procedure editProperty(val token, struct) Export
 	tokenObject = token.GetObject();
 	If tokenObject <> Undefined Then
-		If ValueIsFilled(tokenObject.account) and tokenObject.account<>catalogs.accounts.Tilda then		
+		If (ValueIsFilled(tokenObject.account) and tokenObject.account<>catalogs.accounts.Tilda) or (NOT ValueIsFilled(tokenObject.account)) then		
 			For Each element In struct Do
 				If element.key = "user" Then
 					ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.user));
