@@ -49,4 +49,11 @@
       <value>Raiffeisen</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="44d8c1b2-8edc-402b-b02c-b49a7265d176">
+    <name>alfaBankMinsk</name>
+    <synonym>
+      <key>ru</key>
+      <value>Alfa bank minsk</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

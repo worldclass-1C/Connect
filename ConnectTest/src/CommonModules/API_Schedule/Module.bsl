@@ -74,9 +74,9 @@ Procedure gymSchedule(parameters) Export
 					|	MAX(CASE
 					|		when &currentTime < classesSchedule.startRegistration
 					|			then false
-					|		WHEN NOT classesSchedule.isPrePaid
+					|		WHEN NOT classesSchedule.isPrePaid and classMembers.user = &user
 					|			THEN TRUE
-					|		WHEN DATEDIFF(&currentTime, classesSchedule.period, HOUR) > 8
+					|		WHEN DATEDIFF(&currentTime, classesSchedule.period, HOUR) > 8 and classMembers.user = &user
 					|			THEN TRUE
 					|		ELSE FALSE
 					|	END) AS canCancel,
@@ -121,106 +121,110 @@ Procedure gymSchedule(parameters) Export
 				|;
 				|////////////////////////////////////////////////////////////////////////////////";
 	textResum = "SELECT
-				|	TT.Doc AS Doc,
-				|	TT.period AS period,
-				|	TT.employee AS employee,
-				|	TT.gym AS gym,
-				|	TT.room AS room,
-				|	TT.product AS product,
-				|	TT.recorded AS recorded,
-				|	TT.canRecord AS canRecord,
-				|	TT.canCancel AS canCancel,
-				|	TT.userPlaces AS userPlaces,
-				|	TT.isPreBooked AS isPreBooked,
-				|	TT.isPrePaid AS isPrePaid,
-				|	TT.onlyWithParents AS onlyWithParents,
-				|	TT.onlyMembers AS onlyMembers,
-				|	TT.duration AS duration,
-				|	TT.ageMin AS ageMin,
-				|	TT.ageMax AS ageMax,
-				|	TT.studentLevel AS studentLevel,
-				|	TT.price AS price,
-				|	CASE
-				|		WHEN TT.availablePlaces = 0
-				|			THEN -1
-				|		ELSE TT.availablePlaces - TT.userPlaces
-				|	END AS availablePlaces,
-				|	TT.urlZoom AS urlZoom
-				|FROM
-				|	TT AS TT
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.employee AS employee,
-				|	ISNULL(employeestranslation.firstName, ISNULL(TT.employee.firstName, """")) AS firstName,
-				|	ISNULL(employeestranslation.lastName, ISNULL(TT.employee.lastName, """")) AS lastName
-				|FROM
-				|	TT AS TT
-				|		LEFT JOIN Catalog.employees.translation AS employeestranslation
-				|		ON TT.employee = employeestranslation.Ref
-				|		AND (employeestranslation.language = &language)
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.gym AS gym,
-				|	ISNULL(gymstranslation.description, ISNULL(TT.gym.Description, """")) AS name
-				|FROM
-				|	TT AS TT
-				|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
-				|		ON TT.gym = gymstranslation.Ref
-				|		AND (gymstranslation.language = &language)
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.product AS product,
-				|	ISNULL(productstranslation.description, ISNULL(TT.product.Description, """")) AS name,
-				|	ISNULL(productstranslation.shortDescription, ISNULL(TT.product.shortDescription, """")) AS shortDescription,
-				|	ISNULL(TT.product.photo, """") AS photo
-				|FROM
-				|	TT AS TT
-				|		LEFT JOIN Catalog.products.translation AS productstranslation
-				|		ON TT.product = productstranslation.Ref
-				|		AND (productstranslation.language = &language)
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.product AS product,
-				|	ISNULL(tagstranslation.description, ISNULL(productstags.tag.Description, """")) AS tag,
-				|	ISNULL(productstags.tag.level, 0) AS level,
-				|	ISNULL(productstags.tag.weight, 0) AS weight
-				|FROM
-				|	TT AS TT
-				|		INNER JOIN Catalog.products.tags AS productstags
-				|			LEFT JOIN Catalog.tags.translation AS tagstranslation
-				|			ON (productstags.tag = tagstranslation.Ref)
-				|			AND (tagstranslation.language = &language)
-				|		ON (TT.product = productstags.Ref)
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.room AS room,
-				|	ISNULL(TT.room.latitude, 0) AS latitude,
-				|	ISNULL(TT.room.longitude, 0) AS longitude,
-				|	ISNULL(roomstranslation.description, ISNULL(TT.room.Description, """")) AS name
-				|FROM
-				|	TT AS TT
-				|		LEFT JOIN Catalog.rooms.translation AS roomstranslation
-				|		ON TT.room = roomstranslation.Ref
-				|		AND (roomstranslation.language = &language)
-				|;
-				|////////////////////////////////////////////////////////////////////////////////
-				|SELECT DISTINCT
-				|	TT.doc as ref,
-				|	classesScheduleexternalRefs.resoursType as type,
-				|	classesScheduleexternalRefs.resourseRef as resourseRef
-				|FROM
-				|	TT AS TT
-				|		INNER JOIN Catalog.classesSchedule.externalRefs AS classesScheduleexternalRefs
-				|		ON classesScheduleexternalRefs.Ref = TT.doc
-				|Where
-				|	not classesScheduleexternalRefs.resourseRef = """"
-				|	and
-				|	not classesScheduleexternalRefs.resoursType = value(Enum.typeOfExternalRefs.emptyref)";
+	|	TT.Doc AS Doc,
+	|	TT.period AS period,
+	|	TT.employee AS employee,
+	|	TT.gym AS gym,
+	|	TT.room AS room,
+	|	TT.product AS product,
+	|	TT.recorded AS recorded,
+	|	TT.canRecord AS canRecord,
+	|	TT.canCancel AS canCancel,
+	|	TT.userPlaces AS userPlaces,
+	|	TT.isPreBooked AS isPreBooked,
+	|	TT.isPrePaid AS isPrePaid,
+	|	TT.onlyWithParents AS onlyWithParents,
+	|	TT.onlyMembers AS onlyMembers,
+	|	TT.duration AS duration,
+	|	TT.ageMin AS ageMin,
+	|	TT.ageMax AS ageMax,
+	|	TT.studentLevel AS studentLevel,
+	|	TT.price AS price,
+	|	CASE
+	|		WHEN TT.availablePlaces = 0
+	|			THEN -1
+	|		ELSE case
+	|			when (TT.availablePlaces - TT.userPlaces) < 0
+	|				then 0
+	|			else TT.availablePlaces - TT.userPlaces
+	|		end
+	|	END AS availablePlaces,
+	|	TT.urlZoom AS urlZoom
+	|FROM
+	|	TT AS TT
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.employee AS employee,
+	|	ISNULL(employeestranslation.firstName, ISNULL(TT.employee.firstName, """")) AS firstName,
+	|	ISNULL(employeestranslation.lastName, ISNULL(TT.employee.lastName, """")) AS lastName
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.employees.translation AS employeestranslation
+	|		ON TT.employee = employeestranslation.Ref
+	|		AND (employeestranslation.language = &language)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.gym AS gym,
+	|	ISNULL(gymstranslation.description, ISNULL(TT.gym.Description, """")) AS name
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
+	|		ON TT.gym = gymstranslation.Ref
+	|		AND (gymstranslation.language = &language)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.product AS product,
+	|	ISNULL(productstranslation.description, ISNULL(TT.product.Description, """")) AS name,
+	|	ISNULL(productstranslation.shortDescription, ISNULL(TT.product.shortDescription, """")) AS shortDescription,
+	|	ISNULL(TT.product.photo, """") AS photo
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.products.translation AS productstranslation
+	|		ON TT.product = productstranslation.Ref
+	|		AND (productstranslation.language = &language)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.product AS product,
+	|	ISNULL(tagstranslation.description, ISNULL(productstags.tag.Description, """")) AS tag,
+	|	ISNULL(productstags.tag.level, 0) AS level,
+	|	ISNULL(productstags.tag.weight, 0) AS weight
+	|FROM
+	|	TT AS TT
+	|		INNER JOIN Catalog.products.tags AS productstags
+	|			LEFT JOIN Catalog.tags.translation AS tagstranslation
+	|			ON (productstags.tag = tagstranslation.Ref)
+	|			AND (tagstranslation.language = &language)
+	|		ON (TT.product = productstags.Ref)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.room AS room,
+	|	ISNULL(TT.room.latitude, 0) AS latitude,
+	|	ISNULL(TT.room.longitude, 0) AS longitude,
+	|	ISNULL(roomstranslation.description, ISNULL(TT.room.Description, """")) AS name
+	|FROM
+	|	TT AS TT
+	|		LEFT JOIN Catalog.rooms.translation AS roomstranslation
+	|		ON TT.room = roomstranslation.Ref
+	|		AND (roomstranslation.language = &language)
+	|;
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT DISTINCT
+	|	TT.doc as ref,
+	|	classesScheduleexternalRefs.resoursType as type,
+	|	classesScheduleexternalRefs.resourseRef as resourseRef
+	|FROM
+	|	TT AS TT
+	|		INNER JOIN Catalog.classesSchedule.externalRefs AS classesScheduleexternalRefs
+	|		ON classesScheduleexternalRefs.Ref = TT.doc
+	|Where
+	|	not classesScheduleexternalRefs.resourseRef = """"
+	|	and
+	|	not classesScheduleexternalRefs.resoursType = value(Enum.typeOfExternalRefs.emptyref)";
 
 	gymList = New Array;
 	For Each gymUid In requestStruct.gymList Do

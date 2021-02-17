@@ -516,6 +516,8 @@ Procedure sendOrder(parameters)
 		If parameters.acquiringRequest <> Enums.acquiringRequests.binding Then
 			AcquiringDemirBank.sendOrder(parameters);
 		EndIf;
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
+		 AcquiringAlfaBankMinsk.sendOrder(parameters);
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
@@ -536,7 +538,9 @@ Procedure checkOrder(parameters)
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
 		AcquiringDemirBank.checkOrder(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then 
-		AcquiringRaiffeisen.checkStatus(parameters);		
+		AcquiringRaiffeisen.checkStatus(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
+		AcquiringAlfaBankMinsk.checkOrder(parameters); 
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then
@@ -565,7 +569,9 @@ Procedure reverseOrder(parameters) Export
 	parameters.Insert("errorCode", "acquiringOrderReverse");	
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.reverseOrder(parameters);
-	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then 
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
+		AcquiringAlfaBankMinsk.reverseOrder(parameters);
 	EndIf;
 	Service.logAcquiringBackground(parameters);
 EndProcedure
@@ -575,6 +581,8 @@ Procedure unBindCard(parameters)
 	If parameters.acquiringProvider = Enums.acquiringProviders.sberbank Then
 		AcquiringSberbank.unBindCard(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
+		 AcquiringAlfaBankMinsk.unBindCard(parameters);
 	EndIf;	
 	If parameters.errorCode = "" Then 
 		deactivateCard(parameters.creditCard);
@@ -594,6 +602,8 @@ Procedure activateCard(parameters)
 		bindCardParameters = AcquiringSberbank.bindCardParameters(parameters);
 	elsIf parameters.acquiringProvider = Enums.acquiringProviders.demirBank Then
 		//bindCardParameters = AcquiringDemirBank.bindCardParameters(parameters);
+	elsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
+		bindCardParameters = AcquiringAlfaBankMinsk.bindCardParameters(parameters);
 	EndIf;	
 	
 	if bindCardParameters.Property("bindingId") and bindCardParameters.bindingId <> "" then
