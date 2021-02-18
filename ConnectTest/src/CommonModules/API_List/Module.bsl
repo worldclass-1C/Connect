@@ -910,13 +910,15 @@ Procedure notificationList(parameters) Export
 	select = query.Execute().Select();
 	While select.Next() Do
 		messageStruct = New Structure();
-		messageStruct.Insert("noteId", XMLString(select.message));
-		messageStruct.Insert("date", XMLString(ToLocalTime(select.registrationDate, tokenContext.timeZone)));
-		messageStruct.Insert("title", select.title);
-		messageStruct.Insert("text", select.text);
-		messageStruct.Insert("read", select.read);
-		if tokenContext.appType = Enums.appTypes.Customer then
-			messageStruct.Insert("objectId", select.objectId);
+		messageStruct.Insert("noteId", 		XMLString(select.message));
+		messageStruct.Insert("date", 		XMLString(ToLocalTime(select.registrationDate, tokenContext.timeZone)));
+		messageStruct.Insert("title", 		select.title);
+		messageStruct.Insert("text", 		select.text);
+		messageStruct.Insert("read", 		select.read);
+		messageStruct.Insert("objectId", 	select.objectId);
+		if tokenContext.appType = Enums.appTypes.Employee then
+			messageStruct.Insert("objectType", "PersonalService");
+		Else
 			messageStruct.Insert("objectType", select.objectType);
 		endif;
 		
