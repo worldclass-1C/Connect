@@ -915,8 +915,11 @@ Procedure notificationList(parameters) Export
 		messageStruct.Insert("title", select.title);
 		messageStruct.Insert("text", select.text);
 		messageStruct.Insert("read", select.read);
-		messageStruct.Insert("objectId", select.objectId);
-		messageStruct.Insert("objectType", select.objectType);
+		if tokenContext.appType = Enums.appTypes.Customer then
+			messageStruct.Insert("objectId", select.objectId);
+			messageStruct.Insert("objectType", select.objectType);
+		endif;
+		
 		array.add(messageStruct);
 	EndDo;
 	
