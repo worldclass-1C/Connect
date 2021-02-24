@@ -171,27 +171,27 @@ Function bindCardParameters(parameters) Export
 	Return creditCardStruct;
 EndFunction
 
-Function requestExecute(parameters, requestName, requestParametrs, operation = "get")
+Function requestExecute(parameters, requestName, requestParametrs)
 	requestURL = New Array();
 	requestURL.Add("/ab_by/rest/");
 	requestURL.Add(requestName);
-	requestURL.Add(".do?");
-	requestURL.Add(StrConcat(requestParametrs, "&"));	
+	requestURL.Add(".do");
+	Body = StrConcat(requestParametrs, "&");	
 	request = New HTTPRequest(StrConcat(requestURL, ""));
-	parameters.Insert("requestBody", request.ResourceAddress);	
+	request.Headers.Insert("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+	request.SetBodyFromString(body,TextEncoding.UTF8,ByteOrderMarkUsage.DontUse);
+	
+	parameters.Insert("requestBody", Body);	
 	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 
 	try
-		If operation = "get" Then
-			result = connection.Get(request);
-		Else
-			result = connection.Post(request);
-		EndIf;
+		result = connection.Post(request);
 	Except
 		result = Undefined;
 	EndTry;
 			
 	Return result;
+
 EndFunction
 
 Function prepareDetails(parameters, parametersQuery)
