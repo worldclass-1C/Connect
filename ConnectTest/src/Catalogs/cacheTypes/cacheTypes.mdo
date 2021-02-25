@@ -289,6 +289,13 @@
         <value>podcast</value>
       </code>
     </items>
+    <items id="ff7349fa-2180-4916-8fdc-ae30155b399b">
+      <name>spaShop</name>
+      <description>Spa shop</description>
+      <code xsi:type="core:StringValue">
+        <value>spaShop</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
