@@ -54,49 +54,41 @@ Procedure checkOrder(parameters) Export
 	EndIf;
 
 	requestParametrs.Add("orderNumber=" + parameters.orderNumber);
-			
-	requestURL = New Array();
-	requestURL.Add("/ab_by/rest/getOrderStatus.do?");
-	requestURL.Add(StrConcat(requestParametrs, "&"));
-	
-	
-	URL = StrConcat(requestURL, "");
-	parameters.Insert("requestBody", URL);	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-	
-	requestHTTP = New HTTPRequest(URL);
-	answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-	parameters.Insert("response", answerStruct);
-	If answerHTTP.StatusCode = 200 Then
-		If answerStruct.Property("OrderStatus") then						
-			If answerStruct.OrderStatus = 2 Then			
-				parameters.Insert("errorCode", "");
-				orderObject = parameters.order.GetObject();
-				newRow = orderObject.payments.Add();
-				newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
-				newRow.type = "card";
-				newRow.amount = parameters.acquiringAmount;			
-				newRow.details = prepareDetails(answerStruct, parameters);			
-				orderObject.Write();
-			ElsIf answerStruct.OrderStatus = 0 Or answerStruct.actionCode = 1 then
-				parameters.Insert("errorCode", "send");
-				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);	
+	response = requestExecute(parameters, "getOrderStatus", requestParametrs);
+	If response <> Undefined Then		
+		answerStruct = HTTP.decodeJSON(response.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+		parameters.Insert("response", answerStruct);
+		If response.StatusCode = 200 Then
+			If answerStruct.Property("OrderStatus") then						
+				If answerStruct.OrderStatus = 2 Then			
+					parameters.Insert("errorCode", "");
+					orderObject = parameters.order.GetObject();
+					newRow = orderObject.payments.Add();
+					newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+					newRow.type = "card";
+					newRow.amount = parameters.acquiringAmount;			
+					newRow.details = prepareDetails(answerStruct, parameters);			
+					orderObject.Write();
+				ElsIf answerStruct.OrderStatus = 0 Or answerStruct.actionCode = 1 then
+					parameters.Insert("errorCode", "send");
+					parameters.Insert("errorDescription", answerStruct.actionCodeDescription);	
+				Else
+					parameters.Insert("errorCode", "rejected");
+					parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+				EndIf;
 			Else
 				parameters.Insert("errorCode", "rejected");
-				parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+				If answerStruct.Property("errorMessage") then
+					parameters.Insert("errorDescription", answerStruct.errorMessage);
+				EndIf;
 			EndIf;
 		Else
-			parameters.Insert("errorCode", "rejected");
-			If answerStruct.Property("errorMessage") then
-				parameters.Insert("errorDescription", answerStruct.errorMessage);
-			EndIf;
+			parameters.Insert("result", "fail");
+			parameters.Insert("errorCode", "acquiringConnection");		
 		EndIf;
 	Else
-		parameters.Insert("result", "fail");
-		parameters.Insert("errorCode", "acquiringConnection");		
-	EndIf;		
-		
+		parameters.Insert("errorCode", "acquiringConnection");	
+	EndIf;	
 EndProcedure
 
 Procedure reverseOrder(parameters) Export
@@ -173,7 +165,7 @@ EndFunction
 
 Function requestExecute(parameters, requestName, requestParametrs)
 	requestURL = New Array();
-	requestURL.Add("/ab_by/rest/");
+	requestURL.Add("payment/rest");
 	requestURL.Add(requestName);
 	requestURL.Add(".do");
 	Body = StrConcat(requestParametrs, "&");	
