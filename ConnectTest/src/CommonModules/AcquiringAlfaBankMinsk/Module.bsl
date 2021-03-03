@@ -69,12 +69,12 @@ Procedure checkOrder(parameters) Export
 					newRow.amount = parameters.acquiringAmount;			
 					newRow.details = prepareDetails(answerStruct, parameters);			
 					orderObject.Write();
-				ElsIf answerStruct.OrderStatus = 0 Or answerStruct.actionCode = 1 then
+				ElsIf answerStruct.OrderStatus = 0 then
 					parameters.Insert("errorCode", "send");
-					parameters.Insert("errorDescription", answerStruct.actionCodeDescription);	
+					parameters.Insert("errorDescription", answerStruct.errorMessage);	
 				Else
 					parameters.Insert("errorCode", "rejected");
-					parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+					parameters.Insert("errorDescription", answerStruct.errorMessage);
 				EndIf;
 			Else
 				parameters.Insert("errorCode", "rejected");
