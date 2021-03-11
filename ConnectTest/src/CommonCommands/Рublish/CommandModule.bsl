@@ -52,14 +52,15 @@ EndFunction
 Procedure SendData(requestStruct, holding, language)
 	If ValueIsFilled(requestStruct) Then
 		General.executeRequestMethod(
-			New Structure("requestName,requestStruct,internalRequestMethod,tokenContext,language,authKey,languageCode",
+			New Structure("requestName,requestStruct,internalRequestMethod,tokenContext,language,authKey,languageCode,brand",
 				"FillCatalog",
 				requestStruct,
 				True,
 				New Structure("holding,appType,token,appVersion,systemType,timezone,user", holding, "API",holding.tokenDefault,"",""),
 				language,
 				"",
-				language.Code));
+				language.Code,
+				enums.brandTypes.WorldClass));
 	EndIf; 
 EndProcedure
 
