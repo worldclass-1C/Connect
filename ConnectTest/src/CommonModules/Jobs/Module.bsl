@@ -77,7 +77,7 @@ EndFunction
 Procedure ProcessQueue() Export
 	OrdersToProcess = GetOrdersToProcess();
 	While OrdersToProcess.Next() Do
-		parameters = GetParametersToSend(OrdersToProcess);
+		parameters = GetParametersToSend(OrdersToProcess, "process");
 		If OrdersToProcess.acquiringRequest = Enums.acquiringRequests.binding Then
 			If OrdersToProcess.orderState = Enums.acquiringOrderStates.success Then
 				Acquiring.executeRequest("bindCardBack", OrdersToProcess.order, parameters);
@@ -199,11 +199,11 @@ Function GetOrdersToProcess()
 	Return Query.Execute().Select();
 EndFunction
 
-Function GetParametersToSend(DataSelect)
+Function GetParametersToSend(DataSelect, requestName)
 	Parameters = new structure();
 	Parameters.Insert("language", DataSelect.language);
 	Parameters.Insert("authKey", string(DataSelect.tokenDefault.UUID()));
-	Parameters.Insert("requestName", "process");
+	Parameters.Insert("requestName", requestName);
 	Parameters.Insert("brand", DataSelect.brand);
 	Parameters.Insert("languageCode", DataSelect.languageCode);
 	TokenContext = New structure();
@@ -267,9 +267,8 @@ Procedure getUsersRestrictions() Export
 	while selectionChain.Next() do
 		requestStruct = new Structure();
 		requestStruct.Insert("chainId", XMLString(selectionChain.chain));
-		parameters = GetParametersToSend(selectionChain);
+		parameters = GetParametersToSend(selectionChain, "getRestrictions");
 		parameters.Insert("internalRequestMethod", 	True);
-	    parameters.Insert("requestName",        	"getRestrictions");
 	    parameters.Insert("requestStruct", 			requestStruct);
 	    General.executeRequestMethod(parameters);
 	    Service.logRequestBackground(parameters);
@@ -325,9 +324,8 @@ Procedure sendRestrictions()
 		EndDo;
 		requestStruct = new Structure();
 		requestStruct.Insert("restrictionsList", array);
-		parameters = GetParametersToSend(selectionChain);
+		parameters = GetParametersToSend(selectionChain, "sendRestrictions");
 		parameters.Insert("internalRequestMethod", 	True);
-	    parameters.Insert("requestName",        	"sendRestrictions");
 	    parameters.Insert("requestStruct", 			requestStruct);
 	    General.executeRequestMethod(parameters);
 	    Service.logRequestBackground(parameters);
@@ -369,3 +367,89 @@ Procedure loadTableValuesToRestrictionUsers(tableValues, chain)
 	recordSet.Write();
 EndProcedure
 
+Procedure loadPolls() export
+	
+	query = New Query;
+	query.Text = "SELECT
+	|	НазначениеОпросов.Ref as Poll,
+	|	НазначениеОпросов.chain.holding AS holding,
+	|	НазначениеОпросов.ДатаНачала AS startDate,
+	|	НазначениеОпросов.ДатаОкончания AS endDate
+	|FROM
+	|	Document.НазначениеОпросов AS НазначениеОпросов
+	|WHERE
+	|	НазначениеОпросов.Date BETWEEN &startDate AND &endDate
+	|TOTALS
+	|BY
+	|	holding";
+	query.SetParameter("startDate", ToUniversalTime(BegOfDay(CurrentDate()-86400)));
+	query.SetParameter("endDate", ToUniversalTime(EndOfDay(CurrentDate()-86400)));
+	selectionHolding = query.Execute().Select(QueryResultIteration.ByGroups);
+	
+	While selectionHolding.Next() do
+		selection = selectionHolding.Select();
+		while selection.Next() do
+			pollStructure = New Structure;
+			pollStructure.Insert("uid",			XMLString(selection.Poll));
+			pollStructure.Insert("startDate", 	XMLString(selection.startDate));
+			pollStructure.Insert("endDate",		XMLString(selection.Date));
+			GetKPOData(selectionHolding.holding, pollStructure, "addPoll");
+		EndDo;
+	EndDo;
+	
+	query.Text = "SELECT
+	|	Анкета.Респондент AS Client,
+	|	Анкета.Date AS Date,
+	|	Анкета.Опрос AS Poll,
+	|	Анкета.Опрос.chain.holding AS holding
+	|FROM
+	|	Document.Анкета AS Анкета
+	|WHERE
+	|	Анкета.Date BETWEEN &startDate AND &endDate
+	|TOTALS
+	|BY
+	|	holding";
+	
+	selectionHolding = query.Execute().Select(QueryResultIteration.ByGroups);
+	
+	While selectionHolding.Next() do
+		selection = selectionHolding.Select();
+		mas = new Array;
+		while selection.Next() do
+			pollStructure = New Structure;
+			pollStructure.Insert("customerId",	XMLString(selection.Client));
+			pollStructure.Insert("pollId", 		XMLString(selection.Poll));
+			pollStructure.Insert("date",		XMLString(selection.Date));
+			mas.Add(pollStructure);
+		EndDo;
+		GetKPOData(selectionHolding.holding, mas,"pollResult");
+	EndDo;
+	
+EndProcedure
+
+function GetKPOData(holding, requestStruct, requestName)
+	Query = New Query();
+	Query.Text = "SELECT
+	|	holding.languageDefault AS language,
+	|	holding.languageDefault.Code AS languageCode,
+	|	holding.tokenDefault.timeZone AS timeZone,
+	|	holding.tokenDefault.user.userCode AS userCode,
+	|	holding.tokenDefault.deviceModel AS deviceModel,
+	|	holding.tokenDefault AS tokenDefault,
+	|	holding.ref AS holding,
+	|	holding.tokenDefault.appVersion AS appVersion,
+	|	holding.tokenDefault.systemType AS systemType,
+	|	holding.tokenDefault.chain.brand AS brand
+	|FROM
+	|	Catalog.holdings AS holding
+	|WHERE
+	|	holding.Ref = &holding";
+	Query.SetParameter("holding", holding);
+	selection = Query.Execute().Select();
+	If selection.Next() Then
+		requestParameters = GetParametersToSend(selection, );
+		requestParameters.Insert("requestStruct", requestStruct);
+		requestParameters.Insert("internalRequestMethod", True);
+		GeneralCallServer.executeRequestMethod(requestParameters);		
+	EndIf;	
+EndFunction
