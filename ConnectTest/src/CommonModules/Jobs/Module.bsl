@@ -371,17 +371,16 @@ Procedure loadPolls() export
 	
 	query = New Query;
 	query.Text = "SELECT
-	|	НазначениеОпросов.Ref as Poll,
-	|	НазначениеОпросов.chain.holding AS holding,
-	|	НазначениеОпросов.ДатаНачала AS startDate,
-	|	НазначениеОпросов.ДатаОкончания AS endDate
-	|FROM
-	|	Document.НазначениеОпросов AS НазначениеОпросов
-	|WHERE
-	|	НазначениеОпросов.Date BETWEEN &startDate AND &endDate
-	|TOTALS
-	|BY
-	|	holding";
+	             |	НазначениеОпросов.Ref AS Poll,
+	             |	НазначениеОпросов.chain.holding AS holding,
+	             |	НазначениеОпросов.ДатаНачала AS startDate,
+	             |	НазначениеОпросов.ДатаОкончания AS endDate
+	             |FROM
+	             |	Document.НазначениеОпросов AS НазначениеОпросов
+	             |WHERE
+	             |	&startDate BETWEEN НазначениеОпросов.ДатаНачала AND НазначениеОпросов.ДатаОкончания
+	             |TOTALS BY
+	             |	holding";
 	query.SetParameter("startDate", ToUniversalTime(BegOfDay(CurrentDate()-86400)));
 	query.SetParameter("endDate", ToUniversalTime(EndOfDay(CurrentDate()-86400)));
 	selectionHolding = query.Execute().Select(QueryResultIteration.ByGroups);
@@ -392,7 +391,7 @@ Procedure loadPolls() export
 			pollStructure = New Structure;
 			pollStructure.Insert("uid",			XMLString(selection.Poll));
 			pollStructure.Insert("startDate", 	XMLString(selection.startDate));
-			pollStructure.Insert("endDate",		XMLString(selection.Date));
+			pollStructure.Insert("endDate",		XMLString(selection.endDate));
 			GetKPOData(selectionHolding.holding, pollStructure, "addPoll");
 		EndDo;
 	EndDo;
@@ -422,6 +421,7 @@ Procedure loadPolls() export
 			pollStructure.Insert("date",		XMLString(selection.Date));
 			mas.Add(pollStructure);
 		EndDo;
+		structure = new Structure;
 		GetKPOData(selectionHolding.holding, mas,"pollResult");
 	EndDo;
 	
@@ -447,7 +447,7 @@ function GetKPOData(holding, requestStruct, requestName)
 	Query.SetParameter("holding", holding);
 	selection = Query.Execute().Select();
 	If selection.Next() Then
-		requestParameters = GetParametersToSend(selection, );
+		requestParameters = GetParametersToSend(selection, requestName);
 		requestParameters.Insert("requestStruct", requestStruct);
 		requestParameters.Insert("internalRequestMethod", True);
 		GeneralCallServer.executeRequestMethod(requestParameters);		
