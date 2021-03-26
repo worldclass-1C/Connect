@@ -524,6 +524,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="1c8d3393-1760-43f1-a192-696621e54d64">
+    <name>rating</name>
+    <synonym>
+      <key>ru</key>
+      <value>Rating</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>100</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="b122b0ae-236a-460b-953f-32a2977ded70">
     <name>ListForm</name>
     <synonym>

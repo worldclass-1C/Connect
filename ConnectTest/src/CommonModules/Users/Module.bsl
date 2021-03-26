@@ -31,7 +31,7 @@ Function profile(user, appType) Export
 	|	not users.notSubscriptionEmail AS subscriptionEmail,
 	|	not users.notSubscriptionSms AS subscriptionSms,
 	|	users.registrationDate AS registrationDate,
-	|	"""" AS rating,
+	|	users.rating AS rating,
 	|	users.photo AS photo,
 	|	users.ref AS owner
 	|FROM
