@@ -1,5 +1,5 @@
 
-Function profile(user, appType) Export
+Function profile(user, appType, chain) Export
 	
 	struct = initProfileStruct();
 	
@@ -33,13 +33,18 @@ Function profile(user, appType) Export
 	|	users.registrationDate AS registrationDate,
 	|	users.rating AS rating,
 	|	users.photo AS photo,
-	|	users.ref AS owner
+	|	users.ref AS owner,
+	|	chainscacheTypes.isUsed
 	|FROM
 	|	Catalog.users AS users
+	|		LEFT JOIN Catalog.chains.cacheTypes AS chainscacheTypes
+	|		ON chainscacheTypes.Ref = &chain
+	|		AND chainscacheTypes.cacheType = VALUE(catalog.cacheTypes.rating)
 	|WHERE
 	|	users.Ref = &user";
 	
 	query.SetParameter("user", user);
+	query.SetParameter("chain", chain);
 //	query.SetParameter("appType", appType);
 //	query.SetParameter("requestName", "getUserProfile");
 	
@@ -52,6 +57,9 @@ Function profile(user, appType) Export
 		select.Next();
 		FillPropertyValues(struct, select);
 		struct.uid = XMLString(select.owner);
+		if ValueIsFilled(select.isUsed) and select.isUsed then
+			struct.Insert("rating", select.rating);
+		EndIf;
 //		cacheSelect = queryResults[2].Select();
 //		While cacheSelect.Next() Do
 //			struct.Insert(cacheSelect.cacheCode, HTTP.decodeJSON(cacheSelect.cacheValue));
@@ -63,7 +71,7 @@ Function profile(user, appType) Export
 EndFunction
 
 Function initProfileStruct() Export
-	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, userCode, barcode, subscriptionEmail, subscriptionSms, rating", "", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", "", False, False, "");
+	Return New Structure("uid, phone, birthday, canUpdatePersonalData, email, firstName, lastName, registrationDate, secondName, gender, status, photo, userCode, barcode, subscriptionEmail, subscriptionSms", "", "", Undefined, False, "", "", "", Undefined, "", "none", "unauthorized", "", "", "", False, False);
 EndFunction
 
 Procedure updateCache(val parameters) Export

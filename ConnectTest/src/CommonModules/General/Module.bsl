@@ -418,7 +418,7 @@ Procedure confirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenContext.token, changeStruct);
-				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType));
+				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType, tokenContext.chain));
 				struct.Insert("userList", New Array);
 				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
 				parametersNew = Service.getStructCopy(parameters);

@@ -405,6 +405,7 @@ Procedure loadPolls() export
 	|	Document.Анкета AS Анкета
 	|WHERE
 	|	Анкета.Date BETWEEN &startDate AND &endDate
+	|	AND Анкета.Posted
 	|TOTALS
 	|BY
 	|	holding";
