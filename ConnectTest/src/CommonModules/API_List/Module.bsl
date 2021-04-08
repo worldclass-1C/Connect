@@ -222,12 +222,13 @@ Function  getArrGyms(params) Export
 	EndIf;
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
-	query = New Query("SELECT
+	query = New Query("SELECT DISTINCT
 	|	T.base AS base,
 	|	T.ref AS ref
 	|INTO TmyGyms
 	|FROM
-	|	&myGyms AS T;
+	|	&myGyms AS T
+	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|Select
 	|	*,
