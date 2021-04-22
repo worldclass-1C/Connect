@@ -1,8 +1,8 @@
 Procedure getQr(parameters) Export
 	
 	body = new structure;
-	currentDate = XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate(),parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
-	dateEnd		= XDTOSerializer.XMLString(ToLocalTime(CurrentSessionDate()+20*60,parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
+	currentDate = XDTOSerializer.XMLString(ToLocalTime(parameters.order.registrationDate,parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
+	dateEnd		= XDTOSerializer.XMLString(ToLocalTime(parameters.order.registrationDate+20*60,parameters.timeZone))+".107227"+?(StandardTimeOffset(parameters.timeZone)>0,"+","-")+format('00010101' + StandardTimeOffset(parameters.timeZone),"DF=HH:mm");
 	body.Insert("account", 				parameters.user);
 	body.Insert("amount", 				parameters.acquiringAmount);
 	body.Insert("createDate", 			currentDate);
