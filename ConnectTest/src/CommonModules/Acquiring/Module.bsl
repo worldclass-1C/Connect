@@ -645,6 +645,11 @@ Procedure getQr(parameters) Export
 	If parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then
 		AcquiringRaiffeisen.getQr(parameters);
 	EndIf;
+	If parameters.errorCode = "" Then
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
+	else
+		changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);	
+	EndIf;
 EndProcedure
 
 Procedure autoPayment(parameters) Export
