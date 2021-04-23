@@ -250,6 +250,8 @@ Procedure payment(parameters) Export
 
     If not orderResult.IsEmpty() and error <> "" and not isQr Then
    		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
+    else
+    	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
     EndIf;
      
 //	struct.Insert("result", "Ok");
