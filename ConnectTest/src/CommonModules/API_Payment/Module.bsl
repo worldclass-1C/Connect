@@ -250,7 +250,7 @@ Procedure payment(parameters) Export
    		
     If not orderResult.IsEmpty() and error <> "" and isQr Then
     	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
-    else
+    elsIf not orderResult.IsEmpty() and error <> "" and not isQr then
     	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
     EndIf;
      

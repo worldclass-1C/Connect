@@ -51,58 +51,62 @@ Procedure getQr(parameters) Export
 EndProcedure
 
 Procedure checkStatus(parameters) Export
-	
-	requestURL = New Array();
-	requestURL.Add("/api/sbp/v1/qr/"+?(ValueIsFilled(parameters.orderId), parameters.orderId.description, "")+"/payment-info");
-		
-	URL = StrConcat(requestURL, "");
-	parameters.Insert("requestBody", URL);	
-	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, ,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
-	requestHTTP = New HTTPRequest(URL);
-	requestHTTP.Headers.Insert("Authorization", "Bearer "+parameters.key);
-	Try
-		answerHTTP = ConnectionHTTP.Get(requestHTTP);
-	Except
-		answerHTTP = Undefined;
-	EndTry;
-	If answerHTTP <> Undefined Then	
-		answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
-		parameters.Insert("response", answerStruct);
-		If answerHTTP.StatusCode = 200 Then
-			If answerStruct.Property("paymentStatus") then						
-				If answerStruct.paymentStatus = "SUCCESS" Then			
-					parameters.Insert("errorCode", "");
-					orderObject = parameters.order.GetObject();
-					newRow = orderObject.payments.Add();
-					newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
-					newRow.type = "card";
-					newRow.details = prepareDetails(answerStruct, parameters);
-					newRow.amount = parameters.acquiringAmount;						
-					orderObject.Write();
-				ElsIf answerStruct.paymentStatus = "DECLINED" Then
-					parameters.Insert("errorCode", "rejected");
-					parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
-				ElsIf parameters.order.registrationDate < ToUniversalTime(CurrentDate())-25*60 Then
-					parameters.Insert("errorCode", "rejected");
-					parameters.Insert("errorDescription", "Истек срок ожидания ввода данных."); 
+	If ValueIsFilled(parameters.orderId) Then
+		requestURL = New Array();
+		requestURL.Add("/api/sbp/v1/qr/"+?(ValueIsFilled(parameters.orderId), parameters.orderId.description, "")+"/payment-info");
+			
+		URL = StrConcat(requestURL, "");
+		parameters.Insert("requestBody", URL);	
+		ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, ,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
+		requestHTTP = New HTTPRequest(URL);
+		requestHTTP.Headers.Insert("Authorization", "Bearer "+parameters.key);
+		Try
+			answerHTTP = ConnectionHTTP.Get(requestHTTP);
+		Except
+			answerHTTP = Undefined;
+		EndTry;
+		If answerHTTP <> Undefined Then	
+			answerStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);		
+			parameters.Insert("response", answerStruct);
+			If answerHTTP.StatusCode = 200 Then
+				If answerStruct.Property("paymentStatus") then						
+					If answerStruct.paymentStatus = "SUCCESS" Then			
+						parameters.Insert("errorCode", "");
+						orderObject = parameters.order.GetObject();
+						newRow = orderObject.payments.Add();
+						newRow.owner = ?(ValueIsFilled(parameters.ownerCreditCard), parameters.ownerCreditCard, parameters.bindingUser);
+						newRow.type = "card";
+						newRow.details = prepareDetails(answerStruct, parameters);
+						newRow.amount = parameters.acquiringAmount;						
+						orderObject.Write();
+					ElsIf answerStruct.paymentStatus = "DECLINED" Then
+						parameters.Insert("errorCode", "rejected");
+						parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+					ElsIf parameters.order.registrationDate < ToUniversalTime(CurrentDate())-25*60 Then
+						parameters.Insert("errorCode", "rejected");
+						parameters.Insert("errorDescription", "Истек срок ожидания ввода данных."); 
+					Else
+						parameters.Insert("errorCode", "send");
+						parameters.Insert("errorDescription", "");
+					EndIf;
 				Else
-					parameters.Insert("errorCode", "send");
-					parameters.Insert("errorDescription", "");
+					parameters.Insert("errorCode", "rejected");
+					If answerStruct.Property("errorMessage") then
+						parameters.Insert("errorDescription", answerStruct.errorMessage);
+					EndIf;
 				EndIf;
 			Else
-				parameters.Insert("errorCode", "rejected");
-				If answerStruct.Property("errorMessage") then
-					parameters.Insert("errorDescription", answerStruct.errorMessage);
-				EndIf;
+				parameters.Insert("result", "fail");
+				parameters.Insert("errorCode", "acquiringConnection");		
 			EndIf;
-		Else
-			parameters.Insert("result", "fail");
-			parameters.Insert("errorCode", "acquiringConnection");		
+		else
+			parameters.Insert("errorCode", "acquiringConnection");
 		EndIf;
 	else
-		parameters.Insert("errorCode", "acquiringConnection");
+		parameters.Insert("errorCode", "rejected");
+		parameters.Insert("errorDescription", "Истек срок ожидания ввода данных."); 
 	EndIf;
-		
+	
 EndProcedure
 
 Function prepareDetails(parameters, parametersQuery)
