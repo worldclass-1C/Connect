@@ -231,7 +231,9 @@ Function initObjectItem(attributesStruct, requestParameter)
 				object.SetNewObjectRef(catalogRef);
 				object.SetNewCode();
 				For Each attribute In attributesStruct.attributesTableForNewItem Do
-					object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+					if requestParameter.Property(attribute.key) Then
+						object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+					EndIf;
 				EndDo;
 			EndIf;
 		EndIf;
@@ -290,15 +292,17 @@ Procedure fillEnum(object, attribute, attributesStruct, requestParameter)
 EndProcedure
 
 Procedure fillValue(object, attribute, attributesStruct, requestParameter)
-	If attribute.type = "JSON" Then
-		object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
-	ElsIf attribute.type = "boolean" Then
-		object[attribute.key] = requestParameter[attribute.value];
-	ElsIf attribute.type = "number" Then
-		object[attribute.key] = requestParameter[attribute.value];
-	Else
-		object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
-	EndIf;		
+	if requestParameter.Property(attribute.key) Then
+		If attribute.type = "JSON" Then
+			object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
+		ElsIf attribute.type = "boolean" Then
+			object[attribute.key] = requestParameter[attribute.value];
+		ElsIf attribute.type = "number" Then
+			object[attribute.key] = requestParameter[attribute.value];
+		Else
+			object[attribute.key] = XMLValue(Type(attribute.type), requestParameter[attribute.value]);
+		EndIf;	
+	EndIf;
 EndProcedure
 
 Procedure fillPredefinedField(object, attributesStruct, holding, owner, brand)
