@@ -292,7 +292,7 @@ Procedure fillEnum(object, attribute, attributesStruct, requestParameter)
 EndProcedure
 
 Procedure fillValue(object, attribute, attributesStruct, requestParameter)
-	if requestParameter.Property(attribute.key) Then
+	if requestParameter.Property(attribute.value) Then
 		If attribute.type = "JSON" Then
 			object[attribute.key] = HTTP.encodeJSON(requestParameter[attribute.value]);
 		ElsIf attribute.type = "boolean" Then

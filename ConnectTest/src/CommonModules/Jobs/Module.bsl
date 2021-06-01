@@ -260,7 +260,8 @@ Procedure getUsersRestrictions() Export
 	|	restrictions.chain.holding.tokenDefault AS tokenDefault,
 	|	restrictions.chain.holding AS holding,
 	|	restrictions.chain.holding.tokenDefault.appVersion AS appVersion,
-	|	restrictions.chain.holding.tokenDefault.systemType AS systemType
+	|	restrictions.chain.holding.tokenDefault.systemType AS systemType,
+	|	restrictions.chain.holding.tokenDefault.chain.brand AS brand
 	|FROM
 	|	Catalog.restrictions AS restrictions";
 	selectionChain = query.Execute().Select();
@@ -295,7 +296,8 @@ Procedure sendRestrictions()
 	|	restrictionsChanges.Ref.chain.holding.tokenDefault AS tokenDefault,
 	|	restrictionsChanges.Ref.chain.holding AS holding,
 	|	restrictionsChanges.Ref.chain.holding.tokenDefault.appVersion AS appVersion,
-	|	restrictionsChanges.Ref.chain.holding.tokenDefault.systemType AS systemType
+	|	restrictionsChanges.Ref.chain.holding.tokenDefault.systemType AS systemType,
+	|	restrictionsChanges.Ref.chain.brand AS brand
 	|FROM
 	|	Catalog.restrictions.Changes AS restrictionsChanges
 	|TOTALS
