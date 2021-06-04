@@ -44,6 +44,11 @@ Function newOrder(parameters) Export
 	If parameters.Property("gymId") Then
 		orderObject.gym = XMLValue(Type("CatalogRef.gyms"), parameters.gymId);		
 	EndIf;
+	
+	If ValueIsFilled(orderObject.gym) then
+		orderObject.chain = orderObject.gym.chain;
+	EndIf;
+	
 	orderObject.registrationDate = ToUniversalTime(CurrentDate());
 	orderObject.Write();
 	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));
@@ -260,13 +265,13 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.connectionType = holdingConnection.connectionType
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
 	|		ON acquiringOrders.holding = chainConnection.holding
-	|		AND acquiringOrders.gym.chain = chainConnection.chain
+	|		AND acquiringOrders.chain = chainConnection.chain
 	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
 	|		AND acquiringOrders.connectionType = chainConnection.connectionType
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
 	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
+	|		AND acquiringOrders.chain = chainAcquiringProviderConnection.chain
 	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
 	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef)
 	|		AND acquiringOrders.connectionType = chainAcquiringProviderConnection.connectionType
