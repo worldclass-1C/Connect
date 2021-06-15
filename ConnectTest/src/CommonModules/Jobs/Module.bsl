@@ -425,7 +425,8 @@ Procedure loadPolls() export
 			mas.Add(pollStructure);
 		EndDo;
 		structure = new Structure;
-		GetKPOData(selectionHolding.holding, mas,"pollResult");
+		structure.Insert("results", mas);
+		GetKPOData(selectionHolding.holding, structure,"pollResult");
 	EndDo;
 	
 EndProcedure
