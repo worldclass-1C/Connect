@@ -219,6 +219,7 @@ Function ConnectionQueryText()
 	|WHERE
 	|	acquiringOrderspayments.Ref = &order
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	CASE
@@ -246,6 +247,7 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
 	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
 	|		AND acquiringOrders.connectionType = gymAcquiringProviderConnection.connectionType
+	|		AND acquiringOrders.chain = gymAcquiringProviderConnection.chain
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
 	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
 	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
@@ -257,6 +259,7 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.gym = gymConnection.gym
 	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		AND acquiringOrders.connectionType = gymConnection.connectionType
+	|		AND acquiringOrders.chain = gymConnection.chain
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	|		ON acquiringOrders.holding = holdingConnection.holding
 	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
@@ -278,6 +281,7 @@ Function ConnectionQueryText()
 	|WHERE
 	|	acquiringOrders.Ref = &order
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	Connection.paymentConnection.acquiringProvider AS acquiringProvider,
@@ -302,11 +306,12 @@ Function ConnectionQueryText()
 	|	Connection.order.creditCard AS creditCard,
 	|	Connection.order.creditCard.Owner AS ownerCreditCard,
 	|	Connection.order.acquiringRequest AS acquiringRequest,
-	|	Connection.order
+	|	Connection.order AS order
 	|FROM
 	|	Connection AS Connection,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TemporaryDepositAmount";
 	return text;
