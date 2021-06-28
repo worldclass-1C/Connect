@@ -146,6 +146,7 @@
   <commonModules>CommonModule.ОбщегоНазначенияКлиент</commonModules>
   <commonModules>CommonModule.Polls</commonModules>
   <commonModules>CommonModule.AcquiringAlfaBankMinsk</commonModules>
+  <commonModules>CommonModule.SmsiSms</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>

@@ -163,6 +163,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsP1sms.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.FigenSoft Then
 		answer = SmsFigenSoft.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.iSms Then
+		answer = SmsiSms.sendSMS(parameters, answer); 
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -243,6 +245,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsP1sms.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.FigenSoft Then
 		answer = SmsFigenSoft.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.iSms Then 
+		answer = SmsiSms.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;

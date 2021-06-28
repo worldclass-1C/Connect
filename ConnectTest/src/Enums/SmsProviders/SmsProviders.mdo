@@ -124,4 +124,11 @@
       <value>Stramedia</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="220b3879-699a-43a1-9289-9f665123bae1">
+    <name>iSms</name>
+    <synonym>
+      <key>ru</key>
+      <value>iSms</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>
