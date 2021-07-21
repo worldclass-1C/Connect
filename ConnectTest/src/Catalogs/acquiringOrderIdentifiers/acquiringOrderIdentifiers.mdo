@@ -31,6 +31,21 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.acquiringOrderIdentifiers.Form.ListForm</defaultListForm>
+  <attributes uuid="b7830dd7-e7ec-4f06-ac59-0ab463c4fe09">
+    <name>sessionId</name>
+    <synonym>
+      <key>ru</key>
+      <value>Session id</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>300</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <forms uuid="3d72b798-7c68-46f9-b464-bc608e7be5a0">
     <name>ListForm</name>
     <synonym>

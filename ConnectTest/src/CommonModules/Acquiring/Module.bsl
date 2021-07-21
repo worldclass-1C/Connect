@@ -55,7 +55,7 @@ Function newOrder(parameters) Export
 	Return orderObject.ref;
 EndFunction
 
-Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined) Export	
+Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined, sessionID = Undefined) Export	
 	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
 	If ValueIsFilled(orderUid) Then
 		orderIdentifierRef = Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderUid));
@@ -64,6 +64,10 @@ Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined) E
 	If ValueIsFilled(orderNumber) Then
 		orderIdentifier.Description = orderNumber;
 	EndIf;
+	If ValueIsFilled(sessionID) Then
+		orderIdentifier.sessionId = sessionID;
+	EndIf;
+	
 	orderIdentifier.Owner = order;
 	orderIdentifier.Write();
 	Return orderIdentifier.Ref;	
@@ -219,7 +223,6 @@ Function ConnectionQueryText()
 	|WHERE
 	|	acquiringOrderspayments.Ref = &order
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	CASE
@@ -236,7 +239,8 @@ Function ConnectionQueryText()
 	|		ELSE holdingConnection.connection
 	|	END AS paymentConnection,
 	|	acquiringOrders.Ref AS order,
-	|	acquiringOrderIdentifiers.Ref AS orderIdentifier
+	|	acquiringOrderIdentifiers.Ref AS orderIdentifier,
+	|	acquiringOrderIdentifiers.sessionId
 	|INTO Connection
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
@@ -281,7 +285,6 @@ Function ConnectionQueryText()
 	|WHERE
 	|	acquiringOrders.Ref = &order
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
 	|	Connection.paymentConnection.acquiringProvider AS acquiringProvider,
@@ -306,12 +309,13 @@ Function ConnectionQueryText()
 	|	Connection.order.creditCard AS creditCard,
 	|	Connection.order.creditCard.Owner AS ownerCreditCard,
 	|	Connection.order.acquiringRequest AS acquiringRequest,
-	|	Connection.order AS order
+	|	Connection.order AS order,
+	|	Connection.order.user.Owner.Code AS phone,
+	|	Connection.sessionId AS sessionId
 	|FROM
 	|	Connection AS Connection,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
 	|;
-	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|DROP TemporaryDepositAmount";
 	return text;
@@ -346,7 +350,9 @@ Function answerStruct()
 	answer.Insert("registrationDate", Date(1,1,1));	
 	answer.Insert("merchantID", "");
 	answer.Insert("authorization", "");
+	answer.Insert("phone", "");
 	answer.Insert("connectionType", Enums.ConnectionTypes.EmptyRef());
+	answer.Insert("sessionId","");
 	Return answer;		
 EndFunction
 
@@ -528,6 +534,8 @@ Procedure sendOrder(parameters)
 		EndIf;
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
 		 AcquiringAlfaBankMinsk.sendOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.forteBank Then
+		 AcquiringForteBank.sendOrder(parameters);
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
@@ -550,7 +558,9 @@ Procedure checkOrder(parameters)
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then 
 		AcquiringRaiffeisen.checkStatus(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
-		AcquiringAlfaBankMinsk.checkOrder(parameters); 
+		AcquiringAlfaBankMinsk.checkOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.forteBank Then
+		AcquiringForteBank.checkOrder(parameters);  
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then

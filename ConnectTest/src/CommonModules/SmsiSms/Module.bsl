@@ -2,34 +2,43 @@ Function sendSMS(parameters, answer) Export
 		
 	ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port,,,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);
 	
-	URL	= "/api/sms/send";
-	body = new structure;
-	body.Insert("from", 				parameters.senderName);
-	body.Insert("to", 					parameters.phone);
-	body.Insert("text", 				parameters.text);
+	URL	= "/api"
+	//body = new structure;
+	//body.Insert("from", 				parameters.senderName);
+	//body.Insert("to", 					parameters.phone);
+	//body.Insert("text", 				parameters.text);
+	+ "?username="   + parameters.user 
+	+ "&password=" 	 + parameters.password 
+	+ "&recipient="  + parameters.phone
+	+ "&messagetype=SMS:TEXT" 
+	+ "&originator=" + parameters.senderName 
+	+ "&messagedata" + parameters.text;
+	
+	//requestHTTP 	= New HTTPRequest(URL);
+	//requestHTTP.Headers.insert("authorization", "Basic " + Crypto.EncryptBase64(parameters.user + ":"
+	//+ parameters.password, "US-ASCII"));
+	//requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
+	//answerBody 		= ConnectionHTTP.Post(requestHTTP);
 	
 	requestHTTP 	= New HTTPRequest(URL);
-	requestHTTP.Headers.insert("authorization", "Basic " + Crypto.EncryptBase64(parameters.user + ":"
-	+ parameters.password, "US-ASCII"));
-	requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
-	answerBody 		= ConnectionHTTP.Post(requestHTTP);
+	answerBody 		= ConnectionHTTP.Get(requestHTTP);
 	
 	error = "";
 	JSONStructure = "";
-	
+		
 	If answerBody.StatusCode = 200 Then
 		
-		JSONReader = New JSONReader;
-		JSONReader.SetString(answerBody.GetBodyAsString());
-		JSONStructure = ReadJSON(JSONReader);
-		JSONReader.Close();
+		//JSONReader = New JSONReader;
+		//JSONReader.SetString(answerBody.GetBodyAsString());
+		//JSONStructure = ReadJSON(JSONReader);
+		//JSONReader.Close();
 		
-		If JSONStructure.Property("id") and JSONStructure.Property("status") Then
+		//If JSONStructure.Property("id") and JSONStructure.Property("status") Then
 			answer.Insert("messageStatus", Enums.messageStatuses.sent);
 			answer.Insert("id", String(JSONStructure.id));
-		ElsIf JSONStructure.Property("error_message") and JSONStructure.Property("error_code") Then
-			error = String(JSONStructure.error_code) + ": " + JSONStructure.error_message;
-		Endif;
+		//ElsIf JSONStructure.Property("error_message") and JSONStructure.Property("error_code") Then
+		//	error = String(JSONStructure.error_code) + ": " + JSONStructure.error_message;
+		//Endif;
 	Else
 		error = "Сбой при отрправке Messages 500 Internal Error";
 	Endif;

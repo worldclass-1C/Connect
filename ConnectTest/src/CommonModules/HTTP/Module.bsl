@@ -281,3 +281,89 @@ Function inTheWhiteList(origin) Export
 		Return False;
 	EndIf;	
 EndFunction
+
+Function decodeXML(body) Export
+	ReadXML = New XMLReader;
+    ReadXML.SetString(body);
+    XMLMap = readXMLToMap(ReadXML);
+	
+	RequestString = convertMapToJson(XMLMap);
+    RequestStruct = decodeJSON(RequestString, Enums.JSONValueTypes.structure);
+    Return RequestStruct;
+EndFunction
+
+Function readXMLToMap(XML)    
+    Map = New Map;
+    Value = "";
+    
+    While XML.Read() Do
+        NodeType = XML.NodeType;
+        If NodeType = XMLNodeType.StartElement Then
+            Name = XML.Name;
+            NextNode = Map.Get(Name);
+            If NextNode = Undefined Тогда
+                Map.Insert(Name, ReadXMLToMap(XML));
+            else
+                If TypeOf(NextNode) <> Type("Array") Then
+                    Array = New Array;
+                    Array.Add(NextNode);
+                    NextNode = Array;
+                    Array = "";
+                    Map.Delete(Name);
+                    Map.Insert(Name, NextNode);
+                EndIf;;
+                NextNode.Add(ReadXMLToMap(XML));
+            EndIf;;
+        ElsIf NodeType = XMLNodeType.EndElement Then
+            Return ?(ValueIsFilled(Map), Map, Value);
+        ElsIf NodeType = XMLNodeType.Text Then
+            Value = Value + XML.Value;
+            XML.Read(); 
+            Return Value;
+        EndIf;;
+    EndDo;
+    
+    Return Map;
+EndFunction
+
+Function convertMapToJson(Obj)
+    Type = TypeOf(Obj);
+    If  Type = Type("Array") Or Type = Type("ValueList") Then
+		Count = Obj.Count();
+        Result = "[";
+        For n = 0 to Count - 1 do
+        	Result = Result + ConvertMapToJson(Obj[n]) + ?(n < Count - 1, ", ", "");
+        EndDo;
+		Result = Result + "]";
+        Return Result;
+    elsif Type = Type("Structure") or Type = Type("Map") Then
+        n = 0;
+        Count = Obj.Count();
+        Result = "{";
+        For each element in Obj do
+      		Result = Result + ConvertMapToJson(element.key) + ": " + ConvertMapToJson(element.value) + ?(n < Count - 1, ", ", "");
+            n = n + 1;
+        EndDo;
+        Result = Result + "}";
+        Return Result;
+    elsif Type = Type("ValueListItem") Then
+        Return ConvertMapToJson(Obj.value);
+    elsif Type = Type("String") Then
+        Result = Obj;
+        Result = StrReplace(Result, Chars.CR,   "\r");
+        Result = StrReplace(Result, Chars.Tab,  "\t");
+        Result = StrReplace(Result, Chars.LF,   "\n");
+		Return """" + Result + """";
+    elsif Type = Type("Number") Then
+        Return Format(Obj, "NDS=.; NZ=0; NG=0");
+    elsif Type = Type("Boolean") Then
+        Return Format(Obj, "BF=false; BT=true");
+    elsif Type = Type("Date") Then
+        Return ConvertMapToJson(Format(Obj, "DF=yyyy-MM-ddTHH:mm:ss"));
+    elsif Obj = Undefined or Obj = Null Then 
+    	Return "Null";
+    else
+        Return ConvertMapToJson(String(Obj));
+    endif;
+EndFunction
+
