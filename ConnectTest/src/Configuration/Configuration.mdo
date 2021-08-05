@@ -148,6 +148,7 @@
   <commonModules>CommonModule.ОбщегоНазначенияКлиентСервер</commonModules>
   <commonModules>CommonModule.ОбщегоНазначенияСлужебныйКлиентСервер</commonModules>
   <commonModules>CommonModule.СтроковыеФункцииКлиентСервер</commonModules>
+  <commonModules>CommonModule.ОбщийМодуль</commonModules>
   <exchangePlans>ExchangePlan.messagesToSend</exchangePlans>
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
@@ -156,6 +157,7 @@
   <httpServices>HTTPService.internal</httpServices>
   <httpServices>HTTPService.smsStatus</httpServices>
   <httpServices>HTTPService.paymentStatus</httpServices>
+  <httpServices>HTTPService.returnUrl</httpServices>
   <scheduledJobs>ScheduledJob.checkSmsStatus</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPush</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendSMS</scheduledJobs>

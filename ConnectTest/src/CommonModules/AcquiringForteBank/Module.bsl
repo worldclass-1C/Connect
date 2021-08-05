@@ -11,9 +11,9 @@ Procedure sendOrder(parameters) Export
 			|<Amount>"+Format(parameters.acquiringAmount * 100,"NFD=0; NG=0")+"</Amount>
 			|<Currency>398</Currency>
 			|<Description>World Class</Description>
-			|<ApproveURL>"+parameters.returnUrl+"</ApproveURL>
-			|<CancelURL>"+parameters.failUrl+"</CancelURL>
-			|<DeclineURL>"+parameters.failUrl+"</DeclineURL>
+			|<ApproveURL>https://solutions.worldclass.ru/API/hs/ReturnUrl/ok</ApproveURL>
+			|<CancelURL>https://solutions.worldclass.ru/API/hs/ReturnUrl/fail</CancelURL>
+			|<DeclineURL>https://solutions.worldclass.ru/API/hs/ReturnUrl/fail</DeclineURL>
 			|<AddParams>
 			|<FA-DATA>Phone="+parameters.phone+"</FA-DATA>
 			|<OrderExpirationPeriod>20</OrderExpirationPeriod>
