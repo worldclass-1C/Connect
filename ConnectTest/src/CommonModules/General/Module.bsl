@@ -850,7 +850,7 @@ Procedure changeCreateItems(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 
-Procedure sendMessage(parameters)
+Procedure sendMessage(parameters) 
 
 	requestStruct = parameters.requestStruct;
 	tokenContext = parameters.tokenContext;

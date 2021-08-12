@@ -146,7 +146,7 @@ Function executeRequest(requestName, order, additionalParameters = Undefined) Ex
 		ElsIf requestName = "unBindCardBack" Then
 			Internal_API_Payment.unBindCard(parameters, additionalParameters);
 		ElsIf requestName = "getQr" Then
-			getQr(parameters);	
+			getQr(parameters, additionalParameters);	
 		ElsIf  requestName = "autoPayment" Then 
 			autoPayment(parameters);	
 		EndIf;
@@ -659,11 +659,11 @@ Procedure changeOrderState(order, state) Export
 	record.Write();
 EndProcedure
 
-Procedure getQr(parameters) Export
+Procedure getQr(parameters, additionalParameters) Export
 	parameters.Insert("returnUrl", "https://solutions.worldclass.ru/banking/bindSuccess.html");
 	parameters.Insert("failUrl", "https://solutions.worldclass.ru/banking/bindFail.html");
 	If parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then
-		AcquiringRaiffeisen.getQr(parameters);
+		AcquiringRaiffeisen.getQr(parameters, additionalParameters);
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);
