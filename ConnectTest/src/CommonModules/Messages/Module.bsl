@@ -23,6 +23,9 @@ Function newMessage(messageData, sendImmediately = False) Export
 	messageObject.appType = ?(messageData.Property("appType"), messageData.appType, Enums.appTypes.EmptyRef());
 	messageObject.holding = messageData.holding;
 	messageObject.chain = ?(messageData.Property("chain"), messageData.chain, Catalogs.chains.EmptyRef());
+	if ValueIsFilled(messageObject.gym) then
+		messageObject.chain = messageObject.gym.chain;
+	EndIf;
 
 	For Each informationChannel In messageData.informationChannels Do
 		newRow = messageObject.channelPriorities.Add();

@@ -37,6 +37,7 @@ Procedure getQr(parameters, additionalParameters) Export
 			EndIf;
 			if (SystemType.IsEmpty()) or SystemType = Enums.systemTypes.Web then  
 				parameters.Insert("formUrl", responseStruct.qrUrl);
+				parameters.Insert("payload", responseStruct.payload);
 				sendPush(parameters, additionalParameters, responseStruct.payload);
 			else
 				parameters.Insert("formUrl", responseStruct.payload);
@@ -55,10 +56,8 @@ Procedure sendPush(parameters, additionalParameters, qrLink)
 	
 	query = new query;
 	query.Text = "SELECT
-	|	acquiringOrders.user.Owner.Code AS phone,
 	|	""Customer"" AS appType,
 	|	acquiringOrders.user,
-	|	TRUE AS sendImmediately,
 	|	acquiringOrders.gym
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
@@ -66,19 +65,19 @@ Procedure sendPush(parameters, additionalParameters, qrLink)
 	|	acquiringOrders.Ref = &Ref";
 	query.Parameters.Insert("Ref", parameters.order);
 	selection = query.Execute().Select();
-	If selection.next() and ValueIsFilled(selection.phone) Then
+	If selection.next() Then
 		parametersNew = Service.getStructCopy(additionalParameters);
 		parametersNew.Insert("requestName", "sendMessage");
 		routs = new array;
 		routs.Add("pushCustomer");
-		requestStruct = new Structure("appType, uid, title, text, routes, phone, sendImmediately, gym", 
+		TextPush = NStr("ru='Для оплаты счета на сумму ';en='To pay an invoice for '", additionalParameters.languageCode)+parameters.acquiringAmount+NStr("ru=' перейдите по ссылке ';en=' follow the link '", additionalParameters.languageCode)+qrLink;
+		requestStruct = new Structure("action, appType, uid, title, text, routes, gymId",
+										"Payload", 
 										selection.appType, 
 										XmlString(selection.user), 
 										NStr("ru='Ссылка на оплату';en='Payment link'", additionalParameters.languageCode),
-										NStr("ru='Для оплаты счет на сумму ';en='To pay an invoice for '", additionalParameters.languageCode)+parameters.acquiringAmount+NStr("ru=' пройдите по ссылке ';en=' follow the link '", additionalParameters.languageCode)+qrLink,
+										TextPush,
 										routs,
-										selection.phone,
-										true,
 										XmlString(selection.gym));
 		requestArray = New array;
 		requestArray.Add(requestStruct);
