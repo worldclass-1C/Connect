@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e83ec814-b468-44b8-9abe-41c12d8c532e">
+  <producedTypes>
+    <refType typeId="c89ad486-16d9-44b5-9be1-cb6b5a3f56ef" valueTypeId="5cab9c00-ee6a-4a18-9f13-6b013c5dfb9d"/>
+    <listType typeId="6a3ed161-42d9-439e-a231-d344ebfb953e" valueTypeId="68897ceb-4d5d-4d9a-abfe-e67762c776a7"/>
+    <managerType typeId="89fd390c-08c1-440d-aa2a-be3984076990" valueTypeId="69a7ed52-e481-46bd-9c73-bb3b3539beac"/>
+  </producedTypes>
+  <name>gymTypes</name>
+  <synonym>
+    <key>en</key>
+    <value>Gym types</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Типы клубов</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="edaee3ba-5ea0-4a8c-8746-a502627e7d70">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="e34c6f4d-4fd3-4a8e-b545-99114275223f">
+    <name>studio</name>
+    <synonym>
+      <key>en</key>
+      <value>Studio</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Студия</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="0f603acf-c1f2-4478-b5b2-f55b1a48f48f">
+    <name>outdoor</name>
+    <synonym>
+      <key>en</key>
+      <value>Outdoor</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Программы вне клуба</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="9e25a02b-3304-42a9-8b18-cd23984ac3d9">
+    <name>online</name>
+    <synonym>
+      <key>ru</key>
+      <value>Online</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d0f9357e-3d74-4271-9fd7-055035bb0cd0">
+  <producedTypes>
+    <selectionType typeId="85555266-d795-4089-a1e4-0e1a3bfb4fb1" valueTypeId="40d1ae33-7b36-410a-bc94-fb4ecc3de211"/>
+    <listType typeId="277058a6-b4c2-473f-9687-9d61a2436d16" valueTypeId="d8c6c2d7-e66e-4f59-ac39-3afe67f0a189"/>
+    <managerType typeId="ee374740-2ad2-4ca0-ac52-0aa34664391d" valueTypeId="b913decb-6c4f-4882-b0b3-7f708ce06d48"/>
+    <recordSetType typeId="9a3e02fe-8818-4b3e-ab01-87f5863c3c37" valueTypeId="b6e0bd47-109a-4792-84ad-daa8568106b1"/>
+    <recordKeyType typeId="24da36ed-f8ec-4ff3-bc3f-fc977c27ae87" valueTypeId="16fc2933-b9c8-4fbf-8400-e1a71e1b9c26"/>
+    <recordType typeId="392659a4-3879-49b6-8df6-b0e7df816ae7" valueTypeId="9a44ec3c-370e-4003-a617-e99e7f69b8f7"/>
+    <recordManagerType typeId="8d5dd0c9-dacd-45de-917c-ee82efad2350" valueTypeId="c6966bd6-7a9f-458a-a293-77ed1b7f5bf3"/>
+  </producedTypes>
+  <name>currentAppVersions</name>
+  <synonym>
+    <key>en</key>
+    <value>Current app versions</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Актуальные версии приложений</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Current app version</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Актуальная версия приложения</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Current app version</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>Актуальная версия приложения</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Current app versions</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Актуальные версии приложений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Current app versions</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Актуальные версии приложений</value>
+  </extendedListPresentation>
+  <resources uuid="35315b10-e981-4a72-8996-5cd8a526078a">
+    <name>appVersion</name>
+    <synonym>
+      <key>en</key>
+      <value>App version</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Версия приложения</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="1de3772c-b475-4520-9e2d-50eb142edc90">
+    <name>brand</name>
+    <synonym>
+      <key>en</key>
+      <value>Brand</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Бренд</value>
+    </synonym>
+    <type>
+      <types>EnumRef.brandTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="626d01cf-5eb1-4d8c-8814-863dc2e83fd5">
+    <name>appType</name>
+    <synonym>
+      <key>en</key>
+      <value>App type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вид приложения</value>
+    </synonym>
+    <type>
+      <types>EnumRef.appTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="45d8a87e-af31-4b68-8e32-327186f40c62">
+    <name>systemType</name>
+    <synonym>
+      <key>en</key>
+      <value>System type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Операционная система</value>
+    </synonym>
+    <comment>Операционная система устройства</comment>
+    <type>
+      <types>EnumRef.systemTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

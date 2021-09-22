@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0e99a736-2c3b-4544-a671-6fad56b7fd1a">
+  <producedTypes>
+    <selectionType typeId="1e842c86-dc33-4df5-bfe1-23ac3212d577" valueTypeId="ae7886be-6974-4207-b33c-04931d0c12bc"/>
+    <listType typeId="060549b4-4450-440e-a11a-1677fb83dc5c" valueTypeId="b29d56aa-b592-4a6c-bd94-32be8ce5049b"/>
+    <managerType typeId="60c8da32-7984-4fdd-a9c4-b7e829481003" valueTypeId="bc8cc82a-a3ac-4273-8fe3-7c0a4847e6ff"/>
+    <recordSetType typeId="9e0f1403-7f96-48c6-b297-9bb41b20ef9c" valueTypeId="2d4e2d2a-8381-4ffc-b9e6-b13410d18b18"/>
+    <recordKeyType typeId="d2f920af-f4fd-43e0-b0b5-28869b52d386" valueTypeId="45c983e5-6a0c-4ea8-b0f1-dc6049050d32"/>
+    <recordType typeId="a49ad051-759f-49e6-9355-f3b41572f9b8" valueTypeId="6208347b-0b30-46d2-8f4a-12171d2441ec"/>
+    <recordManagerType typeId="ae29d01f-cbc7-4578-835e-570ee75bab89" valueTypeId="6b387dda-40c1-4bcb-98df-b3cd9162350c"/>
+  </producedTypes>
+  <name>DELETE_usersStates</name>
+  <synonym>
+    <key>en</key>
+    <value>DELETE users states</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Состояния пользователей</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>User state</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>Состояние пользователя</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>User state</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>Состояние пользователя</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Users states</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Состояния пользователей</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Users states</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Состояния пользователей</value>
+  </extendedListPresentation>
+  <resources uuid="5dc4a8ee-e5c7-4680-8242-e2ff4793f286">
+    <name>stateValue</name>
+    <synonym>
+      <key>en</key>
+      <value>State value</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Значение состояния</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </resources>
+  <resources uuid="d8983860-c74e-4b0f-aceb-741305002695">
+    <name>outdated</name>
+    <synonym>
+      <key>en</key>
+      <value>Outdated</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Устаревший</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="df3128ce-9d42-444c-93f7-e9357795a4e4">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="1b9d50e5-a6b0-4588-b4fb-5390897983bd">
+    <name>appType</name>
+    <synonym>
+      <key>en</key>
+      <value>App type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вид приложения</value>
+    </synonym>
+    <type>
+      <types>EnumRef.appTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="127b8541-77c8-4eb1-b732-b3d11fce5543">
+    <name>cacheValuesType</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache values type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип значения кэша</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cacheTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:HTTPService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0e300502-e5ef-4efb-a93b-0c6103b83c22">
+  <name>internal</name>
+  <synonym>
+    <key>ru</key>
+    <value>Internal</value>
+  </synonym>
+  <rootURL>internal</rootURL>
+  <reuseSessions>AutoUse</reuseSessions>
+  <sessionMaxAge>120</sessionMaxAge>
+  <urlTemplates uuid="4eb9fc59-3e41-4b37-928d-021316d4a37c">
+    <name>changeData</name>
+    <synonym>
+      <key>ru</key>
+      <value>Change data</value>
+    </synonym>
+    <template>/edit</template>
+    <methods uuid="a902940d-2fc6-429a-9f10-48a0150bff41">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>changeDataPOST</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="3e356557-006e-4ffe-bded-36b52ef84cc8">
+    <name>image</name>
+    <synonym>
+      <key>en</key>
+      <value>Image</value>
+    </synonym>
+    <template>/img</template>
+    <methods uuid="eef4480b-3c93-4775-b24a-ec96e09ec801">
+      <name>POST</name>
+      <httpMethod>POST</httpMethod>
+      <handler>imagePOST</handler>
+    </methods>
+    <methods uuid="c262799b-61e1-4e46-b5e6-d8dacb7c44a9">
+      <name>DELETE</name>
+      <httpMethod>DELETE</httpMethod>
+      <handler>imageDELETE</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="2d308ec6-5db8-4aa8-9ee7-782d20aefbae">
+    <name>sendMessage</name>
+    <synonym>
+      <key>ru</key>
+      <value>Send message</value>
+    </synonym>
+    <template>/sendMessage</template>
+    <methods uuid="befd3799-1b4b-4eb9-a4d6-3cdcc7a1c9e8">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>sendMessagePOST</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="be6e23b0-b21b-41bd-88db-5034007d0a33">
+    <name>synch</name>
+    <synonym>
+      <key>en</key>
+      <value>Synchronization</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Синхронизация</value>
+    </synonym>
+    <template>/synch</template>
+    <methods uuid="ca11c69d-9d3f-41c7-a618-30362a6d1028">
+      <name>POST</name>
+      <synonym>
+        <key>en</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>synchMethod</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="99b0bdae-ba0a-4999-9aa8-832bb60e2e8d">
+    <name>file</name>
+    <synonym>
+      <key>ru</key>
+      <value>File</value>
+    </synonym>
+    <template>/file</template>
+    <methods uuid="146a2d06-3b1e-48e3-a249-cd374577d972">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>filePOST</handler>
+    </methods>
+    <methods uuid="7e8e67b8-04ec-4185-81b0-71d20088632a">
+      <name>DELETE</name>
+      <synonym>
+        <key>ru</key>
+        <value>DELETE</value>
+      </synonym>
+      <httpMethod>DELETE</httpMethod>
+      <handler>fileDELETE</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="584e49d7-27fb-41c9-889a-26320f091424">
+    <name>ProcessRequest</name>
+    <synonym>
+      <key>ru</key>
+      <value>Process request</value>
+    </synonym>
+    <template>/*</template>
+    <methods uuid="338a7cf5-a315-4596-ae42-74f705980519">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>ProcessRequestPOST</handler>
+    </methods>
+  </urlTemplates>
+</mdclass:HTTPService>

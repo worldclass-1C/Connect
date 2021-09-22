@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dfc82420-428d-4416-a334-8dca0dd8a426">
+  <producedTypes>
+    <refType typeId="61059a7b-a156-4493-8160-4f28dd5aba2a" valueTypeId="58ca7d8d-4923-4b9d-b81f-99646b864617"/>
+    <listType typeId="5719822b-ec24-4af7-a2b5-d195ad7c5442" valueTypeId="95b8ccae-ce79-49d0-a5fa-e9e527da6759"/>
+    <managerType typeId="04c34ec2-1bdf-40ef-b888-b6148a729761" valueTypeId="fcfd0af4-8647-4df5-8cce-fbe173b74252"/>
+  </producedTypes>
+  <name>accountStatuses</name>
+  <synonym>
+    <key>en</key>
+    <value>Account statuses</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="8ecdb4e3-5ba3-4df6-93c8-970d24203667">
+    <name>active</name>
+    <synonym>
+      <key>en</key>
+      <value>active</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="9d7cc0c3-3bc1-4137-971b-672124996bc6">
+    <name>missingPersonalData</name>
+    <synonym>
+      <key>en</key>
+      <value>missingPersonalData</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="f56fc53f-00ce-4aa3-8f15-c5f8af50b1b0">
+    <name>unauthorized</name>
+    <synonym>
+      <key>en</key>
+      <value>unauthorized</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

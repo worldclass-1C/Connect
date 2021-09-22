@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="41bd9c1f-23fe-458f-a113-29d4a2eee7d1">
+  <name>SmsGold</name>
+  <synonym>
+    <key>ru</key>
+    <value>Sms gold</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7c7eda02-716b-4acc-9cfd-f5f259cf216c">
+  <producedTypes>
+    <refType typeId="a561bfd5-d7f3-43b6-8944-7811c9d4b330" valueTypeId="800f26d1-b1e2-41eb-80a2-af39eccee650"/>
+    <listType typeId="dd4ab8b2-4885-4e8b-840a-9b1701c1ca14" valueTypeId="1112fe5a-bec3-469d-8856-9a6ef0d7c4dc"/>
+    <managerType typeId="3bb1cfc4-76d4-47b2-b310-e9d1f9d06dbc" valueTypeId="fb373e4b-deae-4bcb-84a0-355b8042f3e7"/>
+  </producedTypes>
+  <name>roomTypes</name>
+  <synonym>
+    <key>en</key>
+    <value>Room types</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Типы помещений</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="8413960d-4a5c-40e0-9025-8cd1360ad31d">
+    <name>forBooking</name>
+    <synonym>
+      <key>en</key>
+      <value>For booking</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Для бронирования</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="8dfd689b-57ae-4b49-b759-ced3ec375a76">
+    <name>lockerRoom</name>
+    <synonym>
+      <key>en</key>
+      <value>Locker room</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Раздевалка</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="aa113fdd-2d43-49d3-9444-5019160182cc">
+    <name>saferoom</name>
+    <synonym>
+      <key>en</key>
+      <value>Saferoom</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сейфовая комната</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>
