@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3b7e255b-2624-4b53-8bd0-367f51304c99">
-  <name>SmsFigenSoft</name>
-  <synonym>
-    <key>en</key>
-    <value>Sms figen soft</value>
-  </synonym>
-  <server>true</server>
-</mdclass:CommonModule>
