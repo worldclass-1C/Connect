@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Role xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="369090b4-9b84-4e38-8bec-9337aaa7baed">
+  <name>Анкетирование</name>
+  <synonym>
+    <key>ru</key>
+    <value>Анкетирование</value>
+  </synonym>
+</mdclass:Role>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f5c9b8e1-39ab-4fbe-abcb-7a62f1d96ee7">
+  <producedTypes>
+    <objectType typeId="1bf3aa1f-1f85-41f0-a22f-5add7ab9065f" valueTypeId="34684e77-e5f6-4cdf-8ec4-1d8b2e5105b0"/>
+    <refType typeId="2d846821-61a7-4585-8e04-a4ee37fc1bca" valueTypeId="28a4a032-bd48-4333-b358-e7fc8e595565"/>
+    <selectionType typeId="283ed1c3-11f6-4521-93b3-e3803f8b55c2" valueTypeId="ef92f8e7-25ee-466a-a047-0fe0eda58a0d"/>
+    <listType typeId="5cb0473b-762f-420f-b372-00114a6d63f4" valueTypeId="08acc07d-d3c9-424b-8c38-240de7778dd7"/>
+    <managerType typeId="e7a4621f-f9f6-446b-bd37-01107a5f150a" valueTypeId="22172ce3-9059-42c9-b857-b073bfb345f0"/>
+  </producedTypes>
+  <name>cacheTypes</name>
+  <synonym>
+    <key>en</key>
+    <value>Cache types</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Типы значений кэша</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.cacheTypes.StandardAttribute.Code</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>PredefinedDataName</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Predefined</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Ref</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>DeletionMark</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>IsFolder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Owner</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Description</name>
+    <synonym>
+      <key>en</key>
+      <value>Description</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Наименование</value>
+    </synonym>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Code</name>
+    <synonym>
+      <key>en</key>
+      <value>Code</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Код</value>
+    </synonym>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <createOnInput>DontUse</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>ru</key>
+    <value>Тип значения кэша</value>
+  </objectPresentation>
+  <extendedObjectPresentation>
+    <key>ru</key>
+    <value>Тип значения кэша</value>
+  </extendedObjectPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Типы значений кэша</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Типы значений кэша</value>
+  </extendedListPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>25</codeLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <predefined>
+    <items id="431e8916-d6ad-42d2-a27a-966b153a0916">
+      <name>bonus</name>
+      <code xsi:type="core:StringValue">
+        <value>bonus</value>
+      </code>
+    </items>
+    <items id="6ffad23c-c08a-4258-96a2-0ea879168231">
+      <name>membershipInfo</name>
+      <code xsi:type="core:StringValue">
+        <value>membershipInfo</value>
+      </code>
+    </items>
+    <items id="af0c5149-9d91-483d-b187-c437396b0e99">
+      <name>balance</name>
+      <code xsi:type="core:StringValue">
+        <value>balance</value>
+      </code>
+    </items>
+    <items id="5de50dd5-3c34-4db5-98ef-dc28c4d0f09b">
+      <name>packageInfo</name>
+      <code xsi:type="core:StringValue">
+        <value>packageInfo</value>
+      </code>
+    </items>
+    <items id="6c7629a8-6dca-44ac-9bda-28f6d7a56875">
+      <name>paymentPackage</name>
+      <code xsi:type="core:StringValue">
+        <value>paymentPackage</value>
+      </code>
+    </items>
+    <items id="269d8113-c421-4377-a837-ae78bf4d3806">
+      <name>familyAccount</name>
+      <code xsi:type="core:StringValue">
+        <value>familyAccount</value>
+      </code>
+    </items>
+    <items id="91cc4611-3f5b-4e76-a21f-26f7cfc76e42">
+      <name>financialHistory</name>
+      <code xsi:type="core:StringValue">
+        <value>financialHistory</value>
+      </code>
+    </items>
+    <items id="d2866123-be43-4c4f-a32e-c3c87f38fe9e">
+      <name>support</name>
+      <code xsi:type="core:StringValue">
+        <value>support</value>
+      </code>
+    </items>
+    <items id="5910220e-98bd-4cfc-9ea6-a804e74d421b">
+      <name>bannerList</name>
+      <code xsi:type="core:StringValue">
+        <value>bannerList</value>
+      </code>
+    </items>
+    <items id="547efa87-491c-4f4b-8946-b293ac70ecc9">
+      <name>nearestService</name>
+      <code xsi:type="core:StringValue">
+        <value>nearestService</value>
+      </code>
+    </items>
+    <items id="9718ef2d-25fa-49a9-b407-8392ee7d24a5">
+      <name>availableServiceList</name>
+      <code xsi:type="core:StringValue">
+        <value>availableServices</value>
+      </code>
+    </items>
+    <items id="3a590a65-afe4-479a-a585-b8454a1cebf8">
+      <name>rentedLockerList</name>
+      <code xsi:type="core:StringValue">
+        <value>rentedLockerList</value>
+      </code>
+    </items>
+    <items id="c75d693d-6498-4d1c-9113-a819f3bf9c14">
+      <name>fitness</name>
+      <code xsi:type="core:StringValue">
+        <value>fitness</value>
+      </code>
+    </items>
+    <items id="67c4fd8b-0479-4616-a908-3fd6febabf02">
+      <name>spa</name>
+      <code xsi:type="core:StringValue">
+        <value>spa</value>
+      </code>
+    </items>
+    <items id="9c7e35d4-fe11-42c5-bbd5-eda32ed90a08">
+      <name>employees</name>
+      <code xsi:type="core:StringValue">
+        <value>employees</value>
+      </code>
+    </items>
+    <items id="0507ce52-1567-40a6-953a-2cc5f4d5b788">
+      <name>forChildren</name>
+      <code xsi:type="core:StringValue">
+        <value>forChildren</value>
+      </code>
+    </items>
+    <items id="9536d318-a861-47d5-afeb-e5144ceecc4e">
+      <name>journal</name>
+      <code xsi:type="core:StringValue">
+        <value>journal</value>
+      </code>
+    </items>
+    <items id="cf7b3c48-010f-4fb4-aa1b-f9fc3f5d5ae7">
+      <name>personalBooking</name>
+      <code xsi:type="core:StringValue">
+        <value>personalBooking</value>
+      </code>
+    </items>
+    <items id="c3135fc9-b7e8-4bfa-925b-f77ff1aadbaa">
+      <name>courses</name>
+      <code xsi:type="core:StringValue">
+        <value>courses</value>
+      </code>
+    </items>
+    <items id="5fe434b1-6e6f-41ea-af48-0327a17f15b2">
+      <name>visitBooking</name>
+      <code xsi:type="core:StringValue">
+        <value>visitBooking</value>
+      </code>
+    </items>
+    <items id="4b3d4be0-58dc-4709-981c-7a8c16216691">
+      <name>gymList</name>
+      <description>Gym list</description>
+      <code xsi:type="core:StringValue">
+        <value>gymList</value>
+      </code>
+    </items>
+    <items id="e98fab6d-ce50-4673-8e3a-0f2c760dee93">
+      <name>reserveBalance</name>
+      <description>Reserve balance</description>
+      <code xsi:type="core:StringValue">
+        <value>reserveBalance</value>
+      </code>
+    </items>
+    <items id="34eaba91-f284-4d0b-8fcb-9dd85d50f6f2">
+      <name>events</name>
+      <code xsi:type="core:StringValue">
+        <value>events</value>
+      </code>
+    </items>
+    <items id="93bbdb5e-0b95-45bf-a2a8-098fbf85827a">
+      <name>polls</name>
+      <code xsi:type="core:StringValue">
+        <value>polls</value>
+      </code>
+    </items>
+    <items id="a77bf6e3-6958-41a8-be50-106b4a8fd9cf">
+      <name>podcast</name>
+      <code xsi:type="core:StringValue">
+        <value>podcast</value>
+      </code>
+    </items>
+    <items id="ff7349fa-2180-4916-8fdc-ae30155b399b">
+      <name>spaShop</name>
+      <description>Spa shop</description>
+      <code xsi:type="core:StringValue">
+        <value>spaShop</value>
+      </code>
+    </items>
+  </predefined>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="55023a93-993d-430c-ad5a-964cbf4a5765">
+    <name>defaultValueType</name>
+    <synonym>
+      <key>en</key>
+      <value>Default value type</value>
+    </synonym>
+    <type>
+      <types>EnumRef.JSONValueTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

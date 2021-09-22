@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="709d239d-7437-4f97-bcaa-fb6528c48fc5">
+  <producedTypes>
+    <managerType typeId="a502433d-8fb4-4d36-a9cd-deaa04c0d70e" valueTypeId="e1de5c18-dbe0-40e3-ab10-36f60afc2594"/>
+    <valueManagerType typeId="3015b5b6-ff33-4de7-a3b9-91a75274085f" valueTypeId="40b5af21-9279-40a8-aae2-689b9fcda06e"/>
+    <valueKeyType typeId="89fc4ba9-e7f5-4ee1-89e3-75c6498d06cc" valueTypeId="52735fed-9e78-4850-b9dd-6865af749c5d"/>
+  </producedTypes>
+  <name>BaseFileURL</name>
+  <synonym>
+    <key>ru</key>
+    <value>Base file URL</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>200</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

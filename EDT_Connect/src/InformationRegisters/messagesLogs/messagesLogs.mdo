@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b7babbe8-dd37-47e1-8156-0b697b260d12">
+  <producedTypes>
+    <selectionType typeId="a0a9681a-6b8c-4911-b76d-e54dcf15cd8e" valueTypeId="e4732226-e364-41f0-a035-d7e07cf04cde"/>
+    <listType typeId="6eadbdae-af7b-4398-ab80-273788b2a759" valueTypeId="70e102eb-46ac-4a39-ba05-545517b53e52"/>
+    <managerType typeId="5d81116d-4868-4d1e-9d9e-2869fa6e435e" valueTypeId="999a7ecb-015d-482c-a5d9-561b40fdfcd2"/>
+    <recordSetType typeId="df525b35-4bd6-416d-b89b-78b2e9a203c0" valueTypeId="dcc7b2ac-3ef9-408a-8215-8c110c824f99"/>
+    <recordKeyType typeId="36f14135-8a00-422f-9d86-4da7ca8fc3fb" valueTypeId="bb2c19d4-a9c0-438f-902b-e7d0a88b6732"/>
+    <recordType typeId="92557f05-bf81-48ef-ab05-f91fe2bc944c" valueTypeId="245bb1b0-bf0c-443b-88f7-c87dee1bea71"/>
+    <recordManagerType typeId="425979fb-7bf4-409f-9d15-dcb5470748f5" valueTypeId="5fda1303-ead0-44c8-8c0a-d0291a2f3af5"/>
+  </producedTypes>
+  <name>messagesLogs</name>
+  <synonym>
+    <key>en</key>
+    <value>Messages logs</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>История сообщений</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultListForm>InformationRegister.messagesLogs.Form.ListForm</defaultListForm>
+  <informationRegisterPeriodicity>Second</informationRegisterPeriodicity>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Message logs</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>История сообщения</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Message logs</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>История сообщения</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Messages logs</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>История сообщений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Messages logs</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>История сообщений</value>
+  </extendedListPresentation>
+  <attributes uuid="17bdb10d-4931-457b-b7ef-8254858d6b10">
+    <name>informationChannel</name>
+    <synonym>
+      <key>en</key>
+      <value>Information channel</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Канал информирования</value>
+    </synonym>
+    <type>
+      <types>EnumRef.informationChannels</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="ffbfbd59-2d4f-4c44-8ae4-b46959952a7f">
+    <name>messageStatus</name>
+    <synonym>
+      <key>en</key>
+      <value>Message status</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Статус сообщения</value>
+    </synonym>
+    <type>
+      <types>EnumRef.messageStatuses</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="67970191-9a08-4648-a87d-02a10299675b">
+    <name>error</name>
+    <synonym>
+      <key>en</key>
+      <value>Error</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Ошибка</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>100</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </attributes>
+  <attributes uuid="8f01f8ae-8236-41b6-a20a-f6e788e48f9a">
+    <name>recordDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Record date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата записи</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <attributes uuid="9e33c01f-1561-4d2a-ab01-147518a3ac6b">
+    <name>token</name>
+    <synonym>
+      <key>en</key>
+      <value>Token</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Токен</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.tokens</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <dimensions uuid="27f63996-c3f2-4bba-9d67-330f2779efa7">
+    <name>message</name>
+    <synonym>
+      <key>en</key>
+      <value>Message</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сообщение</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.messages</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+  </dimensions>
+  <forms uuid="3e4cdd03-880b-4c77-839d-518d5e552cb2">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>
