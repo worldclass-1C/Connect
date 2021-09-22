@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8a333b1b-bf57-4a65-9bb2-3178e1ede230">
-  <name>JWT</name>
-  <synonym>
-    <key>en</key>
-    <value>JWT</value>
-  </synonym>
-  <server>true</server>
-</mdclass:CommonModule>
