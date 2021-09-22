@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f64caf0c-6a1c-471a-8108-27604ee7ddd8">
+  <producedTypes>
+    <selectionType typeId="f6e47832-ffd0-43ec-9760-cbf8cd3fdbbd" valueTypeId="608613a2-e8db-4827-b5fe-c410f43b9ce9"/>
+    <listType typeId="99254c09-3fc2-436f-b317-63b8f024d5fc" valueTypeId="5c86132c-8f3a-40f1-aba3-7315366afc27"/>
+    <managerType typeId="1631e520-72d1-4846-b8f8-a61531fd9f63" valueTypeId="391dac02-ade4-4eb4-be71-7c41e8cda060"/>
+    <recordSetType typeId="a13a1a6b-c304-4a37-9863-96465482dd19" valueTypeId="8a5490c1-197b-48b7-bc82-4539870b2683"/>
+    <recordKeyType typeId="d7ce393e-0018-46bb-8e06-c7e7ea1ce126" valueTypeId="62626786-6b2e-4d20-a3ec-fa8243cc5f2f"/>
+    <recordType typeId="2ed6ac5b-d17b-4808-b238-81484746e94f" valueTypeId="22ec2533-f1ef-4583-8495-ca8720af3b87"/>
+    <recordManagerType typeId="2879295c-5fba-4f37-8551-2720bd4d9c90" valueTypeId="792a8663-fd90-4cee-aaea-665cec8c069e"/>
+  </producedTypes>
+  <name>cacheIndex</name>
+  <synonym>
+    <key>en</key>
+    <value>Cache index</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Индекс кэша</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <dimensions uuid="ecc9ed8f-9bea-4291-9630-8459f23df71f">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.users</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="06f72c34-dde0-4f07-8c5d-1968a576f1b7">
+    <name>cacheType</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Вид кэша</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cacheTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </dimensions>
+  <dimensions uuid="4065b79d-a794-45c2-ae9e-d77f2fde5af9">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="39ec6f8b-72a2-4fa5-af73-2c3cb8670bef">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </dimensions>
+  <dimensions uuid="232c0c49-42dd-46a8-a02d-4f4b23c8f822">
+    <name>cacheInformation</name>
+    <synonym>
+      <key>en</key>
+      <value>Cache information</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Информация кэша</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.cacheInformations</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <denyIncompleteValues>true</denyIncompleteValues>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </dimensions>
+</mdclass:InformationRegister>

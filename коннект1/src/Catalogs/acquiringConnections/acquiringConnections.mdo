@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="50fab3bc-007e-4e1a-8367-dc88a03a135d">
+  <producedTypes>
+    <objectType typeId="0ff528e7-84ba-457a-8655-c05961f34758" valueTypeId="3d289185-ec25-4779-a27c-6835687a7da9"/>
+    <refType typeId="56a4db62-ded8-4dfc-a0f0-a3ac235a112d" valueTypeId="8266c4ea-cabc-4107-8502-c3ebf9b0251d"/>
+    <selectionType typeId="af79749a-9cdb-4387-a1f9-1298af6d22d1" valueTypeId="b8b2238c-35a3-49a9-a59d-6dd564be5b54"/>
+    <listType typeId="2f6117c9-dfac-430f-b8ac-8c9415751109" valueTypeId="74b8b387-5ff0-47d1-81fa-706f7fcf0806"/>
+    <managerType typeId="b39380c8-768a-41b5-89fb-ab1a84cd8767" valueTypeId="20c324a5-aeba-497a-b2ed-5fda8c6287a2"/>
+  </producedTypes>
+  <name>acquiringConnections</name>
+  <synonym>
+    <key>en</key>
+    <value>Connections</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Подключения</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.acquiringConnections.Form.ListForm</defaultListForm>
+  <defaultChoiceForm>Catalog.acquiringConnections.Form.ChoiceForm</defaultChoiceForm>
+  <attributes uuid="b94d258d-b80c-45e2-b9b5-a672d6e8a2da">
+    <name>acquiringProvider</name>
+    <synonym>
+      <key>en</key>
+      <value>Acquiring provider</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Провайдер эквайринга</value>
+    </synonym>
+    <type>
+      <types>EnumRef.acquiringProviders</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a2d53e43-40a8-4eaa-b14c-f1fa0835ea2b">
+    <name>server</name>
+    <synonym>
+      <key>en</key>
+      <value>Server</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сервер</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="57cb149e-a697-4d8e-911f-c424ef8ca75e">
+    <name>port</name>
+    <synonym>
+      <key>en</key>
+      <value>Port</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Порт</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="6e96de0c-d7f9-420e-8443-710594f410b2">
+    <name>user</name>
+    <synonym>
+      <key>en</key>
+      <value>User</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="57919cf3-b07a-452e-b9e2-fa1e3fd66fce">
+    <name>password</name>
+    <synonym>
+      <key>en</key>
+      <value>Password</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Пароль</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <passwordMode>true</passwordMode>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="1b0c26dc-6ff4-4bd1-b1dd-849324b1d55f">
+    <name>timeout</name>
+    <synonym>
+      <key>en</key>
+      <value>Timeout</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Таймаут</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="8800d56d-d3f7-4584-9575-465192c7374d">
+    <name>secureConnection</name>
+    <synonym>
+      <key>en</key>
+      <value>Secure connection</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Защищенное соединение</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="ddda52c5-19cd-47fc-8403-ea8ac3502c9d">
+    <name>UseOSAuthentication</name>
+    <synonym>
+      <key>en</key>
+      <value>Use OS authentication</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Использовать аутентификацию ОС</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e10d374c-0b13-44e0-86a2-25387888d396">
+    <name>merchantID</name>
+    <synonym>
+      <key>en</key>
+      <value>Merchant ID</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9e7f3a5a-0eba-4db6-9d08-f9df1d7e6c9d">
+    <name>key</name>
+    <synonym>
+      <key>ru</key>
+      <value>Key</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>1024</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <forms uuid="129a90d1-dd71-4bb1-afcf-5b5655649f7d">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="0adb89c4-41a6-4955-8523-0ad585ede769">
+    <name>ChoiceForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Choice form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

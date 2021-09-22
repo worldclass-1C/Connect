@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ae1159df-2080-4a4f-ab1b-33adf3addd53">
+  <producedTypes>
+    <selectionType typeId="6490c1aa-5ec2-4179-b3dc-5e27dd5c1278" valueTypeId="3c1f6e15-822a-4778-914f-b1498ac0e2d3"/>
+    <listType typeId="f88aa27e-10e1-4470-843d-87904692e124" valueTypeId="c129a964-b6f5-4e71-bad0-76c5904f0e0b"/>
+    <managerType typeId="6edf4806-c649-4a7a-a2e4-bfce722112ef" valueTypeId="6f35f617-6a1a-4ea9-9c1e-0065f426977a"/>
+    <recordSetType typeId="349a363b-ea7a-4709-9876-9ab397b98248" valueTypeId="abd40a7f-f84c-46f6-beb8-940cd4b644a8"/>
+    <recordKeyType typeId="70c6354f-90f7-4509-8370-0de9d8b21699" valueTypeId="eabaa5f5-838c-4680-bcd9-fa86ba4b0b44"/>
+    <recordType typeId="a29a3781-4d29-432f-928f-3e1d81704382" valueTypeId="a7c3f38e-7f4e-4671-bf96-0244b7ae0d3f"/>
+    <recordManagerType typeId="66c48420-9647-458f-a299-ab123afa2755" valueTypeId="32cc8f70-617a-4fcf-bde7-2de383ecf278"/>
+  </producedTypes>
+  <name>messagesId</name>
+  <synonym>
+    <key>en</key>
+    <value>messages ID</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>ИД сообщений</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultListForm>InformationRegister.messagesId.Form.ListForm</defaultListForm>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>message ID</value>
+  </recordPresentation>
+  <recordPresentation>
+    <key>ru</key>
+    <value>ИД сообщения</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>message ID</value>
+  </extendedRecordPresentation>
+  <extendedRecordPresentation>
+    <key>ru</key>
+    <value>ИД сообщения</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>messages ID</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>ИД сообщений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>messages ID</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>ИД сообщений</value>
+  </extendedListPresentation>
+  <resources uuid="7f31fab3-f029-4887-9467-292bde6ed370">
+    <name>id</name>
+    <synonym>
+      <key>en</key>
+      <value>id</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>ИД</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <indexing>Index</indexing>
+  </resources>
+  <dimensions uuid="d08b22b4-8e8d-44c9-a69f-e068465db405">
+    <name>message</name>
+    <synonym>
+      <key>en</key>
+      <value>Message</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Сообщение</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.messages</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+  </dimensions>
+  <dimensions uuid="5606ee82-e179-42c2-afb8-33810f3644e0">
+    <name>informationChannel</name>
+    <synonym>
+      <key>en</key>
+      <value>Information channel</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Канал информирования</value>
+    </synonym>
+    <type>
+      <types>EnumRef.informationChannels</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <forms uuid="3cdde6d0-c19f-40fe-913d-c49b1b05f9de">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>

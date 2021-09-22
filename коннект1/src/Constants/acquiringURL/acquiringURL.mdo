@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1c40ce87-a462-48b2-b6ab-4528c43f89ad">
+  <producedTypes>
+    <managerType typeId="cc0519bb-be45-49bd-b121-6142f243d7d8" valueTypeId="7b787641-feb6-4313-af76-5b7c9d60dd02"/>
+    <valueManagerType typeId="c00c075f-5417-4e84-a7de-7db52bb3447c" valueTypeId="d27612e7-2d88-417e-85c2-fa3bd967aac3"/>
+    <valueKeyType typeId="721f9901-4356-455e-9eea-bbb1e489e82e" valueTypeId="156e87cd-688d-4324-92df-0db7235bbfa5"/>
+  </producedTypes>
+  <name>acquiringURL</name>
+  <synonym>
+    <key>ru</key>
+    <value>Acquiring URL</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>200</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>
