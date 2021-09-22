@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="aae0603e-6900-4da7-87c8-d6294c953184">
+  <producedTypes>
+    <objectType typeId="f3ecd474-ad0a-4278-8bb8-c0b29e52f0b7" valueTypeId="6df4ec7d-9253-47ab-8c9e-b1aae171bc2d"/>
+    <refType typeId="b3e06d8e-87b3-4e6d-92eb-c42d429c28e6" valueTypeId="f16576b7-d26f-4d9a-9466-ab3179e7a9cb"/>
+    <selectionType typeId="3f2868fc-9bb7-4c8a-8a61-bd323f55878e" valueTypeId="7593ecc4-f13d-4e05-b59e-a2b81804fc01"/>
+    <listType typeId="eed35e6c-51dc-4271-8b61-769bc1c0ceee" valueTypeId="e22de6f4-1b9c-4325-b0f5-ddbc03212a3c"/>
+    <managerType typeId="8bb5c5a5-f361-4f4b-9adf-4ee476ef554d" valueTypeId="d9b0fb60-ca5c-44b7-8fa1-8b15fa35f959"/>
+  </producedTypes>
+  <name>RegisterRecorder</name>
+  <synonym>
+    <key>ru</key>
+    <value>Register recorder</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.RegisterRecorder.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <registerRecords>AccumulationRegister.UsersValues</registerRecords>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <attributes uuid="17fe0ee2-8c62-4e0f-b9cc-4da3f23ad885">
+    <name>ReportPeriod</name>
+    <synonym>
+      <key>ru</key>
+      <value>Report period</value>
+    </synonym>
+    <type>
+      <types>EnumRef.reportPeriods</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Document>
