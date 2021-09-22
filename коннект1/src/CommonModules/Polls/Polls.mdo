@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4fb0bc42-2555-4511-8736-104b7eb6d14f">
-  <name>Polls</name>
-  <synonym>
-    <key>ru</key>
-    <value>Polls</value>
-  </synonym>
-  <server>true</server>
-</mdclass:CommonModule>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="402e6785-658f-475e-af00-d7ce2e8b979a">
-  <name>WorldclassApsProdStaff</name>
-  <synonym>
-    <key>ru</key>
-    <value>Worldclass aps prod staff</value>
-  </synonym>
-  <templateType>BinaryData</templateType>
-</mdclass:CommonTemplate>

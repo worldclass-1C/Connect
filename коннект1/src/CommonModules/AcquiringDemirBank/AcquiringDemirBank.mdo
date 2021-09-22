@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4fe13fbb-da43-4e9a-b84a-27aa5e474bd0">
-  <name>AcquiringDemirBank</name>
-  <synonym>
-    <key>ru</key>
-    <value>Acquiring demir bank</value>
-  </synonym>
-  <server>true</server>
-</mdclass:CommonModule>

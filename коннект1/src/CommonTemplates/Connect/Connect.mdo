@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonTemplate xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d24efe99-ffa1-408f-9345-a94a8f23f847">
-  <name>Connect</name>
-  <synonym>
-    <key>en</key>
-    <value>Connect</value>
-  </synonym>
-  <templateType>TextDocument</templateType>
-</mdclass:CommonTemplate>
