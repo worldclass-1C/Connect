@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7558efde-13f7-432c-8546-75fc03773803">
+  <producedTypes>
+    <objectType typeId="f5bc7198-5607-46e7-9c36-ebe35251ee32" valueTypeId="e3d2f9b2-513e-43cd-8423-006e14006238"/>
+    <managerType typeId="f2615186-1059-4ae8-8a02-5a175a7bc402" valueTypeId="096d485d-d3a1-46a1-b97d-caa406be23ae"/>
+  </producedTypes>
+  <name>PollCustomerData</name>
+  <synonym>
+    <key>en</key>
+    <value>Poll customer data</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Данные клиентов опроса</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <mainDataCompositionSchema>Report.PollCustomerData.Template.Макет</mainDataCompositionSchema>
+  <templates uuid="8a7c2d33-4aeb-4cc4-8742-20472fcf4883">
+    <name>Макет</name>
+    <synonym>
+      <key>ru</key>
+      <value>Макет</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+</mdclass:Report>

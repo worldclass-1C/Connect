@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d183b723-654a-4316-8f55-485088b76888">
+  <producedTypes>
+    <objectType typeId="86a199e6-d1c6-4554-a196-71e171379c7e" valueTypeId="5523acf1-ecbe-41bb-b830-1e18bba76f78"/>
+    <refType typeId="51ead943-7f17-4874-b2b7-ca1e2b6bcd92" valueTypeId="a57bd6b0-1f69-43d3-a135-bce664c8ef22"/>
+    <selectionType typeId="8c10cf3d-3bbc-4f54-afbe-222be4070114" valueTypeId="3b043a60-0262-4ff0-beff-31606705dea2"/>
+    <listType typeId="b5952402-936b-424b-b098-3bf8ecfecc54" valueTypeId="94cda126-a712-4e27-bfc5-a8525a119cfc"/>
+    <managerType typeId="17ebe4a5-cbbc-4da1-bfcd-ce36450e8b69" valueTypeId="7147d338-e7c5-4ada-b9b7-173635e9d82f"/>
+  </producedTypes>
+  <name>content</name>
+  <synonym>
+    <key>en</key>
+    <value>Content</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Контент</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.content.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.content.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>100</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="8836d3a7-1963-4dd0-8007-1429e2c3cb23">
+    <name>photo</name>
+    <synonym>
+      <key>en</key>
+      <value>Photo</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фото</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="017c3fa8-ecad-407d-b295-900576da0f3a">
+    <name>holding</name>
+    <synonym>
+      <key>ru</key>
+      <value>Holding</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="6ea1615b-f599-4c70-b9d4-730bdea7beb8">
+    <name>fullDescription</name>
+    <synonym>
+      <key>ru</key>
+      <value>Full description</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e7c670ee-5db1-4235-afdd-84d78358be57">
+    <name>registrationDate</name>
+    <synonym>
+      <key>ru</key>
+      <value>Registration date</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="5e2e134d-72f2-4ef9-8f26-0367ea818f2c">
+    <name>shortDescription</name>
+    <synonym>
+      <key>ru</key>
+      <value>Short description</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>500</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="57bba671-769e-476e-be3a-f43d9f0b0469">
+    <name>avaliableForDownload</name>
+    <synonym>
+      <key>ru</key>
+      <value>Avaliable for download</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="6e1e800d-7c9e-4f07-8932-f8a0d4ffa59b">
+    <name>url</name>
+    <synonym>
+      <key>ru</key>
+      <value>Url</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="45913d38-a9b4-4f5a-8dd3-3d074625e47c">
+    <name>typeOfFile</name>
+    <synonym>
+      <key>ru</key>
+      <value>Type of file</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>100</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="5d6badf5-6b59-4827-abf0-0df5a290ffd8">
+    <name>size</name>
+    <synonym>
+      <key>ru</key>
+      <value>Size</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="424f02ab-40ee-4f06-ac8b-f8c1333121d5">
+    <producedTypes>
+      <objectType typeId="38218f32-4ce2-4a64-8924-d5af090a333a" valueTypeId="d1c79086-b151-42b1-8262-febfbdbaaa07"/>
+      <rowType typeId="ac53a74e-c822-4688-977d-81e738b6a264" valueTypeId="d1041266-11f0-4de7-913e-7ad74263ff49"/>
+    </producedTypes>
+    <name>photos</name>
+    <synonym>
+      <key>en</key>
+      <value>Photos</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Фото</value>
+    </synonym>
+    <attributes uuid="ed150d84-579d-49b8-b87e-ddcc3b130265">
+      <name>URL</name>
+      <synonym>
+        <key>en</key>
+        <value>URL</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>URL</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>200</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="b2806512-1d4a-4fab-8469-f29eb51d10c6">
+    <producedTypes>
+      <objectType typeId="279ffffc-d928-4cb2-b0c9-b7443c6af410" valueTypeId="88bcbc27-e488-413a-9ca6-faa5f348d99b"/>
+      <rowType typeId="94e1fbbf-f659-4cff-b566-97f9e8647e90" valueTypeId="dcfb52b1-f452-42a5-a82d-93582435085f"/>
+    </producedTypes>
+    <name>translation</name>
+    <synonym>
+      <key>en</key>
+      <value>Translation</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Перевод</value>
+    </synonym>
+    <attributes uuid="c4bfd873-b604-4740-96cb-c333990a7cc1">
+      <name>description</name>
+      <synonym>
+        <key>en</key>
+        <value>Description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Наименование</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e9cbcbcf-335f-490e-b0c4-965de0fad7e1">
+      <name>fullDescription</name>
+      <synonym>
+        <key>en</key>
+        <value>Full description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Описание</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="ee2e86de-b85d-499e-b189-2860141b044a">
+      <name>language</name>
+      <synonym>
+        <key>en</key>
+        <value>Language</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Язык</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.languages</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="163b470a-1e02-4196-a40d-709a3629859c">
+      <name>shortDescription</name>
+      <synonym>
+        <key>en</key>
+        <value>Short description</value>
+      </synonym>
+      <synonym>
+        <key>ru</key>
+        <value>Краткое описание</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>500</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

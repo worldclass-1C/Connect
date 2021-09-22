@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a19db8e0-979c-4875-bdbd-6993bbff13f1">
+  <name>Zoom</name>
+  <synonym>
+    <key>en</key>
+    <value>Zoom</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <content>InformationRegister.busyhostZoom</content>
+  <content>Catalog.appsZoom</content>
+  <content>Catalog.hostsZoom</content>
+  <content>Catalog.meetingZoom</content>
+  <content>CommonModule.Zoom</content>
+  <content>Enum.meetingStatusesZoom</content>
+  <content>InformationRegister.matchingAppZoom</content>
+  <parentSubsystem>Subsystem.Settings</parentSubsystem>
+</mdclass:Subsystem>

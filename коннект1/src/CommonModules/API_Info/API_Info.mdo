@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="39afdada-0d0d-430e-ae48-f99e76834868">
+  <name>API_Info</name>
+  <synonym>
+    <key>en</key>
+    <value>API info</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:HTTPService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1a93abd6-0871-4878-aa50-7597d9f86c50">
+  <name>paymentStatus</name>
+  <synonym>
+    <key>ru</key>
+    <value>Payment status</value>
+  </synonym>
+  <rootURL>paymentStatus</rootURL>
+  <reuseSessions>AutoUse</reuseSessions>
+  <sessionMaxAge>20</sessionMaxAge>
+  <urlTemplates uuid="f0decd20-8e05-4eeb-9035-f4fdd2100687">
+    <name>okURL</name>
+    <synonym>
+      <key>ru</key>
+      <value>Ok URL</value>
+    </synonym>
+    <template>/okURL</template>
+    <methods uuid="4a85390e-a09b-43bc-82f6-34a4e918291b">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>okURLPOST</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="2d799122-2654-460e-be43-b1db7886ebbc">
+    <name>failURL</name>
+    <synonym>
+      <key>ru</key>
+      <value>Fail URL</value>
+    </synonym>
+    <template>/failURL</template>
+    <methods uuid="967f47f6-9708-49ab-8eac-e4a53006c94a">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>failURLPOST</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="aae378fa-dc40-4959-939e-bde30c0a7fb8">
+    <name>echoRaiffeisen</name>
+    <synonym>
+      <key>ru</key>
+      <value>Echo raiffeisen</value>
+    </synonym>
+    <template>/echoRaiffeisen</template>
+    <methods uuid="843a8a3f-0394-434b-80bd-7a88ed2d962e">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>echoRaiffeisenPOST</handler>
+    </methods>
+  </urlTemplates>
+</mdclass:HTTPService>

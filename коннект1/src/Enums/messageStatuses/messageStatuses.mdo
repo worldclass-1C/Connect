@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0ad81f12-c5e5-4c51-ab20-77274433e0e4">
+  <producedTypes>
+    <refType typeId="67a3b91c-d3b9-4d47-b49b-73abd79c0bcb" valueTypeId="d2b1916e-c1c0-4cee-8aca-3c43d0ce34c7"/>
+    <listType typeId="5f9c23ea-92d9-487c-b3a7-c0546a0810af" valueTypeId="65e5872a-d275-4c62-a91e-652b527e754c"/>
+    <managerType typeId="9f613870-ad03-4e60-adca-7ab10e029fc4" valueTypeId="f0b3553b-f08c-4c65-9be1-99330372f84d"/>
+  </producedTypes>
+  <name>messageStatuses</name>
+  <synonym>
+    <key>en</key>
+    <value>Message statuses</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Статусы сообщений</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <listPresentation>
+    <key>en</key>
+    <value>Message statuses</value>
+  </listPresentation>
+  <listPresentation>
+    <key>ru</key>
+    <value>Статусы сообщений</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Message statuses</value>
+  </extendedListPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Статусы сообщений</value>
+  </extendedListPresentation>
+  <enumValues uuid="9b6003d6-2edb-4d03-8b8e-ce01c0a51896">
+    <name>sent</name>
+    <synonym>
+      <key>en</key>
+      <value>Sent</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Отправлено</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="35dcbc94-5e9d-4cc7-8a46-f918792ff85c">
+    <name>notSent</name>
+    <synonym>
+      <key>en</key>
+      <value>Not sent</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Не отправлено</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="b73707e0-dd10-4dd0-b847-c3f828c37208">
+    <name>delivered</name>
+    <synonym>
+      <key>en</key>
+      <value>Delivered</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Доставлено</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="13538b06-6e5b-4561-a613-ee6e376904c2">
+    <name>notDelivered</name>
+    <synonym>
+      <key>en</key>
+      <value>Not delivered</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Не доставлено</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="8c6bed8c-3093-4675-87b6-ca2aee57bee6">
+    <name>read</name>
+    <synonym>
+      <key>en</key>
+      <value>Read</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Прочитано</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="a38c2909-3867-4898-81fc-06b64dcee77e">
+    <name>undefined</name>
+    <synonym>
+      <key>en</key>
+      <value>Undefined</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Неопределено</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>
