@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:HTTPService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f9bbb720-42a6-46e3-8df2-88e33c741551">
+  <name>external</name>
+  <synonym>
+    <key>ru</key>
+    <value>External</value>
+  </synonym>
+  <rootURL>external</rootURL>
+  <reuseSessions>AutoUse</reuseSessions>
+  <sessionMaxAge>300</sessionMaxAge>
+  <urlTemplates uuid="6eed20c0-2a59-4354-ba4f-964b52b4ee78">
+    <name>ProcessRequest</name>
+    <synonym>
+      <key>ru</key>
+      <value>Process request</value>
+    </synonym>
+    <template>/*</template>
+    <methods uuid="665fb91f-1538-4271-bb03-ec09d784d31a">
+      <name>POST</name>
+      <synonym>
+        <key>ru</key>
+        <value>POST</value>
+      </synonym>
+      <httpMethod>POST</httpMethod>
+      <handler>ProcessRequestPOST</handler>
+    </methods>
+    <methods uuid="1817fd84-10ed-4dfb-8474-fae16ea0f971">
+      <name>OPTIONS</name>
+      <synonym>
+        <key>en</key>
+        <value>OPTIONS</value>
+      </synonym>
+      <httpMethod>OPTIONS</httpMethod>
+      <handler>ProcessRequestOPTIONS</handler>
+    </methods>
+  </urlTemplates>
+  <urlTemplates uuid="ddf0bd73-6695-4944-a50a-89f4b0268996">
+    <name>ping</name>
+    <synonym>
+      <key>en</key>
+      <value>Ping</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Проверка</value>
+    </synonym>
+    <template>/ping</template>
+    <methods uuid="ada06388-69af-4ace-88b4-cc0f654e0a0b">
+      <name>GET</name>
+      <synonym>
+        <key>en</key>
+        <value>GET</value>
+      </synonym>
+      <handler>pingGet</handler>
+    </methods>
+  </urlTemplates>
+</mdclass:HTTPService>

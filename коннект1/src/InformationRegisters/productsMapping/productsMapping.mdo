@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c0dc532e-2bbd-41f0-95ae-6eaa84747212">
+  <producedTypes>
+    <selectionType typeId="dcf57d48-064a-4cb3-b1e2-3207b7e3c9d3" valueTypeId="3b817015-eb48-4fe8-96f6-8146f560a5dc"/>
+    <listType typeId="a38ba628-27df-4ae9-8577-feddace1f3d5" valueTypeId="b36b0884-e095-43e2-b23c-8094ff66aae3"/>
+    <managerType typeId="11dbbdb8-1c98-47e7-9677-896505267dd5" valueTypeId="eb7e5877-0b61-4628-87f3-c14f27d79107"/>
+    <recordSetType typeId="debf2123-1dcb-478f-beff-9cafc968118e" valueTypeId="f1ce05c4-e08f-4d04-a472-150d0d6a19f2"/>
+    <recordKeyType typeId="867fd9b5-692d-45da-a911-547446dfbef7" valueTypeId="22b869e5-46ef-4526-b89b-53b71212aadf"/>
+    <recordType typeId="1f0a1d69-98ac-40e7-ada9-43b69923309a" valueTypeId="0a0a0325-e157-4e3a-b500-d00a75a13ba4"/>
+    <recordManagerType typeId="d8361591-e12b-4123-8387-dbf60da74fa7" valueTypeId="338368b4-a609-406f-9d97-a74785fa4d84"/>
+  </producedTypes>
+  <name>productsMapping</name>
+  <synonym>
+    <key>en</key>
+    <value>Products mapping</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Соответсвие номенклатуры</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="45002ca5-9c62-4889-9408-ebb4879c7596">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="3b64310e-9024-4d54-b07f-2ba00a0f4ffa">
+    <name>product</name>
+    <synonym>
+      <key>en</key>
+      <value>Product</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номенклатура</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.products</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="b32b9db5-9021-469f-ada1-7a7f0e15f751">
+    <name>entryType</name>
+    <synonym>
+      <key>en</key>
+      <value>Entry type</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Тип</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </dimensions>
+  <dimensions uuid="771f64e9-1338-459d-a6ab-944ff522b8a8">
+    <name>uid</name>
+    <synonym>
+      <key>en</key>
+      <value>Uid</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>ГУИД</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>36</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <indexing>Index</indexing>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

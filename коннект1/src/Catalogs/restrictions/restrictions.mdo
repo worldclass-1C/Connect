@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="857bf255-f176-468a-82e8-f3b8a549a96d">
+  <producedTypes>
+    <objectType typeId="a6b654d1-2070-4e9c-91cd-290e67e0506d" valueTypeId="907b2b7f-cce6-4a82-aef6-722a4971a4c3"/>
+    <refType typeId="f9863bf7-9f14-414c-b437-50980903fa1b" valueTypeId="f33697fa-9bde-4cc3-9ec7-3d576473d116"/>
+    <selectionType typeId="4876ac55-969d-4521-800e-825dd15a326d" valueTypeId="6fbda0bc-77da-48bc-aec4-613b4631e838"/>
+    <listType typeId="fb6aa24e-236b-4b47-8308-b7004d2b8462" valueTypeId="e86cbcb5-474e-42af-a188-722ac7815d60"/>
+    <managerType typeId="1fd3ea3e-d59a-4020-a2c3-a54247f1221d" valueTypeId="81b6709a-6747-44ab-9ed1-2f3cc02857ce"/>
+  </producedTypes>
+  <name>restrictions</name>
+  <synonym>
+    <key>ru</key>
+    <value>Ограничения доступа</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.restrictions.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.restrictions.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>150</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="ffd49f3a-b701-4aab-911d-7307f2034331">
+    <name>chain</name>
+    <synonym>
+      <key>ru</key>
+      <value>Сеть</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="e51f94c4-a11e-486a-817f-5173de63e67a">
+    <name>appType</name>
+    <synonym>
+      <key>ru</key>
+      <value>App type</value>
+    </synonym>
+    <type>
+      <types>EnumRef.appTypes</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="a87a8639-a663-44a9-942c-72678c641f30">
+    <producedTypes>
+      <objectType typeId="d37f4bee-0fdf-4851-8be5-62114720bce9" valueTypeId="ebfa3dfd-ac99-4679-9ed2-5654c9370a50"/>
+      <rowType typeId="8a62fd26-ddbc-473e-9524-085833fc2e0a" valueTypeId="8b2505be-9335-4382-88aa-e210aa7d5de2"/>
+    </producedTypes>
+    <name>methods</name>
+    <synonym>
+      <key>ru</key>
+      <value>Methods</value>
+    </synonym>
+    <attributes uuid="01ba2957-4d9c-45b3-a21b-f2f9aedcac59">
+      <name>method</name>
+      <synonym>
+        <key>ru</key>
+        <value>Method</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>150</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

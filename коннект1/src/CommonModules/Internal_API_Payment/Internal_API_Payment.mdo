@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3734d72d-e480-47ab-954b-9a890c74c845">
+  <name>Internal_API_Payment</name>
+  <synonym>
+    <key>en</key>
+    <value>Internal API payment</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>
