@@ -10,6 +10,10 @@ Procedure executeRequestMethod(parameters) Export
 	If parameters.error = "" Then
 		If parameters.requestName = "chainlist" Then
 			API_List.chainList(parameters);
+		// SC-099054
+		ElsIf parameters.requestName = "chainlistedna" Then	 
+			API_List.chainListEdna(parameters);
+		//
 		ElsIf parameters.requestName = "countrycodelist" Then
 			API_List.countryCodeList(parameters);
 		ElsIf parameters.requestName = "config" Then
@@ -64,6 +68,10 @@ Procedure executeRequestMethod(parameters) Export
 		//	API_Info.userCache(parameters);	
 		ElsIf parameters.requestName = "cataloggyms" Or parameters.requestName = "gymlist" Then
 			API_List.gymList(parameters);
+		// SC-099054
+		ElsIf parameters.requestName = "gymlistedna" Then
+			API_List.gymListEdna(parameters);
+		//	
 		ElsIf parameters.requestName = "integration_zoom" Then
 			zoom.integration(parameters);
 		ElsIf parameters.requestName = "roomlist" Then
@@ -418,7 +426,7 @@ Procedure confirmPhone(parameters)
 			If ValueIsFilled(select.user) Then
 				changeStruct = New Structure("account, user", select.account, select.user);
 				Token.editProperty(tokenContext.token, changeStruct);
-				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType, tokenContext.chain));
+				struct.Insert("userProfile", Users.profile(select.user, tokenContext.appType));
 				struct.Insert("userList", New Array);
 				struct.Insert("token", XMLString(tokenContext.token) + Account.tempPassword());
 				parametersNew = Service.getStructCopy(parameters);
@@ -850,7 +858,7 @@ Procedure changeCreateItems(parameters)
 	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 EndProcedure
 
-Procedure sendMessage(parameters) 
+Procedure sendMessage(parameters)
 
 	requestStruct = parameters.requestStruct;
 	tokenContext = parameters.tokenContext;

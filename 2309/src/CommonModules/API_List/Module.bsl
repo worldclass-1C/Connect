@@ -222,13 +222,12 @@ Function  getArrGyms(params) Export
 	EndIf;
 	
 	Res = ?(stucParams.byArray, New Map, New Array);
-	query = New Query("SELECT DISTINCT
+	query = New Query("SELECT
 	|	T.base AS base,
 	|	T.ref AS ref
 	|INTO TmyGyms
 	|FROM
-	|	&myGyms AS T
-	|;
+	|	&myGyms AS T;
 	|////////////////////////////////////////////////////////////////////////////////
 	|Select
 	|	*,
@@ -934,3 +933,102 @@ Function GetgymTypesArray()
 	gymTypes = "gym studio outdoor online";
 	Return StrSplit(gymTypes, " ");
 EndFunction
+
+// SC-099054
+Procedure chainListEdna(parameters) Export
+
+	language = parameters.language;
+	brand = parameters.brand; // Это строковое значение
+	
+	array = New array;
+	
+	if brand = Enums.brandTypes.None then
+		brand = Enums.brandTypes.WorldClass; 
+	EndIf;
+
+	query = New Query();
+	query.text = "SELECT
+	|	ISNULL(chaininterfaceText.description, chain.Description) AS Description,
+	|	chain.Code AS code,
+	|	chain.Ref AS chain
+	|FROM
+	|	Catalog.chains AS chain
+	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
+	|		ON chaininterfaceText.Ref = chain.Ref
+	|		AND chaininterfaceText.language = &language
+	|WHERE
+	|	NOT chain.DeletionMark
+	|	AND chain.brand = &brand
+	|ORDER BY
+	|	code";
+
+	query.SetParameter("language", language);
+	query.SetParameter("brand", brand);
+	
+	select = query.Execute().Select();
+	
+	RecordCount = select.Count();
+	
+	HeadrStruct = New Structure();
+	HeadrStruct.Insert("RecordCount", RecordCount);
+	array.add(HeadrStruct);
+
+	While select.Next() Do
+		chainStruct = New Structure();
+		chainStruct.Insert("description", select.Description);
+		chainStruct.Insert("id", select.code);
+		//chainStruct.Insert("chain", select.chain);
+	
+		array.add(chainStruct);
+	EndDo;
+
+	parameters.Insert("answerBody", HTTP.encodeJSON(array));
+
+EndProcedure
+
+Procedure gymListEdna(parameters) Export
+
+	requestStruct = parameters.requestStruct;
+	gymArray = New Array();	
+
+	If Not requestStruct.Property("chain") Then		
+		parameters.Insert("error", "chainCodeError");
+	Else	 
+
+	query = New Query();
+	query.text = "SELECT
+	|	gyms.Ref AS Ref,
+	|	gyms.Description AS Description
+	|FROM
+	|	Catalog.gyms AS gyms
+	|WHERE
+	|	NOT gyms.DeletionMark
+	|	AND gyms.chain.Code = &chaincode
+	|	AND
+	|	NOT gyms.chain = VALUE(Справочник.chains.ПустаяСсылка)
+	|ORDER BY
+	|	gyms.Code";
+	
+	query.SetParameter("chaincode", requestStruct.chain); 
+	
+	select = query.Execute().Select();
+	
+	RecordCount = select.Count();
+	
+	HeadrStruct = New Structure();
+	HeadrStruct.Insert("RecordCount", RecordCount);
+	gymArray.add(HeadrStruct);
+	
+	While select.Next() Do
+		chainStruct = New Structure();
+		chainStruct.Insert("description", select.Description);
+		chainStruct.Insert("uid", XMLString(select.Ref));
+	
+		gymArray.add(chainStruct);
+	EndDo;
+	EndIf;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));	
+	
+EndProcedure
+//
