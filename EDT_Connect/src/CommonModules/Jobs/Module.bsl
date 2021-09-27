@@ -491,6 +491,7 @@ Procedure sendThread() export
    		
    		HeaderStruct.Insert("phone", selection.Ref.phone);
 		HeaderStruct.Insert("login", selection.Ref.login); 
+		HeaderStruct.Insert("id"   , selection.Ref.Description);
 		
 		TableStruct.Insert("Tags", selection.Ref.ThreadTags.UnloadColumn("Tag"));
 		
