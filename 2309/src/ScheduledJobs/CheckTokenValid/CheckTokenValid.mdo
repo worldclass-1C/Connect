@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="edb06eb8-80d0-413f-82cf-04581ed1171d">
+  <name>CheckTokenValid</name>
+  <synonym>
+    <key>ru</key>
+    <value>Check token valid</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.CheckTokenValid</methodName>
+  <use>true</use>
+  <predefined>true</predefined>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>10</restartIntervalOnFailure>
+</mdclass:ScheduledJob>

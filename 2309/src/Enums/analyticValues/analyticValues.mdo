@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="76880a07-3ecc-40cd-9e85-7b3b4f96938e">
+  <producedTypes>
+    <refType typeId="e301350f-c46c-42b9-947f-e00b24420838" valueTypeId="0e8b1ba1-87aa-4004-9c9f-43fbb0d86d63"/>
+    <listType typeId="a37ef330-c540-42f0-a1a4-c8889a67c434" valueTypeId="086649b5-62e1-40e2-88b7-433e69548943"/>
+    <managerType typeId="8faeb127-7e2e-4d96-a4b8-dd715f7e162b" valueTypeId="808446cb-68a3-475b-b0e6-e67fd4540d57"/>
+  </producedTypes>
+  <name>analyticValues</name>
+  <synonym>
+    <key>ru</key>
+    <value>Analytic values</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <listPresentation>
+    <key>ru</key>
+    <value>Показатели</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>ru</key>
+    <value>Показатели</value>
+  </extendedListPresentation>
+  <enumValues uuid="1a2a76b9-a37f-4e38-8816-b7223c481c3d">
+    <name>events</name>
+    <synonym>
+      <key>ru</key>
+      <value>Events</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="460edc6f-a4c1-4c35-ae34-07a7234330c1">
+    <name>freeze</name>
+    <synonym>
+      <key>ru</key>
+      <value>Freeze</value>
+    </synonym>
+    <comment>Заморозок</comment>
+  </enumValues>
+  <enumValues uuid="474d1ff6-7e76-4e6f-8e55-858e1992f43b">
+    <name>payments</name>
+    <synonym>
+      <key>ru</key>
+      <value>Payments</value>
+    </synonym>
+    <comment>Оплат</comment>
+  </enumValues>
+  <enumValues uuid="948c8176-1541-4f37-b2f7-9222c90dd4b7">
+    <name>purchases</name>
+    <synonym>
+      <key>ru</key>
+      <value>Purchases</value>
+    </synonym>
+    <comment>Покупок</comment>
+  </enumValues>
+  <enumValues uuid="50817005-842c-48fb-b53f-5eac2876a479">
+    <name>registrations</name>
+    <synonym>
+      <key>ru</key>
+      <value>Registrations</value>
+    </synonym>
+    <comment>Регистраций</comment>
+  </enumValues>
+  <enumValues uuid="6e6e78cd-0cf0-4fe3-9ab9-16666831e8ca">
+    <name>sessions</name>
+    <synonym>
+      <key>ru</key>
+      <value>Sessions</value>
+    </synonym>
+    <comment>Сеансов</comment>
+  </enumValues>
+  <enumValues uuid="2853c071-f205-4bed-a409-fe1941ccf3cc">
+    <name>delApp</name>
+    <synonym>
+      <key>ru</key>
+      <value>Del app</value>
+    </synonym>
+    <comment>Удаление МП</comment>
+  </enumValues>
+  <enumValues uuid="fa91bc73-db8b-4c8c-b64f-87af4fcb6845">
+    <name>activeUsers</name>
+    <synonym>
+      <key>ru</key>
+      <value>Active users</value>
+    </synonym>
+    <comment>Уникальных активных пользователей</comment>
+  </enumValues>
+  <enumValues uuid="dd278cd4-331c-4d9e-9484-62ba2531e2c3">
+    <name>users</name>
+    <synonym>
+      <key>ru</key>
+      <value>Users</value>
+    </synonym>
+    <comment>Уникальных пользователей</comment>
+  </enumValues>
+  <enumValues uuid="71d072de-adb7-433c-aeab-6fe8d96deb3c">
+    <name>installApp</name>
+    <synonym>
+      <key>ru</key>
+      <value>Install app</value>
+    </synonym>
+    <comment>Установка МП</comment>
+  </enumValues>
+</mdclass:Enum>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a473e059-5033-4b0c-b475-57c4a69fdd34">
+  <producedTypes>
+    <selectionType typeId="01f00c62-c6a2-4eba-bec1-f241391460fc" valueTypeId="6b3828cf-0841-4637-b7a0-26bccd55059b"/>
+    <listType typeId="87a27d07-0a98-4c49-a14e-7f8c1197dfc2" valueTypeId="e5c1f1d5-261d-4139-9d57-fbd9d5051780"/>
+    <managerType typeId="a7f013de-f289-4b9b-ae95-55321cbe67e5" valueTypeId="8a7f76dc-334d-4d70-a16c-631c35eb3ee1"/>
+    <recordSetType typeId="e807f3bf-6960-4aad-84fb-68e0bc32b47c" valueTypeId="bd581591-dde3-4b18-a649-995e9d924883"/>
+    <recordKeyType typeId="dfd98f89-183e-4eac-b183-0cba86224a05" valueTypeId="602c436e-865d-4828-b259-161759604966"/>
+    <recordType typeId="ce6795dd-2ad0-4370-9ce2-55ca91feb80d" valueTypeId="41cf1196-26e7-4175-9281-947dd4b0f4a9"/>
+    <recordManagerType typeId="1bead8b9-2b9b-49aa-8af3-d8da0bda6e7a" valueTypeId="c9688bcc-6cfa-4269-8a7a-c467c72beba2"/>
+  </producedTypes>
+  <name>gymsProducts</name>
+  <synonym>
+    <key>en</key>
+    <value>Gyms products</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Номенклатура клубов</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="2495a701-e603-48b7-8718-50bc22a4be60">
+    <name>registrationDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Registration date</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Дата регистрации</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <attributes uuid="93ce14f8-ac66-4857-b7c9-8fd89f311eb0">
+    <name>price</name>
+    <synonym>
+      <key>ru</key>
+      <value>Price</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>15</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
+  </attributes>
+  <dimensions uuid="d607c664-02e8-4cd7-b7dc-de5fe022e62e">
+    <name>productDirection</name>
+    <synonym>
+      <key>en</key>
+      <value>Product direction</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Бизнес направление</value>
+    </synonym>
+    <type>
+      <types>EnumRef.productDirections</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </dimensions>
+  <dimensions uuid="41cadc76-7e53-4e2b-b911-e800d7570743">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="50c41f63-d0c1-4977-a177-559b8e6bede8">
+    <name>product</name>
+    <synonym>
+      <key>en</key>
+      <value>Product</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Номенклатура</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.products</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>
