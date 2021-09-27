@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="082e06ba-f633-4fa3-a9cc-3eb7c1b770b8">
+  <name>sendThread</name>
+  <synonym>
+    <key>ru</key>
+    <value>Send thread</value>
+  </synonym>
+  <comment>// SC-098870 </comment>
+  <methodName>CommonModule.Jobs.sendThread</methodName>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>25</restartIntervalOnFailure>
+</mdclass:ScheduledJob>

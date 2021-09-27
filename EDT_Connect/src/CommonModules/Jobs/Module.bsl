@@ -453,3 +453,71 @@ function GetKPOData(holding, requestStruct, requestName)
 		GeneralCallServer.executeRequestMethod(requestParameters);		
 	EndIf;	
 EndFunction
+
+// SC-098870 
+Procedure sendThread() export
+  
+  query = New Query(); 
+  query.Text = "SELECT DISTINCT
+  |	ThreadChanges.Ref AS Ref,
+  |	restrictions.chain AS chain,
+  |	ISNULL(restrictions.chain.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
+  |	ISNULL(restrictions.chain.holding.languageDefault.Code, """") AS languageCode,
+  |	ISNULL(restrictions.chain.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
+  |	ISNULL(restrictions.chain.holding.tokenDefault.user.userCode, """") AS userCode,
+  |	ISNULL(restrictions.chain.holding.tokenDefault.deviceModel, """") AS deviceModel,
+  |	restrictions.chain.holding.tokenDefault AS tokenDefault,
+  |	restrictions.chain.holding AS holding,
+  |	restrictions.chain.holding.tokenDefault.appVersion AS appVersion,
+  |	restrictions.chain.holding.tokenDefault.systemType AS systemType,
+  |	"""""""" as brand
+  |FROM
+  |	Catalog.restrictions AS restrictions,
+  |	Catalog.Thread.Changes AS ThreadChanges
+  |WHERE
+  |	ThreadChanges.Node = &Node";
+  
+  unit = ExchangePlans.threadsToSend.FindByCode("TH"); /// С кодом нужно определиться ????????????? 
+  query.SetParameter("Node", unit); 
+  
+  selection = query.Execute().Select();
+  requestStruct = New Structure();
+  array = new array();
+  
+  While selection.Next() Do
+  		HeaderStruct  = New Structure();
+  		TableStruct   = New Structure();
+   		OutputStruct  = New Structure("Header,Tables");
+   		
+   		HeaderStruct.Insert("phone", selection.Ref.phone);
+		HeaderStruct.Insert("login", selection.Ref.login); 
+		
+		TableStruct.Insert("Tags", selection.Ref.ThreadTags.UnloadColumn("Tag"));
+		
+		ArrayMessages = New Array();
+		TM = selection.Ref.ThreadMessages;
+		For Each StrMessage In TM Do
+			SrtStruct = New Structure("Message,ResponseTime",StrMessage.Message,"");
+			ArrayMessages.Add(SrtStruct);		
+		EndDo;
+		TableStruct.Insert("Messages", ArrayMessages);
+		
+		OutputStruct.Insert("Header", HeaderStruct);
+		OutputStruct.Insert("Tables", TableStruct);
+		array.Add(OutputStruct);
+		
+		requestStruct.Insert("array", array);
+    		
+		parameters = GetParametersToSend(selection, "managerCorrespondence");
+		parameters.Insert("internalRequestMethod", 	True);
+		parameters.Insert("requestStruct", 			requestStruct);
+		General.executeRequestMethod(parameters);
+		Service.logRequestBackground(parameters);
+
+		if parameters.error = "" then
+			ExchangePlans.DeleteChangeRecords(unit, selection.ref);
+		EndIf;
+  EndDo;
+  
+EndProcedure
+//

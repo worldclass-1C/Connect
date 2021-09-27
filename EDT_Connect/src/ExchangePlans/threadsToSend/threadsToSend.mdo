@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ExchangePlan xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6db62272-d111-433c-bd4d-6f7152a9da8d" thisNode="6db62272-d111-433c-bd4d-6f7152a9da8d">
+  <producedTypes>
+    <objectType typeId="ad2f89b6-2fbc-45ad-9fce-bee8f138e60a" valueTypeId="ba26ba40-0c87-43f6-91ca-c3763d0553dc"/>
+    <refType typeId="7116f7dd-e617-415d-ac38-f77950ef4038" valueTypeId="7caaeb15-e4fa-4e1e-ae06-fa96b9e0ed24"/>
+    <selectionType typeId="66791578-d2ac-47f1-a08f-36a409cca724" valueTypeId="7e303683-ba87-493e-a26a-3781534c753c"/>
+    <listType typeId="d0201a84-72f7-4397-bf28-f9489d41de10" valueTypeId="e0ba3f69-4fe1-4740-b202-af33baac6c2a"/>
+    <managerType typeId="f94cdbc3-8be9-43c5-8a37-e1d46b7d12c0" valueTypeId="a6a53815-8b8c-457b-bd52-7b3c20336824"/>
+  </producedTypes>
+  <name>threadsToSend</name>
+  <synonym>
+    <key>ru</key>
+    <value>Threads to send</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>ExchangePlan.threadsToSend.StandardAttribute.Code</inputByString>
+  <inputByString>ExchangePlan.threadsToSend.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>DontUse</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <codeLength>9</codeLength>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <descriptionLength>25</descriptionLength>
+  <content>
+    <mdObject>Catalog.Thread</mdObject>
+    <autoRecord>Allow</autoRecord>
+  </content>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:ExchangePlan>

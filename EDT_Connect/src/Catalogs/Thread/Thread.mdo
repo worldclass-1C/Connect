@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f2cc7924-cde4-4da7-86a5-92d602d6f12f">
+  <producedTypes>
+    <objectType typeId="1594f324-51d5-4ea1-a07b-054e21ac8b82" valueTypeId="84edaa49-d98c-49e6-abe3-e75ed2a175d7"/>
+    <refType typeId="b2fff503-8bf3-4693-a733-b3648c75c273" valueTypeId="8a035804-e64f-454c-907d-106007a49937"/>
+    <selectionType typeId="00c69ffa-f923-4efa-ab9a-8fa7e4e6144c" valueTypeId="dce91175-8a52-4a17-bad4-f0ba5a9d7ce5"/>
+    <listType typeId="6fff6bc8-b73c-4c6f-ac9d-a7fc134ace81" valueTypeId="5ea703e5-3e95-4edd-803f-0970d7c51a31"/>
+    <managerType typeId="671745ec-f8c3-4ef2-8a5b-6fb53e21cd85" valueTypeId="0811e6e2-f7e1-4399-bf0c-9c4487885fd9"/>
+  </producedTypes>
+  <name>Thread</name>
+  <synonym>
+    <key>ru</key>
+    <value>Thread</value>
+  </synonym>
+  <comment>// SC-098870 </comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Thread.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Thread.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>36</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="c9e628f1-507a-4bce-8198-b2d64a5406ec">
+    <name>IncomingData</name>
+    <synonym>
+      <key>ru</key>
+      <value>Incoming data</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="41561273-0814-4374-9ae1-662e99ff1919">
+    <name>StartTime</name>
+    <synonym>
+      <key>ru</key>
+      <value>Start time</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="35effceb-5697-4e94-84b8-e605d3749b4a">
+    <name>ChannelType</name>
+    <synonym>
+      <key>ru</key>
+      <value>Channel type</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>30</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="9e1a3b95-1ca6-4c31-990a-6c682f91c061">
+    <name>phone</name>
+    <synonym>
+      <key>ru</key>
+      <value>Phone</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="28d9cee2-607d-40ca-b94b-6123ec317392">
+    <name>login</name>
+    <synonym>
+      <key>ru</key>
+      <value>Login</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>200</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="134dcb22-aa32-4e70-9500-a95429936651">
+    <producedTypes>
+      <objectType typeId="49de839a-a93e-4f0e-b627-ab5961bb5575" valueTypeId="3c17b6e8-3734-4e9c-b262-fa79ee40c907"/>
+      <rowType typeId="df114e56-2624-4d33-87b4-efb2fed3083c" valueTypeId="54ecdb90-fbdb-42fc-98ec-fb04ccda6697"/>
+    </producedTypes>
+    <name>ThreadMessages</name>
+    <synonym>
+      <key>ru</key>
+      <value>Thread messages</value>
+    </synonym>
+    <attributes uuid="32f0ca85-9c8f-4b42-833e-b637672d3756">
+      <name>Message</name>
+      <synonym>
+        <key>ru</key>
+        <value>Message</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="483361e0-9cdb-45f4-a65c-b2df11044143">
+      <name>ResponseTime</name>
+      <synonym>
+        <key>ru</key>
+        <value>Response time</value>
+      </synonym>
+      <type>
+        <types>Date</types>
+        <dateQualifiers>
+          <dateFractions>Time</dateFractions>
+        </dateQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="befb09cb-57d6-4275-89bb-5ba367679894">
+    <producedTypes>
+      <objectType typeId="a8dd9f66-f186-4f7d-a381-2c98808211c9" valueTypeId="1308a1a2-b3bb-4337-b499-ae8ed7e1440b"/>
+      <rowType typeId="4f88fadc-3d4c-4955-8d24-018f006a7cc9" valueTypeId="f0f08ac5-b14b-4680-b561-b377cdc3cb22"/>
+    </producedTypes>
+    <name>ThreadTags</name>
+    <synonym>
+      <key>ru</key>
+      <value>Thread tags</value>
+    </synonym>
+    <attributes uuid="1159a681-5bc8-45a7-a15a-27fd241fe63f">
+      <name>Tag</name>
+      <synonym>
+        <key>ru</key>
+        <value>Tag</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

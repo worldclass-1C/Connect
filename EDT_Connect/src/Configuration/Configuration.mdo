@@ -150,6 +150,7 @@
   <exchangePlans>ExchangePlan.messagesToCheckStatus</exchangePlans>
   <exchangePlans>ExchangePlan.usersCheckIn</exchangePlans>
   <exchangePlans>ExchangePlan.restrictionChanges</exchangePlans>
+  <exchangePlans>ExchangePlan.threadsToSend</exchangePlans>
   <httpServices>HTTPService.external</httpServices>
   <httpServices>HTTPService.internal</httpServices>
   <httpServices>HTTPService.smsStatus</httpServices>
@@ -166,6 +167,7 @@
   <scheduledJobs>ScheduledJob.sendRestrictionChanges</scheduledJobs>
   <scheduledJobs>ScheduledJob.CleaOldCacheRecord</scheduledJobs>
   <scheduledJobs>ScheduledJob.sendPollsResults</scheduledJobs>
+  <scheduledJobs>ScheduledJob.sendThread</scheduledJobs>
   <commonCommands>CommonCommand.НачатьИнтервью</commonCommands>
   <commonCommands>CommonCommand.getUid</commonCommands>
   <commonCommands>CommonCommand.Рublish</commonCommands>
@@ -217,6 +219,7 @@
   <catalogs>Catalog.hostsZoom</catalogs>
   <catalogs>Catalog.restrictions</catalogs>
   <catalogs>Catalog.appsZoom</catalogs>
+  <catalogs>Catalog.Thread</catalogs>
   <documents>Document.Анкета</documents>
   <documents>Document.НазначениеОпросов</documents>
   <documents>Document.RegisterRecorder</documents>

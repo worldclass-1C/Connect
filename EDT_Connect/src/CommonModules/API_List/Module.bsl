@@ -1015,9 +1015,9 @@ Procedure gymListEdna(parameters) Export
 	
 	RecordCount = select.Count();
 	
-	HeadrStruct = New Structure();
-	HeadrStruct.Insert("RecordCount", RecordCount);
-	gymArray.add(HeadrStruct);
+	HeaderStruct = New Structure();
+	HeaderStruct.Insert("RecordCount", RecordCount);
+	gymArray.add(HeaderStruct);
 	
 	While select.Next() Do
 		chainStruct = New Structure();
@@ -1029,6 +1029,66 @@ Procedure gymListEdna(parameters) Export
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));	
+	
+EndProcedure
+//
+
+// SC-099055
+Procedure incomingThread(parameters) Export
+	
+	JSONReader = New JSONReader;
+	JSONReader.SetString(parameters.requestBody); 
+	RequestParameters = ReadJSON(JSONReader,,Undefined);
+	JSONReader.Close();
+	
+	struct = New Structure;
+	struct.Insert("success", True);
+	
+	If Not RequestParameters.Property("client") Then	
+		parameters.Insert("error", "ThreadClientError");
+		struct.Insert("success", False);	
+	EndIf;
+	
+	If Not RequestParameters.Property("thread") Then	
+		parameters.Insert("error", "threadError");
+		struct.Insert("success", False);
+	EndIf;
+	
+	If Not RequestParameters.Property("operator") Then	
+		parameters.Insert("error", "ThreadOperatorError");
+		struct.Insert("success", False);
+	EndIf;
+	
+	If struct.success Then 
+	threadid = RequestParameters.thread.id;
+	//StartTime = RequestParameters.thread.startTime; 
+	ChannelType = RequestParameters.thread.channelType;
+	ArrayMessages = RequestParameters.thread.messages;
+	ArrayTags = RequestParameters.thread.Tags;
+	
+	NewObject  = Catalogs.Thread.CreateItem();
+	NewObject.Description  = threadid;
+	NewObject.IncomingData = parameters.requestBody; 
+	//NewObject.StartTime = StartTime;  
+	NewObject.ChannelType = ChannelType; 
+	NewObject.login = RequestParameters.operator.login;
+	NewObject.phone = RequestParameters.client.phone;  
+	
+	For Each StrMessage In ArrayMessages Do
+		NewSrt = NewObject.ThreadMessages.Add();
+		NewSrt.Message = StrMessage.text;
+		//NewSrt.ResponseTime = StrMessage.receivedAt; 
+	EndDo;
+	
+	For Each StrTags In ArrayTags Do
+		NewSrt = NewObject.ThreadTags.Add();
+		NewSrt.tag = StrTags.tag;
+	EndDo;
+	
+	NewObject.Write();
+	EndIf;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(struct));
 	
 EndProcedure
 //
