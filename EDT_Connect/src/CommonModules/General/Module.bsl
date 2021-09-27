@@ -3,7 +3,7 @@ Procedure executeRequestMethod(parameters) Export
 	If parameters.internalRequestMethod Then
 		General.executeRequestMethodStart(parameters);
 	EndIf;
-
+ 
 	parameters.Insert("error", Check.requestParameters(parameters));
 	parameters.Insert("error", Check.accessRequest(parameters));
 
