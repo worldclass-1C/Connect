@@ -5,7 +5,7 @@
     <key>ru</key>
     <value>Send thread</value>
   </synonym>
-  <comment>// SC-098870 </comment>
+  <comment>// SC-098870</comment>
   <methodName>CommonModule.Jobs.sendThread</methodName>
   <restartCountOnFailure>3</restartCountOnFailure>
   <restartIntervalOnFailure>25</restartIntervalOnFailure>

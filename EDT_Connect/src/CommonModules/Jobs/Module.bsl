@@ -1,4 +1,4 @@
-
+ 
 Procedure sendSMS() Export
 	Messages.sendMessages(Enums.informationChannels.sms);
 EndProcedure
