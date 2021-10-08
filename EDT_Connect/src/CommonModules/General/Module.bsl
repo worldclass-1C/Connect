@@ -18,6 +18,11 @@ Procedure executeRequestMethod(parameters) Export
 		ElsIf parameters.requestName = "incomingthread" Then	
 			API_List.incomingThread(parameters);
 		//
+		// SC-099057
+		ElsIf parameters.requestName = "outmessagematchers" Then	
+			API_List.OutMessageMatchers(parameters);
+		ElsIf parameters.requestName = "imouthsm" Then	
+			API_List.imOutHSM(parameters);
 		//
 		ElsIf parameters.requestName = "countrycodelist" Then
 			API_List.countryCodeList(parameters);

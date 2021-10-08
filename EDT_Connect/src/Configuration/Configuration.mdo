@@ -278,6 +278,7 @@
   <informationRegisters>InformationRegister.holdingsConnectionsAcquiringBank</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsInformationSources</informationRegisters>
   <informationRegisters>InformationRegister.holdingsConnectionsSMSProviders</informationRegisters>
+  <informationRegisters>InformationRegister.holdingsConnectionsThread</informationRegisters>
   <informationRegisters>InformationRegister.messagesId</informationRegisters>
   <informationRegisters>InformationRegister.messagesLogs</informationRegisters>
   <informationRegisters>InformationRegister.ordersStates</informationRegisters>

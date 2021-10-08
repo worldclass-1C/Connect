@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6906fb9c-047c-4d34-ac5a-4d13958267bb">
+  <producedTypes>
+    <selectionType typeId="2848970a-710c-492a-a774-20c0314416a0" valueTypeId="4945ee39-6847-4d16-909c-5596a7911497"/>
+    <listType typeId="7bb2c2b0-7eb8-4d94-8c41-52a62c157d69" valueTypeId="b64e2669-720f-4da3-b766-4b77626ead2c"/>
+    <managerType typeId="f37b2d03-1964-4e95-96f9-421ac8c4ec2a" valueTypeId="26e8c44a-55c5-4a3b-ac3f-0028ce46c8fa"/>
+    <recordSetType typeId="dfef13e7-df80-4224-9d98-2f3171c8453e" valueTypeId="026e69c0-eb45-403e-af17-5f958baddcc3"/>
+    <recordKeyType typeId="a274ab9e-172f-4731-a4da-ab3d4b0f3219" valueTypeId="2cbadbbb-74b7-4533-9cb8-aaca0df7735e"/>
+    <recordType typeId="3fa0ff6c-7a94-4abf-a57f-bd0d7eb42370" valueTypeId="26b66287-4650-4f89-b952-e5a91cf9a3c7"/>
+    <recordManagerType typeId="200717b3-e57a-467c-84c0-f8782ac81aad" valueTypeId="74b8da41-154e-41b1-acc6-ebb5118f08e3"/>
+  </producedTypes>
+  <name>holdingsConnectionsThread</name>
+  <synonym>
+    <key>en</key>
+    <value>Holdings connections to thread</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Подключения холдингов к Edna </value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Active</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>LineNumber</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Recorder</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Period</name>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+  </standardAttributes>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>Holdings connection to acquiring bank</value>
+  </recordPresentation>
+  <extendedRecordPresentation>
+    <key>en</key>
+    <value>Holdings connection to acquiring bank</value>
+  </extendedRecordPresentation>
+  <listPresentation>
+    <key>en</key>
+    <value>Holdings connections to acquiring bank</value>
+  </listPresentation>
+  <extendedListPresentation>
+    <key>en</key>
+    <value>Holdings connections to acquiring bank</value>
+  </extendedListPresentation>
+  <resources uuid="87ca836c-39c4-4072-b0c2-15e6ec73ebe0">
+    <name>connection</name>
+    <synonym>
+      <key>en</key>
+      <value>Connection</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Подключение</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.acquiringConnections</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <dimensions uuid="ef90ea33-5988-4c71-96ac-93b34a9ae9f5">
+    <name>holding</name>
+    <synonym>
+      <key>en</key>
+      <value>Holding</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Холдинг</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.holdings</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <master>true</master>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="90ff8bb0-e931-461e-932c-91395871e98b">
+    <name>chain</name>
+    <synonym>
+      <key>en</key>
+      <value>Chain</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.chains</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="38bae2c2-ddfe-4e40-9ef8-45ef9ed8fdcf">
+    <name>gym</name>
+    <synonym>
+      <key>en</key>
+      <value>Gym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Клуб</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.gyms</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>
