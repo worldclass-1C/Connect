@@ -1077,7 +1077,8 @@ Procedure incomingThread(parameters) Export
 	For Each StrMessage In ArrayMessages Do
 		NewSrt = NewObject.ThreadMessages.Add();
 		NewSrt.Message = StrMessage.text;
-		//NewSrt.ResponseTime = StrMessage.receivedAt; 
+		NewSrt.ResponseTime = XMLValue(Type("Date"),StrMessage.receivedAt);
+		NewSrt.Owner = StrMessage.Owner; 
 	EndDo;
 	
 	For Each StrTags In ArrayTags Do
