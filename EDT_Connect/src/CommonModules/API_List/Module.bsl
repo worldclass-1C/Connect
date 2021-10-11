@@ -1093,3 +1093,162 @@ Procedure incomingThread(parameters) Export
 	
 EndProcedure
 //
+
+// SC-099057 
+Procedure OutMessageMatchers(parameters) Export
+	
+	requestStruct = parameters.requestStruct;		
+	tokenContext  = parameters.tokenContext;
+	
+	If Not requestStruct.Property("imType") Then	
+		parameters.Insert("error", "imTypeError");	
+	Else	
+		
+		body = new structure;
+		body.Insert("imType", requestStruct.imType); 
+		body.Insert("subject", requestStruct.subject);
+		
+		Connection ="/api/getOutMessageMatchers"; 
+		parametersConn = ConnStruct(tokenContext.holding); 
+		
+		ConnectionHTTP = New HTTPConnection(parametersConn.server, parametersConn.port,,,, parametersConn.timeout, ?(parametersConn.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersConn.useOSAuthentication);
+		
+		requestHTTP = New HTTPRequest(Connection);
+		requestHTTP.Headers.Insert("Content-Type", "application/json");
+		requestHTTP.Headers.Insert("X-API-KEY", parametersConn.key); 
+		requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
+		try
+			answerHTTP = ConnectionHTTP.Post(requestHTTP);
+		Except
+			answerHTTP = Undefined;
+		EndTry;
+		
+		responseStruct = New Structure();
+		
+		If answerHTTP <> Undefined Then		
+			responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+		Else
+			responseStruct.Insert("error","answerHTTP = Undefined");
+		EndIf;
+	EndIf;
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(responseStruct));
+	
+EndProcedure
+
+Procedure imOutHSM(parameters) Export
+
+	requestStruct = parameters.requestStruct;
+	tokenContext  = parameters.tokenContext;
+	
+	If Not requestStruct.Property("body") Then	
+		parameters.Insert("error", "BodyError");	
+	Else
+	
+	body = requestStruct.body; // заполненое тело запроса	
+		
+	Connection ="/api/imOutHSM"; 
+	parametersConn = ConnStruct(tokenContext.holding);
+	
+	ConnectionHTTP = New HTTPConnection(parametersConn.server, parametersConn.port,,,, parametersConn.timeout, ?(parametersConn.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersConn.useOSAuthentication);
+	
+	requestHTTP = New HTTPRequest(Connection);
+	requestHTTP.Headers.Insert("Content-Type", "application/json");
+	requestHTTP.Headers.Insert("X-API-KEY", parametersConn.key); 
+	requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
+		try
+			answerHTTP = ConnectionHTTP.Post(requestHTTP);
+		Except
+			answerHTTP = Undefined;
+		EndTry;
+		
+		responseStruct = New Structure();
+		
+		If answerHTTP <> Undefined Then		
+			responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+		Else
+			responseStruct.Insert("error","answerHTTP = Undefined");
+		EndIf;
+	EndIf;	
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(responseStruct));
+	
+EndProcedure
+
+Function ConnStruct(holding , gym = Undefined, chain = Undefined)
+			
+	queryConnection = New query;
+	queryConnection.Text = 
+	"SELECT
+	|	CASE
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection
+	|		ELSE holdingConnection.connection
+	|	END AS Connection
+	|FROM
+	|	(SELECT
+	|		holdingConnection.connection AS connection,
+	|		1 AS Link
+	|	FROM
+	|		InformationRegister.holdingsConnectionsThread AS holdingConnection
+	|	WHERE
+	|		holdingConnection.holding = &holding
+	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)) AS holdingConnection
+	|		LEFT JOIN (SELECT
+	|			gymConnection.connection AS connection,
+	|			1 AS Link
+	|		FROM
+	|			InformationRegister.holdingsConnectionsThread AS gymConnection
+	|		WHERE
+	|			gymConnection.holding = &holding
+	|			AND gymConnection.gym = &gym
+	|			AND gymConnection.chain = VALUE(catalog.chains.emptyref)
+	|			AND &chain = VALUE(catalog.chains.emptyref)) AS gymConnection
+	|		ON holdingConnection.Link = gymConnection.Link
+	|		LEFT JOIN (SELECT
+	|			chainConnection.connection AS connection,
+	|			1 AS Link
+	|		FROM
+	|			InformationRegister.holdingsConnectionsThread AS chainConnection
+	|		WHERE
+	|			chainConnection.holding = &holding
+	|			AND chainConnection.gym = VALUE(Catalog.gyms.EmptyRef)
+	|			AND &gym = VALUE(Catalog.gyms.EmptyRef)
+	|			AND chainConnection.chain = &chain) AS chainConnection
+	|		ON holdingConnection.Link = chainConnection.Link";
+	
+	queryConnection.SetParameter("holding", holding );
+	queryConnection.SetParameter("gym",   ?(gym   = Undefined,Catalogs.gyms.EmptyRef(),gym)); 
+	queryConnection.SetParameter("chain", ?(chain = Undefined,Catalogs.chains.EmptyRef(),chain));
+	
+	result = queryConnection.Execute();
+	answer = New Structure();
+	If result.IsEmpty() then
+		Return answer;
+	EndIf;	
+	
+	select = result.Select();
+	select.Next();
+	Conn = select.connection; 	
+
+	
+//	answer.Insert("server","im.edna.ru");
+//	answer.Insert("port",443);
+//	answer.Insert("timeout",30);
+//	answer.Insert("secureConnection", True);
+//	answer.Insert("useOSAuthentication", False); 
+//	answer.Insert("key", "2996db9c-ac8c-4d20-87ab-414da58291e6"); 
+	answer.Insert("server",Conn.server);
+	answer.Insert("port",Conn.port);
+	answer.Insert("timeout",Conn.timeout);
+	answer.Insert("secureConnection", Conn.secureConnection);
+	answer.Insert("useOSAuthentication", Conn.UseOSAuthentication); 
+	answer.Insert("key", Conn.key); 
+	Return answer;	
+		
+EndFunction
+//
+
