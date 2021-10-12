@@ -987,45 +987,60 @@ Procedure chainListEdna(parameters) Export
 EndProcedure
 
 Procedure gymListEdna(parameters) Export
-
+	
 	requestStruct = parameters.requestStruct;
 	gymArray = New Array();	
-
+	
 	If Not requestStruct.Property("chain") Then		
 		parameters.Insert("error", "chainCodeError");
 	Else	 
-
-	query = New Query();
-	query.text = "SELECT
-	|	gyms.Ref AS Ref,
-	|	gyms.Description AS Description
-	|FROM
-	|	Catalog.gyms AS gyms
-	|WHERE
-	|	NOT gyms.DeletionMark
-	|	AND gyms.chain.Code = &chaincode
-	|	AND
-	|	NOT gyms.chain = VALUE(Справочник.chains.ПустаяСсылка)
-	|ORDER BY
-	|	gyms.Code";
-	
-	query.SetParameter("chaincode", requestStruct.chain); 
-	
-	select = query.Execute().Select();
-	
-	RecordCount = select.Count();
-	
-	HeaderStruct = New Structure();
-	HeaderStruct.Insert("RecordCount", RecordCount);
-	gymArray.add(HeaderStruct);
-	
-	While select.Next() Do
-		chainStruct = New Structure();
-		chainStruct.Insert("description", select.Description);
-		chainStruct.Insert("uid", XMLString(select.Ref));
-	
-		gymArray.add(chainStruct);
-	EndDo;
+		
+		// SC-100037
+		If Not requestStruct.Property("availableSPA") Then	
+			availableSPA = False;
+		Else
+			availableSPA = requestStruct.availableSPA;
+		EndIf;	
+		//
+		
+		query = New Query();
+		query.text = "SELECT
+		|	gyms.Ref AS Ref,
+		|	gyms.Description AS Description
+		|FROM
+		|	Catalog.gyms AS gyms
+		|WHERE
+		|	NOT gyms.DeletionMark
+		|	AND gyms.chain.Code = &chaincode
+		|	AND
+		|	NOT gyms.chain = VALUE(Справочник.chains.ПустаяСсылка)
+		|	//availableSPA
+		|ORDER BY
+		|	gyms.Code";
+		
+		query.SetParameter("chaincode",    requestStruct.chain); 
+		// SC-100037
+		If availableSPA Then
+			query.text = StrReplace(query.text,"//availableSPA","AND gyms.availableSPA = &availableSPA");
+			query.SetParameter("availableSPA", availableSPA); 
+		EndIf;
+		//
+		
+		select = query.Execute().Select();
+		
+		RecordCount = select.Count();
+		
+		HeaderStruct = New Structure();
+		HeaderStruct.Insert("RecordCount", RecordCount);
+		gymArray.add(HeaderStruct);
+		
+		While select.Next() Do
+			chainStruct = New Structure();
+			chainStruct.Insert("description", select.Description);
+			chainStruct.Insert("uid", XMLString(select.Ref));
+			
+			gymArray.add(chainStruct);
+		EndDo;
 	EndIf;
 	
 	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));	

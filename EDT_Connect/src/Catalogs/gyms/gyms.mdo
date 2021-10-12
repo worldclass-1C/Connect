@@ -683,6 +683,22 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="a509177b-b4a7-44cc-bf8e-73717e07ae84">
+    <name>availableSPA</name>
+    <synonym>
+      <key>en</key>
+      <value>Available SPA</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Есть СПА </value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="9f29fcd3-1571-4e7e-a4d8-564647782025">
     <producedTypes>
       <objectType typeId="3aa7c7b7-aca0-4dad-9163-75960cb3039f" valueTypeId="6f19938a-fcd8-4236-88a1-04cecb8ee6d0"/>
