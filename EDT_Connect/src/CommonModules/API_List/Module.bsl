@@ -1022,7 +1022,7 @@ Procedure gymListEdna(parameters) Export
 		// SC-100037
 		If availableSPA Then
 			query.text = StrReplace(query.text,"//availableSPA","AND gyms.availableSPA = &availableSPA");
-			query.SetParameter("availableSPA", availableSPA); 
+			query.SetParameter("availableSPA", availableSPA);  
 		EndIf;
 		//
 		
