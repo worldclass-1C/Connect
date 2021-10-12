@@ -133,9 +133,22 @@
       </synonym>
       <type>
         <types>Date</types>
-        <dateQualifiers>
-          <dateFractions>Time</dateFractions>
-        </dateQualifiers>
+        <dateQualifiers/>
+      </type>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="bbc3ee18-328e-4fed-999c-70074e8a8b32">
+      <name>Owner</name>
+      <synonym>
+        <key>ru</key>
+        <value>Owner</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>20</length>
+        </stringQualifiers>
       </type>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>

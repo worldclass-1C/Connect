@@ -498,7 +498,7 @@ Procedure sendThread() export
 		ArrayMessages = New Array();
 		TM = selection.Ref.ThreadMessages;
 		For Each StrMessage In TM Do
-			SrtStruct = New Structure("Message,ResponseTime",StrMessage.Message,"");
+			SrtStruct = New Structure("Message,ResponseTime, Owner",StrMessage.Message,StrMessage.ResponseTime,StrMessage.Owner);
 			ArrayMessages.Add(SrtStruct);		
 		EndDo;
 		TableStruct.Insert("Messages", ArrayMessages);
