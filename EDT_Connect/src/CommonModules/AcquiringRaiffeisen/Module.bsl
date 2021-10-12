@@ -119,7 +119,7 @@ Procedure checkStatus(parameters) Export
 						orderObject.Write();
 					ElsIf answerStruct.paymentStatus = "DECLINED" Then
 						parameters.Insert("errorCode", "rejected");
-						parameters.Insert("errorDescription", answerStruct.actionCodeDescription);
+						parameters.Insert("errorDescription", 400);
 					ElsIf parameters.order.registrationDate < ToUniversalTime(CurrentDate())-25*60 Then
 						parameters.Insert("errorCode", "rejected");
 						parameters.Insert("errorDescription", "Истек срок ожидания ввода данных."); 
