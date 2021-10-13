@@ -996,10 +996,9 @@ Procedure gymListEdna(parameters) Export
 	Else	 
 		
 		// SC-100037
-		If Not requestStruct.Property("availableSPA") Then	
-			availableSPA = False;
-		Else
-			availableSPA = requestStruct.availableSPA;
+		availableSPAParam = False;
+		If requestStruct.Property("availableSPA") Then	
+			availableSPAParam = True;
 		EndIf;	
 		//
 		
@@ -1020,9 +1019,9 @@ Procedure gymListEdna(parameters) Export
 		
 		query.SetParameter("chaincode",    requestStruct.chain); 
 		// SC-100037
-		If availableSPA Then
+		If availableSPAParam Then
 			query.text = StrReplace(query.text,"//availableSPA","AND gyms.availableSPA = &availableSPA");
-			query.SetParameter("availableSPA", availableSPA);  
+			query.SetParameter("availableSPA", ?(requestStruct.availableSPA = 1,True,False));  
 		EndIf;
 		//
 		
