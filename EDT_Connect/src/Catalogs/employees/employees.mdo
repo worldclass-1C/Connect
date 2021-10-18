@@ -252,6 +252,21 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="e4c4f0fd-c513-4223-b7aa-a7ce5a538f9a">
+    <name>employeeCode</name>
+    <synonym>
+      <key>ru</key>
+      <value>Employee code</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>15</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="07f23d83-7473-4f05-a783-3f1195cfba51">
     <producedTypes>
       <objectType typeId="ef59671c-5239-4dbb-a34a-5d929a014f32" valueTypeId="32a7c322-d659-4975-b53d-b5a32bbb7dcc"/>

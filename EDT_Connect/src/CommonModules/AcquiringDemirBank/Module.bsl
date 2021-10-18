@@ -42,7 +42,13 @@ Procedure sendOrder(parameters) Export
 	parameters.insert("response", answerHTTP.getbodyasstring());
 	
 	file = new TextDocument;
-	file.AddLine(answerHTTP.getbodyasstring());	
+	bodystring = answerHTTP.getbodyasstring();
+	bodystring_new = StrReplace(bodystring, "<form action=""/fim/est3Dgate""", 
+	"<form action=""https://ecommerce.demirbank.kg/fim/est3Dgate"""
+	);
+	
+	
+	file.AddLine(bodystring_new);	
 	fileName = files.getFilePath(parameters.order);	
 	file.Write(fileName.location+"\"+ XMLString(parameters.order) +".html", );
 	parameters.insert("orderid", XMLString(new UUID()));

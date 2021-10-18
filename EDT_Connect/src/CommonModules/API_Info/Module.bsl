@@ -123,7 +123,8 @@ Procedure employeeInfo(parameters) Export
 		|	employees.gender,
 		|	employees.descriptionFull,
 		|	employees.categoryList,
-		|	employees.photo AS photo
+		|	employees.photo AS photo,
+		|	employees.employeeCode
 		|INTO TT
 		|FROM
 		|	Catalog.employees AS employees
@@ -138,7 +139,8 @@ Procedure employeeInfo(parameters) Export
 		|	TT.gender,
 		|	ISNULL(employeestranslation.descriptionFull, TT.descriptionFull) AS descriptionFull,
 		|	ISNULL(employeestranslation.categoryList, TT.categoryList) AS categoryList,
-		|	TT.photo AS photo
+		|	TT.photo AS photo,
+		|	TT.employeeCode AS employeeCode
 		|FROM
 		|	TT AS TT
 		|		LEFT JOIN Catalog.employees.translation AS employeestranslation
@@ -184,7 +186,8 @@ Procedure employeeInfo(parameters) Export
 			struct.Insert("uid", requestStruct.uid);
 			struct.Insert("firstName", select.firstName);
 			struct.Insert("lastName", select.lastName);
-			struct.Insert("gender", select.gender);			
+			struct.Insert("gender", select.gender);
+			struct.Insert("employeeCode", select.employeeCode);			
 			struct.Insert("isMyCoach", False);
 			struct.Insert("categoryList", new Array());			
 			
