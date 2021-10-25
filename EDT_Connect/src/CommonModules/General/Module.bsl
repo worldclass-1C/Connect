@@ -379,8 +379,19 @@ Procedure signIn(parameters)
 			informationChannels.Add(Enums.informationChannels.sms);
 			rowsArray = New Array;
 			rowsArray.Add(tempCode);
-			rowsArray.Add(?(languageCode = "ru", " - ваш код для входа", " - your login code"));
-			rowsArray.Add(?(languageCode = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
+			// SC-100150
+			NewAnswerSms = (CurrentUniversalDate() > Date(2021,11,01)); 
+			If chain.brand = Enums.brandTypes.WorldClass AND NewAnswerSms Then
+				rowsArray.Add(?(languageCode = "ru", " - ваш код для входа", " - your login code"));
+				rowsArray.Add(?(languageCode = "ru", ", в Личный кабинет World Class", ", to enter your World Class Personal account"));
+			ElsIf chain.brand = Enums.brandTypes.UFC AND NewAnswerSms Then
+				rowsArray.Add(?(languageCode = "ru", " - ваш код для входа", " - your login code"));
+				rowsArray.Add(?(languageCode = "ru", ", в Личный кабинет UFC GYM", ", to enter your UFC GYM Personal account"));
+			Else
+				rowsArray.Add(?(languageCode = "ru", " - ваш код для входа", " - your login code"));
+				rowsArray.Add(?(languageCode = "ru", ", действителен в течение 15 минут", ", valid for 15 minutes"));
+			EndIf; 
+			//
 			messageStruct = New Structure;
 			messageStruct.Insert("phone", requestStruct.phone);
 			messageStruct.Insert("title", "SMS code");
