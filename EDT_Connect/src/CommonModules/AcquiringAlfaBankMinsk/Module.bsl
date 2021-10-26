@@ -1,5 +1,6 @@
 Procedure sendOrder(parameters) Export
-			
+	
+	
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" 		+ parameters.user);
 	requestParametrs.Add("password=" 		+ parameters.password);
@@ -165,13 +166,13 @@ EndFunction
 
 Function requestExecute(parameters, requestName, requestParametrs)
 	requestURL = New Array();
-	requestURL.Add("payment/rest");
+	requestURL.Add("/payment/rest/");
 	requestURL.Add(requestName);
 	requestURL.Add(".do");
 	Body = StrConcat(requestParametrs, "&");	
 	request = New HTTPRequest(StrConcat(requestURL, ""));
 	request.Headers.Insert("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-	request.SetBodyFromString(body,TextEncoding.UTF8,ByteOrderMarkUsage.DontUse);
+	request.SetBodyFromString(body,TextEncoding.UTF8);
 	
 	parameters.Insert("requestBody", Body);	
 	connection = New HTTPConnection(parameters.server, parameters.port, parameters.user, parameters.password,, parameters.timeout, ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined), parameters.useOSAuthentication);

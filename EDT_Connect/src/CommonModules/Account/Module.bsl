@@ -33,7 +33,7 @@ Function getFromExternalSystem(val parameters, val parametrName,
 				setStatus(account);								
 			EndIf;			
 			userArray = DataLoad.createItems("addChangeUsers", tokenContext.holding, answerStruct, account, parametersNew.brand);
-			userProfile = Users.profile(userArray[0], tokenContext.appType);
+			userProfile = Users.profile(userArray[0], tokenContext.appType, tokenContext.chain);
 			Token.editProperty(tokenContext.token, New Structure("account, user", account, userArray[0]));			
 			authKey = XMLString(tokenContext.token) + tempPassword();			
 			//parametersNew.tokenContext.Insert("user", userArray[0]);			
@@ -64,7 +64,7 @@ EndFunction
 Function changeUser(tokenContext, user) Export
 	Token.editProperty(tokenContext.token, New Structure("user", user));
 	authKey = XMLString(tokenContext.token) + tempPassword();
-	userProfile = Users.profile(user, tokenContext.appType);	
+	userProfile = Users.profile(user, tokenContext.appType, tokenContext.chain);	
 	Return New Structure("response, error", New Structure("userProfile, token", userProfile, authKey), "");
 EndFunction
 

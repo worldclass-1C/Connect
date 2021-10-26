@@ -1,4 +1,4 @@
- 
+
 Procedure sendSMS() Export
 	Messages.sendMessages(Enums.informationChannels.sms);
 EndProcedure
@@ -260,7 +260,8 @@ Procedure getUsersRestrictions() Export
 	|	restrictions.chain.holding.tokenDefault AS tokenDefault,
 	|	restrictions.chain.holding AS holding,
 	|	restrictions.chain.holding.tokenDefault.appVersion AS appVersion,
-	|	restrictions.chain.holding.tokenDefault.systemType AS systemType
+	|	restrictions.chain.holding.tokenDefault.systemType AS systemType,
+	|	restrictions.chain.holding.tokenDefault.chain.brand AS brand
 	|FROM
 	|	Catalog.restrictions AS restrictions";
 	selectionChain = query.Execute().Select();
@@ -284,32 +285,33 @@ Procedure sendRestrictions()
 	
 	query = New Query();
 	query.Text = "SELECT
-	|	restrictionsChanges.Ref,
-	|	restrictionsChanges.Ref.chain AS chain,
-	|	restrictionsChanges.Ref.Presentation AS name,
-	|	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
-	|	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault.Code, """") AS languageCode,
-	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
-	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.user.userCode, """") AS userCode,
-	|	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.deviceModel, """") AS deviceModel,
-	|	restrictionsChanges.Ref.chain.holding.tokenDefault AS tokenDefault,
-	|	restrictionsChanges.Ref.chain.holding AS holding,
-	|	restrictionsChanges.Ref.chain.holding.tokenDefault.appVersion AS appVersion,
-	|	restrictionsChanges.Ref.chain.holding.tokenDefault.systemType AS systemType
-	|FROM
-	|	Catalog.restrictions.Changes AS restrictionsChanges
-	|TOTALS
-	|	MAX(language) AS language,
-	|	MAX(languageCode) AS languageCode,
-	|	MAX(timeZone) AS timeZone,
-	|	MAX(userCode) AS userCode,
-	|	MAX(deviceModel) AS deviceModel,
-	|	MAX(tokenDefault) AS tokenDefault,
-	|	MAX(holding) AS holding,
-	|	MAX(appVersion) AS appVersion,
-	|	MAX(systemType) AS systemType
-	|BY
-	|	chain";
+	             |	restrictionsChanges.Ref AS Ref,
+	             |	restrictionsChanges.Ref.chain AS chain,
+	             |	restrictionsChanges.Ref.Presentation AS name,
+	             |	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault, VALUE(Catalog.languages.EmptyRef)) AS language,
+	             |	ISNULL(restrictionsChanges.Ref.chain.holding.languageDefault.Code, """") AS languageCode,
+	             |	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.timeZone, VALUE(catalog.timeZones.EmptyRef)) AS timeZone,
+	             |	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.user.userCode, """") AS userCode,
+	             |	ISNULL(restrictionsChanges.Ref.chain.holding.tokenDefault.deviceModel, """") AS deviceModel,
+	             |	restrictionsChanges.Ref.chain.holding.tokenDefault AS tokenDefault,
+	             |	restrictionsChanges.Ref.chain.holding AS holding,
+	             |	restrictionsChanges.Ref.chain.holding.tokenDefault.appVersion AS appVersion,
+	             |	restrictionsChanges.Ref.chain.holding.tokenDefault.systemType AS systemType,
+	             |	restrictionsChanges.Ref.chain.brand AS brand
+	             |FROM
+	             |	Catalog.restrictions.Changes AS restrictionsChanges
+	             |TOTALS
+	             |	MAX(language),
+	             |	MAX(languageCode),
+	             |	MAX(timeZone),
+	             |	MAX(userCode),
+	             |	MAX(deviceModel),
+	             |	MAX(tokenDefault),
+	             |	MAX(holding),
+	             |	MAX(appVersion),
+	             |	MAX(systemType)
+	             |BY
+	             |	chain";
 	selectionChain = query.Execute().Select(QueryResultIteration.ByGroups);
 	unit = ExchangePlans.restrictionChanges.FindByCode("RC");
 	while selectionChain.Next() do
@@ -379,6 +381,7 @@ Procedure loadPolls() export
 	             |	Document.НазначениеОпросов AS НазначениеОпросов
 	             |WHERE
 	             |	&startDate BETWEEN НазначениеОпросов.ДатаНачала AND НазначениеОпросов.ДатаОкончания
+	             |	AND НазначениеОпросов.Posted
 	             |TOTALS BY
 	             |	holding";
 	query.SetParameter("startDate", ToUniversalTime(BegOfDay(CurrentDate()-86400)));
@@ -422,7 +425,8 @@ Procedure loadPolls() export
 			mas.Add(pollStructure);
 		EndDo;
 		structure = new Structure;
-		GetKPOData(selectionHolding.holding, mas,"pollResult");
+		structure.Insert("results", mas);
+		GetKPOData(selectionHolding.holding, structure,"pollResult");
 	EndDo;
 	
 EndProcedure

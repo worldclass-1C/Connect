@@ -56,4 +56,15 @@
       <value>Alfa bank minsk</value>
     </synonym>
   </enumValues>
+  <enumValues uuid="ac826ca3-1987-4725-a509-0b68a63f23a2">
+    <name>forteBank</name>
+    <synonym>
+      <key>en</key>
+      <value>Forte bank</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Forte bank</value>
+    </synonym>
+  </enumValues>
 </mdclass:Enum>

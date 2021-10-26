@@ -44,13 +44,18 @@ Function newOrder(parameters) Export
 	If parameters.Property("gymId") Then
 		orderObject.gym = XMLValue(Type("CatalogRef.gyms"), parameters.gymId);		
 	EndIf;
+	
+	If ValueIsFilled(orderObject.gym) then
+		orderObject.chain = orderObject.gym.chain;
+	EndIf;
+	
 	orderObject.registrationDate = ToUniversalTime(CurrentDate());
 	orderObject.Write();
 	Service.logAcquiringBackground(New Structure("order, requestName", orderObject.ref, "write"));
 	Return orderObject.ref;
 EndFunction
 
-Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined) Export	
+Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined, sessionID = Undefined) Export	
 	orderIdentifier = Catalogs.acquiringOrderIdentifiers.CreateItem();
 	If ValueIsFilled(orderUid) Then
 		orderIdentifierRef = Catalogs.acquiringOrderIdentifiers.GetRef(New UUID(orderUid));
@@ -59,6 +64,10 @@ Function orderIdentifier(order, orderNumber = Undefined, orderUid = Undefined) E
 	If ValueIsFilled(orderNumber) Then
 		orderIdentifier.Description = orderNumber;
 	EndIf;
+	If ValueIsFilled(sessionID) Then
+		orderIdentifier.sessionId = sessionID;
+	EndIf;
+	
 	orderIdentifier.Owner = order;
 	orderIdentifier.Write();
 	Return orderIdentifier.Ref;	
@@ -230,7 +239,8 @@ Function ConnectionQueryText()
 	|		ELSE holdingConnection.connection
 	|	END AS paymentConnection,
 	|	acquiringOrders.Ref AS order,
-	|	acquiringOrderIdentifiers.Ref AS orderIdentifier
+	|	acquiringOrderIdentifiers.Ref AS orderIdentifier,
+	|	acquiringOrderIdentifiers.sessionId
 	|INTO Connection
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
@@ -241,6 +251,7 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
 	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
 	|		AND acquiringOrders.connectionType = gymAcquiringProviderConnection.connectionType
+	|		AND acquiringOrders.chain = gymAcquiringProviderConnection.chain
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
 	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
 	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
@@ -252,6 +263,7 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.gym = gymConnection.gym
 	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		AND acquiringOrders.connectionType = gymConnection.connectionType
+	|		AND acquiringOrders.chain = gymConnection.chain
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	|		ON acquiringOrders.holding = holdingConnection.holding
 	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
@@ -260,13 +272,13 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.connectionType = holdingConnection.connectionType
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
 	|		ON acquiringOrders.holding = chainConnection.holding
-	|		AND acquiringOrders.gym.chain = chainConnection.chain
+	|		AND acquiringOrders.chain = chainConnection.chain
 	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
 	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
 	|		AND acquiringOrders.connectionType = chainConnection.connectionType
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
 	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym.chain = chainAcquiringProviderConnection.chain
+	|		AND acquiringOrders.chain = chainAcquiringProviderConnection.chain
 	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
 	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef)
 	|		AND acquiringOrders.connectionType = chainAcquiringProviderConnection.connectionType
@@ -297,7 +309,9 @@ Function ConnectionQueryText()
 	|	Connection.order.creditCard AS creditCard,
 	|	Connection.order.creditCard.Owner AS ownerCreditCard,
 	|	Connection.order.acquiringRequest AS acquiringRequest,
-	|	Connection.order
+	|	Connection.order AS order,
+	|	Connection.order.user.Owner.Code AS phone,
+	|	Connection.sessionId AS sessionId
 	|FROM
 	|	Connection AS Connection,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
@@ -336,7 +350,9 @@ Function answerStruct()
 	answer.Insert("registrationDate", Date(1,1,1));	
 	answer.Insert("merchantID", "");
 	answer.Insert("authorization", "");
+	answer.Insert("phone", "");
 	answer.Insert("connectionType", Enums.ConnectionTypes.EmptyRef());
+	answer.Insert("sessionId","");
 	Return answer;		
 EndFunction
 
@@ -518,6 +534,8 @@ Procedure sendOrder(parameters)
 		EndIf;
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
 		 AcquiringAlfaBankMinsk.sendOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.forteBank Then
+		 AcquiringForteBank.sendOrder(parameters);
 	EndIf;
 	If parameters.errorCode = "" Then
 		changeOrderState(parameters.order, Enums.acquiringOrderStates.send);	
@@ -540,7 +558,9 @@ Procedure checkOrder(parameters)
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.raiffeisen Then 
 		AcquiringRaiffeisen.checkStatus(parameters);
 	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.alfaBankMinsk Then
-		AcquiringAlfaBankMinsk.checkOrder(parameters); 
+		AcquiringAlfaBankMinsk.checkOrder(parameters);
+	ElsIf parameters.acquiringProvider = Enums.acquiringProviders.forteBank Then
+		AcquiringForteBank.checkOrder(parameters);  
 	EndIf;
 	If parameters.errorCode = "" Then
 		If parameters.acquiringRequest = Enums.acquiringRequests.binding Then

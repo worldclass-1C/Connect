@@ -508,7 +508,7 @@ Procedure accountProfile(parameters) Export
 EndProcedure
 
 Procedure userProfile(parameters) Export
-	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenContext.user, parameters.tokenContext.appType)));	
+	parameters.Insert("answerBody", HTTP.encodeJSON(Users.profile(parameters.tokenContext.user, parameters.tokenContext.appType,parameters.tokenContext.chain)));	
 EndProcedure
 
 Procedure userSummary(parameters) Export

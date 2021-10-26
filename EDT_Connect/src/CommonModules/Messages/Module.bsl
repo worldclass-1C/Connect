@@ -23,7 +23,9 @@ Function newMessage(messageData, sendImmediately = False) Export
 	messageObject.appType = ?(messageData.Property("appType"), messageData.appType, Enums.appTypes.EmptyRef());
 	messageObject.holding = messageData.holding;
 	messageObject.chain = ?(messageData.Property("chain"), messageData.chain, Catalogs.chains.EmptyRef());
-
+	//if ValueIsFilled(messageObject.gym) then
+	//	messageObject.chain = messageObject.gym.chain;
+	//EndIf;
 	For Each informationChannel In messageData.informationChannels Do
 		newRow = messageObject.channelPriorities.Add();
 		newRow.channel = informationChannel;
@@ -163,6 +165,8 @@ Procedure sendSMS(parameters) Export
 		answer = SmsP1sms.sendSMS(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.FigenSoft Then
 		answer = SmsFigenSoft.sendSMS(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.iSms Then
+		answer = SmsiSms.sendSMS(parameters, answer); 
 	EndIf;
 
 	If answer.messageStatus = Enums.messageStatuses.sent Then
@@ -243,6 +247,8 @@ Procedure checkSmsStatus(parameters) Export
 		answer = SmsP1sms.checkSmsStatus(parameters, answer);
 	ElsIf parameters.SMSProvider = Enums.SmsProviders.FigenSoft Then
 		answer = SmsFigenSoft.checkSmsStatus(parameters, answer);
+	ElsIf parameters.SMSProvider = Enums.SmsProviders.iSms Then 
+		answer = SmsiSms.checkSmsStatus(parameters, answer);
 	EndIf;
 
 	checkSmsStatusContinuation(answer, parameters) ;
@@ -575,87 +581,95 @@ Procedure sendHoldingPush(nodeMessagesToSend,
 
 	query = New Query();
 	query.text = "SELECT TOP 100
-	|	messages.Ref AS message,
-	|	messages.Ref.title AS title,
-	|	messages.Ref.text AS text,
-	|	messages.Ref.action AS action,
-	|	messages.Ref.objectId AS objectId,
-	|	messages.Ref.objectType AS objectType,
-	|	messages.Ref.gym AS gym,
-	|	&nodeMessagesToSend AS nodeMessagesToSend,
-	|	MAX(ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef))) AS token,
-	|	ISNULL(tokens.deviceToken, """") AS deviceToken,
-	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)) AS systemType,
-	|	messages.Ref.user AS user
-	|INTO TT
-	|FROM
-	|	Catalog.messages.Changes AS messages
-	|		LEFT JOIN Catalog.tokens AS tokens
-	|		ON messages.Ref.user = tokens.user
-	|		AND messages.Ref.token <> tokens.Ref
-	|		AND tokens.appType = &appType
-	|		AND tokens.lockDate = DATETIME(1, 1, 1)
-	|		AND tokens.systemType <> VALUE(Enum.systemTypes.web)
-	|		AND messages.Ref.gym.brand = tokens.chain.brand
-	|		AND messages.Ref.holding = tokens.holding
-	|WHERE
-	|	messages.Node = &nodeMessagesToSend
-	|	AND messages.Ref.appType = &appType
-	|	AND messages.Ref.holding = &holding
-	|GROUP BY
-	|	messages.Ref,
-	|	messages.Ref.title,
-	|	messages.Ref.text,
-	|	messages.Ref.action,
-	|	messages.Ref.objectId,
-	|	messages.Ref.objectType,
-	|	messages.Ref.user,
-	|	ISNULL(tokens.deviceToken, """"),
-	|	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef))
-	|ORDER BY
-	|	messages.Ref.priority
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	pushStatusBalance.user,
-	|	pushStatusBalance.amountBalance
-	|INTO TTunread
-	|FROM
-	|	AccumulationRegister.pushStatus.Balance(, informationChannel = &informationChannel
-	|	AND user IN
-	|		(SELECT
-	|			TT.user
-	|		FROM
-	|			TT AS TT)) AS pushStatusBalance
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	TT.message AS message,
-	|	TT.title AS title,
-	|	TT.text AS text,
-	|	TT.action AS action,
-	|	TT.objectId AS objectId,
-	|	TT.objectType AS objectType,
-	|	TT.gym AS gym,
-	|	TT.nodeMessagesToSend AS nodeMessagesToSend,
-	|	TT.deviceToken AS deviceToken,
-	|	TT.token AS token,
-	|	TT.systemType AS systemType,
-	|	&informationChannel AS informationChannel,
-	|	ISNULL(TTunread.amountBalance, 0) AS badge
-	|FROM
-	|	TT AS TT
-	|		LEFT JOIN TTunread AS TTunread
-	|		ON TTunread.user = TT.user
-	|TOTALS
-	|BY
-	|	message
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|DROP TT
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|DROP TTunread";
+	             |	messages.Ref AS message,
+	             |	messages.Ref.title AS title,
+	             |	messages.Ref.text AS text,
+	             |	messages.Ref.action AS action,
+	             |	messages.Ref.objectId AS objectId,
+	             |	messages.Ref.objectType AS objectType,
+	             |	messages.Ref.gym AS gym,
+	             |	&nodeMessagesToSend AS nodeMessagesToSend,
+	             |	MAX(ISNULL(tokens.Ref, VALUE(Catalog.tokens.EmptyRef))) AS token,
+	             |	ISNULL(tokens.deviceToken, """") AS deviceToken,
+	             |	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)) AS systemType,
+	             |	messages.Ref.user AS user
+	             |INTO TT
+	             |FROM
+	             |	Catalog.messages.Changes AS messages
+	             |		LEFT JOIN Catalog.tokens AS tokens
+	             |		ON messages.Ref.user = tokens.user
+	             |			AND messages.Ref.token <> tokens.Ref
+	             |			AND (tokens.appType = &appType)
+	             |			AND (tokens.lockDate = DATETIME(1, 1, 1))
+	             |			AND (tokens.systemType <> VALUE(Enum.systemTypes.web))
+	             |			AND messages.Ref.gym.brand = tokens.chain.brand
+	             |			AND messages.Ref.holding = tokens.holding
+	             |WHERE
+	             |	messages.Node = &nodeMessagesToSend
+	             |	AND messages.Ref.appType = &appType
+	             |	AND messages.Ref.holding = &holding
+	             |
+	             |GROUP BY
+	             |	messages.Ref,
+	             |	messages.Ref.title,
+	             |	messages.Ref.text,
+	             |	messages.Ref.action,
+	             |	messages.Ref.objectId,
+	             |	messages.Ref.objectType,
+	             |	messages.Ref.user,
+	             |	ISNULL(tokens.deviceToken, """"),
+	             |	ISNULL(tokens.systemType, VALUE(Enum.systemTypes.EmptyRef)),
+	             |	messages.Ref.gym
+	             |
+	             |ORDER BY
+	             |	messages.Ref.priority
+	             |;
+	             |
+	             |////////////////////////////////////////////////////////////////////////////////
+	             |SELECT
+	             |	pushStatusBalance.user AS user,
+	             |	pushStatusBalance.amountBalance AS amountBalance
+	             |INTO TTunread
+	             |FROM
+	             |	AccumulationRegister.pushStatus.Balance(
+	             |			,
+	             |			informationChannel = &informationChannel
+	             |				AND user IN
+	             |					(SELECT
+	             |						TT.user
+	             |					FROM
+	             |						TT AS TT)) AS pushStatusBalance
+	             |;
+	             |
+	             |////////////////////////////////////////////////////////////////////////////////
+	             |SELECT
+	             |	TT.message AS message,
+	             |	TT.title AS title,
+	             |	TT.text AS text,
+	             |	TT.action AS action,
+	             |	TT.objectId AS objectId,
+	             |	TT.objectType AS objectType,
+	             |	TT.gym AS gym,
+	             |	TT.nodeMessagesToSend AS nodeMessagesToSend,
+	             |	TT.deviceToken AS deviceToken,
+	             |	TT.token AS token,
+	             |	TT.systemType AS systemType,
+	             |	&informationChannel AS informationChannel,
+	             |	ISNULL(TTunread.amountBalance, 0) AS badge
+	             |FROM
+	             |	TT AS TT
+	             |		LEFT JOIN TTunread AS TTunread
+	             |		ON (TTunread.user = TT.user)
+	             |TOTALS BY
+	             |	message
+	             |;
+	             |
+	             |////////////////////////////////////////////////////////////////////////////////
+	             |DROP TT
+	             |;
+	             |
+	             |////////////////////////////////////////////////////////////////////////////////
+	             |DROP TTunread";
 
 	query.SetParameter("nodeMessagesToSend", nodeMessagesToSend);	
 	query.SetParameter("informationChannel", informationChannel);

@@ -56,6 +56,7 @@ Procedure paymentPreparation(parameters) Export
 		orderStruct.Insert("paymentOptions", struct.paymentOptions);
 		orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);
 		orderStruct.Insert("autoPayment", ?(struct.Property("autoPayment"),struct.autoPayment, False));
+		orderStruct.Insert("chain",tokenContext.chain);
 		order = Acquiring.newOrder(orderStruct);
 		//@skip-warning
 		struct.Insert("uid", XMLString(order));		
@@ -247,9 +248,11 @@ Procedure payment(parameters) Export
 			EndIf;	
 		EndIf;
 	EndIf;
-
-    If not orderResult.IsEmpty() and error <> "" Then
-   		Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
+   		
+    If not orderResult.IsEmpty() and error <> "" and isQr Then
+    	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.rejected);
+    elsIf not orderResult.IsEmpty() and error <> "" and not isQr then
+    	Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);
     EndIf;
      
 //	struct.Insert("result", "Ok");
@@ -361,6 +364,7 @@ Procedure bindCard(parameters) Export
 	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);	
 	orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
 	orderStruct.Insert("contract", 			?(requestStruct.Property("contract"), requestStruct.contract, ""));
+	orderStruct.Insert("chain", 			tokenContext.chain);
 	order = Acquiring.newOrder(orderStruct);
 	answer = Acquiring.executeRequest("send", order);	
 	If answer.errorCode = "" Then		
@@ -414,6 +418,7 @@ Procedure unBindCard(parameters) Export
 			orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.unbinding);
 			orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.main);
 			orderStruct.Insert("acquiringProvider", ?(requestStruct.Property("acquiringProvider"), Enums.acquiringProviders[requestStruct.acquiringProvider], Enums.acquiringProviders.EmptyRef()));
+			orderStruct.Insert("chain",				tokenContext.chain);
 			order = Acquiring.newOrder(orderStruct);
 			answer = Acquiring.executeRequest("unBindCard", order);
 			If answer.errorCode = "" Then		
@@ -447,6 +452,7 @@ Procedure autoPayment(parameters) Export
 	orderStruct.Insert("gymId", 			requestStruct.gymId);
 	orderStruct.Insert("creditCard", 		XMLValue(Type("CatalogRef.creditCards"),requestStruct.card));
 	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.autoPayment);
+	orderStruct.Insert("chain", 			parameters.tokenContext.chain);
 	order = Acquiring.newOrder(orderStruct);
 	//отправить его send
 	answer = Acquiring.executeRequest("send", order);
@@ -511,6 +517,7 @@ Procedure paymentDetails(parameters) Export
 	orderStruct.Insert("acquiringRequest", 	Enums.acquiringRequests.register);
 	orderStruct.Insert("holding", 			parameters.tokenContext.holding);
 	orderStruct.Insert("connectionType", 	Enums.ConnectionTypes.onlineStore);
+	orderStruct.Insert("chain", 			parameters.tokenContext.chain);
 	order 				= Acquiring.newOrder(orderStruct);
 	orderIdentifier 	= Acquiring.orderIdentifier(order, requestStruct.orderNumber);
 	answerCheck 		= Acquiring.executeRequest("check", order, requestStruct);

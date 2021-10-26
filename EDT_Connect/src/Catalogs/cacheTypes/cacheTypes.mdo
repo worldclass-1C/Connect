@@ -296,6 +296,13 @@
         <value>spaShop</value>
       </code>
     </items>
+    <items id="fbba19a6-0a20-41e3-9d51-afc6d2b8e33f">
+      <name>rating</name>
+      <description>Rating</description>
+      <code xsi:type="core:StringValue">
+        <value>rating</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>

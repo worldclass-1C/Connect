@@ -2,7 +2,7 @@
 Function processRequest(request, requestName = "", synch = False) Export
 
 	parameters = New Structure();
-	parameters.Insert("internalRequestMethod", False); 
+	parameters.Insert("internalRequestMethod", False);
 	General.executeRequestMethodStart(parameters);
 	parameters.Insert("url", request.BaseURL + request.RelativeURL);		
 	parameters.Insert("headersJSON", HTTP.encodeJSON(request.Headers));
@@ -269,7 +269,12 @@ Function inTheWhiteList(origin) Export
 		Or origin = "https://corp.worldclass.ru"
 		Or origin = "https://promo.worldclass.ru"
 		Or origin = "https://studio.worldclass.ru"
-		Or origin = "https://mindbodystudio.tilda.ws/" 
+		Or origin = "https://mindbodystudio.tilda.ws/"
+		Or origin = "https://www.worldclass.ru"
+		
+		Or origin = "https://www.sport.worldclass.ru "
+		Or origin = "https://worldclass-sk.ru"
+		Or origin = "https://sport.worldclass.ru" 
 	Then
 		Return True;
 	Else

@@ -445,6 +445,62 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>chain</name>
+      <id>55</id>
+      <title>
+        <key>ru</key>
+        <value>Сеть</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>List.chain</segments>
+        </paths>
+      </dataPath>
+      <extendedTooltip>
+        <name>ExtendedTooltip</name>
+        <id>57</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ContextMenu</name>
+        <id>56</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>InputField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:InputFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <wrap>true</wrap>
+        <chooseType>true</chooseType>
+        <typeDomainEnabled>true</typeDomainEnabled>
+        <textEdit>true</textEdit>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>holding</name>
       <id>37</id>
       <visible>true</visible>
@@ -824,7 +880,8 @@
 	acquiringOrders.connectionType,
 	acquiringOrders.Predefined,
 	acquiringOrders.PredefinedDataName,
-	SUM(acquiringOrderspayments.amount) AS payed
+	SUM(acquiringOrderspayments.amount) AS payed,
+	acquiringOrders.chain
 FROM
 	Catalog.acquiringOrders AS acquiringOrders
 		LEFT JOIN Catalog.acquiringOrders.payments AS acquiringOrderspayments
@@ -845,7 +902,8 @@ GROUP BY
 	acquiringOrders.contract,
 	acquiringOrders.connectionType,
 	acquiringOrders.Predefined,
-	acquiringOrders.PredefinedDataName</queryText>
+	acquiringOrders.PredefinedDataName,
+	acquiringOrders.chain</queryText>
       <mainTable>Catalog.acquiringOrders</mainTable>
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
