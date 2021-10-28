@@ -959,6 +959,7 @@ Procedure chainListEdna(parameters) Export
 	|WHERE
 	|	NOT chain.DeletionMark
 	|	AND chain.brand = &brand
+	|	AND chain.EdnaPlatformUsed 
 	|ORDER BY
 	|	code";
 
@@ -1013,7 +1014,8 @@ Procedure gymListEdna(parameters) Export
 		|	AND gyms.chain.Code = &chaincode
 		|	AND
 		|	NOT gyms.chain = VALUE(Справочник.chains.ПустаяСсылка)
-		|	//availableSPA
+		|	AND gyms.EdnaPlatformUsed
+		|   //availableSPA
 		|ORDER BY
 		|	gyms.Code";
 		
