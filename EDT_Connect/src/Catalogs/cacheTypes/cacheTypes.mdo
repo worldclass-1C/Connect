@@ -303,6 +303,13 @@
         <value>rating</value>
       </code>
     </items>
+    <items id="8a7898c6-45c7-402f-8d16-e01b9aafc44d">
+      <name>certificate</name>
+      <description>Certificate</description>
+      <code xsi:type="core:StringValue">
+        <value>certificate</value>
+      </code>
+    </items>
   </predefined>
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
