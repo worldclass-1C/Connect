@@ -3,7 +3,7 @@ Procedure executeRequestMethod(parameters) Export
 	If parameters.internalRequestMethod Then 
 		General.executeRequestMethodStart(parameters);
 	EndIf;
- 
+  
 	parameters.Insert("error", Check.requestParameters(parameters));
 	parameters.Insert("error", Check.accessRequest(parameters));
 
@@ -778,7 +778,11 @@ Procedure executeExternalRequest(parameters)
 	|		ELSE """"
 	|	END AS defaultResponse,
 	|	matchingRequestsInformationSources.Ref.disableLogging AS disableLogging,
-	|	holdingsConnectionsInformationSources.holding.tokenDefault.chain.brand AS brand
+	|	holdingsConnectionsInformationSources.holding.tokenDefault.chain.brand AS brand,
+	// SC-099675
+	|	matchingRequestsInformationSources.Ref.EnablePagination as EnablePagination,
+	|	matchingRequestsInformationSources.Ref.QuantityItemsPerPage as QuantityItemsPerPage
+	//
 	|FROM
 	|	InformationRegister.holdingsConnectionsInformationSources AS holdingsConnectionsInformationSources
 	|		LEFT JOIN Catalog.matchingRequestsInformationSources.informationSources AS matchingRequestsInformationSources
@@ -805,6 +809,10 @@ Procedure executeExternalRequest(parameters)
 			parameters.Insert("error", "staffOnly");
 		Else
 			parameters.Insert("disableLogging", select.disableLogging);
+			// SC-099675
+			parameters.Insert("EnablePagination", select.EnablePagination);
+			parameters.Insert("QuantityItemsPerPage", select.QuantityItemsPerPage);
+			//
 			If select.mockServerMode Then
 				answerBody = select.defaultResponse;
 			Else

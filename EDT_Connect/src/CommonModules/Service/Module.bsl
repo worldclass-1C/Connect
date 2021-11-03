@@ -241,6 +241,7 @@ Procedure logAcquiringBackground(parameters) Export
 EndProcedure
 	
 Procedure logRequest(parameters) Export
+	
 	Try 
 		requestBodyArray = New Array();
 		record = Catalogs.logs.CreateItem();
@@ -276,8 +277,136 @@ Procedure logRequest(parameters) Export
 		WriteLogEvent("Logging", 
         EventLogLevel.Warning, , ,
         StrTemplate("%1%2", "Error loggin for parameters: ", Text));
-	EndTry	
+	EndTry;
+	
+	// SC-099675
+	If parameters.Property("EnablePagination") AND (NOT parameters.EnablePagination) Then
+		Return;
+	EndIf;
+
+	If NOT record.Ref.IsEmpty() Then
+		try
+		
+		Pagination_Write(record,parameters);
+
+		Except
+				Error = ErrorInfo(); 
+				WriteLogEvent("Pagination", 
+       				EventLogLevel.Warning, , ,Error);
+        EndTry;
+	EndIf;
+	//
+		
 EndProcedure
+
+// SC-099675
+Procedure Pagination_Write(Log,parameters) Export
+
+	If Not ValueIsFilled(Log.Ref) Then  
+		Return;	
+	EndIf;
+	
+	If Log.isError Then 
+		Return;
+	EndIf;
+	
+	PagesCount = 10; // Количество элементов на странице 
+	
+	If parameters.Property("QuantityItemsPerPage") Then
+		If parameters.QuantityItemsPerPage > 0 Then
+			PagesCount = parameters.QuantityItemsPerPage;
+		EndIf;	
+	EndIf;
+	
+	CompressedBinaryData	= Log.response.Get();
+	response	=  ?(CompressedBinaryData = Undefined, "", XDTOSerializer.XMLValue(Type("ValueStorage"), Base64String(CompressedBinaryData)).Get());
+	RequestStruct = HTTP.decodeJSON(response);
+	
+	Data = New Array;
+	DataPage = New Array;
+	Page  = 1;
+	index = 0;
+	
+	For each element In RequestStruct Do
+		If index = PagesCount Then 
+			DataStruct = New Structure("PageNumber,Page");
+			DataStruct.Insert("PageNumber",Page);
+			DataStruct.Insert("Page",HTTP.encodeJSON(DataPage));
+
+			Data.Add(DataStruct);
+			
+			DataPage = New Array;
+			Page = Page + 1;
+			index = 0;
+		EndIf;
+		
+		DataPage.Add(element);
+		
+		index = index + 1;
+	EndDo;
+	
+	DataStruct = New Structure("PageNumber,Page");
+	DataStruct.Insert("PageNumber",Page);
+	DataStruct.Insert("Page",HTTP.encodeJSON(DataPage));
+	Data.Add(DataStruct);
+	
+	GIUD = 	Log.Ref.UUID();
+	
+	For each element In Data Do
+		record = InformationRegisters.Pagination.CreateRecordManager();
+		record.Period = ToUniversalTime(CurrentDate());
+		record.Log = Log.Ref;
+		record.PageNumber = element.PageNumber;
+		record.Page = element.Page;
+		record.GUID = GIUD;
+		record.Write(); 
+	EndDo;
+
+	Array = HTTP.decodeJSON(parameters.answerBody);
+	Array.add(New Structure("PaginationGIUD",String(GIUD))); 
+	
+	parameters.Insert("answerBody", HTTP.encodeJSON(Array)); 
+
+	recordO = Log.Ref.GetObject();
+	recordO.response = New ValueStorage(Base64Value(XDTOSerializer.XMLString(New ValueStorage(parameters.answerBody, New Deflation(9)))));
+	recordO.Write();
+	
+EndProcedure
+
+Function Pagination_Read(GUID = "", PageNumber = 0) Export 
+	
+	array = New array;
+	If GUID = "" or StrLen(GUID) <> 36 Then
+		Return array;		
+	EndIf;
+	
+	Query = New Query;
+	Query.Text = "SELECT
+	|Pagination.Log AS Log,
+	|Pagination.PageNumber AS PageNumber,
+	|Pagination.Page AS Page
+	|FROM
+	|InformationRegister.Pagination AS Pagination
+	|WHERE
+	|Pagination.GUID = &GUID AND Pagination.PageNumber = &PageNumber";
+	
+	Query.SetParameter("GUID",GUID);
+	Query.SetParameter("PageNumber",PageNumber);
+
+	Selection = Query.Execute().Select();
+	
+	
+	While Selection.Next() Do
+		answer = New Structure();
+		answer.Insert("PageNumber", selection.PageNumber);
+		answer.Insert("Page", selection.Page);
+		array.add(answer);	 
+	EndDo;	
+	
+	Return array;
+	 
+EndFunction
+//
 
 Procedure logAcquiring(parameters) Export
 	record = Catalogs.acquiringLogs.CreateItem();

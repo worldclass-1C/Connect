@@ -998,7 +998,9 @@ Procedure gymListEdna(parameters) Export
 		
 		// SC-100037
 		availableSPAParam = False;
-		If requestStruct.Property("availableSPA") Then	
+		If requestStruct.Property("availableSPA") 
+		and requestStruct.availableSPA = 1 // Исправление 02.11.21
+			Then	
 			availableSPAParam = True;
 		EndIf;	
 		//
@@ -1044,8 +1046,15 @@ Procedure gymListEdna(parameters) Export
 		EndDo;
 	EndIf;
 	
-	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));	
+	// SC-099675
+	If requestStruct.Property("QuantityItemsPerPage") Then
+		parameters.Insert("EnablePagination",True);
+		parameters.Insert("QuantityItemsPerPage",requestStruct.QuantityItemsPerPage); 	
+	EndIf;
+	//
 	
+	parameters.Insert("answerBody", HTTP.encodeJSON(gymArray));
+
 EndProcedure
 //
 

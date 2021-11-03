@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="253a70bb-04d3-4246-89f2-a1ff127d7c38">
+  <producedTypes>
+    <selectionType typeId="e488f2ed-d59a-4875-94be-2318c7eb15be" valueTypeId="96887d01-8f39-4db7-9280-46ede5fb0d95"/>
+    <listType typeId="9de4e3fd-525b-41bb-b387-7dbc3ec76300" valueTypeId="034d7aa0-e872-40af-96ca-68286fb95b7a"/>
+    <managerType typeId="e878acb9-136e-4e59-bcb9-ca6e9b6d228d" valueTypeId="009befce-b037-4ffe-a6e4-2e0ab42a6537"/>
+    <recordSetType typeId="e7202e2d-bde0-4294-a681-3ab488d0f75c" valueTypeId="6037db0b-3c55-4a11-a87c-42a85447b433"/>
+    <recordKeyType typeId="9c02ac7a-8dc1-4e20-a270-2708c3b497a4" valueTypeId="ca982b8a-83c4-4abe-8e38-9a5423c520ec"/>
+    <recordType typeId="13b672e0-5131-4f8b-9b0e-16ed2385633d" valueTypeId="f8fddf93-6bc4-49d2-82b9-bb1cecfd5337"/>
+    <recordManagerType typeId="70f00313-3ab4-4cc4-8c19-f633899f988d" valueTypeId="ef83b693-412a-43ef-9498-e8b00c99cf2a"/>
+  </producedTypes>
+  <name>Pagination</name>
+  <synonym>
+    <key>en</key>
+    <value>Pagination</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <informationRegisterPeriodicity>Day</informationRegisterPeriodicity>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="468642bb-0b6f-4240-b430-309d2cfa7766">
+    <name>Page</name>
+    <synonym>
+      <key>ru</key>
+      <value>Page</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </resources>
+  <attributes uuid="4dc2d39d-501f-49e0-a14b-cdb52f0b9e31">
+    <name>GUID</name>
+    <synonym>
+      <key>ru</key>
+      <value>GUID</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>36</length>
+      </stringQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <dimensions uuid="81375b3a-f53c-4c35-a356-00810ca91db9">
+    <name>Log</name>
+    <synonym>
+      <key>ru</key>
+      <value>Log</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.logs</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <dimensions uuid="d9b72a1d-7a8b-412e-9adc-8b1c1b320170">
+    <name>PageNumber</name>
+    <synonym>
+      <key>ru</key>
+      <value>Page number</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+      </numberQualifiers>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>
