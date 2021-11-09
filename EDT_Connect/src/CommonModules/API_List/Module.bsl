@@ -1086,7 +1086,7 @@ Procedure incomingThread(parameters) Export
 	
 	If struct.success Then 
 	threadid = RequestParameters.thread.id;
-	//StartTime = RequestParameters.thread.startTime; 
+	StartTime = RequestParameters.thread.startTime; 
 	ChannelType = RequestParameters.thread.channelType;
 	ArrayMessages = RequestParameters.thread.messages;
 	ArrayTags = RequestParameters.thread.Tags;
@@ -1094,7 +1094,7 @@ Procedure incomingThread(parameters) Export
 	NewObject  = Catalogs.Thread.CreateItem();
 	NewObject.Description  = threadid;
 	NewObject.IncomingData = parameters.requestBody; 
-	//NewObject.StartTime = StartTime;  
+	NewObject.StartTime = StartTime;  
 	NewObject.ChannelType = ChannelType; 
 	NewObject.login = RequestParameters.operator.login;
 	NewObject.phone = RequestParameters.client.phone;  

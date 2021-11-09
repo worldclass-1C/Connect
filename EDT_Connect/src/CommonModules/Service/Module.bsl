@@ -380,6 +380,12 @@ Function Pagination_Read(GUID = "", PageNumber = 0) Export
 		Return array;		
 	EndIf;
 	
+	Try
+		GUID_Str = New UUID(GUID);
+	except
+		Return array;
+	EndTry;	
+	
 	Query = New Query;
 	Query.Text = "SELECT
 	|Pagination.Log AS Log,
