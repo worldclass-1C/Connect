@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:InformationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="253a70bb-04d3-4246-89f2-a1ff127d7c38">
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="253a70bb-04d3-4246-89f2-a1ff127d7c38">
   <producedTypes>
     <selectionType typeId="e488f2ed-d59a-4875-94be-2318c7eb15be" valueTypeId="96887d01-8f39-4db7-9280-46ede5fb0d95"/>
     <listType typeId="9de4e3fd-525b-41bb-b387-7dbc3ec76300" valueTypeId="034d7aa0-e872-40af-96ca-68286fb95b7a"/>
@@ -27,8 +27,13 @@
       <types>String</types>
       <stringQualifiers/>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
   </resources>
   <attributes uuid="4dc2d39d-501f-49e0-a14b-cdb52f0b9e31">
     <name>GUID</name>
@@ -42,8 +47,13 @@
         <length>36</length>
       </stringQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:StringValue">
+      <value></value>
+    </fillValue>
   </attributes>
   <dimensions uuid="81375b3a-f53c-4c35-a356-00810ca91db9">
     <name>Log</name>
@@ -54,8 +64,11 @@
     <type>
       <types>CatalogRef.logs</types>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <mainFilter>true</mainFilter>
   </dimensions>
   <dimensions uuid="d9b72a1d-7a8b-412e-9adc-8b1c1b320170">
@@ -70,8 +83,11 @@
         <precision>7</precision>
       </numberQualifiers>
     </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
     <mainFilter>true</mainFilter>
   </dimensions>
 </mdclass:InformationRegister>
