@@ -7,6 +7,8 @@
   </synonym>
   <comment>// SC-098870</comment>
   <methodName>CommonModule.Jobs.sendThread</methodName>
+  <use>true</use>
+  <predefined>true</predefined>
   <restartCountOnFailure>3</restartCountOnFailure>
   <restartIntervalOnFailure>25</restartIntervalOnFailure>
 </mdclass:ScheduledJob>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7d016995-ec3c-485a-b474-288a8ce2efbe">
+  <producedTypes>
+    <managerType typeId="0280478a-90fc-49f7-a3fb-e8c16a0f4948" valueTypeId="5b649191-5e8f-485b-8321-1800b02fd79a"/>
+    <valueManagerType typeId="73d9a43f-75d7-4931-9e1b-d417b36e41b3" valueTypeId="b8efcb47-bff9-438b-80b8-ceea81ab0eaa"/>
+    <valueKeyType typeId="24621545-3d22-4826-8f2f-52ae224c3206" valueTypeId="775dc081-fc59-4bf6-ac4c-91ca53ddf1e9"/>
+  </producedTypes>
+  <name>EdnaBearerKey</name>
+  <synonym>
+    <key>ru</key>
+    <value>Edna bearer key</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>500</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

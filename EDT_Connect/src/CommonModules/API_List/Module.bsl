@@ -739,7 +739,8 @@ Procedure chainList(parameters) Export
 	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections,
 	|	chain.rulesRef AS rules,
-	|	chain.pdnRef AS pdn
+	|	chain.pdnRef AS pdn,
+	|	chain.supportPhone
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
@@ -782,7 +783,8 @@ Procedure chainList(parameters) Export
 		EndDo;
 		chainStruct.Insert("availableSections", availableSections);
 		chainStruct.Insert("rules", select.rules);
-		chainStruct.Insert("pdn", select.pdn);		
+		chainStruct.Insert("pdn", select.pdn);
+		chainStruct.Insert("supportPhone", select.supportPhone);		
 		array.add(chainStruct);
 	EndDo;
 
@@ -1128,7 +1130,6 @@ Procedure OutMessageMatchers(parameters) Export
 	If Not requestStruct.Property("imType") Then	
 		parameters.Insert("error", "imTypeError");	
 	Else	
-		
 		body = new structure;
 		body.Insert("imType", requestStruct.imType); 
 		body.Insert("subject", requestStruct.subject);
@@ -1169,30 +1170,35 @@ Procedure imOutHSM(parameters) Export
 	If Not requestStruct.Property("body") Then	
 		parameters.Insert("error", "BodyError");	
 	Else
-	
-	body = requestStruct.body; // заполненое тело запроса	
 		
-	Connection ="/api/imOutHSM"; 
-	parametersConn = ConnStruct(tokenContext.holding);
-	
-	ConnectionHTTP = New HTTPConnection(parametersConn.server, parametersConn.port,,,, parametersConn.timeout, ?(parametersConn.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersConn.useOSAuthentication);
-	
-	requestHTTP = New HTTPRequest(Connection);
-	requestHTTP.Headers.Insert("Content-Type", "application/json");
-	requestHTTP.Headers.Insert("X-API-KEY", parametersConn.key); 
-	requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
-		try
-			answerHTTP = ConnectionHTTP.Post(requestHTTP);
-		Except
-			answerHTTP = Undefined;
-		EndTry;
-		
-		responseStruct = New Structure();
-		
-		If answerHTTP <> Undefined Then		
-			responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
-		Else
-			responseStruct.Insert("error","answerHTTP = Undefined");
+		body = requestStruct.body; // заполненое тело запроса	
+			
+		Connection ="/api/imOutHSM"; 
+		parametersConn = ConnStruct(tokenContext.holding);
+		workingStatesCount = GetWorkingStates(requestStruct, parametersConn);
+		if workingStatesCount = 0 Then
+			ConnectionHTTP = New HTTPConnection(parametersConn.server, parametersConn.port,,,, parametersConn.timeout, ?(parametersConn.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersConn.useOSAuthentication);
+			
+			requestHTTP = New HTTPRequest(Connection);
+			requestHTTP.Headers.Insert("Content-Type", "application/json");
+			requestHTTP.Headers.Insert("X-API-KEY", parametersConn.key); 
+			requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
+				try
+					answerHTTP = ConnectionHTTP.Post(requestHTTP);
+				Except
+					answerHTTP = Undefined;
+				EndTry;
+				
+				responseStruct = New Structure();
+				
+				If answerHTTP <> Undefined Then		
+					responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+				Else
+					responseStruct.Insert("error","answerHTTP = Undefined");
+				EndIf;
+		else
+			responseStruct = New Structure();
+			responseStruct.Insert("code", "hasopenthread");
 		EndIf;
 	EndIf;	
 	
@@ -1275,5 +1281,52 @@ Function ConnStruct(holding , gym = Undefined, chain = Undefined)
 	Return answer;	
 		
 EndFunction
+
+Function GetWorkingStates(requestStruct, parametersServer)
+	
+	phone = ?(requestStruct.body.Property("address"), requestStruct.body.address,"");
+	statesCount = 0;
+	if ValueIsFilled(phone) then
+		//first check
+		NewConnection = "/api/v1/threads/filter?client="+phone+"&status=WORKING_STATES";
+		ConnectionHTTP = New HTTPConnection("worldclass.edna.io", 443,,,, parametersServer.timeout, ?(parametersServer.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersServer.useOSAuthentication);
+		EdnaKey = GetEdnaKey();
+		requestHTTP = New HTTPRequest(NewConnection);
+		requestHTTP.Headers.Insert("Content-Type", "application/json");
+		requestHTTP.Headers.Insert("Authorization", "Bearer "+EdnaKey);
+			try
+				answerHTTP = ConnectionHTTP.Get(requestHTTP);
+			Except
+				answerHTTP = Undefined;
+			EndTry;
+		If Not answerHTTP = Undefined Then
+			responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+			statesCount = statesCount + ?(responseStruct.Property("count"), responseStruct.count,1);
+		EndIf;
+		//second check
+		NewConnection = "/api/v1/threads/filter?client="+phone+"&status=QUEUED_STATES";
+		ConnectionHTTP = New HTTPConnection("worldclass.edna.io", 443,,,, parametersServer.timeout, ?(parametersServer.secureConnection, New OpenSSLSecureConnection(), Undefined), parametersServer.useOSAuthentication);
+		
+		requestHTTP = New HTTPRequest(NewConnection);
+		requestHTTP.Headers.Insert("Content-Type", "application/json");
+		requestHTTP.Headers.Insert("Authorization", "Bearer "+EdnaKey); 
+			try
+				answerHTTP = ConnectionHTTP.Get(requestHTTP);
+			Except
+				answerHTTP = Undefined;
+			EndTry;
+		If Not answerHTTP = Undefined Then
+			responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+			statesCount = statesCount + ?(responseStruct.Property("count"), responseStruct.count,1);
+		EndIf;
+	EndIf;
+	Return statesCount;
+	
+EndFunction
+
+Function GetEdnaKey()
+	return Constants.EdnaBearerKey.Get();
+endFunction
+
 //
 

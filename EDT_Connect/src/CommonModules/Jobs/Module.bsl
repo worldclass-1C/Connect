@@ -526,4 +526,29 @@ Procedure sendThread() export
   EndDo;
   
 EndProcedure
+
+Procedure getEdnaBearerKey ()export
+	
+	NewConnection = "api/auth/login";
+	ConnectionHTTP = New HTTPConnection("worldclass.edna.io", ,,,, 30,  New OpenSSLSecureConnection(), false);
+	requestHTTP = New HTTPRequest(NewConnection);
+	requestHTTP.Headers.Insert("Content-Type", "application/json");
+	body = new Structure();
+	body.Insert("login", "integrator1");
+	body.Insert("password", "a1b2c3d4");
+	bearerKey = "";
+	requestHTTP.SetBodyFromString(http.encodeJSON(body), TextEncoding.UTF8);
+		try
+			answerHTTP = ConnectionHTTP.Post(requestHTTP);
+		Except
+			answerHTTP = Undefined;
+		EndTry;
+	If Not answerHTTP = Undefined Then
+		responseStruct = HTTP.decodeJSON(answerHTTP.GetBodyAsString(), Enums.JSONValueTypes.structure);
+		bearerKey = ?(responseStruct.Property("token"),responseStruct.token,"");
+	EndIf;
+	Constants.EdnaBearerKey.Set(bearerKey);
+	
+endprocedure
+
 //
