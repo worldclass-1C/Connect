@@ -529,7 +529,7 @@ EndProcedure
 Procedure getEdnaBearerKey ()export
 	
 	NewConnection = "api/auth/login";
-	ConnectionHTTP = New HTTPConnection("worldclass.edna.io", 443,,,, 30, true, false);
+	ConnectionHTTP = New HTTPConnection("worldclass.edna.io", "443",,,, 30, true, false);
 	requestHTTP = New HTTPRequest(NewConnection);
 	requestHTTP.Headers.Insert("Content-Type", "application/json");
 	body = new Structure();
