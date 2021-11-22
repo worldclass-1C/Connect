@@ -739,7 +739,8 @@ Procedure chainList(parameters) Export
 	|		cacheType.PredefinedDataName AS section,
 	|		isUsed) AS availableSections,
 	|	chain.rulesRef AS rules,
-	|	chain.pdnRef AS pdn
+	|	chain.pdnRef AS pdn,
+	|	chain.supportPhone
 	|FROM
 	|	Catalog.chains AS chain
 	|		LEFT JOIN Catalog.chains.translation AS chaininterfaceText
@@ -782,7 +783,8 @@ Procedure chainList(parameters) Export
 		EndDo;
 		chainStruct.Insert("availableSections", availableSections);
 		chainStruct.Insert("rules", select.rules);
-		chainStruct.Insert("pdn", select.pdn);		
+		chainStruct.Insert("pdn", select.pdn);
+		chainStruct.Insert("supportPhone", select.supportPhone);		
 		array.add(chainStruct);
 	EndDo;
 
