@@ -496,13 +496,14 @@ Procedure sendThread() export
    		HeaderStruct.Insert("phone", selection.Ref.phone);
 		HeaderStruct.Insert("login", selection.Ref.login); 
 		HeaderStruct.Insert("id"   , selection.Ref.Description);
+		HeaderStruct.Insert("starttime"   , XMLString(selection.Ref.StartTime));
 		
 		TableStruct.Insert("Tags", selection.Ref.ThreadTags.UnloadColumn("Tag"));
 		
 		ArrayMessages = New Array();
-		TM = selection.Ref.ThreadMessages;
+		TM = selection.Ref.ThreadMessages; 
 		For Each StrMessage In TM Do
-			SrtStruct = New Structure("Message,ResponseTime, Owner",StrMessage.Message,StrMessage.ResponseTime,StrMessage.Owner);
+			SrtStruct = New Structure("Message,ResponseTime, Owner",StrMessage.Message,XMLString(StrMessage.ResponseTime),StrMessage.Owner);
 			ArrayMessages.Add(SrtStruct);		
 		EndDo;
 		TableStruct.Insert("Messages", ArrayMessages);
