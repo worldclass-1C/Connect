@@ -1102,7 +1102,7 @@ Procedure incomingThread(parameters) Export
 	NewObject.phone = RequestParameters.client.phone;  
 	
 	For Each StrMessage In ArrayMessages Do
-		NewSrt = NewObject.ThreadMessages.Add();
+		NewSrt = NewObject.ThreadMessages.Add(); 
 		NewSrt.Message = StrMessage.text;
 		NewSrt.ResponseTime = XMLValue(Type("Date"),StrMessage.receivedAt);
 		NewSrt.Owner = StrMessage.Owner; 
