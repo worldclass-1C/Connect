@@ -1096,7 +1096,7 @@ Procedure incomingThread(parameters) Export
 	NewObject  = Catalogs.Thread.CreateItem();
 	NewObject.Description  = threadid;
 	NewObject.IncomingData = parameters.requestBody; 
-	NewObject.StartTime = XMLValue(Type("Date"), StartTime);  
+	NewObject.StartTime = StartTime;  
 	NewObject.ChannelType = ChannelType; 
 	NewObject.login = RequestParameters.operator.login;
 	NewObject.phone = RequestParameters.client.phone;  
