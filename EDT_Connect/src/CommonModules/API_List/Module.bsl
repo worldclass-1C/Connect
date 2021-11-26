@@ -1099,7 +1099,7 @@ Procedure incomingThread(parameters) Export
 	NewObject.StartTime = XMLValue(Type("Date"),StartTime);  
 	NewObject.ChannelType = ChannelType; 
 	NewObject.login = RequestParameters.operator.login;
-	NewObject.phone = RequestParameters.client.phone;  
+	NewObject.phone = RequestParameters.client.phone;   
 	
 	For Each StrMessage In ArrayMessages Do
 		NewSrt = NewObject.ThreadMessages.Add(); 
