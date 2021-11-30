@@ -242,6 +242,10 @@ Procedure payment(parameters) Export
 				struct.Insert("formUrl", 	answer.formUrl);
 				struct.Insert("returnUrl", 	answer.returnUrl);
 				struct.Insert("failUrl", 	answer.failUrl);
+				if answer.Property("payload") then
+					struct.Insert("payload", answer.payload);
+				EndIf;
+				
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send);	
 			Else
 				error = answer.errorCode;
