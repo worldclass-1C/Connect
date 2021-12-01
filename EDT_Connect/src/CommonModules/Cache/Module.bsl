@@ -28,7 +28,13 @@ Function GetCache(parameters, struсRequest) Export
 		//emptyTypes = New Array;
 		strucRes = New Structure;
 		
-		mapReplace = DescriptionProcessing(tabDescriptions,strucSeek.languageCode,strucSeek.language);
+		// SC-101645
+		If tabDescriptions.Count() > 0 Then
+			mapReplace = DescriptionProcessing(tabDescriptions,strucSeek.languageCode,strucSeek.language);
+		Else
+			mapReplace = New Map;
+		EndIf;
+		//
 		
 		For Each cachetype In strucSeek.cacheTypes Do
 			FoundRows = common.FindRows(New Structure("cacheType", cachetype));
