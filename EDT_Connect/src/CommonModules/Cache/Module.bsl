@@ -28,13 +28,8 @@ Function GetCache(parameters, struсRequest) Export
 		//emptyTypes = New Array;
 		strucRes = New Structure;
 		
-		// SC-101645
-		If tabDescriptions.Count() > 0 Then
-			mapReplace = DescriptionProcessing(tabDescriptions,strucSeek.languageCode,strucSeek.language);
-		Else
-			mapReplace = New Map;
-		EndIf;
-		//
+		mapReplace = DescriptionProcessing(tabDescriptions,strucSeek.languageCode,strucSeek.language);
+
 		
 		For Each cachetype In strucSeek.cacheTypes Do
 			FoundRows = common.FindRows(New Structure("cacheType", cachetype));
@@ -138,7 +133,9 @@ Function DescriptionProcessing(arrDescr,languageCode,language)
 		languageCode = "ru"
 	EndIf;
 	For Each found In arrDescr Do
+
 		typeDescr = TypeOf(found.Description);
+		
 		If typeDescr = Type("CatalogRef.cacheInformations") Then
 			//для описаний кэша отдельная ветка
 			
@@ -285,7 +282,11 @@ Function TextQuery()
 	|	tabDesr.Description AS Description,
 	|	tabDesr.data AS data
 	|FROM
-	|	tabDesr AS tabDesr"
+	|	tabDesr AS tabDesr
+	//SC-101645 Проверяем на битую ссылку
+	|WHERE tabDesr.data IS NOT NULL 
+	//
+	|"
 
 EndFunction
 
