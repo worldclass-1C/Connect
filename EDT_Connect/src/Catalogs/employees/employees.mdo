@@ -272,6 +272,18 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="ed920982-7dca-47c7-8f75-abd0aab768ad">
+    <name>cashlessTips</name>
+    <synonym>
+      <key>ru</key>
+      <value>Cashless tips</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <tabularSections uuid="07f23d83-7473-4f05-a783-3f1195cfba51">
     <producedTypes>
       <objectType typeId="ef59671c-5239-4dbb-a34a-5d929a014f32" valueTypeId="32a7c322-d659-4975-b53d-b5a32bbb7dcc"/>

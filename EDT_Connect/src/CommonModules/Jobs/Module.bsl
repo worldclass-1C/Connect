@@ -486,9 +486,10 @@ Procedure sendThread() export
   
   selection = query.Execute().Select();
   requestStruct = New Structure();
-  array = new array();
+  
   
   While selection.Next() Do
+  		array = new array();
   		HeaderStruct  = New Structure();
   		TableStruct   = New Structure();
    		OutputStruct  = New Structure("Header,Tables");
@@ -552,3 +553,38 @@ Procedure getEdnaBearerKey ()export
 endprocedure
 
 //
+
+Procedure checkEmployeesCashlessTips() Export
+	
+	query = new query;
+	query.Text ="SELECT
+	|	gymsEmployees.gym,
+	|	gymsEmployees.employee,
+	|	gymsEmployees.employee.employeeCode AS employeeCode
+	|FROM
+	|	InformationRegister.gymsEmployees AS gymsEmployees
+	|WHERE
+	|	gymsEmployees.employee.employeeCode <> """"";
+	
+	//shitcode, we need changes, but we have no time
+	selection = query.Execute().Select();
+	While selection.Next() do
+		ConnectionHTTP = New HTTPConnection("netmonet.co", 443, ,,, 30, New OpenSSLSecureConnection(), false);
+		requestHTTP = New HTTPRequest("api/code/"+selection.employeeCode);
+		Try
+			answerHTTP = ConnectionHTTP.Get(requestHTTP);
+		Except
+			answerHTTP = Undefined;
+		EndTry;
+		If answerHTTP <> Undefined Then	
+			employeeObj = selection.employee.GetJbject();		
+			If answerHTTP.StatusCode = 200 Then
+				employeeObj.cashlessTips = True;
+			Else
+				employeeObj.cashlessTips = false; 
+			EndIf;
+			employeeObj.Write();
+		EndIf;
+	EndDo;
+		
+EndProcedure

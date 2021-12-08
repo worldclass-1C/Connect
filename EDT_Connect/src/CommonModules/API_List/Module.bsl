@@ -33,7 +33,8 @@ Function getArrEmployees(params) Export
 	|	ISNULL(employeestranslation.lastName, gymsEmployees.employee.lastName) AS lastName,
 	|	ISNULL(employeestranslation.categoryList, gymsEmployees.employee.categoryList) AS categoryList,
 	|	gymsEmployees.employee.photo AS photo,
-	|	gymsEmployees.employee.gender AS gender
+	|	gymsEmployees.employee.gender AS gender,
+	|	employeestranslation.Ref.cashlessTips
 	|FROM
 	|	InformationRegister.gymsEmployees AS gymsEmployees
 	|		LEFT JOIN Catalog.employees.translation AS employeestranslation
@@ -52,14 +53,15 @@ Function getArrEmployees(params) Export
 	|	ISNULL(employeestranslation.lastName, employees.lastName) AS lastName,
 	|	ISNULL(employeestranslation.categoryList, employees.categoryList) AS categoryList,
 	|	employees.photo AS photo,
-	|	employees.gender AS gender
+	|	employees.gender AS gender,
+	|	employees.cashlessTips
 	|FROM
 	|	Catalog.employees AS employees
 	|		LEFT JOIN Catalog.employees.translation AS employeestranslation
 	|		ON employees.Ref = employeestranslation.Ref
 	|		AND employeestranslation.language = &language
 	|WHERE
-	|	 &byArray
+	|	&byArray
 	|	AND employees.Ref IN (&Array)
 	|	AND employees.active");
 
@@ -80,6 +82,7 @@ Function getArrEmployees(params) Export
 			employeeStruct.Insert("photo", select.photo);
 			employeeStruct.Insert("categoryList", HTTP.decodeJSON(select.categoryList, Enums.JSONValueTypes.array));
 			employeeStruct.Insert("isMyCoach", False);
+			employeeStruct.Insert("cashlessTips", select.cashlessTips);
 		EndIf;
 		If stucParams.byArray Then
 			Res.Insert(select.employee,  HTTP.encodeJSON(employeeStruct))

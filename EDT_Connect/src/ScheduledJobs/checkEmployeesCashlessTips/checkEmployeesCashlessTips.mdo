@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="68a2e727-8f24-4130-90bf-4edbd3143b2b">
+  <name>checkEmployeesCashlessTips</name>
+  <synonym>
+    <key>ru</key>
+    <value>Check employees cashless tips</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.checkEmployeesCashlessTips</methodName>
+  <use>true</use>
+  <predefined>true</predefined>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>25</restartIntervalOnFailure>
+</mdclass:ScheduledJob>
