@@ -63,7 +63,10 @@ Procedure editProperty(val token, struct) Export
 				tokenObject[element.key] = element.value;
 			EndDo;
 			tokenObject.changeDate = ToUniversalTime(CurrentDate());
-			tokenObject.Write();
+			try
+				tokenObject.Write();
+			Except
+			EndTry;	
 		EndIf;
 	EndIf;
 EndProcedure
