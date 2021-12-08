@@ -283,8 +283,8 @@ Function TextQuery()
 	|	tabDesr.data AS data
 	|FROM
 	|	tabDesr AS tabDesr
-	//SC-101645 Проверяем на битую ссылку
-	|WHERE tabDesr.data IS NOT NULL 
+	//SC-101645 Проверяем на битую ссылку -- Подправлено задачей SC-101784 
+	|tabDesr.Description.Ref IS NOT NULL
 	//
 	|"
 
