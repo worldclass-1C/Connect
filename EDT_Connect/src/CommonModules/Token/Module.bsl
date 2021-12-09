@@ -57,9 +57,9 @@ Procedure editProperty(val token, struct) Export
 	If tokenObject <> Undefined Then
 		If (ValueIsFilled(tokenObject.account) and tokenObject.account<>catalogs.accounts.Tilda) or (NOT ValueIsFilled(tokenObject.account)) then		
 			For Each element In struct Do
-				//If element.key = "user" Then
-				//	ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.user));
-				//EndIf;
+				If element.key = "user" Then
+					ExchangePlans.RecordChanges(GeneralReuse.nodeUsersCheckIn(Enums.registrationTypes.checkIn), ?(ValueIsFilled(element.value), element.value, tokenObject.user));
+				EndIf;
 				tokenObject[element.key] = element.value;
 			EndDo;
 			tokenObject.changeDate = ToUniversalTime(CurrentDate());
