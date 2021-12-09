@@ -284,7 +284,7 @@ Function TextQuery()
 	|FROM
 	|	tabDesr AS tabDesr
 	//SC-101645 Проверяем на битую ссылку -- Подправлено задачей SC-101784  
-	|WHERE tabDesr.Description.Ref IS NOT NULL
+	|WHERE tabDesr.Description.Ref IS NOT NULL 
 	//
 	|"
 
