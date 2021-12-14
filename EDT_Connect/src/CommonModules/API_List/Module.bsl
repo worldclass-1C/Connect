@@ -1053,8 +1053,7 @@ Procedure gymListEdna(parameters) Export
 	
 	// SC-099675
 	If requestStruct.Property("QuantityItemsPerPage") Then
-		//parameters.Insert("EnablePagination",True); // отключил времено
-		parameters.Insert("EnablePagination",False);
+		parameters.Insert("EnablePagination",True); 
 		parameters.Insert("QuantityItemsPerPage",requestStruct.QuantityItemsPerPage); 	
 	EndIf;
 	//
