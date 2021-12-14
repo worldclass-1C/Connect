@@ -280,21 +280,21 @@ Procedure logRequest(parameters) Export
 	EndTry;
 	
 	// SC-099675
-	If parameters.Property("EnablePagination") AND (NOT parameters.EnablePagination) Then
-		Return;
-	EndIf;
+	If parameters.Property("EnablePagination") then 
+	 If parameters.EnablePagination Then
+	  If NOT record.Ref.IsEmpty() Then
+		try
+		
+		Pagination_Write(record,parameters); 
 
-	//If NOT record.Ref.IsEmpty() Then
-	//	try
-	//	
-	//	Pagination_Write(record,parameters);
-//
-	//	Except
-		//		Error = ErrorInfo(); 
-			//	WriteLogEvent("Pagination", 
-       			//	EventLogLevel.Warning, , ,Error);
-       // EndTry;
-	//EndIf;
+		Except
+			Error = ErrorInfo(); 
+		    WriteLogEvent("Pagination", 
+    	    	EventLogLevel.Warning, , ,Error);
+        EndTry;
+	  EndIf;
+	 EndIf; 
+	EndIf;
 	//
 		
 EndProcedure
@@ -381,7 +381,7 @@ Function Pagination_Read(GUID = "", PageNumber = 0) Export
 	EndIf;
 	
 	Try
-		GUID_Str = New UUID(GUID);
+		GUID_Str = New UUID(GUID); 
 	except
 		Return array;
 	EndTry;	
