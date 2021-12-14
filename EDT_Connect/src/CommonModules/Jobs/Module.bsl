@@ -577,7 +577,7 @@ Procedure checkEmployeesCashlessTips() Export
 			answerHTTP = Undefined;
 		EndTry;
 		If answerHTTP <> Undefined Then	
-			employeeObj = selection.employee.GetJbject();		
+			employeeObj = selection.employee.GetObject();		
 			If answerHTTP.StatusCode = 200 Then
 				employeeObj.cashlessTips = True;
 			Else
