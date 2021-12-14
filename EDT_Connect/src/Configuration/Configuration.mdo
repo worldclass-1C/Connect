@@ -297,8 +297,6 @@
   <informationRegisters>InformationRegister.usersRestriction</informationRegisters>
   <informationRegisters>InformationRegister.matchingAppZoom</informationRegisters>
   <informationRegisters>InformationRegister.Pagination</informationRegisters>
-  <informationRegisters>InformationRegister.ednaBearerKeys</informationRegisters>
-  <informationRegisters>InformationRegister.ednabearerkeys</informationRegisters>
   <accumulationRegisters>AccumulationRegister.UsersValues</accumulationRegisters>
   <accumulationRegisters>AccumulationRegister.pushStatus</accumulationRegisters>
   <chartsOfCharacteristicTypes>ChartOfCharacteristicTypes.ВопросыДляАнкетирования</chartsOfCharacteristicTypes>

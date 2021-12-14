@@ -225,7 +225,7 @@ Procedure ClearHistory() Export
 	|FROM
 	|	Catalog.logs AS logs
 	|WHERE
-	|	logs.period < DATEADD(&currentDate, Month, -6)
+	|	logs.period < DATEADD(&currentDate, Month, -1)
 	|
 	|UNION ALL
 	|
@@ -234,7 +234,25 @@ Procedure ClearHistory() Export
 	|FROM
 	|	Catalog.classesSchedule AS classesSchedule
 	|WHERE
-	|	classesSchedule.period < DATEADD(&currentDate, Day, -30)";
+	|	classesSchedule.period < DATEADD(&currentDate, Day, -30)
+	|
+	|UNION ALL
+	|
+	|SELECT Top 500
+	|	messages.Ref
+	|FROM
+	|	Catalog.messages AS messages
+	|WHERE
+	|	messages.registrationDate < DATEADD(&currentDate, Month, -1)
+	|
+	|UNION ALL
+	|
+	|SELECT Top 500
+	|	messageLogs.Ref
+	|FROM
+	|	Document.messageLogs AS messageLogs
+	|WHERE
+	|	messageLogs.Date < DATEADD(&currentDate, Month, -1)";
 	query.SetParameter("currentDate", ToUniversalTime(CurrentDate()));
 	selection = query.Execute().Select();
 	While selection.Next() Do
