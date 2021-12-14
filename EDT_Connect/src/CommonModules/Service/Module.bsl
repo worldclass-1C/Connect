@@ -280,7 +280,7 @@ Procedure logRequest(parameters) Export
 	EndTry;
 	
 	// SC-099675
-	If parameters.Property("EnablePagination") then 
+	If parameters.Property("EnablePagination") then  
 	 If parameters.EnablePagination Then
 	  If NOT record.Ref.IsEmpty() Then
 		try
