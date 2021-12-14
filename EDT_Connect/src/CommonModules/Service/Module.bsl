@@ -284,17 +284,17 @@ Procedure logRequest(parameters) Export
 		Return;
 	EndIf;
 
-	If NOT record.Ref.IsEmpty() Then
-		try
-		
-		Pagination_Write(record,parameters);
-
-		Except
-				Error = ErrorInfo(); 
-				WriteLogEvent("Pagination", 
-       				EventLogLevel.Warning, , ,Error);
-        EndTry;
-	EndIf;
+	//If NOT record.Ref.IsEmpty() Then
+	//	try
+	//	
+	//	Pagination_Write(record,parameters);
+//
+	//	Except
+		//		Error = ErrorInfo(); 
+			//	WriteLogEvent("Pagination", 
+       			//	EventLogLevel.Warning, , ,Error);
+       // EndTry;
+	//EndIf;
 	//
 		
 EndProcedure
