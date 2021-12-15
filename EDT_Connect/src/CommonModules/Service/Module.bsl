@@ -32,7 +32,7 @@ Function getErrorDescription(language, erroeCode = "",
 		|		AND errorDescriptionstranslation.language = &language
 		|WHERE
 		|	errorDescriptions.Code = ""System"""); 
-		
+		 
 		query.SetParameter("erroeCode", erroeCode);
 		query.SetParameter("language", language);
 		result = query.Execute();
