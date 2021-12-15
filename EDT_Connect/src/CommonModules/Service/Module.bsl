@@ -5,7 +5,7 @@ Function getErrorDescription(language, erroeCode = "",
 	If mailRecipients = Undefined Then
 		mailRecipients = New Array(); 
 	EndIf;
-	 /// Леха это тест
+
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
 		|	ISNULL(errorDescriptionstranslation.description, errorDescriptions.defaultDescription) AS description,
