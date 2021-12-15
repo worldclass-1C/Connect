@@ -156,7 +156,7 @@ Function prepareDetails(parameters, parametersQuery)
 	dateTime = Date(1,1,1);
 	If parameters.Property("transactionDate") then
 		try
-			dateTime = XMLValue(type("Date"),parameters.transactionDate);
+			dateTime = XMLValue(Type("Date"), parameters.transactionDate);
 		Except
 			dateTime = Date(1,1,1);
 		EndTry;
