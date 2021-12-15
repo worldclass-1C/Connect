@@ -5,7 +5,7 @@ Function getErrorDescription(language, erroeCode = "",
 	If mailRecipients = Undefined Then
 		mailRecipients = New Array(); 
 	EndIf;
-	
+
 	If erroeCode <> "" And description = "" Then
 		query = New Query("SELECT
 		|	ISNULL(errorDescriptionstranslation.description, errorDescriptions.defaultDescription) AS description,
@@ -31,8 +31,8 @@ Function getErrorDescription(language, erroeCode = "",
 		|		ON errorDescriptions.Ref = errorDescriptionstranslation.Ref
 		|		AND errorDescriptionstranslation.language = &language
 		|WHERE
-		|	errorDescriptions.Code = ""System""");
-		
+		|	errorDescriptions.Code = ""System"""); 
+		 
 		query.SetParameter("erroeCode", erroeCode);
 		query.SetParameter("language", language);
 		result = query.Execute();
