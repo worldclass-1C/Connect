@@ -606,3 +606,6 @@ Procedure checkEmployeesCashlessTips() Export
 	EndDo;
 		
 EndProcedure
+
+Procedure Test()
+EndProcedure
