@@ -284,7 +284,6 @@ Procedure getUsersRestrictions() Export
 	|	Catalog.restrictions AS restrictions";
 	selectionChain = query.Execute().Select();
 	
-	
 	while selectionChain.Next() do
 		requestStruct = new Structure();
 		requestStruct.Insert("chainId", XMLString(selectionChain.chain));
