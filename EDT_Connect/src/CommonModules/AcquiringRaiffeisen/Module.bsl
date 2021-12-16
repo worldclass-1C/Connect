@@ -153,19 +153,19 @@ Function prepareDetails(parameters, parametersQuery)
 	
 	details.Insert("terminalId", ?(parameters.Property("terminalId"), parameters.terminalId, ""));
 	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));
-	details.Insert("timeZone", ?(parametersQuery.Property("tokenContext"), string(parametersQuery.tokenContext.token.timeZone), Undefined));
 	
-	dateTime = Date(1,1,1);
 	If parameters.Property("transactionDate") then
 		try
 			dateTime = XMLValue(Type("Date"), parameters.transactionDate);
 		Except
-			dateTime = Date(1,1,1);
+			dateTime = Date(1, 1, 1);
 		EndTry;
+		
+	Else
+		dateTime = Date(1, 1, 1);		
 	EndIf;	
 	
-	details.Insert("authDateTime", dateTime);
-	
+	details.Insert("authDateTime", dateTime);	
 	details.Insert("approvalCode", "");
 	details.Insert("maskedPan", "");
 	details.Insert("cardholderName", "");

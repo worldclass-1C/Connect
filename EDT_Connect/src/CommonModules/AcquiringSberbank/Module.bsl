@@ -191,11 +191,10 @@ Function prepareDetails(parameters, parametersQuery)
 	
 	details.Insert("terminalId", ?(parameters.Property("terminalId"), parameters.terminalId, ""));
 	details.Insert("authRefNum", ?(parameters.Property("authRefNum"), parameters.authRefNum, ""));
-	details.Insert("timeZone", ?(parametersQuery.Property("tokenContext"), string(parametersQuery.tokenContext.token.timeZone), Undefined));
 	
 	If parameters.Property("authDateTime") then
 		try
-			dateTime = ToLocalTime('19700101' + Round(Number(parameters.authDateTime)/1000, 0, 1), details.timeZone);
+			dateTime = ToLocalTime('19700101' + Round(Number(parameters.authDateTime)/1000, 0, 1), "GMT+03:00");
 		Except
 			dateTime = Date(1, 1, 1);
 		EndTry;
@@ -204,7 +203,7 @@ Function prepareDetails(parameters, parametersQuery)
 		dateTime = Date(1, 1, 1);
 	EndIf;	
 	
-	details.Insert("authDateTime", 	XMLString(dateTime));
+	details.Insert("authDateTime", 	dateTime);
 	details.Insert("approvalCode", "");
 	details.Insert("maskedPan", "");
 	details.Insert("cardholderName", "");
