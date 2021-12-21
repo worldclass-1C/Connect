@@ -202,7 +202,8 @@ Procedure payment(parameters) Export
 				Else
 					error = "deposits";
 				EndIf;
-			EndDo;			
+			EndDo;
+						
 			orderObject.Write();						
 		EndIf;
 		If error = "" Then
@@ -214,6 +215,7 @@ Procedure payment(parameters) Export
 	//Отправляем в запрос в банк на оставшуюся сумму
 	If error = "" Then
 		If orderObject <> Undefined Then
+			orderObject.acquiringAmount = orderObject.acquiringAmount - orderObject.payments.Total("amount");				
 			orderObject.Write();
 		EndIf;
 		struct.Insert("uid", XMLString(order));
@@ -231,8 +233,6 @@ Procedure payment(parameters) Export
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send); 
 			endif;
 		Else
-			order.acquiringAmount = aquiringAmount;
-			
 			if isQr Then
 				answer = Acquiring.executeRequest("getQr", order, parameters);
 			else
