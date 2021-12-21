@@ -231,11 +231,13 @@ Procedure payment(parameters) Export
 				Acquiring.addOrderToQueue(order, Enums.acquiringOrderStates.send); 
 			endif;
 		Else
-			 if isQr Then
-			 	answer = Acquiring.executeRequest("getQr", order, parameters);
-			 else
-			 	answer = Acquiring.executeRequest("send", order);
-			 EndIf;
+			order.acquiringAmount = aquiringAmount;
+			
+			if isQr Then
+				answer = Acquiring.executeRequest("getQr", order, parameters);
+			else
+				answer = Acquiring.executeRequest("send", order);
+			EndIf;
 			 
 			If answer.errorCode = "" Then
 				struct.Insert("orderId", 	answer.orderId);
