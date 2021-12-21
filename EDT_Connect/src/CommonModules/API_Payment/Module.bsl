@@ -215,7 +215,6 @@ Procedure payment(parameters) Export
 	//Отправляем в запрос в банк на оставшуюся сумму
 	If error = "" Then
 		If orderObject <> Undefined Then
-			orderObject.acquiringAmount = orderObject.acquiringAmount - orderObject.payments.Total("amount");				
 			orderObject.Write();
 		EndIf;
 		struct.Insert("uid", XMLString(order));
