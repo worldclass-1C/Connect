@@ -1,6 +1,5 @@
 Procedure sendOrder(parameters) Export
 	
-	
 	requestParametrs = New Array();
 	requestParametrs.Add("userName=" 		+ parameters.user);
 	requestParametrs.Add("password=" 		+ parameters.password);
