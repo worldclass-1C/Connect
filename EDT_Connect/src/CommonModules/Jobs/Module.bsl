@@ -570,7 +570,6 @@ Procedure getEdnaBearerKey ()export
 	Constants.EdnaBearerKey.Set(bearerKey);
 	
 endprocedure
-
 //
 
 Procedure checkEmployeesCashlessTips() Export
@@ -608,5 +607,3 @@ Procedure checkEmployeesCashlessTips() Export
 		
 EndProcedure
 
-Procedure Test()
-EndProcedure
