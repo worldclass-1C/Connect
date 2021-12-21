@@ -239,8 +239,7 @@ Function ConnectionQueryText()
 	|		ELSE holdingConnection.connection
 	|	END AS paymentConnection,
 	|	acquiringOrders.Ref AS order,
-	|	acquiringOrderIdentifiers.Ref AS orderIdentifier,
-	|	acquiringOrderIdentifiers.sessionId
+	|	MAX(acquiringOrderIdentifiers.Ref) AS orderIdentifier
 	|INTO Connection
 	|FROM
 	|	Catalog.acquiringOrders AS acquiringOrders
@@ -284,6 +283,21 @@ Function ConnectionQueryText()
 	|		AND acquiringOrders.connectionType = chainAcquiringProviderConnection.connectionType
 	|WHERE
 	|	acquiringOrders.Ref = &order
+	|GROUP BY
+	|	CASE
+	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	|			THEN gymAcquiringProviderConnection.connection
+	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	|			THEN chainAcquiringProviderConnection.connection
+	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	|			THEN AcquiringProviderConnection.connection
+	|		WHEN NOT gymConnection.connection IS NULL
+	|			THEN gymConnection.connection
+	|		WHEN NOT chainConnection.connection IS NULL
+	|			THEN chainConnection.connection
+	|		ELSE holdingConnection.connection
+	|	END,
+	|	acquiringOrders.Ref
 	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
@@ -311,7 +325,7 @@ Function ConnectionQueryText()
 	|	Connection.order.acquiringRequest AS acquiringRequest,
 	|	Connection.order AS order,
 	|	Connection.order.user.Owner.Code AS phone,
-	|	Connection.sessionId AS sessionId
+	|	Connection.orderIdentifier.sessionId AS sessionId
 	|FROM
 	|	Connection AS Connection,
 	|	TemporaryDepositAmount AS TemporaryDepositAmount
