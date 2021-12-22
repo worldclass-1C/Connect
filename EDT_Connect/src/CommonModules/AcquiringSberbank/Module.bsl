@@ -194,7 +194,7 @@ Function prepareDetails(parameters, parametersQuery)
 	
 	If parameters.Property("authDateTime") then
 		try
-			dateTime = ToLocalTime('19700101' + Int(Number(parameters.authDateTime)/1000), "GMT+03:00");
+			dateTime = ToLocalTime('19700101' + Round(Number(parameters.authDateTime)/1000), "GMT+03:00");
 		Except
 			dateTime = Date(1, 1, 1);
 		EndTry;
