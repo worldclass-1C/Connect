@@ -540,11 +540,12 @@ Procedure sendThread() export
 		General.executeRequestMethod(parameters);
 		Service.logRequestBackground(parameters);
 
-		if parameters.error = "" then
+		//if parameters.error = "" then
 			ExchangePlans.DeleteChangeRecords(unit, selection.ref);
-		EndIf;
+		//EndIf;
   EndDo;
   
+
 EndProcedure
 
 Procedure getEdnaBearerKey ()export
