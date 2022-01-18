@@ -873,6 +873,10 @@ Procedure notificationList(parameters) Export
 	|FROM
 	|	AccumulationRegister.pushStatus.BalanceAndTurnovers(, &eOfPeriod, Record,, user = &user
 	|	AND informationChannel = &informationChannel) AS pushStatusBalanceAndTurnovers
+	// SC-103184
+	|WHERE
+	|	pushStatusBalanceAndTurnovers.message.Ref IS NOT NULL
+	//
 	|GROUP BY
 	|	pushStatusBalanceAndTurnovers.message,
 	|	pushStatusBalanceAndTurnovers.message.objectId,
