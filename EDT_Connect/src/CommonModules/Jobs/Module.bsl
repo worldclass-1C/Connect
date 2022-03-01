@@ -65,7 +65,8 @@ Function GetOrdersToCheck()
 	|	InformationRegister.acquiringOrdersQueue AS acquiringOrdersQueue
 	|WHERE
 	|	acquiringOrdersQueue.orderState = VALUE(Enum.acquiringOrderStates.send)
-	|	AND acquiringOrdersQueue.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	//|	AND acquiringOrdersQueue.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|	AND acquiringOrdersQueue.registrationDate < DATEADD(&CurrentDate, Minute, -3)
 	|	AND
 	|	NOT acquiringOrdersQueue.order IS NULL
 	|ORDER BY
@@ -126,7 +127,8 @@ Function GetOrdersToProcess()
 	|		ON acquiringOrdersorders.Ref = acquiringOrders.Ref
 	|WHERE
 	|	ordersStates.state IS NULL
-	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	//|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -20)
+	|	AND acquiringOrders.registrationDate < DATEADD(&CurrentDate, Minute, -3)
 	|	AND acquiringOrders.acquiringRequest <> VALUE(enum.acquiringRequests.autoPayment)
 	|;
 	|////////////////////////////////////////////////////////////////////////////////

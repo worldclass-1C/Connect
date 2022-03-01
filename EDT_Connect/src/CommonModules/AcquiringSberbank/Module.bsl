@@ -151,10 +151,10 @@ Function bindCardParameters(parameters) Export
 		creditCardStruct.Insert("acquiringBank", parameters.acquiringProvider);
 		creditCardStruct.Insert("active", True);
 		creditCardStruct.Insert("autopayment", False);
-		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.expiration + "01")));
-		creditCardStruct.Insert("ownerName", ?(response.cardAuthInfo.Property("cardholderName"),response.cardholderName,""));
-		creditCardStruct.Insert("description", "**** **** **** "+Right(response.Pan, 4));
-		creditCardStruct.Insert("paymentSystemCode", left(response.Pan,2));
+		creditCardStruct.Insert("expiryDate", EndOfMonth(Date(response.cardAuthInfo.expiration + "01")));
+		creditCardStruct.Insert("ownerName", ?(response.cardAuthInfo.Property("cardholderName"),response.cardAuthInfo.cardholderName,""));
+		creditCardStruct.Insert("description", "**** **** **** "+Right(response.cardAuthInfo.maskedPan, 4));
+		creditCardStruct.Insert("paymentSystemCode", left(response.cardAuthInfo.maskedPan,2));
 		creditCardStruct.Insert("autoPayment",false);
 	Else
 		creditCardStruct.Insert("bindingId", "");					
