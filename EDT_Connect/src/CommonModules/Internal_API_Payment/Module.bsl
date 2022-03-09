@@ -31,11 +31,12 @@ Procedure processOrder(parameters, additionalParameters) Export
 		requestStruct = New Structure;
 		select = result.Select();
 		select.Next();
-		If select.acquiringRequest = Enums.acquiringRequests.register Or select.acquiringRequest
-			= Enums.acquiringRequests.applePay Or select.acquiringRequest = Enums.acquiringRequests.googlePay Then
+		If select.acquiringRequest = Enums.acquiringRequests.register
+			Or select.acquiringRequest = Enums.acquiringRequests.applePay
+			Or select.acquiringRequest = Enums.acquiringRequests.googlePay Then
+			
 			requestStruct.Insert("request", ?(select.state = Enums.acquiringOrderStates.success, "payment", ?(
-				select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty()
-				And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60), "cancel", "reserve"))));
+				select.state = Enums.acquiringOrderStates.rejected, "cancel", ?(select.state.isEmpty(), "cancel", "reserve"))));
 			requestStruct.Insert("uid", XMLString(parameters.order));
 			requestStruct.Insert("docList", select.orders.Unload().UnloadColumn("uid"));
 			paymentList = New Array;
@@ -62,7 +63,7 @@ Procedure processOrder(parameters, additionalParameters) Export
 					parametersNew.error, , Texts));
 				Acquiring.changeOrderState(parameters.order, select.state);
 		EndIf;
-		If select.state.isEmpty() And select.registrationDate < (ToUniversalTime(CurrentDate()) - 20 * 60) Then
+		If select.state.isEmpty() Then
 			Acquiring.changeOrderState(parameters.order, Enums.acquiringOrderStates.rejected);
 		EndIf;
 		If requestStruct.Property("request") and requestStruct.request = "reserve" Then
