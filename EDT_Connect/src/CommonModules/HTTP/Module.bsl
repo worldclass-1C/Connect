@@ -274,7 +274,8 @@ Function inTheWhiteList(origin) Export
 		
 		Or origin = "https://www.sport.worldclass.ru "
 		Or origin = "https://worldclass-sk.ru"
-		Or origin = "https://sport.worldclass.ru" 
+		Or origin = "https://sport.worldclass.ru"
+		or origin = "https://worldclass-sk.ru" 
 	Then
 		Return True;
 	Else
