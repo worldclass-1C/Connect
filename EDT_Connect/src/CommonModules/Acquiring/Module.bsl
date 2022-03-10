@@ -245,7 +245,7 @@ Function ConnectionQueryText()
 	|	Catalog.acquiringOrders AS acquiringOrders
 	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
 	|		ON (acquiringOrderIdentifiers.Owner = acquiringOrders.Ref)
-	|		AND (acquiringOrderIdentifiers.Description <> "")
+	|		AND (acquiringOrderIdentifiers.Description <> """")
 	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
 	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
 	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
