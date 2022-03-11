@@ -56,7 +56,9 @@ Procedure gymInfo(parameters) Export
 		|		ELSE gymstranslation.state
 		|	END AS state,
 		|	gyms.photos.(
-		|		URL)
+		|		URL),
+		|	gyms.weekdaysTime,
+		|	gyms.holidaysTime
 		|FROM
 		|	Catalog.gyms AS gyms
 		|		LEFT JOIN Catalog.gyms.translation AS gymstranslation
@@ -78,6 +80,8 @@ Procedure gymInfo(parameters) Export
 			
 			gymStruct.Insert("uid", XMLString(select.Ref));
 			gymStruct.Insert("gymId", gymStruct.uid);
+			gymStruct.Insert("weekdaysTime", select.weekdaysTime);
+			gymStruct.Insert("holidaysTime", select.holidaysTime);
 			gymStruct.Insert("name", select.Description);
 			gymStruct.Insert("type", "");
 			gymStruct.Insert("state", select.state);			
