@@ -216,123 +216,169 @@ EndFunction
 
 Function ConnectionQueryText()
 	text = "SELECT
-	|	SUM(acquiringOrderspayments.amount) AS amount
-	|INTO TemporaryDepositAmount
-	|FROM
-	|	Catalog.acquiringOrders.payments AS acquiringOrderspayments
-	|WHERE
-	|	acquiringOrderspayments.Ref = &order
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection
-	|		ELSE holdingConnection.connection
-	|	END AS paymentConnection,
-	|	acquiringOrders.Ref AS order,
-	|	MAX(acquiringOrderIdentifiers.Ref) AS orderIdentifier
-	|INTO Connection
-	|FROM
-	|	Catalog.acquiringOrders AS acquiringOrders
-	|		LEFT JOIN Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
-	|		ON (acquiringOrderIdentifiers.Owner = acquiringOrders.Ref)
-	|		AND (acquiringOrderIdentifiers.Description <> """")
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
-	|		ON acquiringOrders.holding = gymAcquiringProviderConnection.holding
-	|		AND acquiringOrders.gym = gymAcquiringProviderConnection.gym
-	|		AND acquiringOrders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
-	|		AND acquiringOrders.connectionType = gymAcquiringProviderConnection.connectionType
-	|		AND acquiringOrders.chain = gymAcquiringProviderConnection.chain
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
-	|		ON acquiringOrders.holding = AcquiringProviderConnection.holding
-	|		AND acquiringOrders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
-	|		AND AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref)
-	|		AND acquiringOrders.connectionType = AcquiringProviderConnection.connectionType
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
-	|		ON acquiringOrders.holding = gymConnection.holding
-	|		AND acquiringOrders.gym = gymConnection.gym
-	|		AND acquiringOrders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		AND acquiringOrders.connectionType = gymConnection.connectionType
-	|		AND acquiringOrders.chain = gymConnection.chain
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
-	|		ON acquiringOrders.holding = holdingConnection.holding
-	|		AND holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef)
-	|		AND holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		AND holdingConnection.chain = VALUE(catalog.chains.emptyref)
-	|		AND acquiringOrders.connectionType = holdingConnection.connectionType
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
-	|		ON acquiringOrders.holding = chainConnection.holding
-	|		AND acquiringOrders.chain = chainConnection.chain
-	|		AND chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef)
-	|		AND chainConnection.gym = VALUE(Catalog.gyms.emptyRef)
-	|		AND acquiringOrders.connectionType = chainConnection.connectionType
-	|		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
-	|		ON acquiringOrders.holding = chainAcquiringProviderConnection.holding
-	|		AND acquiringOrders.chain = chainAcquiringProviderConnection.chain
-	|		AND acquiringOrders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
-	|		AND chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef)
-	|		AND acquiringOrders.connectionType = chainAcquiringProviderConnection.connectionType
-	|WHERE
-	|	acquiringOrders.Ref = &order
-	|GROUP BY
-	|	CASE
-	|		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	|			THEN gymAcquiringProviderConnection.connection
-	|		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	|			THEN chainAcquiringProviderConnection.connection
-	|		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	|			THEN AcquiringProviderConnection.connection
-	|		WHEN NOT gymConnection.connection IS NULL
-	|			THEN gymConnection.connection
-	|		WHEN NOT chainConnection.connection IS NULL
-	|			THEN chainConnection.connection
-	|		ELSE holdingConnection.connection
-	|	END,
-	|	acquiringOrders.Ref
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	Connection.paymentConnection.acquiringProvider AS acquiringProvider,
-	|	Connection.paymentConnection.server AS server,
-	|	Connection.paymentConnection.port AS port,
-	|	Connection.paymentConnection.user AS user,
-	|	Connection.paymentConnection.password AS password,
-	|	Connection.paymentConnection.timeout AS timeout,
-	|	Connection.paymentConnection.secureConnection AS secureConnection,
-	|	Connection.paymentConnection.UseOSAuthentication AS UseOSAuthentication,
-	|	Connection.paymentConnection.merchantID AS merchantID,
-	|	Connection.paymentConnection.key AS key,
-	|	Connection.order.connectionType AS connectionType,
-	|	Connection.orderIdentifier AS orderId,
-	|	CASE
-	|		WHEN Connection.order.connectionType = VALUE(Enum.ConnectionTypes.onlineStore)
-	|			THEN Connection.orderIdentifier.Description
-	|		ELSE Connection.order.Code
-	|	END AS orderNumber,
-	|	Connection.order.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
-	|	Connection.order.user AS bindingUser,
-	|	Connection.order.creditCard AS creditCard,
-	|	Connection.order.creditCard.Owner AS ownerCreditCard,
-	|	Connection.order.acquiringRequest AS acquiringRequest,
-	|	Connection.order AS order,
-	|	Connection.order.user.Owner.Code AS phone,
-	|	Connection.orderIdentifier.sessionId AS sessionId
-	|FROM
-	|	Connection AS Connection,
-	|	TemporaryDepositAmount AS TemporaryDepositAmount
-	|;
-	|////////////////////////////////////////////////////////////////////////////////
-	|DROP TemporaryDepositAmount";
+	       |	SUM(acquiringOrderspayments.amount) AS amount
+	       |INTO TemporaryDepositAmount
+	       |FROM
+	       |	Catalog.acquiringOrders.payments AS acquiringOrderspayments
+	       |WHERE
+	       |	acquiringOrderspayments.Ref = &order
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |SELECT
+	       |	acquiringOrders.registrationDate AS registrationDate,
+	       |	acquiringOrders.connectionType AS connectionType,
+	       |	acquiringOrders.Ref AS Ref,
+	       |	acquiringOrders.amount AS amount,
+	       |	acquiringOrders.acquiringAmount AS acquiringAmount,
+	       |	acquiringOrders.acquiringProvider AS acquiringProvider,
+	       |	acquiringOrders.acquiringRequest AS acquiringRequest,
+	       |	acquiringOrders.creditCard AS creditCard,
+	       |	acquiringOrders.gym AS gym,
+	       |	acquiringOrders.holding AS holding,
+	       |	acquiringOrders.chain AS chain,
+	       |	acquiringOrders.user AS user
+	       |INTO Orders
+	       |FROM
+	       |	Catalog.acquiringOrders AS acquiringOrders
+	       |WHERE
+	       |	acquiringOrders.Ref = &order
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |SELECT
+	       |	acquiringOrderIdentifiers.Owner AS Order,
+	       |	MAX(acquiringOrderIdentifiers.Ref) AS Ref
+	       |INTO OrderIdentifiers
+	       |FROM
+	       |	Catalog.acquiringOrderIdentifiers AS acquiringOrderIdentifiers
+	       |WHERE
+	       |	acquiringOrderIdentifiers.Owner = &order
+	       |	AND CASE
+	       |			WHEN acquiringOrderIdentifiers.Owner.connectionType = VALUE(Enum.ConnectionTypes.qr)
+	       |				THEN acquiringOrderIdentifiers.Description <> """"
+	       |			ELSE TRUE
+	       |		END
+	       |
+	       |GROUP BY
+	       |	acquiringOrderIdentifiers.Owner
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |SELECT
+	       |	Orders.Ref AS order,
+	       |	OrderIdentifiers.Ref AS orderIdentifier,
+	       |	CASE
+	       |		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	       |			THEN gymAcquiringProviderConnection.connection
+	       |		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	       |			THEN chainAcquiringProviderConnection.connection
+	       |		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	       |			THEN AcquiringProviderConnection.connection
+	       |		WHEN NOT gymConnection.connection IS NULL
+	       |			THEN gymConnection.connection
+	       |		WHEN NOT chainConnection.connection IS NULL
+	       |			THEN chainConnection.connection
+	       |		ELSE holdingConnection.connection
+	       |	END AS paymentConnection
+	       |INTO Connection
+	       |FROM
+	       |	Orders AS Orders
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymAcquiringProviderConnection
+	       |		ON Orders.holding = gymAcquiringProviderConnection.holding
+	       |			AND Orders.gym = gymAcquiringProviderConnection.gym
+	       |			AND Orders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
+	       |			AND Orders.chain = gymAcquiringProviderConnection.chain
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
+	       |		ON Orders.holding = AcquiringProviderConnection.holding
+	       |			AND Orders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
+	       |			AND (AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef))
+	       |			AND (AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref))
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
+	       |		ON Orders.holding = gymConnection.holding
+	       |			AND Orders.gym = gymConnection.gym
+	       |			AND (Orders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
+	       |			AND Orders.chain = gymConnection.chain
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
+	       |		ON Orders.holding = holdingConnection.holding
+	       |			AND (holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef))
+	       |			AND (holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
+	       |			AND (holdingConnection.chain = VALUE(catalog.chains.emptyref))
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
+	       |		ON Orders.holding = chainConnection.holding
+	       |			AND Orders.chain = chainConnection.chain
+	       |			AND (chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
+	       |			AND (chainConnection.gym = VALUE(Catalog.gyms.emptyRef))
+	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
+	       |		ON Orders.holding = chainAcquiringProviderConnection.holding
+	       |			AND Orders.chain = chainAcquiringProviderConnection.chain
+	       |			AND Orders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
+	       |			AND (chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef))
+	       |		LEFT JOIN OrderIdentifiers AS OrderIdentifiers
+	       |		ON Orders.Ref = OrderIdentifiers.Order
+	       |WHERE
+	       |	Orders.Ref = &order
+	       |
+	       |GROUP BY
+	       |	Orders.Ref,
+	       |	OrderIdentifiers.Ref,
+	       |	CASE
+	       |		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
+	       |			THEN gymAcquiringProviderConnection.connection
+	       |		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
+	       |			THEN chainAcquiringProviderConnection.connection
+	       |		WHEN NOT AcquiringProviderConnection.connection IS NULL
+	       |			THEN AcquiringProviderConnection.connection
+	       |		WHEN NOT gymConnection.connection IS NULL
+	       |			THEN gymConnection.connection
+	       |		WHEN NOT chainConnection.connection IS NULL
+	       |			THEN chainConnection.connection
+	       |		ELSE holdingConnection.connection
+	       |	END
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |SELECT
+	       |	Connection.order AS order,
+	       |	Connection.orderIdentifier AS orderId,
+	       |	CASE
+	       |		WHEN Connection.order.connectionType = VALUE(Enum.ConnectionTypes.onlineStore)
+	       |			THEN Connection.orderIdentifier.Description
+	       |		ELSE Connection.order.Code
+	       |	END AS orderNumber,
+	       |	Connection.order.connectionType AS connectionType,
+	       |	Connection.orderIdentifier.sessionId AS sessionId,
+	       |	Connection.order.acquiringRequest AS acquiringRequest,
+	       |	Connection.order.acquiringAmount - ISNULL(TemporaryDepositAmount.amount, 0) AS acquiringAmount,
+	       |	Connection.paymentConnection.acquiringProvider AS acquiringProvider,
+	       |	Connection.paymentConnection.server AS server,
+	       |	Connection.paymentConnection.port AS port,
+	       |	Connection.paymentConnection.user AS user,
+	       |	Connection.paymentConnection.password AS password,
+	       |	Connection.paymentConnection.timeout AS timeout,
+	       |	Connection.paymentConnection.secureConnection AS secureConnection,
+	       |	Connection.paymentConnection.UseOSAuthentication AS UseOSAuthentication,
+	       |	Connection.paymentConnection.merchantID AS merchantID,
+	       |	Connection.paymentConnection.key AS key,
+	       |	Connection.order.user AS bindingUser,
+	       |	Connection.order.creditCard AS creditCard,
+	       |	Connection.order.creditCard.Owner AS ownerCreditCard,
+	       |	Connection.order.user.Owner.Code AS phone
+	       |FROM
+	       |	Connection AS Connection,
+	       |	TemporaryDepositAmount AS TemporaryDepositAmount
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |DROP TemporaryDepositAmount
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |DROP Orders
+	       |;
+	       |
+	       |////////////////////////////////////////////////////////////////////////////////
+	       |DROP Connection";
 	return text;
 EndFunction
 
