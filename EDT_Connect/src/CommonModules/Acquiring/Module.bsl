@@ -289,52 +289,39 @@ Function ConnectionQueryText()
 	       |			AND Orders.gym = gymAcquiringProviderConnection.gym
 	       |			AND Orders.acquiringProvider = gymAcquiringProviderConnection.acquiringProvider
 	       |			AND Orders.chain = gymAcquiringProviderConnection.chain
+	       |			AND Orders.connectionType = gymAcquiringProviderConnection.connectionType
 	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS AcquiringProviderConnection
 	       |		ON Orders.holding = AcquiringProviderConnection.holding
 	       |			AND Orders.acquiringProvider = AcquiringProviderConnection.acquiringProvider
 	       |			AND (AcquiringProviderConnection.gym = VALUE(Catalog.gyms.EmptyRef))
 	       |			AND (AcquiringProviderConnection.chain = VALUE(catalog.chains.emptyref))
+	       |			AND Orders.connectionType = AcquiringProviderConnection.connectionType
 	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS gymConnection
 	       |		ON Orders.holding = gymConnection.holding
 	       |			AND Orders.gym = gymConnection.gym
 	       |			AND (Orders.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
 	       |			AND Orders.chain = gymConnection.chain
+	       |			AND Orders.connectionType = gymConnection.connectionType
 	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS holdingConnection
 	       |		ON Orders.holding = holdingConnection.holding
 	       |			AND (holdingConnection.gym = VALUE(Catalog.gyms.EmptyRef))
 	       |			AND (holdingConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
 	       |			AND (holdingConnection.chain = VALUE(catalog.chains.emptyref))
+	       |			AND Orders.connectionType = holdingConnection.connectionType
 	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainConnection
 	       |		ON Orders.holding = chainConnection.holding
 	       |			AND Orders.chain = chainConnection.chain
 	       |			AND (chainConnection.acquiringProvider = VALUE(Enum.acquiringProviders.EmptyRef))
 	       |			AND (chainConnection.gym = VALUE(Catalog.gyms.emptyRef))
+	       |			AND Orders.connectionType = chainConnection.connectionType
 	       |		LEFT JOIN InformationRegister.holdingsConnectionsAcquiringBank AS chainAcquiringProviderConnection
 	       |		ON Orders.holding = chainAcquiringProviderConnection.holding
 	       |			AND Orders.chain = chainAcquiringProviderConnection.chain
 	       |			AND Orders.acquiringProvider = chainAcquiringProviderConnection.acquiringProvider
 	       |			AND (chainAcquiringProviderConnection.gym = VALUE(Catalog.gyms.emptyRef))
+	       |			AND Orders.connectionType = chainAcquiringProviderConnection.connectionType
 	       |		LEFT JOIN OrderIdentifiers AS OrderIdentifiers
 	       |		ON Orders.Ref = OrderIdentifiers.Order
-	       |WHERE
-	       |	Orders.Ref = &order
-	       |
-	       |GROUP BY
-	       |	Orders.Ref,
-	       |	OrderIdentifiers.Ref,
-	       |	CASE
-	       |		WHEN NOT gymAcquiringProviderConnection.connection IS NULL
-	       |			THEN gymAcquiringProviderConnection.connection
-	       |		WHEN NOT chainAcquiringProviderConnection.connection IS NULL
-	       |			THEN chainAcquiringProviderConnection.connection
-	       |		WHEN NOT AcquiringProviderConnection.connection IS NULL
-	       |			THEN AcquiringProviderConnection.connection
-	       |		WHEN NOT gymConnection.connection IS NULL
-	       |			THEN gymConnection.connection
-	       |		WHEN NOT chainConnection.connection IS NULL
-	       |			THEN chainConnection.connection
-	       |		ELSE holdingConnection.connection
-	       |	END
 	       |;
 	       |
 	       |////////////////////////////////////////////////////////////////////////////////
