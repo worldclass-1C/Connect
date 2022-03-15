@@ -90,6 +90,8 @@ Procedure executeRequestMethod(parameters) Export
 			API_Info.gymInfo(parameters);
 		ElsIf parameters.requestName = "gymschedule" Then
 			API_Schedule.gymSchedule(parameters);
+		ElsIf parameters.requestName = "gymschedulenew" Then
+			 API_Schedule.gymScheduleNew(parameters);
 		ElsIf parameters.requestName = "employeelist" Then
 			API_List.employeeList(parameters);
 		ElsIf parameters.requestName = "employeeinfo" Then

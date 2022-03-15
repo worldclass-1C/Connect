@@ -51,7 +51,7 @@ EndFunction
 Function getRequiredParameters(requestName)
 	If requestName = "config" Then
 		Return "appType,systemType";
-	ElsIF requestName = "gymschedule" Then
+	ElsIF requestName = "gymschedule" or requestName = "gymScheduleNew" Then
 		Return "gymList,startDate,endDate";	
 	ElsIf requestName = "signin" Then
 		Return "phone,chainCode";
