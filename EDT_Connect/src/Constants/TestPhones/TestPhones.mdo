@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e9d65d5f-1f4e-48ae-b961-98f313204783">
+  <producedTypes>
+    <managerType typeId="a296551a-543e-47f0-ba68-c98ba82f3956" valueTypeId="4ecdb7ff-6ee2-482d-91b4-029d1317d189"/>
+    <valueManagerType typeId="3e68c44a-4aef-416c-99cc-6b2878a4fc9b" valueTypeId="fc788309-e162-4159-8332-788c869b840c"/>
+    <valueKeyType typeId="41b3df34-230c-4fb9-a368-c32e41deb801" valueTypeId="e2a08347-4b1f-4e77-821f-0589dd6af471"/>
+  </producedTypes>
+  <name>TestPhones</name>
+  <synonym>
+    <key>ru</key>
+    <value>Test phones</value>
+  </synonym>
+  <type>
+    <types>String</types>
+    <stringQualifiers>
+      <length>1024</length>
+    </stringQualifiers>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

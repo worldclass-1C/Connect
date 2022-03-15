@@ -18,8 +18,13 @@ ssl = ?(parameters.secureConnection, New OpenSSLSecureConnection(), Undefined);
 ConnectionHTTP = New HTTPConnection(parameters.server, parameters.port, , , , 60, ssl);
 
 Headers = New Map;
-Headers.insert("authorization", "Basic " + Crypto.EncryptBase64(parameters.user + ":"
-	+ parameters.password, "US-ASCII"));
+If ValueIsFilled(parameters.user) and ValueIsFilled(parameters.password) Then
+	Headers.insert("authorization", "Basic " + Crypto.EncryptBase64(parameters.user + ":"
+		+ parameters.password, "US-ASCII"));
+Else
+	Headers.insert("authorization", "Bearer "+ parameters.user);
+EndIf;
+
 Headers.insert("Content-Type", "application/json");
 
 requestHTTP = New HTTPRequest("/message", Headers);

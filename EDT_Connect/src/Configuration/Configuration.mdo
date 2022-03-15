@@ -186,6 +186,7 @@
   <constants>Constant.ImgStorage</constants>
   <constants>Constant.acquiringURL</constants>
   <constants>Constant.EdnaBearerKey</constants>
+  <constants>Constant.TestPhones</constants>
   <commonForms>CommonForm.МастерАнкетыПоРазделам</commonForms>
   <catalogs>Catalog.ВариантыОтветовАнкет</catalogs>
   <catalogs>Catalog.ВопросыШаблонаАнкеты</catalogs>

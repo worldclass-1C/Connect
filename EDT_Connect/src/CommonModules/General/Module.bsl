@@ -354,8 +354,9 @@ Procedure signIn(parameters)
 	struct = New Structure;
 
 	retryTime = Check.timeBeforeSendSms(tokenContext.token);
-
-	If requestStruct.phone = "+73232323223" Then
+	testPhoneString = Constants.TestPhones.Get();
+	testPhoneArray = StrSplit(testPhoneString,";",false);
+	If testPhoneArray.Find(requestStruct.phone) <> Undefined Then
 		struct.Insert("result", "Ok");
 		struct.Insert("retryTime", 0);
 		Account.incPasswordSendCount(tokenContext.token, requestStruct.phone, "3223");
