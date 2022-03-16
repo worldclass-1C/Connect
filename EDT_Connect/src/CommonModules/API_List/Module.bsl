@@ -230,7 +230,8 @@ Function  getArrGyms(params) Export
 	|	T.ref AS ref
 	|INTO TmyGyms
 	|FROM
-	|	&myGyms AS T;
+	|	&myGyms AS T
+	|;
 	|////////////////////////////////////////////////////////////////////////////////
 	|Select
 	|	*,
@@ -283,12 +284,13 @@ Function  getArrGyms(params) Export
 	|			ELSE gymstranslation.state
 	|		END AS state,
 	|		NOT TmyGyms.ref IS NULL AS hasAccess,
-	|		ISNULL(TmyGyms.base, FALSE) AS base
+	|		ISNULL(TmyGyms.base, FALSE) AS base,
+	|		gyms.type
 	|	FROM
 	|		Catalog.gyms AS gyms
 	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	|			ON (gymstranslation.Ref = gyms.Ref)
-	|			AND (gymstranslation.language = &language)
+	|			ON gymstranslation.Ref = gyms.Ref
+	|			AND gymstranslation.language = &language
 	|			LEFT JOIN TmyGyms AS TmyGyms
 	|			ON gyms.Ref = TmyGyms.ref
 	|	WHERE
@@ -346,15 +348,16 @@ Function  getArrGyms(params) Export
 	|			ELSE gymstranslation.state
 	|		END,
 	|		NOT TmyGyms.ref IS NULL,
-	|		ISNULL(TmyGyms.base, FALSE)
+	|		ISNULL(TmyGyms.base, FALSE),
+	|		NULL
 	|	FROM
 	|		Catalog.gyms AS gyms
 	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	|			ON (gymstranslation.Ref = gyms.Ref)
-	|			AND (gymstranslation.language = &language)
+	|			ON gymstranslation.Ref = gyms.Ref
+	|			AND gymstranslation.language = &language
 	|			LEFT JOIN Catalog.chains AS chains
-	|			ON (chains.brand = gyms.brand)
-	|			AND (chains.holding = gyms.holding)
+	|			ON chains.brand = gyms.brand
+	|			AND chains.holding = gyms.holding
 	|			LEFT JOIN TmyGyms AS TmyGyms
 	|			ON gyms.Ref = TmyGyms.ref
 	|	WHERE
@@ -413,12 +416,13 @@ Function  getArrGyms(params) Export
 	|			ELSE gymstranslation.state
 	|		END,
 	|		NOT TmyGyms.ref IS NULL,
-	|		ISNULL(TmyGyms.base, FALSE)
+	|		ISNULL(TmyGyms.base, FALSE),
+	|		NULL
 	|	FROM
 	|		Catalog.gyms AS gyms
 	|			LEFT JOIN Catalog.gyms.translation AS gymstranslation
-	|			ON (gymstranslation.Ref = gyms.Ref)
-	|			AND (gymstranslation.language = &language)
+	|			ON gymstranslation.Ref = gyms.Ref
+	|			AND gymstranslation.language = &language
 	|			LEFT JOIN TmyGyms AS TmyGyms
 	|			ON gyms.Ref = TmyGyms.ref
 	|	WHERE
@@ -430,7 +434,7 @@ Function  getArrGyms(params) Export
 	|			WHEN &FilterType
 	|				THEN gyms.type = &type
 	|			ELSE TRUE
-	|		END) as Data
+	|		END) AS Data
 	|ORDER BY
 	|	order DESC,
 	|	data.description");
@@ -464,7 +468,7 @@ Function  getArrGyms(params) Export
 			If Not stucParams.short Then
 				count=count+1;
 				gymStruct.Insert("gymId", gymStruct.uid);
-				gymStruct.Insert("type", "Club");
+				gymStruct.Insert("type", string(select.type));
 				gymStruct.Insert("state", select.state);			
 				gymStruct.Insert("address", select.address);
 				gymStruct.Insert("photo", select.photo);
